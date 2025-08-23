@@ -1,0 +1,3 @@
+const myName = {
+  home: 'Wema',
+};
