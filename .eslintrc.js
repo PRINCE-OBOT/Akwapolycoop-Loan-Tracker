@@ -1,8 +1,7 @@
 module.exports = {
   extends: [
     'airbnb-base',
-    'plugin:import/recommended',
-    'prettier',
+    'prettier'
   ],
   env: {
     browser: true,
@@ -10,7 +9,6 @@ module.exports = {
     es2021: true,
   },
   rules: {
-    // You can override Airbnb rules here if you want
+    // custom overrides
   },
 };
-
