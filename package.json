@@ -4,6 +4,7 @@
   "description": "Loan Tracking System to help borrowers monitors how their loan is accumulated",
   "lint-staged": {
     "src/**/*.js": [
+      "eslint --fix",
       "prettier --write --ignore-unknown"
     ],
     "src/**/*.{html,css}": [
