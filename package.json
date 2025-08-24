@@ -6,7 +6,9 @@
     "src/**/*.js": [
       "prettier --write --ignore-unknown"
     ],
-    "src/**/*.{html,css}": ["prettier --write --ignore-unknown"]
+    "src/**/*.{html,css}": [
+      "prettier --write --ignore-unknown"
+    ]
   },
   "scripts": {
     "start": "webpack serve --config webpack.dev.js",
@@ -16,7 +18,8 @@
     "prettier": "prettier --write ./src/",
     "prettier-global": "prettier --write .",
     "lint": "eslint ./src/",
-    "lint-fix": "eslint --fix ./src/"
+    "lint-fix": "eslint --fix ./src/",
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
