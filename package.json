@@ -7,7 +7,7 @@
       "eslint --fix",
       "prettier --write --ignore-unknown"
     ],
-    "src/**/*.{html,css}": [
+    "src/**/*.{html,css,svg}": [
       "prettier --write --ignore-unknown"
     ]
   },

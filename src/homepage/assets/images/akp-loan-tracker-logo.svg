@@ -1,0 +1,64 @@
+<!-- Akwapolycoop Loan Tracker — SVG Logo -->
+<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc"
+     viewBox="0 0 640 160">
+  <title id="title">Akwapolycoop Loan Tracker logo</title>
+  <desc id="desc">Rounded square icon with growing bars and an upward check-mark arrow, plus wordmark.</desc>
+
+  <style>
+    :root{
+      --primary:#0F766E;  /* Teal */
+      --accent:#10B981;   /* Mint */
+      --ink:#0B1F2A;      /* Wordmark color */
+      --bg:#F8FAFC;       /* Optional light backdrop */
+    }
+    .icon-fill{ fill:var(--primary); }
+    .icon-accent{ stroke:var(--accent); }
+    .ink{ fill:var(--ink); }
+  </style>
+
+  <!-- ====== ICON ====== -->
+  <g id="icon" transform="translate(16,16)">
+    <!-- rounded square background -->
+    <rect x="0" y="0" width="120" height="120" rx="24" class="icon-fill" />
+
+    <!-- subtle inner highlight -->
+    <path d="M16,56c0-22,18-40,40-40h40"
+          fill="none" stroke="white" opacity=".18" stroke-width="14" stroke-linecap="round"/>
+
+    <!-- bars (loans tracked over time) -->
+    <g fill="white" opacity="0.95">
+      <rect x="28" y="72" width="14" height="28" rx="4"/>
+      <rect x="52" y="60" width="14" height="40" rx="4"/>
+      <rect x="76" y="44" width="14" height="56" rx="4"/>
+    </g>
+
+    <!-- upward arrow that ends as a check mark (growth + approved repayment) -->
+    <path d="M24 96
+             L52 76
+             L68 84
+             L98 52
+             M92 66
+             L104 56
+             L112 68"
+          fill="none"
+          class="icon-accent"
+          stroke-width="8"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+  </g>
+
+  <!-- ====== WORDMARK ====== -->
+  <!-- Kept as simple vector text so you can swap fonts easily. -->
+  <g id="wordmark" transform="translate(168,42)" class="ink">
+    <!-- Top line: brand -->
+    <text x="0" y="30" font-family="Inter, Segoe UI, Roboto, Arial, sans-serif"
+          font-weight="700" font-size="40" letter-spacing="0.2">
+      Akwapolycoop
+    </text>
+    <!-- Bottom line: descriptor -->
+    <text x="0" y="68" font-family="Inter, Segoe UI, Roboto, Arial, sans-serif"
+          font-weight="500" font-size="30" opacity="0.88" letter-spacing="0.3">
+      Loan Tracker
+    </text>
+  </g>
+</svg>
