@@ -185,10 +185,25 @@ footer {
   padding: 100px 20px;
   background: var(--ink);
   border-radius: 20px;
+  position: relative;
+}
+.back-to-top {
+  color: var(--white);
+  font-size: 2rem;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  transform: rotate(-90deg);
+
+  &:hover {
+    color: var(--transparent-white);
+    cursor: pointer;
+  }
 }
 .links,
 footer .title,
-.contact-us-details {
+.contact-us-details,
+.all-right-reserved {
   margin: 0 auto 0;
   width: fit-content;
 }
@@ -207,10 +222,15 @@ footer .title,
 footer .title {
   color: var(--white);
 }
+
 .email-section,
 .tel-section {
   display: flex;
-  gap: 10px;
+  gap: 5px;
   color: var(--transparent-white);
   font-weight: 100;
+  align-items: center;
+}
+.all-right-reserved {
+  color: var(--transparent-white);
 }
