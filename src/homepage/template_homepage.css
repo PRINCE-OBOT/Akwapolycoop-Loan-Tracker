@@ -71,6 +71,7 @@ header {
   box-shadow: 0 -1px 40px rgba(0 0 0 / 0.1);
   border-radius: 8px;
   padding: 20px;
+  z-index: 100;
 
   &:hover {
     display: flex;
@@ -147,14 +148,18 @@ p {
   & > * {
     max-width: 300px;
     min-width: 260px;
-    height: 400px;
+    min-height: 400px;
     background-color: var(--transparent-black);
     border-radius: 20px;
     padding: 30px;
     position: relative;
     overflow: hidden;
+
     &:first-child {
       color: var(--white);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
 
       & h2 {
         color: var(--transparent-white);
@@ -169,7 +174,11 @@ p {
       }
 
       & h3 {
-        font-size: 1.2rem;
+        font-size: 1.3rem;
+      }
+
+      & p {
+        font-size: 2rem;
       }
     }
   }
@@ -233,4 +242,5 @@ footer .title {
 }
 .all-right-reserved {
   color: var(--transparent-white);
+  text-align: center;
 }
