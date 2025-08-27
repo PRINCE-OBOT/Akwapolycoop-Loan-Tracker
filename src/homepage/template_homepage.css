@@ -82,9 +82,12 @@ header {
   align-items: center;
   gap: 15px;
 }
+.admin-options,
 .borrower-options {
-  right: 0;
+  translate: -50%;
+  left: 50%;
 }
+
 a {
   text-decoration: none;
   color: var(--dark-yellow);
@@ -117,6 +120,10 @@ p {
   position: relative;
   overflow: hidden;
 
+  & h1 {
+    max-width: 31ch;
+  }
+
   & img {
     position: absolute;
     right: 100%;
@@ -130,7 +137,7 @@ p {
 .main_top-section_right-side {
   & img {
     height: 100%;
-    margin-left: auto;
+    margin: 0 auto 0;
   }
 }
 
