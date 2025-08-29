@@ -1,6 +1,8 @@
 import './template_homepage.css';
 import './assets/reset.css';
 import './assets/font.css';
+import './assets/common_variable.css';
+import './assets/common_general.css';
 
 const buttonContactUs = document.querySelector('.contact-us');
 const backToTop = document.querySelector('.back-to-top');
