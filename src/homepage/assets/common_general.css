@@ -1,0 +1,21 @@
+body,
+html {
+  height: 100%;
+  font-family: Roboto, Arial, Helvetica, sans-serif;
+  font-size: clamp(1rem, 1rem + 0.03vw, 1.05rem);
+}
+.container {
+  padding-top: 30px;
+  width: min(90%, 1200px);
+  margin: 0 auto 0;
+}
+.logo-section img {
+  height: 50px;
+}
+a {
+  text-decoration: none;
+  color: var(--dark-yellow);
+}
+p {
+  max-width: 50ch;
+}
