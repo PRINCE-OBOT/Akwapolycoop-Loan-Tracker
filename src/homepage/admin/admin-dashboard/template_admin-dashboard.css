@@ -43,8 +43,7 @@
 .header_bottom-section > *.active {
   background-color: var(--secondary-accent);
 }
-
-:where(.admin-dashboard_tab-nav, .loaner-management_tab-nav) * {
+[class$='tab-nav'] * {
   pointer-events: none;
 }
 .header_bottom-section img {
@@ -116,11 +115,7 @@
   gap: 20px;
 }
 
-.total-loan-applicant-section,
-.revenue-section,
-.approved-section,
-.pending-section,
-.decline-section {
+[class$='loan-section'] {
   background: var(--ink);
   border-radius: 10px;
   display: flex;
@@ -128,7 +123,7 @@
   gap: 10px;
   justify-content: center;
   align-items: center;
-  height: 150px;
+  height: 180px;
 
   & h5 {
     color: var(--white);
@@ -138,4 +133,13 @@
   & h2 {
     color: var(--transparent-white);
   }
+}
+[class$='title-section'] {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+[class$='title-section'] img {
+  height: 50px;
 }
