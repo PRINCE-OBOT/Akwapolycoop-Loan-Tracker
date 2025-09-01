@@ -25,6 +25,7 @@ module.exports = {
     clean: true,
   },
   devServer: {
+    open: true,
     liveReload: true,
   },
   plugins: [

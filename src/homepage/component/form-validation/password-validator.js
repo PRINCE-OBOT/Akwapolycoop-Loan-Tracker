@@ -1,4 +1,4 @@
-import FormValidator from './form-validator.js';
+import FormValidator from './form-validator';
 
 export default class Password {
   constructor({ password, passwordMessage, confirmPassword, confirmPasswordMessage }) {
@@ -7,19 +7,19 @@ export default class Password {
     this.confirmPassword = confirmPassword;
     this.confirmPasswordMessage = confirmPasswordMessage;
     this.isPasswordValid = null;
-    this.bindEvent = this.#bindEvent();
+    this.bindEvent = this.bindEvent();
   }
 
-  #bindEvent() {
-    this.password.addEventListener('input', this.#validatePassword.bind(this));
+  bindEvent() {
+    this.password.addEventListener('input', this.validatePassword.bind(this));
 
     this.confirmPassword.addEventListener(
       'input',
-      this.#confirmPasswordToValidatePassword.bind(this),
+      this.confirmPasswordToValidatePassword.bind(this),
     );
   }
 
-  #validatePassword() {
+  validatePassword() {
     FormValidator.hasUserInteract({ field: this.password });
 
     FormValidator.removeInvalidHighlightFromInput({ field: this.password });
@@ -30,10 +30,10 @@ export default class Password {
     });
     if (passwordField.empty) return;
 
-    const lowercase = /[a-z]/.test(password.value);
-    const uppercase = /[A-Z]/.test(password.value);
-    const number = /[0-9]/.test(password.value);
-    const minLength = /.{7,}/.test(password.value);
+    const lowercase = /[a-z]/.test(this.password.value);
+    const uppercase = /[A-Z]/.test(this.password.value);
+    const number = /[0-9]/.test(this.password.value);
+    const minLength = /.{7,}/.test(this.password.value);
 
     this.passwordMessage.value = 'Password should contain';
 
@@ -59,11 +59,11 @@ export default class Password {
     });
 
     if (this.confirmPassword.value !== '') {
-      this.#confirmPasswordToValidatePassword();
+      this.confirmPasswordToValidatePassword();
     }
   }
 
-  #confirmPasswordToValidatePassword() {
+  confirmPasswordToValidatePassword() {
     FormValidator.hasUserInteract({ field: this.confirmPassword });
 
     FormValidator.removeInvalidHighlightFromInput({

@@ -1,22 +1,22 @@
-import FormValidator from './form-validator.js';
+import FormValidator from './form-validator';
 
 export default class NameValidator {
-  constructor({ name: name, nameMessage: nameMessage }) {
+  constructor({ name, nameMessage }) {
     this.name = name;
     this.nameMessage = nameMessage;
-    this.bindEvent = this.#bindEvent();
+    this.bindEvent = this.bindEvent();
   }
 
-  #bindEvent() {
+  bindEvent() {
     this.name.addEventListener('input', () =>
-      this.#validateName({
+      this.validateName({
         name: this.name,
         nameMessage: this.nameMessage,
       }),
     );
   }
 
-  #validateName({ name, nameMessage }) {
+  validateName({ name, nameMessage }) {
     FormValidator.hasUserInteract({
       field: this.name,
     });

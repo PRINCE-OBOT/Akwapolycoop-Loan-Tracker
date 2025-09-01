@@ -1,17 +1,17 @@
-import FormValidator from './form-validator.js';
+import FormValidator from './form-validator';
 
 export default class Email {
   constructor({ email, emailMessage }) {
     this.email = email;
     this.emailMessage = emailMessage;
-    this.#bindEvent();
+    this.bindEvent();
   }
 
-  #bindEvent() {
-    this.email.addEventListener('input', this.#validateEmail.bind(this));
+  bindEvent() {
+    this.email.addEventListener('input', this.validateEmail.bind(this));
   }
 
-  #validateEmail() {
+  validateEmail() {
     FormValidator.hasUserInteract({ field: this.email });
 
     FormValidator.removeInvalidHighlightFromInput({ field: this.email });

@@ -3,15 +3,15 @@ export default class FormValidator {
     this.buttonSubmit = buttonSubmit;
     this.messages = messages;
     this.inputs = inputs;
-    this.runWhenAllFormIsValid = runWhenAllFormIsValid
-    this.#bindEvent();
+    this.runWhenAllFormIsValid = runWhenAllFormIsValid;
+    this.bindEvent();
   }
 
-  #bindEvent() {
-    this.buttonSubmit.addEventListener('click', this.#customCheckValidity.bind(this));
+  bindEvent() {
+    this.buttonSubmit.addEventListener('click', this.customCheckValidity.bind(this));
   }
 
-  #customCheckValidity() {
+  customCheckValidity() {
     const isEveryInputValid = [...this.messages].every((input) => input.validity.valid);
 
     const isEveryMessageValid = [...this.messages].every((message) =>
@@ -20,7 +20,7 @@ export default class FormValidator {
 
     if (isEveryMessageValid && isEveryInputValid) {
       window.scrollTo(0, 0);
-      this.runWhenAllFormIsValid()
+      this.runWhenAllFormIsValid();
     } else {
       const invalidInputs = [...this.inputs].filter((input) => !input.validity.valid);
 
@@ -75,7 +75,8 @@ export default class FormValidator {
     isConfirmPassword,
     field2,
   }) {
-    let message, validityState;
+    let message;
+    let validityState;
 
     if (!field.validity.valid && !isFieldValid) {
       message = msg;
@@ -101,8 +102,7 @@ export default class FormValidator {
   static isPasswordWeak({ validityState }) {
     if (validityState === 'invalid') {
       return { weak: true };
-    } else {
-      return { weak: false };
     }
+    return { weak: false };
   }
 }
