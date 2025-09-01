@@ -3,7 +3,6 @@
 import './template_admin-dashboard.css';
 import '../../assets/reset.css';
 import '../../assets/font.css';
-import '../../assets/common_variable.css';
 import '../../assets/common_general.css';
 import Navigation from '../../component/navigation/navigation';
 

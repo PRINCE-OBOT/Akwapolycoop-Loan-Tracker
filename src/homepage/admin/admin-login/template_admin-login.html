@@ -6,6 +6,41 @@
     <title>Akwapolycoop Loan Tracker - Admin Login</title>
   </head>
   <body>
-    <p>Admin Login Page</p>
+    <div class="container">
+      <header>
+        <div class="logo-section">
+          <img
+            src="../../assets/images/akp-loan-tracker-logo.svg"
+            alt="akwapolycoop loan tracker logo"
+          />
+        </div>
+
+        <div class="navigation-section">
+          <a href="./index.html">Home</a>
+          <a href="./admin-dashboard.html">Admin Dashboard</a>
+          <a href="./admin-sign-up.html">Admin Sign up</a>
+        </div>
+      </header>
+
+      <main>
+        <form action="" novalidate>
+          <h3 class="heading">Admin Login</h3>
+
+          <div class="user-name">
+            <label for="username">username</label>
+            <input type="text" id="username" placeholder="username" pattern="^[\.]{1,}$" required />
+          </div>
+
+          <div class="password">
+            <label for="password">Password</label>
+            <input type="text" id="password" placeholder="Password" pattern="^[\.]{1,}$" required />
+          </div>
+
+          <div>
+            <button class="btn-login" type="button">Login</button>
+          </div>
+        </form>
+      </main>
+    </div>
   </body>
 </html>

@@ -6,6 +6,6 @@ module.exports = {
     es2021: true,
   },
   rules: {
-    // custom overrides
+    'no-new': false
   },
 };

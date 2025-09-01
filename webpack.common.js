@@ -25,7 +25,7 @@ module.exports = {
     clean: true,
   },
   devServer: {
-    open: true, // automatically open browser
+    liveReload: true,
   },
   plugins: [
     new HTMLWebpackPlugins({

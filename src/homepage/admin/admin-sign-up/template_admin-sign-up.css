@@ -1,0 +1,138 @@
+:root {
+  --clr-invalid: hsl(13.5, 81%, 32.1%);
+  --clr-valid: #10a510;
+  --clr-normal: #eff2ce;
+  --clr-transparent: rgba(0 0 0 / 0.4);
+
+  --md-dim: 50px;
+
+  --container-width: 610px;
+  --sm-gap: 5px;
+}
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+input {
+  &:where(:invalid, :valid) {
+    border: 2px solid;
+    border-color: var(--clr-transparent);
+  }
+
+  &.user-interact:invalid {
+    border-color: var(--clr-invalid);
+  }
+
+  &.user-interact:valid {
+    border-color: var(--clr-valid);
+  }
+  &.invalid {
+    border-color: var(--clr-invalid);
+  }
+}
+:focus {
+  outline: none;
+}
+.show-message {
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  transform: translateY(100%);
+  font-style: italic;
+
+  &.invalid {
+    color: var(--clr-invalid);
+  }
+  &.valid {
+    color: var(--clr-valid);
+  }
+}
+
+#confirm-password {
+  &.invalid {
+    border-color: var(--clr-invalid);
+  }
+  &.valid {
+    border-color: var(--clr-valid);
+  }
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  padding-top: 50px;
+}
+
+form {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(calc(var(--container-width) / 2.2 - var(--sm-gap)), 1fr)
+  );
+  gap: 20px;
+  padding: 20px;
+  box-shadow: var(--box-shadow);
+  border-radius: 5px;
+  max-width: 700px;
+}
+
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--md-dim);
+  background: linear-gradient(50deg, var(--ink), var(--primary-accent));
+  color: var(--white);
+  grid-column: 1 / -1;
+  border-radius: var(--br-sm);
+  padding: 35px 0;
+  border-radius: 5px;
+}
+
+form > div {
+  display: flex;
+  gap: 8px;
+  flex-direction: column;
+  position: relative;
+}
+
+input {
+  height: 50px;
+  padding-left: 10px;
+}
+input {
+  border-radius: 5px;
+  border-style: solid;
+  background: var(--transparent-white);
+  border-color: var(--transparent-white);
+  box-shadow: var(--box-shadow);
+  &::placeholder {
+    color: var(--clr-transparent);
+  }
+}
+
+.password,
+.confirm-password {
+  margin-top: 10px;
+}
+
+.email {
+  grid-column: 1/-1;
+}
+.btn-sign-up {
+  margin-top: 20px;
+  max-width: 120px;
+  padding: 8px;
+  border-radius: 5px;
+  background: var(--ink);
+  color: #fff;
+  font-weight: 700;
+  border: none;
+  box-shadow: var(--box-shadow-transparent);
+  cursor: pointer;
+}
