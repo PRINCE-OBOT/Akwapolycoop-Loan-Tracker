@@ -1,14 +1,8 @@
-/* eslint-disable prefer-destructuring */
 const indexDB = {
   openRequest: null,
-  version: 0,
 
-  createDatabase({ databaseName, version }) {
-    if (version <= this.version) return;
-
-    this.version = version;
-
-    this.openRequest = indexedDB.open(databaseName, this.version);
+  createDatabase() {
+    this.openRequest = indexedDB.open('akp-loan-tracker', 2);
   },
 
   createObjectStore({ storeName }) {
@@ -16,18 +10,17 @@ const indexDB = {
 
     if (!isIndexDB.open) return;
 
-    console.log('Did not create store', this.openRequest)
+    console.log('Did not create store', this.openRequest);
     this.openRequest.onupgradeneeded = (e) => {
-
       const storeHas = this.checkIfStoreHasName(storeName);
-      
+
       if (storeHas.name) return;
-      
+
       // eslint-disable-next-line prefer-destructuring
       const result = e.target.result;
-      
-      result.createObjectStore(storeName, {keyPath: 'id'});
-      console.log('Run create store', this.openRequest)
+
+      result.createObjectStore(storeName, { keyPath: 'id' });
+      console.log('Run create store', this.openRequest);
     };
   },
 
@@ -49,11 +42,11 @@ const indexDB = {
 
       const putData = store.put(data);
 
-      const previewDataStored = store.get(data.id)
+      const previewDataStored = store.get(data.id);
 
-      previewDataStored.onsuccess = ()=>{
-        console.log(previewDataStored.result)
-      }
+      previewDataStored.onsuccess = () => {
+        console.log(previewDataStored.result);
+      };
 
       putData.onsuccess = () => {
         runSuccessStatus();
@@ -65,7 +58,7 @@ const indexDB = {
     };
   },
 
-  checkIfDataExist({
+  checkIfDataMatch({
     username,
     password,
     storeName,
@@ -76,6 +69,7 @@ const indexDB = {
     function sentData(data) {
       if (data.username === username && data.password === password) {
         runSuccessStatus();
+        console.log(data);
       } else {
         runErrorStatus();
       }
@@ -90,13 +84,14 @@ const indexDB = {
 
   getData({ storeName, keyPathValue, sentData }) {
     this.openRequest.onsuccess = (e) => {
-      const { result } = e.target;
+      const result = e.target.result;
 
       const storeHas = this.checkIfStoreHasName(storeName);
 
       if (!storeHas.name) return;
 
-      const transaction = result.transaction(storeName, 'read');
+      console.log('run inside');
+      const transaction = result.transaction(storeName, 'readwrite');
 
       const store = transaction.objectStore(storeName);
 

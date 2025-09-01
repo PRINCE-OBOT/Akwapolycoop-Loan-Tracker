@@ -1,27 +1,47 @@
-/* eslint-disable no-new */
-import './template_admin-login.css'
+import './template_admin-login.css';
 import '../../assets/reset.css';
 import '../../assets/font.css';
 import '../../assets/common_general.css';
 
-import LoginCheck from '../../component/login/login-check';
-import PasswordLogin from '../../component/login/login-password'
+import LoginCheck from '../../module/login/login-check';
+import PasswordLogin from '../../module/login/login-field';
 
-const btnLogin = document.querySelector('.btn-login')
-const inputs = document.querySelectorAll('input')
-const username = document.querySelector('#username')
-const password = document.querySelector('#password')
+import indexDB from '../../module/indexDB/indexDB';
 
-function running (){
-    alert('Runing just login in')
+const btnLogin = document.querySelector('.btn-login');
+const inputs = document.querySelectorAll('input');
+const username = document.querySelector('#username');
+const password = document.querySelector('#password');
+
+function runWhenDataIsCorrect() {
+  alert('Data is correct');
 }
 
-new PasswordLogin({field: password})
+function runWhenDataIsIncorrect() {
+  alert('Data is incorrect');
+}
 
-new PasswordLogin({field: username})
+function getDataFromForm() {
+  const adminLoginData = {
+    keyPathValue: 'admin',
+    username: username.value,
+    password: password.value,
+    storeName: 'admin-data',
+    runSuccessStatus: runWhenDataIsCorrect,
+    runErrorStatus: runWhenDataIsIncorrect,
+  };
+
+  indexDB.createDatabase();
+
+  indexDB.checkIfDataMatch(adminLoginData);
+}
+
+new PasswordLogin({ field: password });
+
+new PasswordLogin({ field: username });
 
 new LoginCheck({
   loginButton: btnLogin,
   inputs,
-  runWhenFormIsFilled: running,
+  runWhenFormIsFilled: getDataFromForm,
 });

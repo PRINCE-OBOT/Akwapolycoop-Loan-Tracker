@@ -11,6 +11,7 @@ module.exports = {
     "no-param-reassign": "off",
     "consistent-return": "off",
     "no-unused-expressions": "off",
-    "no-alert": "off"
+    "no-alert": "off",
+    "prefer-destructuring": "off"
   },
 };

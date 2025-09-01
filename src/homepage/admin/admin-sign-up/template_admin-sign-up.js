@@ -8,15 +8,16 @@ import '../../assets/reset.css';
 import '../../assets/font.css';
 import '../../assets/common_general.css';
 
-import FormValidator from '../../component/form-validation/form-validator';
-import EmailValidator from '../../component/form-validation/email-validator';
-import PasswordValidator from '../../component/form-validation/password-validator';
-import NameValidator from '../../component/form-validation/name-validator';
+import FormValidator from '../../module/form-validation/form-validator';
+import EmailValidator from '../../module/form-validation/email-validator';
+import PasswordValidator from '../../module/form-validation/password-validator';
+import NameValidator from '../../module/form-validation/name-validator';
 
-import indexDB from '../../component/indexDB/indexDB';
+import indexDB from '../../module/indexDB/indexDB';
 
 const messages = document.querySelectorAll('output.show-message');
 const inputs = document.querySelectorAll('input');
+const displayAdminUsername = document.querySelector('.display-admin-username');
 
 const btnSubmit = document.querySelector('.btn-sign-up');
 
@@ -58,8 +59,9 @@ function generateUsername() {
 }
 
 function getAdminDataFromForm() {
-  const username = generateUsername()
-  
+  const username = generateUsername();
+  displayAdminUsername.textContent = username;
+
   const adminData = {
     id: 'admin',
     firstName: firstName.value,
@@ -67,7 +69,7 @@ function getAdminDataFromForm() {
     email: email.value,
     password: password.value,
     confirmPassword: confirmPassword.value,
-    username
+    username,
   };
   return adminData;
 }
@@ -81,7 +83,7 @@ function adminDataNotStored() {
 }
 
 function runWhenAllFormIsValid() {
-  indexDB.createDatabase({ databaseName: 'akp-loan-tracker', version: 2 });
+  indexDB.createDatabase();
 
   indexDB.createObjectStore({ storeName: 'admin-data', keyPath: 'id' });
 

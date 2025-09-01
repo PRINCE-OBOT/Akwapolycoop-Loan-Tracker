@@ -58,9 +58,8 @@ input {
 }
 
 .btn-login {
-  margin-top: 20px;
   max-width: 120px;
-  padding: 8px;
+  padding: 8px 30px;
   border-radius: 5px;
   background: var(--ink);
   color: #fff;
@@ -68,4 +67,9 @@ input {
   border: none;
   box-shadow: var(--box-shadow-transparent);
   cursor: pointer;
+}
+.btn-login-section {
+  padding-top: 20px;
+  flex-direction: row;
+  align-items: center;
 }
