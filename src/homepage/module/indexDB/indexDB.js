@@ -2,7 +2,7 @@ const indexDB = {
   openRequest: null,
 
   createDatabase() {
-    this.openRequest = indexedDB.open('akp-loan-tracker', 2);
+    this.openRequest = indexedDB.open('akp-loan-tracker', 3);
   },
 
   createObjectStore({ storeName }) {
@@ -10,13 +10,11 @@ const indexDB = {
 
     if (!isIndexDB.open) return;
 
-    console.log('Did not create store', this.openRequest);
     this.openRequest.onupgradeneeded = (e) => {
       const storeHas = this.checkIfStoreHasName(storeName);
 
       if (storeHas.name) return;
 
-      // eslint-disable-next-line prefer-destructuring
       const result = e.target.result;
 
       result.createObjectStore(storeName, { keyPath: 'id' });
@@ -66,7 +64,7 @@ const indexDB = {
     runErrorStatus,
     runSuccessStatus,
   }) {
-    function sentData(data) {
+    function returnData(data) {
       if (data.username === username && data.password === password) {
         runSuccessStatus();
         console.log(data);
@@ -78,11 +76,26 @@ const indexDB = {
     this.getData({
       storeName,
       keyPathValue,
-      sentData,
+      returnData,
     });
   },
 
-  getData({ storeName, keyPathValue, sentData }) {
+  checkIfKeyValueExist({ storeName, keyPathValue, runErrorStatus, runSuccessStatus }) {
+    function returnData(data) {
+      if (data === undefined) {
+        runErrorStatus();
+        return;
+      }
+      runSuccessStatus();
+    }
+
+    this.getData({
+      storeName,
+      keyPathValue,
+      returnData,
+    });
+  },
+  getData({ storeName, keyPathValue, returnData }) {
     this.openRequest.onsuccess = (e) => {
       const result = e.target.result;
 
@@ -90,7 +103,6 @@ const indexDB = {
 
       if (!storeHas.name) return;
 
-      console.log('run inside');
       const transaction = result.transaction(storeName, 'readwrite');
 
       const store = transaction.objectStore(storeName);
@@ -100,7 +112,7 @@ const indexDB = {
       request.onsuccess = (event) => {
         const data = event.target.result;
 
-        sentData(data);
+        returnData(data);
       };
     };
   },

@@ -1,3 +1,9 @@
+header {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  flex-direction: column;
+}
 .header_top-section {
   display: flex;
   justify-content: space-between;
@@ -12,21 +18,35 @@
   align-items: center;
   gap: 20px;
 }
-
+.adminProfileSection {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
 .admin-login,
-.admin-sign-up {
+.admin-sign-up,
+.logout-button {
   display: flex;
   padding: 6px 20px;
   border-radius: 5px;
-  border: none;
-  box-shadow: var(--box-shadow);
-  background-color: var(--transparent-black);
-  color: var(--white);
+  border: 2px solid var(--transparent-black);
+  background-color: var(--transparent-white);
+  color: var(--transparent-black);
   width: max-content;
 }
-.home {
-  color: var(--black);
+:where(.admin-login, .admin-sign-up).hide {
+  display: none;
 }
+.admin-profile {
+  height: var(--profile-dim);
+  width: var(--profile-dim);
+  background: linear-gradient(var(--primary-accent), var(--dark-yellow));
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .header_bottom-section {
   padding-top: 30px;
   display: flex;
