@@ -1,69 +1,55 @@
 const indexDB = {
-  openRequest: null,
+  createDatabase(obj, functionToCall) {
+    const openRequest = indexedDB.open('akp-loan-tracker', 13);
 
-  createDatabase() {
-    this.openRequest = indexedDB.open('akp-loan-tracker', 3);
-  },
+    openRequest.onupgradeneeded = (e) => {
+      const db = e.target.result;
 
-  createObjectStore({ storeName }) {
-    const isIndexDB = this.checkIfIndexedDBIsOpen();
+      const { storeName } = obj;
 
-    if (!isIndexDB.open) return;
+      this.createObjectStore({ storeName }, db);
+    };
 
-    this.openRequest.onupgradeneeded = (e) => {
-      const storeHas = this.checkIfStoreHasName(storeName);
+    openRequest.onsuccess = (e) => {
+      const db = e.target.result;
 
-      if (storeHas.name) return;
-
-      const result = e.target.result;
-
-      result.createObjectStore(storeName, { keyPath: 'id' });
-      console.log('Run create store', this.openRequest);
+      this[functionToCall](obj, db);
     };
   },
 
-  storeData({ storeName, data, runSuccessStatus, runErrorStatus }) {
-    const isIndexDB = this.checkIfIndexedDBIsOpen();
+  createObjectStore({ storeName }, db) {
+    const storeHas = this.checkIfStoreHasName({ storeName }, db);
+    if (storeHas.name) return;
 
-    if (!isIndexDB.open) return;
+    db.createObjectStore(storeName, { keyPath: 'id' });
+  },
 
-    this.openRequest.onsuccess = (e) => {
-      const result = e.target.result;
+  storeData({ storeName, data, runSuccessStatus, runErrorStatus }, db) {
+    const transaction = db.transaction(storeName, 'readwrite');
 
-      const storeHas = this.checkIfStoreHasName(storeName);
+    const store = transaction.objectStore(storeName);
 
-      if (!storeHas.name) return;
+    const putData = store.put(data);
 
-      const transaction = result.transaction(storeName, 'readwrite');
+    const previewDataStored = store.get(data.id);
 
-      const store = transaction.objectStore(storeName);
+    previewDataStored.onsuccess = () => {
+      console.log(previewDataStored.result);
+    };
 
-      const putData = store.put(data);
+    putData.onsuccess = () => {
+      runSuccessStatus();
+    };
 
-      const previewDataStored = store.get(data.id);
-
-      previewDataStored.onsuccess = () => {
-        console.log(previewDataStored.result);
-      };
-
-      putData.onsuccess = () => {
-        runSuccessStatus();
-      };
-
-      putData.onerror = () => {
-        runErrorStatus();
-      };
+    putData.onerror = () => {
+      runErrorStatus();
     };
   },
 
-  checkIfDataMatch({
-    username,
-    password,
-    storeName,
-    keyPathValue,
-    runErrorStatus,
-    runSuccessStatus,
-  }) {
+  checkIfDataMatch(
+    { username, password, storeName, keyPathValue, runErrorStatus, runSuccessStatus },
+    db,
+  ) {
     function returnData(data) {
       if (data.username === username && data.password === password) {
         runSuccessStatus();
@@ -73,70 +59,79 @@ const indexDB = {
       }
     }
 
-    this.getData({
-      storeName,
-      keyPathValue,
-      returnData,
-    });
+    this.getData(
+      {
+        storeName,
+        keyPathValue,
+        returnData,
+      },
+      db,
+    );
   },
 
-  checkIfKeyValueExist({ storeName, keyPathValue, runErrorStatus, runSuccessStatus }) {
+  checkIfKeyValueExistAndIsAdminLogin(
+    { storeName, keyPathValue, runErrorStatus, runSuccessStatus },
+    db,
+  ) {
+    function returnData(data) {
+      if (data !== undefined) {
+        if (data.isAdminLogin) {
+          runSuccessStatus();
+          return;
+        }
+      }
+      runErrorStatus();
+    }
+
+    this.getData(
+      {
+        storeName,
+        keyPathValue,
+        returnData,
+      },
+      db,
+    );
+  },
+  modifyExistingData(
+    { storeName, key, keyPathValue, newValue, runSuccessStatus, runErrorStatus },
+    db,
+  ) {
     function returnData(data) {
       if (data === undefined) {
         runErrorStatus();
         return;
       }
-      runSuccessStatus();
+
+      data[key] = newValue;
+      indexDB.storeData({ storeName, data, runSuccessStatus, runErrorStatus }, db);
     }
 
-    this.getData({
-      storeName,
-      keyPathValue,
-      returnData,
-    });
+    this.getData({ storeName, keyPathValue, returnData }, db);
   },
-  getData({ storeName, keyPathValue, returnData }) {
-    this.openRequest.onsuccess = (e) => {
-      const result = e.target.result;
+  getData({ storeName, keyPathValue, returnData }, db) {
+    const storeHas = this.checkIfStoreHasName({ storeName }, db);
 
-      const storeHas = this.checkIfStoreHasName(storeName);
+    if (!storeHas.name) return;
 
-      if (!storeHas.name) return;
+    const transaction = db.transaction(storeName, 'readwrite');
 
-      const transaction = result.transaction(storeName, 'readwrite');
+    const store = transaction.objectStore(storeName);
 
-      const store = transaction.objectStore(storeName);
+    const request = store.get(keyPathValue);
 
-      const request = store.get(keyPathValue);
+    request.onsuccess = (event) => {
+      const data = event.target.result;
 
-      request.onsuccess = (event) => {
-        const data = event.target.result;
-
-        returnData(data);
-      };
+      returnData(data);
     };
   },
 
-  checkIfIndexedDBIsOpen() {
-    if (!this.openRequest) {
-      alert('Database not open');
-      return {
-        open: false,
-      };
-    }
-
-    return {
-      open: true,
-    };
-  },
-
-  checkIfStoreHasName(storeName) {
-    const result = this.openRequest.result;
-
-    if (result.objectStoreNames.contains(storeName))
+  checkIfStoreHasName({ storeName }, db) {
+    if (db.objectStoreNames.contains(storeName)) {
       return {
         name: true,
       };
+    }
     return {
       name: false,
     };

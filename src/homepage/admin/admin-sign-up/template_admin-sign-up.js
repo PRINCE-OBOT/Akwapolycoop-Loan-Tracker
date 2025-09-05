@@ -79,6 +79,7 @@ function getAdminDataFromForm() {
     password: password.value,
     confirmPassword: confirmPassword.value,
     username,
+    isAdminLogin: true,
   };
   return adminData;
 }
@@ -103,20 +104,19 @@ function adminDataNotStored() {
 }
 
 function runWhenAllFormIsValid() {
-  indexDB.createDatabase();
-
-  indexDB.createObjectStore({ storeName: 'admin-data' });
-
   const adminData = getAdminDataFromForm();
 
-  displaySignUpStatus();
+  indexDB.createDatabase(
+    {
+      storeName: 'admin-data',
+      data: adminData,
+      runSuccessStatus: adminDataIsStored,
+      runErrorStatus: adminDataNotStored,
+    },
+    'storeData',
+  );
 
-  indexDB.storeData({
-    storeName: 'admin-data',
-    data: adminData,
-    runSuccessStatus: adminDataIsStored,
-    runErrorStatus: adminDataNotStored,
-  });
+  displaySignUpStatus();
 }
 
 new FormValidator({

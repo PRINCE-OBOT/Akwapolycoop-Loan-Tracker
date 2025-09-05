@@ -9,6 +9,7 @@
   --grey: #666;
   --transparent-black: rgba(0 0 0 / 0.8);
   --transparent-white: rgba(255 255 255 / 0.4);
+  --warning: rgb(189, 24, 24);
 
   --box-shadow: 0 0 3px rgba(0 0 0 / 0.2);
   --profile-dim: 30px;
@@ -49,4 +50,16 @@ p {
 }
 :focus {
   outline: none;
+}
+dialog {
+  border: none;
+  padding: 0;
+  background-color: transparent;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+dialog::backdrop {
+  backdrop-filter: blur(8px);
 }
