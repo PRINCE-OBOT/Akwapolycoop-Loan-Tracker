@@ -36,10 +36,7 @@ form {
   padding: 35px 0;
   border-radius: 5px;
 }
-.security-icon {
-  height: 100px;
-  opacity: 0.8;
-}
+
 form > div {
   display: flex;
   gap: 8px;
@@ -59,6 +56,9 @@ input {
   &::placeholder {
     color: var(--clr-transparent);
   }
+  .invalid {
+    border-color: var(--clr-invalid);
+  }
 }
 
 .btn-login {
@@ -76,4 +76,8 @@ input {
   padding-top: 20px;
   flex-direction: row;
   align-items: center;
+}
+.login-status {
+  text-align: center;
+  color: var(--white);
 }

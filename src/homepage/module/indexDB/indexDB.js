@@ -46,7 +46,7 @@ const indexDB = {
     };
   },
 
-  checkIfDataMatch(
+  checkIfLoginDetailsMatch(
     { username, password, storeName, keyPathValue, runErrorStatus, runSuccessStatus },
     db,
   ) {
@@ -78,8 +78,8 @@ const indexDB = {
           runSuccessStatus();
           return;
         }
+        runErrorStatus();
       }
-      runErrorStatus();
     }
 
     this.getData(

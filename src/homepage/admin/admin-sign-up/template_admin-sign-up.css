@@ -1,14 +1,7 @@
-:root {
-  --clr-invalid: hsl(13.5, 81%, 32.1%);
-  --clr-valid: #10a510;
-  --clr-normal: #eff2ce;
-  --clr-transparent: rgba(0 0 0 / 0.4);
-}
-
 input {
   &:where(:invalid, :valid) {
     border: 2px solid;
-    border-color: var(--clr-transparent);
+    border-color: var(--transparent-black);
   }
 
   &.user-interact:invalid {
@@ -81,11 +74,7 @@ form {
   padding: 35px 0;
   border-radius: 5px;
 }
-.security-icon {
-  height: 100px;
-  opacity: 0.8;
-  margin: 0 auto 0;
-}
+
 .field-section {
   display: grid;
   gap: 20px;
@@ -109,7 +98,7 @@ input {
   box-shadow: var(--box-shadow);
 
   &::placeholder {
-    color: var(--clr-transparent);
+    color: var(--transparent-black);
   }
 }
 

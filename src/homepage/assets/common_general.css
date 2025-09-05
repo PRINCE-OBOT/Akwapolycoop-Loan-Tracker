@@ -6,10 +6,13 @@
   --ink: #0b1f2a;
   --black: #000;
   --white: #fff;
-  --grey: #666;
+  --grey: #b1a9a9;
   --transparent-black: rgba(0 0 0 / 0.8);
   --transparent-white: rgba(255 255 255 / 0.4);
   --warning: rgb(189, 24, 24);
+  --clr-invalid: hsl(13.5, 81%, 32.1%);
+  --clr-valid: #10a510;
+  --clr-normal: #eff2ce;
 
   --box-shadow: 0 0 3px rgba(0 0 0 / 0.2);
   --profile-dim: 30px;
@@ -101,4 +104,11 @@ a {
 }
 :where(button, a):hover {
   opacity: 0.8;
+}
+input::placeholder {
+  color: var(--grey);
+}
+.security-icon {
+  height: 100px;
+  opacity: 0.5;
 }
