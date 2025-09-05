@@ -51,12 +51,16 @@ function modifyExistingDataInDatabase() {
   );
 }
 
-function runWhenKeyValueDoesNotExistAndAdminIsFalse() {
+function runWhenKeyValueExistAndAdminIsFalse() {
   modifyExistingDataInDatabase();
 }
 
 function runWhenKeyValueExistAndAdminLoginIsTrue() {
   setLoginStatusTextContent('Admin Already Exist');
+}
+
+function runWhenKeyValueDoesNotExist() {
+  alert('Key path value does not exist');
 }
 
 function checkIfKeyValueExistAndIsAdminLogin() {
@@ -65,7 +69,8 @@ function checkIfKeyValueExistAndIsAdminLogin() {
       storeName: 'admin-data',
       keyPathValue: 'admin',
       runSuccessStatus: runWhenKeyValueExistAndAdminLoginIsTrue,
-      runErrorStatus: runWhenKeyValueDoesNotExistAndAdminIsFalse,
+      runFairStatus: runWhenKeyValueExistAndAdminIsFalse,
+      runErrorStatus: runWhenKeyValueDoesNotExist,
     },
     'checkIfKeyValueExistAndIsAdminLogin',
   );

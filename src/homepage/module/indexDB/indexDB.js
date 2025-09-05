@@ -69,7 +69,7 @@ const indexDB = {
   },
 
   checkIfKeyValueExistAndIsAdminLogin(
-    { storeName, keyPathValue, runErrorStatus, runSuccessStatus },
+    { storeName, keyPathValue, runErrorStatus, runSuccessStatus, runFairStatus },
     db,
   ) {
     function returnData(data) {
@@ -78,8 +78,10 @@ const indexDB = {
           runSuccessStatus();
           return;
         }
-        runErrorStatus();
+        runFairStatus();
+        return;
       }
+      runErrorStatus();
     }
 
     this.getData(

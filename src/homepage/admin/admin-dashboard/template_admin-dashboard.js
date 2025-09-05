@@ -97,13 +97,17 @@ function getAdminUsernameFromDatabase() {
 }
 
 function runWhenKeyValueDoesNotExist() {
-  insertAdminLoginAndSignup();
-  setGreetingTextContent('You are not logged in');
+  alert('Key path value does not exist');
 }
 
 function runWhenKeyValueExistAndAdminLoginIsTrue() {
   insertAdminProfileSection();
   getAdminUsernameFromDatabase();
+}
+
+function runWhenKeyValueExistAndAdminLoginIsFalse() {
+  insertAdminLoginAndSignup();
+  setGreetingTextContent('You are not logged in');
 }
 
 function checkIfKeyValueExistAndIsAdminLogin() {
@@ -112,6 +116,7 @@ function checkIfKeyValueExistAndIsAdminLogin() {
       storeName: 'admin-data',
       keyPathValue: 'admin',
       runSuccessStatus: runWhenKeyValueExistAndAdminLoginIsTrue,
+      runFairStatus: runWhenKeyValueExistAndAdminLoginIsFalse,
       runErrorStatus: runWhenKeyValueDoesNotExist,
     },
     'checkIfKeyValueExistAndIsAdminLogin',
