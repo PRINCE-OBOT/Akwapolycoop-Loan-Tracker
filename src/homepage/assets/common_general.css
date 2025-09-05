@@ -63,3 +63,17 @@ dialog {
 dialog::backdrop {
   backdrop-filter: blur(8px);
 }
+dialog > * {
+  background: var(--transparent-black);
+  width: 100%;
+  max-width: 310px;
+  height: max-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  border: none;
+  box-shadow: var(--box-shadow);
+  border-radius: 30px;
+  padding: 40px 30px;
+}

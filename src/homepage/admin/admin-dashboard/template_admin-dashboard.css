@@ -18,7 +18,8 @@ header {
   align-items: center;
   gap: 20px;
 }
-.adminProfileSection {
+.adminProfileSection,
+.adminLoginAndSignupSection {
   display: flex;
   gap: 10px;
   align-items: center;
@@ -50,6 +51,12 @@ header {
   align-items: center;
 }
 
+.header_middle_section {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
 .header_bottom-section {
   padding-top: 30px;
   display: flex;
@@ -165,21 +172,6 @@ header {
 
 [class$='title-section'] img {
   height: 50px;
-}
-
-.dialog-logout-section {
-  background: var(--transparent-black);
-  width: 100%;
-  max-width: 310px;
-  height: max-content;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  border: none;
-  box-shadow: var(--box-shadow);
-  border-radius: 30px;
-  padding: 40px 30px;
 }
 .dialog-logout-section h4 {
   color: var(--white);

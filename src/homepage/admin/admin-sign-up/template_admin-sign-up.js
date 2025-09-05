@@ -10,11 +10,10 @@ import NameValidator from '../../module/form-validation/name-validator';
 
 import indexDB from '../../module/indexDB/indexDB';
 
+import Modal from '../../module/modal/modal';
+
 const messages = document.querySelectorAll('output.show-message');
 const inputs = document.querySelectorAll('input');
-const signUpStatus = document.querySelector('.display-signup-status');
-
-const btnSubmit = document.querySelector('.btn-sign-up');
 
 const password = document.querySelector('#password');
 const passwordMessage = document.querySelector('#password-message');
@@ -30,6 +29,11 @@ const firstNameMessage = document.querySelector('#first-name-message');
 
 const lastName = document.querySelector('#last-name');
 const lastNameMessage = document.querySelector('#last-name-message');
+
+const dialog = document.querySelector('dialog');
+const btnSignUp = document.querySelector('.btn-sign-up');
+
+const form = document.querySelector('form');
 
 const adminDashboardReference = document.createElement('a');
 adminDashboardReference.href = './admin-dashboard.html';
@@ -56,16 +60,9 @@ function generateUsername() {
   return username;
 }
 
-function displaySignUpStatus() {
-  signUpStatus.textContent = 'Submitting data...';
-}
-
-function clearForm() {
-  firstName.value = '';
-  lastName.value = '';
-  email.value = '';
-  password.value = '';
-  confirmPassword.value = '';
+function displaySignUpStatusModal() {
+  const modal = new Modal({ dialog });
+  modal.showModal();
 }
 
 function getAdminDataFromForm() {
@@ -85,18 +82,13 @@ function getAdminDataFromForm() {
 }
 
 function adminDataIsStored() {
-  // Remove the quick replace of red border when input is empty
-  inputs.forEach((input) => {
-    input.style = 'border-color: var(--clr-valid)';
-  });
+  setTimeout(() => {
+    displaySignUpStatusModal();
+  }, 200);
 
   setTimeout(() => {
     adminDashboardReference.click();
   }, 2000);
-
-  setTimeout(() => {
-    clearForm();
-  }, 2050);
 }
 
 function adminDataNotStored() {
@@ -115,13 +107,17 @@ function runWhenAllFormIsValid() {
     },
     'storeData',
   );
-
-  displaySignUpStatus();
 }
 
 new FormValidator({
-  buttonSubmit: btnSubmit,
+  buttonSubmit: btnSignUp,
   messages,
   inputs,
   runWhenAllFormIsValid,
 });
+
+function resetForm() {
+  form.reset();
+}
+
+window.addEventListener('pageshow', resetForm);
