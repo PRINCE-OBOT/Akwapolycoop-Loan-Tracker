@@ -1,8 +1,3 @@
-/* eslint-disable no-new */
-/* eslint-disable import/extensions */
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/no-named-as-default */
-/* eslint-disable import/no-named-as-default-member */
 import './template_admin-sign-up.css';
 import '../../assets/reset.css';
 import '../../assets/font.css';
@@ -17,7 +12,7 @@ import indexDB from '../../module/indexDB/indexDB';
 
 const messages = document.querySelectorAll('output.show-message');
 const inputs = document.querySelectorAll('input');
-const displayAdminUsername = document.querySelector('.display-admin-username');
+const signUpStatus = document.querySelector('.display-signup-status');
 
 const btnSubmit = document.querySelector('.btn-sign-up');
 
@@ -35,6 +30,9 @@ const firstNameMessage = document.querySelector('#first-name-message');
 
 const lastName = document.querySelector('#last-name');
 const lastNameMessage = document.querySelector('#last-name-message');
+
+const adminDashboardReference = document.createElement('a');
+adminDashboardReference.href = './admin-dashboard.html';
 
 new PasswordValidator({
   password,
@@ -58,9 +56,20 @@ function generateUsername() {
   return username;
 }
 
+function displaySignUpStatus() {
+  signUpStatus.textContent = 'Submitting data...';
+}
+
+function clearForm() {
+  firstName.value = '';
+  lastName.value = '';
+  email.value = '';
+  password.value = '';
+  confirmPassword.value = '';
+}
+
 function getAdminDataFromForm() {
   const username = generateUsername();
-  displayAdminUsername.textContent = username;
 
   const adminData = {
     id: 'admin',
@@ -70,12 +79,24 @@ function getAdminDataFromForm() {
     password: password.value,
     confirmPassword: confirmPassword.value,
     username,
+    isAdminLogin: true,
   };
   return adminData;
 }
 
 function adminDataIsStored() {
-  alert('Admin data stored');
+  // Remove the quick replace of red border when input is empty
+  inputs.forEach((input) => {
+    input.style = 'border-color: var(--clr-valid)';
+  });
+
+  setTimeout(() => {
+    adminDashboardReference.click();
+  }, 2000);
+
+  setTimeout(() => {
+    clearForm();
+  }, 2050);
 }
 
 function adminDataNotStored() {
@@ -83,18 +104,19 @@ function adminDataNotStored() {
 }
 
 function runWhenAllFormIsValid() {
-  indexDB.createDatabase();
-
-  indexDB.createObjectStore({ storeName: 'admin-data', keyPath: 'id' });
-
   const adminData = getAdminDataFromForm();
 
-  indexDB.storeData({
-    storeName: 'admin-data',
-    data: adminData,
-    runSuccessStatus: adminDataIsStored,
-    runErrorStatus: adminDataNotStored,
-  });
+  indexDB.createDatabase(
+    {
+      storeName: 'admin-data',
+      data: adminData,
+      runSuccessStatus: adminDataIsStored,
+      runErrorStatus: adminDataNotStored,
+    },
+    'storeData',
+  );
+
+  displaySignUpStatus();
 }
 
 new FormValidator({

@@ -1,7 +1,12 @@
 :root {
   --options-top: 35px;
 }
-
+header {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
 .admin,
 .borrower,
 .contact-us {

@@ -1,3 +1,9 @@
+header {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  flex-direction: column;
+}
 .header_top-section {
   display: flex;
   justify-content: space-between;
@@ -12,21 +18,38 @@
   align-items: center;
   gap: 20px;
 }
-
-.admin-login,
-.admin-sign-up {
+.adminProfileSection {
   display: flex;
-  padding: 6px 20px;
+  gap: 10px;
+  align-items: center;
+}
+.admin-login,
+.admin-sign-up,
+.logout-button {
+  display: flex;
+  padding: 2px 20px;
   border-radius: 5px;
-  border: none;
-  box-shadow: var(--box-shadow);
-  background-color: var(--transparent-black);
-  color: var(--white);
+  border: 3px solid var(--transparent-black);
+  background:
+    linear-gradient(var(--white)) padding-box,
+    linear-gradient(45deg, var(--dark-yellow), var(--primary-accent)) border-box;
+  border-color: transparent;
+  color: var(--ink);
   width: max-content;
 }
-.home {
-  color: var(--black);
+:where(.admin-login, .admin-sign-up).hide {
+  display: none;
 }
+.admin-profile {
+  height: var(--profile-dim);
+  width: var(--profile-dim);
+  background: linear-gradient(var(--primary-accent), var(--dark-yellow));
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .header_bottom-section {
   padding-top: 30px;
   display: flex;
@@ -142,4 +165,41 @@
 
 [class$='title-section'] img {
   height: 50px;
+}
+
+.dialog-logout-section {
+  background: var(--transparent-black);
+  width: 100%;
+  max-width: 310px;
+  height: max-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  border: none;
+  box-shadow: var(--box-shadow);
+  border-radius: 30px;
+  padding: 40px 30px;
+}
+.dialog-logout-section h4 {
+  color: var(--white);
+  font-weight: 400;
+  text-align: center;
+}
+.dialog-logout-section button {
+  min-width: 120px;
+  border-radius: 5px;
+  box-shadow: var(--box-shadow);
+  padding: 5px;
+  letter-spacing: 3px;
+}
+.btn-cancel {
+  background-color: var(--ink);
+  border: 1px solid var(--white);
+  color: var(--white);
+}
+.btn-yes {
+  background-color: var(--warning);
+  color: var(--white);
+  border: none;
 }

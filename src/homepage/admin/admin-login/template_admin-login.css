@@ -1,7 +1,9 @@
-:root {
-  --clr-invalid: hsl(13.5, 81%, 32.1%);
+header {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
-
 input.invalid {
   border-color: var(--clr-invalid);
 }
@@ -30,7 +32,6 @@ form {
   height: 50px;
   background: linear-gradient(50deg, var(--ink), var(--primary-accent));
   color: var(--white);
-  grid-column: 1 / -1;
   border-radius: var(--br-sm);
   padding: 35px 0;
   border-radius: 5px;

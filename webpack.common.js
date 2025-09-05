@@ -24,6 +24,11 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     clean: true,
   },
+  resolve: {
+    fallback: {
+      worker_threads: false
+    }
+  },
   devServer: {
     open: true,
     liveReload: true,
