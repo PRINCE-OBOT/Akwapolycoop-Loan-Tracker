@@ -7,6 +7,12 @@ import Navigation from '../../module/navigation/navigation';
 
 import indexDB from '../../module/indexDB/indexDB';
 
+import {
+  runWhenAdminLoanDataKeyLoanDataDoesNotExist,
+  runWhenKeyValueExistAndAdminDashboardLoanDataIsTrue,
+  runWhenKeyValueExistAndAdminDashboardLoanIsFalse,
+} from './template_admin-dashboard-loan-data-value';
+
 import Modal from '../../module/modal/modal';
 
 import adminLoginPlainColorImage from '../../assets/images/admin-login_plain-color.svg';
@@ -19,11 +25,6 @@ const dialog = document.querySelector('dialog');
 const btnCancel = dialog.querySelector('.btn-cancel');
 const btnYes = dialog.querySelector('.btn-yes');
 const adminGreeting = document.querySelector('.greeting');
-const totalLoanValue = document.querySelector('.total-loan-value');
-const revenueValue = document.querySelector('.revenue-value');
-const approvedLoanValue = document.querySelector('.approved-loan-value');
-const pendingLoanValue = document.querySelector('.pending-loan-value');
-const declineLoanValue = document.querySelector('.decline-loan-value');
 
 const adminProfileSection = document.createElement('div');
 const adminLoginAndSignupSection = document.createElement('div');
@@ -100,105 +101,6 @@ function getAdminUsernameFromDatabase() {
     'getData',
   );
 }
-function getAdminDashboardLoanData() {
-  const adminLoanData = {
-    id: 'admin-loan-data',
-    totalLoanApplicant: '128459',
-    revenue: '1092',
-    approvedLoan: '1234',
-    pendingLoan: '23',
-    declineLoan: '453',
-  };
-
-  return adminLoanData;
-}
-
-function setTotalLoanTextContent(textContent) {
-  totalLoanValue.textContent = textContent;
-}
-
-function setApproveLoanTextContent(textContent) {
-  approvedLoanValue.textContent = textContent;
-}
-
-function setPendingLoanTextContent(textContent) {
-  pendingLoanValue.textContent = textContent;
-}
-
-function setRevenueTextContent(textContent) {
-  revenueValue.textContent = textContent;
-}
-
-function setDeclineLoanTextContent(textContent) {
-  declineLoanValue.textContent = textContent;
-}
-
-function adminDashboardLoanDataIsStored() {
-  alert('Admin loan data is stored');
-}
-
-function adminDashboardLoanDataNotStored() {
-  alert('admin loan data not stored');
-}
-
-function storeAdminLoanDataToDatabase() {
-  const adminLoanData = getAdminDashboardLoanData();
-
-  indexDB.createDatabase(
-    {
-      storeName: 'admin-dashboard-loan-data',
-      data: adminLoanData,
-      runSuccessStatus: adminDashboardLoanDataIsStored,
-      runErrorStatus: adminDashboardLoanDataNotStored,
-    },
-    'storeData',
-  );
-}
-
-// storeAdminLoanDataToDatabase()
-
-function getAdminLoanDataFromDatabase() {
-  function returnData(data) {
-    if (data === undefined) {
-      console.log('No loan data');
-      return;
-    }
-
-    setTotalLoanTextContent(data.totalLoanApplicant);
-    setRevenueTextContent(data.revenue);
-    setApproveLoanTextContent(data.approvedLoan);
-    setPendingLoanTextContent(data.pendingLoan);
-    setDeclineLoanTextContent(data.declineLoan);
-  }
-
-  indexDB.createDatabase(
-    {
-      storeName: 'admin-dashboard-loan-data',
-      keyPathValue: 'admin-loan-data',
-      returnData,
-    },
-    'getData',
-  );
-}
-function runWhenKeyValueExistAndAdminDashboardLoanDataIsTrue() {
-  getAdminLoanDataFromDatabase();
-}
-
-function runWhenKeyValueExistAndAdminDashboardLoanIsFalse() {
-  const defaultLoanValue = '0000';
-  setTotalLoanTextContent(defaultLoanValue);
-  setApproveLoanTextContent(defaultLoanValue);
-  setPendingLoanTextContent(defaultLoanValue);
-  setRevenueTextContent(defaultLoanValue);
-  setDeclineLoanTextContent(defaultLoanValue);
-}
-
-function runWhenAdminLoanDataKeyLoanDataDoesNotExist() {
-  storeAdminLoanDataToDatabase();
-}
-function runWhenKeyValueDoesNotExist() {
-  console.log('Key value doest not exist');
-}
 
 function runWhenKeyValueExistAndAdminLoginIsTrue() {
   insertAdminProfileSection();
@@ -210,6 +112,11 @@ function runWhenKeyValueExistAndAdminLoginIsFalse() {
   insertAdminLoginAndSignup();
   setGreetingTextContent('You are not logged in');
   runWhenKeyValueExistAndAdminDashboardLoanIsFalse();
+}
+
+function runWhenKeyValueDoesNotExist() {
+  console.log('Key value doest not exist');
+  runWhenAdminLoanDataKeyLoanDataDoesNotExist();
 }
 
 function checkIfKeyValueExistAndIsAdminLogin() {
@@ -226,20 +133,6 @@ function checkIfKeyValueExistAndIsAdminLogin() {
   );
 }
 checkIfKeyValueExistAndIsAdminLogin();
-
-function checkIfKeyValueExistAndHasAdminDashboardLoanData() {
-  indexDB.createDatabase(
-    {
-      storeName: 'admin-dashboard-loan-data',
-      keyPathValue: 'admin-loan-data',
-      runSuccessStatus: runWhenKeyValueExistAndAdminDashboardLoanDataIsTrue,
-      runFairStatus: runWhenKeyValueExistAndAdminDashboardLoanIsFalse,
-      runErrorStatus: runWhenAdminLoanDataKeyLoanDataDoesNotExist,
-    },
-    'checkIfKeyPathValueExistAndFieldIsTrue',
-  );
-}
-checkIfKeyValueExistAndHasAdminDashboardLoanData();
 
 function logoutAdmin() {
   indexDB.createDatabase(
