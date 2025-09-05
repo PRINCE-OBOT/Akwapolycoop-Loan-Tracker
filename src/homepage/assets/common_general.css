@@ -63,7 +63,13 @@ dialog {
 dialog::backdrop {
   backdrop-filter: blur(8px);
 }
+dialog {
+  transition: 200ms;
+  transition-behavior: allow-discrete;
+}
 dialog > * {
+  transition: 150ms;
+  transform: scale(0);
   background: var(--transparent-black);
   width: 100%;
   max-width: 310px;
@@ -76,4 +82,23 @@ dialog > * {
   box-shadow: var(--box-shadow);
   border-radius: 30px;
   padding: 40px 30px;
+}
+dialog:open > * {
+  transform: scale(1);
+  transition: 300ms;
+}
+@starting-style {
+  dialog:open > * {
+    transform: scale(0);
+  }
+}
+button,
+a {
+  transition: 300ms;
+}
+:where(button, a):active {
+  transform: scale(0.8);
+}
+:where(button, a):hover {
+  opacity: 0.8;
 }

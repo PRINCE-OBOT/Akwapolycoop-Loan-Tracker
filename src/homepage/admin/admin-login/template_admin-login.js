@@ -2,6 +2,7 @@ import './template_admin-login.css';
 import '../../assets/reset.css';
 import '../../assets/font.css';
 import '../../assets/common_general.css';
+import '../../assets/style-border-button.css';
 
 import LoginCheck from '../../module/login/login-check';
 import PasswordLogin from '../../module/login/login-field';

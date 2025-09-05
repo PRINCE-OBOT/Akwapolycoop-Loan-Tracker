@@ -2,6 +2,7 @@ import './template_admin-dashboard.css';
 import '../../assets/reset.css';
 import '../../assets/font.css';
 import '../../assets/common_general.css';
+import '../../assets/style-border-button.css';
 import Navigation from '../../module/navigation/navigation';
 
 import indexDB from '../../module/indexDB/indexDB';
@@ -97,7 +98,7 @@ function getAdminUsernameFromDatabase() {
 
 function runWhenKeyValueDoesNotExist() {
   insertAdminLoginAndSignup();
-  setGreetingTextContent('Seems you are not logged in');
+  setGreetingTextContent('You are not logged in');
 }
 
 function runWhenKeyValueExistAndAdminLoginIsTrue() {
@@ -145,5 +146,6 @@ btnYes.addEventListener('click', logoutAdmin);
 
 const btnLogout = adminProfileSection.querySelector('.logout-button');
 new Modal({ btnShowModal: btnLogout, btnCloseModal: btnCancel, dialog });
+new Modal({ btnShowModal: btnLogout, btnCloseModal: btnYes, dialog });
 
 new Navigation({ btnSection: headerBottomSection, contentSection, activeIndex: 0 });

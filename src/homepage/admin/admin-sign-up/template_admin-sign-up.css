@@ -66,6 +66,9 @@ form {
   box-shadow: var(--box-shadow);
   max-width: 600px;
   margin: 0 auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .heading {
@@ -78,8 +81,12 @@ form {
   padding: 35px 0;
   border-radius: 5px;
 }
+.security-icon {
+  height: 100px;
+  opacity: 0.8;
+  margin: 0 auto 0;
+}
 .field-section {
-  padding-top: 30px;
   display: grid;
   gap: 20px;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -120,7 +127,6 @@ input {
   gap: 20px;
   flex-direction: row;
   align-items: center;
-  padding-top: 30px;
 }
 .btn-sign-up {
   max-width: 120px;
@@ -132,4 +138,7 @@ input {
   border: none;
   box-shadow: var(--box-shadow-transparent);
   cursor: pointer;
+}
+.dialog-signup-section h4 {
+  color: var(--white);
 }
