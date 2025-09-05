@@ -1,6 +1,6 @@
 const indexDB = {
   createDatabase(obj, functionToCall) {
-    const openRequest = indexedDB.open('akp-loan-tracker', 13);
+    const openRequest = indexedDB.open('akp-loan-tracker', 18);
 
     openRequest.onupgradeneeded = (e) => {
       const db = e.target.result;
@@ -68,13 +68,13 @@ const indexDB = {
     );
   },
 
-  checkIfKeyValueExistAndIsAdminLogin(
-    { storeName, keyPathValue, runErrorStatus, runSuccessStatus, runFairStatus },
+  checkIfKeyPathValueExistAndFieldIsTrue(
+    { storeName, key, keyPathValue, runErrorStatus, runSuccessStatus, runFairStatus },
     db,
   ) {
     function returnData(data) {
       if (data !== undefined) {
-        if (data.isAdminLogin) {
+        if (data[key]) {
           runSuccessStatus();
           return;
         }
