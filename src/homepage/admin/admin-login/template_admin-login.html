@@ -17,15 +17,21 @@
 
         <div class="navigation-section">
           <a href="./index.html">Home</a>
-          <a href="./admin-dashboard.html">Admin Dashboard</a>
-          <a href="./admin-sign-up.html">Admin Sign up</a>
+          <a href="./admin-dashboard.html" class="admin-dashboard">
+            <img src="../../assets/images/admin-dasboard-plain-color.svg" alt="" />
+            Admin Dashboard</a
+          >
+          <a href="./admin-sign-up.html" class="admin-sign-up">
+            <img src="../../assets/images/admin-sign-up_plain-color.svg" alt="" />
+            Admin Sign up</a
+          >
         </div>
       </header>
 
       <main>
         <form action="" novalidate>
           <h3 class="heading">Admin Login</h3>
-
+          <img class="security-icon" src="../../assets/images/security.svg" alt="security-image" />
           <div class="user-name">
             <label for="username">username</label>
             <input type="text" id="username" placeholder="username" pattern="^[\.]{1,}$" required />
@@ -42,6 +48,12 @@
           </div>
         </form>
       </main>
+
+      <dialog closedby="any">
+        <div class="dialog-login-section">
+          <h4 class="login-status"></h4>
+        </div>
+      </dialog>
     </div>
   </body>
 </html>

@@ -6,10 +6,13 @@
   --ink: #0b1f2a;
   --black: #000;
   --white: #fff;
-  --grey: #666;
+  --grey: #b1a9a9;
   --transparent-black: rgba(0 0 0 / 0.8);
   --transparent-white: rgba(255 255 255 / 0.4);
   --warning: rgb(189, 24, 24);
+  --clr-invalid: hsl(13.5, 81%, 32.1%);
+  --clr-valid: #10a510;
+  --clr-normal: #eff2ce;
 
   --box-shadow: 0 0 3px rgba(0 0 0 / 0.2);
   --profile-dim: 30px;
@@ -62,4 +65,50 @@ dialog {
 }
 dialog::backdrop {
   backdrop-filter: blur(8px);
+}
+dialog {
+  transition: 200ms;
+  transition-behavior: allow-discrete;
+}
+dialog > * {
+  transition: 150ms;
+  transform: scale(0);
+  background: var(--transparent-black);
+  width: 100%;
+  max-width: 310px;
+  height: max-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  border: none;
+  box-shadow: var(--box-shadow);
+  border-radius: 30px;
+  padding: 40px 30px;
+}
+dialog:open > * {
+  transform: scale(1);
+  transition: 300ms;
+}
+@starting-style {
+  dialog:open > * {
+    transform: scale(0);
+  }
+}
+button,
+a {
+  transition: 300ms;
+}
+:where(button, a):active {
+  transform: scale(0.8);
+}
+:where(button, a):hover {
+  opacity: 0.8;
+}
+input::placeholder {
+  color: var(--grey);
+}
+.security-icon {
+  height: 100px;
+  opacity: 0.5;
 }

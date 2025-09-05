@@ -34,7 +34,7 @@ const indexDB = {
     const previewDataStored = store.get(data.id);
 
     previewDataStored.onsuccess = () => {
-      console.log(previewDataStored.result);
+      console.log('Preview Data', previewDataStored.result);
     };
 
     putData.onsuccess = () => {
@@ -46,14 +46,13 @@ const indexDB = {
     };
   },
 
-  checkIfDataMatch(
+  checkIfLoginDetailsMatch(
     { username, password, storeName, keyPathValue, runErrorStatus, runSuccessStatus },
     db,
   ) {
     function returnData(data) {
       if (data.username === username && data.password === password) {
         runSuccessStatus();
-        console.log(data);
       } else {
         runErrorStatus();
       }
@@ -70,7 +69,7 @@ const indexDB = {
   },
 
   checkIfKeyValueExistAndIsAdminLogin(
-    { storeName, keyPathValue, runErrorStatus, runSuccessStatus },
+    { storeName, keyPathValue, runErrorStatus, runSuccessStatus, runFairStatus },
     db,
   ) {
     function returnData(data) {
@@ -79,6 +78,8 @@ const indexDB = {
           runSuccessStatus();
           return;
         }
+        runFairStatus();
+        return;
       }
       runErrorStatus();
     }
@@ -97,11 +98,11 @@ const indexDB = {
     db,
   ) {
     function returnData(data) {
-      if (data === undefined) {
+      if (data[key] === undefined) {
+        // Fallback to default admin dashboard
         runErrorStatus();
         return;
       }
-
       data[key] = newValue;
       indexDB.storeData({ storeName, data, runSuccessStatus, runErrorStatus }, db);
     }

@@ -7,6 +7,8 @@ export default class Modal {
   }
 
   bindEvent() {
+    if (!this.btnShowModal || !this.btnCloseModal) return;
+
     this.btnShowModal.addEventListener('click', this.showModal.bind(this));
 
     this.btnCloseModal.addEventListener('click', this.closeModal.bind(this));
