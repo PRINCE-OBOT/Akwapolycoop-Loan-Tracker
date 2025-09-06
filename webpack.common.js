@@ -7,6 +7,9 @@ module.exports = {
 
     'admin-dashboard': './src/homepage/admin/admin-dashboard/template_admin-dashboard.js',
 
+    'admin-dashboard-loan-data':
+      './src/homepage/admin/admin-dashboard/template_admin-dashboard-loan-data-value.js',
+
     'admin-login': './src/homepage/admin/admin-login/template_admin-login.js',
 
     'admin-sign-up': './src/homepage/admin/admin-sign-up/template_admin-sign-up.js',
@@ -38,7 +41,7 @@ module.exports = {
     new HTMLWebpackPlugins({
       template: './src/homepage/admin/admin-dashboard/template_admin-dashboard.html',
       filename: 'admin-dashboard.html',
-      chunks: ['admin-dashboard'],
+      chunks: ['admin-dashboard', 'admin-dashboard-loan-data'],
     }),
 
     new HTMLWebpackPlugins({
