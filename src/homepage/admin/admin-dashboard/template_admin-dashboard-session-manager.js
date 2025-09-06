@@ -33,7 +33,7 @@ export default class AdminSessionManager {
 
   render() {
     this.checkIfKeyValueExistAndIsAdminLogin();
-    this.selectLogoutButtonAdminProfileSection();
+    this.selectLogoutButtonInAdminProfileSection();
     this.bindEvent();
   }
 
@@ -55,7 +55,7 @@ export default class AdminSessionManager {
     );
   }
 
-  selectLogoutButtonAdminProfileSection() {
+  selectLogoutButtonInAdminProfileSection() {
     this.btnLogout = this.adminProfileSection.querySelector('.logout-button');
     new Modal({ btnShowModal: this.btnLogout, btnCloseModal: this.btnCancel, dialog: this.dialog });
     new Modal({ btnShowModal: this.btnLogout, btnCloseModal: this.btnYes, dialog: this.dialog });
@@ -80,6 +80,7 @@ export default class AdminSessionManager {
 
   runWhenKeyValueDoesNotExist() {
     console.log('Key value doest not exist');
+    this.runWhenKeyValueExistAndAdminLoginIsFalse();
     this.runWhenAdminLoanDataKeyLoanDataDoesNotExist();
   }
 

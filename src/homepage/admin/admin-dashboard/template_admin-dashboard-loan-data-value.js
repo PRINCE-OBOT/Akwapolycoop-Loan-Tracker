@@ -40,11 +40,11 @@ function setDeclineLoanTextContent(textContent) {
 }
 
 function adminDashboardLoanDataIsStored() {
-  alert('Admin loan data is stored');
+  alert('Admin default loan data successfully stored');
 }
 
 function adminDashboardLoanDataNotStored() {
-  alert('admin loan data not stored');
+  console.log('admin default loan data not successfully stored');
 }
 
 function storeAdminLoanDataToDatabase() {
@@ -60,7 +60,6 @@ function storeAdminLoanDataToDatabase() {
     'storeData',
   );
 }
-// storeAdminLoanDataToDatabase()
 
 function getAdminLoanDataFromDatabase() {
   function returnData(data) {
