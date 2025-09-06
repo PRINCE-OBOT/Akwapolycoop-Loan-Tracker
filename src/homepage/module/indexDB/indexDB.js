@@ -1,13 +1,15 @@
 const indexDB = {
+  storeNameInStore: ['admin-data', 'admin-dashboard-loan-data'],
+
   createDatabase(obj, functionToCall) {
     const openRequest = indexedDB.open('akp-loan-tracker', 18);
 
     openRequest.onupgradeneeded = (e) => {
       const db = e.target.result;
 
-      const { storeName } = obj;
-
-      this.createObjectStore({ storeName }, db);
+      indexDB.storeNameInStore.forEach((storeName) => {
+        this.createObjectStore({ storeName }, db);
+      });
     };
 
     openRequest.onsuccess = (e) => {
