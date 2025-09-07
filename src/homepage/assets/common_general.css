@@ -108,12 +108,22 @@ a {
 :where(button, a):hover {
   opacity: 0.8;
 }
+form {
+  letter-spacing: 1.5px;
+}
+output {
+  letter-spacing: 0.1px;
+}
+label {
+  color: var(--transparent-black);
+}
 input {
   color: var(--transparent-black);
 }
 input::placeholder {
   color: var(--grey);
 }
+
 .required-asterisk {
   color: var(--clr-invalid);
 }

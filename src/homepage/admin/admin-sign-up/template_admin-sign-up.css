@@ -78,7 +78,7 @@ form {
 .field-section {
   display: grid;
   gap: 20px;
-  grid-template-columns: repeat(2, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 .field-section > div {
   display: flex;
@@ -87,8 +87,9 @@ form {
   position: relative;
 }
 
-input {
-  min-height: 50px;
+input,
+select {
+  min-height: 44px;
   padding-left: 10px;
   flex: 1;
   border-radius: 5px;

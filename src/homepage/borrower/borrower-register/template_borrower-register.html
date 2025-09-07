@@ -7,7 +7,7 @@
     <script>
       document.querySelector('html').style.display = 'none';
     </script>
-    <title>Borrower Dashboard</title>
+    <title>Borrower Registration</title>
   </head>
 
   <body>
@@ -39,7 +39,7 @@
                 readonly
                 type="text"
                 id="first-name"
-                placeholder="First name"
+                placeholder="James"
                 pattern="^[a-zA-Z]{1,}$"
                 required
               />
@@ -51,7 +51,7 @@
                 readonly
                 type="text"
                 id="last-name"
-                placeholder="Last name"
+                placeholder="Town"
                 pattern="^[a-zA-Z]{1,}$"
                 required
               />
@@ -63,7 +63,7 @@
                 readonly
                 type="email"
                 id="email"
-                placeholder="Email"
+                placeholder="jamestown34@gmaill.com"
                 pattern="^[a-zA-Z0-9.]{4,}@(gmail|yahoo|hotmail).com$"
                 required
               />
@@ -71,12 +71,27 @@
             </div>
 
             <div class="gender">
+              <label for="gender">Select Gender <span class="required-asterisk">*</span></label>
               <select name="gender" id="gender">
                 <option value="null">-- Select gender --</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
               </select>
               <output id="gender-message" class="show-message"></output>
+            </div>
+
+            <div class="phone-number">
+              <label for="phone-number"
+                >Phone Number <span class="required-asterisk">*</span></label
+              >
+              <input
+                type="tel"
+                id="phone-number"
+                placeholder="+234"
+                pattern="^[0-9]{10,11}$"
+                required
+              />
+              <output id="phone-number-message" class="show-message"></output>
             </div>
           </fieldset>
 

@@ -1,4 +1,4 @@
-import FormValidator from './form-validator';
+import FormUtility from './form-utility';
 
 export default class Email {
   constructor({ email, emailMessage }) {
@@ -12,11 +12,11 @@ export default class Email {
   }
 
   validateEmail() {
-    FormValidator.hasUserInteract({ field: this.email });
+    FormUtility.hasUserInteract({ field: this.email });
 
-    FormValidator.removeInvalidHighlightFromInput({ field: this.email });
+    FormUtility.removeInvalidHighlightFromInput({ field: this.email });
 
-    const emailField = FormValidator.resetFieldStyle({
+    const emailField = FormUtility.resetFieldStyle({
       field: this.email,
       fieldMessage: this.emailMessage,
     });
@@ -26,7 +26,7 @@ export default class Email {
 
     const isEmailValid = emailPattern.test(this.email.value);
 
-    FormValidator.validateClientAndServerState({
+    FormUtility.validateClientAndServerState({
       field: this.email,
       isFieldValid: isEmailValid,
       fieldMessage: this.emailMessage,

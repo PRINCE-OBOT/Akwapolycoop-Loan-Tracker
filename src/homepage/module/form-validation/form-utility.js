@@ -1,4 +1,4 @@
-export default class FormValidator {
+export default class FormUtility {
   constructor({ buttonSubmit, messages, inputs, runWhenAllFormIsValid }) {
     this.buttonSubmit = buttonSubmit;
     this.messages = messages;

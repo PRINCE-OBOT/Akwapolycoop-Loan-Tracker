@@ -37,11 +37,11 @@
 
           <div class="field-section">
             <div class="first-name">
-              <label for="first-name">First Name</label>
+              <label for="first-name">First Name <span class="required-asterisk">*</span></label>
               <input
                 type="text"
                 id="first-name"
-                placeholder="First name"
+                placeholder="James"
                 pattern="^[a-zA-Z]{1,}$"
                 required
               />
@@ -49,11 +49,11 @@
             </div>
 
             <div class="last-name">
-              <label for="last-name">Last Name</label>
+              <label for="last-name">Last Name <span class="required-asterisk">*</span></label>
               <input
                 type="text"
                 id="last-name"
-                placeholder="Last name"
+                placeholder="Town"
                 pattern="^[a-zA-Z]{1,}$"
                 required
               />
@@ -61,11 +61,11 @@
             </div>
 
             <div class="email">
-              <label for="email">Email</label>
+              <label for="email">Email <span class="required-asterisk">*</span></label>
               <input
                 type="email"
                 id="email"
-                placeholder="Email"
+                placeholder="jamestown34@gmail.com"
                 pattern="^[a-zA-Z0-9.]{4,}@(gmail|yahoo|hotmail).com$"
                 required
               />
@@ -73,7 +73,7 @@
             </div>
 
             <div class="password">
-              <label for="password">Password</label>
+              <label for="password">Password <span class="required-asterisk">*</span></label>
               <input
                 type="text"
                 id="password"
@@ -85,7 +85,9 @@
             </div>
 
             <div class="confirm-password">
-              <label for="confirm-password">Confirm Password</label>
+              <label for="confirm-password"
+                >Confirm Password <span class="required-asterisk">*</span></label
+              >
               <input type="text" id="confirm-password" placeholder="Confirm Password" required />
               <output id="confirm-password-message" class="show-message"></output>
             </div>

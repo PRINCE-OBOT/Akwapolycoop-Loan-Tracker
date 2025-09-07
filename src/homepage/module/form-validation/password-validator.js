@@ -1,4 +1,4 @@
-import FormValidator from './form-validator';
+import FormUtility from './form-utility';
 
 export default class Password {
   constructor({ password, passwordMessage, confirmPassword, confirmPasswordMessage }) {
@@ -20,11 +20,11 @@ export default class Password {
   }
 
   validatePassword() {
-    FormValidator.hasUserInteract({ field: this.password });
+    FormUtility.hasUserInteract({ field: this.password });
 
-    FormValidator.removeInvalidHighlightFromInput({ field: this.password });
+    FormUtility.removeInvalidHighlightFromInput({ field: this.password });
 
-    const passwordField = FormValidator.resetFieldStyle({
+    const passwordField = FormUtility.resetFieldStyle({
       field: this.password,
       fieldMessage: this.passwordMessage,
     });
@@ -52,7 +52,7 @@ export default class Password {
 
     this.isPasswordValid = lowercase && uppercase && number && minLength;
 
-    FormValidator.validateClientAndServerState({
+    FormUtility.validateClientAndServerState({
       field: this.password,
       isFieldValid: this.isPasswordValid,
       fieldMessage: this.passwordMessage,
@@ -64,19 +64,19 @@ export default class Password {
   }
 
   confirmPasswordToValidatePassword() {
-    FormValidator.hasUserInteract({ field: this.confirmPassword });
+    FormUtility.hasUserInteract({ field: this.confirmPassword });
 
-    FormValidator.removeInvalidHighlightFromInput({
+    FormUtility.removeInvalidHighlightFromInput({
       field: this.confirmPassword,
     });
 
-    const confirmPasswordField = FormValidator.resetFieldStyle({
+    const confirmPasswordField = FormUtility.resetFieldStyle({
       field: this.confirmPassword,
       fieldMessage: this.confirmPasswordMessage,
     });
     if (confirmPasswordField.empty) return;
 
-    const passwordStatus = FormValidator.validateClientAndServerState({
+    const passwordStatus = FormUtility.validateClientAndServerState({
       field: this.password,
       isFieldValid: this.isPasswordValid,
       fieldMessage: this.confirmPasswordMessage,
@@ -97,7 +97,7 @@ export default class Password {
       this.confirmPasswordMessage.value = 'Password Mismatch';
     }
 
-    FormValidator.colorCustomMessage({
+    FormUtility.colorCustomMessage({
       msgToColor: this.confirmPasswordMessage,
       validityState,
       field: this.confirmPassword,

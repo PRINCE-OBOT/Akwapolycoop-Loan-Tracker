@@ -1,4 +1,4 @@
-import FormValidator from './form-validator';
+import FormUtility from './form-utility';
 
 export default class NameValidator {
   constructor({ name, nameMessage }) {
@@ -17,15 +17,15 @@ export default class NameValidator {
   }
 
   validateName({ name, nameMessage }) {
-    FormValidator.hasUserInteract({
+    FormUtility.hasUserInteract({
       field: this.name,
     });
 
-    FormValidator.removeInvalidHighlightFromInput({
+    FormUtility.removeInvalidHighlightFromInput({
       field: this.name,
     });
 
-    const nameField = FormValidator.resetFieldStyle({
+    const nameField = FormUtility.resetFieldStyle({
       field: name,
       fieldMessage: nameMessage,
     });
@@ -35,7 +35,7 @@ export default class NameValidator {
 
     const isNameValid = pattern.test(name.value);
 
-    FormValidator.validateClientAndServerState({
+    FormUtility.validateClientAndServerState({
       field: name,
       isFieldValid: isNameValid,
       fieldMessage: nameMessage,

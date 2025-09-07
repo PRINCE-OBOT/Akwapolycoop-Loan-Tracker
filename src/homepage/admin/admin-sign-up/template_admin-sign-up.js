@@ -4,7 +4,7 @@ import '../../assets/font.css';
 import '../../assets/common_general.css';
 import '../../assets/style-border-button.css';
 
-import FormValidator from '../../module/form-validation/form-validator';
+import FormUtility from '../../module/form-validation/form-utility';
 import EmailValidator from '../../module/form-validation/email-validator';
 import PasswordValidator from '../../module/form-validation/password-validator';
 import NameValidator from '../../module/form-validation/name-validator';
@@ -107,7 +107,7 @@ function runWhenAllFormIsValid() {
   );
 }
 
-new FormValidator({
+new FormUtility({
   buttonSubmit: btnSignUp,
   messages,
   inputs,

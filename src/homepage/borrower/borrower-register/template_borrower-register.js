@@ -5,9 +5,10 @@ import '../../assets/font.css';
 import '../../assets/common_general.css';
 import '../../assets/style-border-button.css';
 
-import FormValidator from '../../module/form-validation/form-validator';
+import FormUtility from '../../module/form-validation/form-utility';
 import EmailValidator from '../../module/form-validation/email-validator';
 import NameValidator from '../../module/form-validation/name-validator';
+import TelValidator from '../../module/form-validation/tel-validator';
 
 import indexDB from '../../module/indexDB/indexDB';
 
@@ -25,6 +26,9 @@ const firstNameMessage = document.querySelector('#first-name-message');
 const lastName = document.querySelector('#last-name');
 const lastNameMessage = document.querySelector('#last-name-message');
 
+const phoneNumber = document.querySelector('#phone-number');
+const phoneNumberMessage = document.querySelector('#phone-number-message');
+
 const dialog = document.querySelector('dialog');
 const btnSignUp = document.querySelector('.btn-validate');
 
@@ -33,6 +37,8 @@ new EmailValidator({ email, emailMessage });
 new NameValidator({ name: firstName, nameMessage: firstNameMessage });
 
 new NameValidator({ name: lastName, nameMessage: lastNameMessage });
+
+new TelValidator({ tel: phoneNumber, telMessage: phoneNumberMessage });
 
 const html = document.querySelector('html');
 
@@ -45,12 +51,12 @@ new Modal({ btnShowModal: btnLogout, btnCloseModal: btnYes, dialog });
 
 class BorrowerSessionManager {
   constructor() {
+    this.btnYes = btnYes;
     this.render();
   }
 
   render() {
     this.checkIfKeyValueExistAndIsBorrowerLogin({ btnYes });
-    this.btnYes = btnYes;
     this.bindEvent();
   }
 
@@ -74,6 +80,29 @@ class BorrowerSessionManager {
 
   runWhenKeyValueExistAndBorrowerIsTrue() {
     html.style.display = 'block';
+    this.getBorrowerDataFromDatabase();
+  }
+
+  returnData(data) {
+    if (data === undefined) {
+      this.setGreetingTextContent('You do not have a data');
+      return;
+    }
+
+    firstName.value = data.firstName;
+    lastName.value = data.lastName;
+    email.value = data.email;
+  }
+
+  getBorrowerDataFromDatabase() {
+    indexDB.createDatabase(
+      {
+        storeName: 'borrower-data',
+        keyPathValue: 'borrower',
+        returnData: this.returnData.bind(this),
+      },
+      'getData',
+    );
   }
 
   runWhenKeyValueExistAndBorrowerLoginIsFalse() {
@@ -106,7 +135,7 @@ function runWhenAllFormIsValid() {
   alert('all form is valid');
 }
 
-new FormValidator({
+new FormUtility({
   buttonSubmit: btnSignUp,
   messages,
   inputs,
