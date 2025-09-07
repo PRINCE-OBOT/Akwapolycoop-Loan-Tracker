@@ -91,7 +91,7 @@ header {
   flex-direction: column;
   gap: 40px;
 }
-.register-borrower-section {
+.dashboard-borrower-section {
   background: var(--secondary-accent-faint);
   display: flex;
   gap: 10px;
@@ -105,24 +105,24 @@ header {
     padding: 20px;
   }
 }
-.register-borrower-section-left-side {
+.dashboard-borrower-section-left-side {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 20px;
 }
-.register-borrower-section-left-side-text {
+.dashboard-borrower-section-left-side-text {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
-.register-borrower-link {
+.dashboard-borrower-link {
   padding: 10px;
   background-color: var(--ink);
   border-radius: 5px;
   width: fit-content;
 }
-.register-borrower-section-right-side img {
+.dashboard-borrower-section-right-side img {
   height: 300px;
 }
 .image-circle {

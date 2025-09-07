@@ -18,7 +18,7 @@ const dialog = document.querySelector('dialog');
 const loginStatus = dialog.querySelector('.login-status');
 
 const registerPageReference = document.createElement('a');
-registerPageReference.href = './borrower-register.html';
+registerPageReference.href = './borrower-dashboard.html';
 
 function failModifyingBorrowerData() {
   alert('indexedDB was not able to modify isBorrowerLogin state');
@@ -36,7 +36,7 @@ function openBorrowerRegistrationPage() {
   }, 2000);
 }
 
-function modifyExistingDataInDatabase() {
+function modifyDataInDatabase() {
   indexDB.createDatabase(
     {
       storeName: 'borrower-data',
@@ -47,12 +47,12 @@ function modifyExistingDataInDatabase() {
       runSuccessStatus: openBorrowerRegistrationPage,
       runErrorStatus: failModifyingBorrowerData,
     },
-    'modifyExistingData',
+    'modifyData',
   );
 }
 
 function runWhenKeyValueExistAndBorrowerLoginIsFalse() {
-  modifyExistingDataInDatabase();
+  modifyDataInDatabase();
 }
 
 function runWhenKeyValueExistAndBorrowerLoginIsTrue() {

@@ -100,17 +100,9 @@ const indexDB = {
       db,
     );
   },
-  modifyExistingData(
-    { storeName, keys, keyPathValue, newValue, runSuccessStatus, runErrorStatus },
-    db,
-  ) {
+  modifyData({ storeName, keys, keyPathValue, newValue, runSuccessStatus, runErrorStatus }, db) {
     function returnData(data) {
       keys.forEach((key) => {
-        if (data[key] === undefined) {
-          // Fallback to default admin dashboard
-          runErrorStatus();
-          return;
-        }
         data[key] = newValue[key];
       });
       indexDB.storeData({ storeName, data, runSuccessStatus, runErrorStatus }, db);

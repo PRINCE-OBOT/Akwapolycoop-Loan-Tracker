@@ -75,6 +75,7 @@ function getAdminDataFromForm() {
     confirmPassword: confirmPassword.value,
     username,
     isBorrowerLogin: true,
+    isProfileGenerated: false,
   };
   return borrowerData;
 }
@@ -85,7 +86,7 @@ function borrowerDataIsStored() {
   }, 200);
 
   setTimeout(() => {
-    window.location.href = './borrower-register.html';
+    window.location.href = './borrower-dashboard.html';
   }, 2000);
 }
 

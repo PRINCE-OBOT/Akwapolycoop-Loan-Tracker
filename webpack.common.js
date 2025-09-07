@@ -14,13 +14,15 @@ module.exports = {
 
     'admin-sign-up': './src/homepage/admin/admin-sign-up/template_admin-sign-up.js',
 
-    'borrower-register': './src/homepage/borrower/borrower-register/template_borrower-register.js',
-
     'borrower-sign-up': './src/homepage/borrower/borrower-sign-up/template_borrower-sign-up.js',
 
     'borrower-login': './src/homepage/borrower/borrower-login/template_borrower-login.js',
+
+    'borrower-dashboard':
+      './src/homepage/borrower/borrower-dashboard/template_borrower-dashboard.js',
     
-    'borrower-dashboard': './src/homepage/borrower/borrower-dashboard/template_borrower-dashboard.js',
+      'borrower-profile':
+      './src/homepage/borrower/borrower-profile/template_borrower-profile.js',
   },
   output: {
     filename: '[name].js',
@@ -64,9 +66,9 @@ module.exports = {
     }),
 
     new HTMLWebpackPlugins({
-      template: './src/homepage/borrower/borrower-register/template_borrower-register.html',
-      filename: 'borrower-register.html',
-      chunks: ['borrower-register'],
+      template: './src/homepage/borrower/borrower-dashboard/template_borrower-dashboard.html',
+      filename: 'borrower-dashboard.html',
+      chunks: ['borrower-dashboard'],
     }),
 
     new HTMLWebpackPlugins({
@@ -74,11 +76,17 @@ module.exports = {
       filename: 'borrower-login.html',
       chunks: ['borrower-login'],
     }),
-  
+
     new HTMLWebpackPlugins({
       template: './src/homepage/borrower/borrower-dashboard/template_borrower-dashboard.html',
       filename: 'borrower-dashboard.html',
       chunks: ['borrower-dashboard'],
+    }),
+  
+    new HTMLWebpackPlugins({
+      template: './src/homepage/borrower/borrower-profile/template_borrower-profile.html',
+      filename: 'borrower-profile.html',
+      chunks: ['borrower-profile'],
     }),
   ],
   module: {

@@ -42,7 +42,6 @@ export default class AdminSessionManager {
   }
 
   checkIfKeyValueExistAndIsAdminLogin() {
-    console.log('okay');
     indexDB.createDatabase(
       {
         storeName: 'admin-data',
@@ -140,12 +139,12 @@ export default class AdminSessionManager {
         // whether keys value exist and admin is logged in,
         // instead of running `runWhenKeyValueExistAndAdminLoginIsTrue` directly on `runSuccessStatus`
         // when `runErrorStatus` is just a fallback when  `keys` is undefined
-        // as `runWhenKeyValueDoesNotExist` is not handle properly in `modifyExistingData`
+        // as `runWhenKeyValueDoesNotExist` is not handle properly in `modifyData`
 
         runSuccessStatus: this.checkIfKeyValueExistAndIsAdminLogin.bind(this),
         runErrorStatus: this.runWhenKeyValueDoesNotExist.bind(this),
       },
-      'modifyExistingData',
+      'modifyData',
     );
   }
 }

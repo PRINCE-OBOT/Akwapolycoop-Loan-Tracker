@@ -33,7 +33,7 @@ function openAdminDashboard() {
   }, 2000);
 }
 
-function modifyExistingDataInDatabase() {
+function modifyDataInDatabase() {
   indexDB.createDatabase(
     {
       storeName: 'admin-data',
@@ -44,12 +44,12 @@ function modifyExistingDataInDatabase() {
       runSuccessStatus: openAdminDashboard,
       runErrorStatus: failModifyingAdminData,
     },
-    'modifyExistingData',
+    'modifyData',
   );
 }
 
 function runWhenKeyValueExistAndAdminIsFalse() {
-  modifyExistingDataInDatabase();
+  modifyDataInDatabase();
 }
 
 function runWhenKeyValueExistAndAdminLoginIsTrue() {
