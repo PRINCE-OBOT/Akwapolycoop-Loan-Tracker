@@ -14,6 +14,9 @@
   --clr-valid: #10a510;
   --clr-normal: #eff2ce;
 
+  --fs-xxsm: 0.5rem;
+  --fs-sm: 0.9rem;
+
   --box-shadow: 0 0 3px rgba(0 0 0 / 0.2);
   --profile-dim: 30px;
 }
@@ -105,10 +108,13 @@ a {
 :where(button, a):hover {
   opacity: 0.8;
 }
+input {
+  color: var(--transparent-black);
+}
 input::placeholder {
   color: var(--grey);
 }
 .security-icon {
   height: 100px;
-  opacity: 0.5;
+  opacity: 0.3;
 }

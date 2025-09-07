@@ -12,6 +12,7 @@ module.exports = {
     "consistent-return": "off",
     "no-unused-expressions": "off",
     "no-alert": "off",
-    "prefer-destructuring": "off"
+    "prefer-destructuring": "off",
+    "class-methods-use-this": "off"
   },
 };

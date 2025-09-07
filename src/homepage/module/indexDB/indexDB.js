@@ -1,8 +1,8 @@
 const indexDB = {
-  storeNameInStore: ['admin-data', 'admin-dashboard-loan-data'],
+  storeNameInStore: ['admin-data', 'admin-dashboard-loan-data', 'borrower-data'],
 
   createDatabase(obj, functionToCall) {
-    const openRequest = indexedDB.open('akp-loan-tracker', 18);
+    const openRequest = indexedDB.open('akp-loan-tracker', 19);
 
     openRequest.onupgradeneeded = (e) => {
       const db = e.target.result;
@@ -53,6 +53,11 @@ const indexDB = {
     db,
   ) {
     function returnData(data) {
+      if (!data) {
+        runErrorStatus();
+        return;
+      }
+
       if (data.username === username && data.password === password) {
         runSuccessStatus();
       } else {

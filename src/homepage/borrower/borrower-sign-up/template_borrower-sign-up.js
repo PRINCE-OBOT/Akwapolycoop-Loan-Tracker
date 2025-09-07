@@ -1,4 +1,4 @@
-import './template_admin-sign-up.css';
+import '../../admin/admin-sign-up/template_admin-sign-up.css';
 import '../../assets/reset.css';
 import '../../assets/font.css';
 import '../../assets/common_general.css';
@@ -66,42 +66,42 @@ function displaySignUpStatusModal() {
 function getAdminDataFromForm() {
   const username = generateUsername();
 
-  const adminData = {
-    id: 'admin',
+  const borrowerData = {
+    id: 'borrower',
     firstName: firstName.value,
     lastName: lastName.value,
     email: email.value,
     password: password.value,
     confirmPassword: confirmPassword.value,
     username,
-    isAdminLogin: true,
+    isBorrowerLogin: true,
   };
-  return adminData;
+  return borrowerData;
 }
 
-function adminDataIsStored() {
+function borrowerDataIsStored() {
   setTimeout(() => {
     displaySignUpStatusModal();
   }, 200);
 
   setTimeout(() => {
-    window.location.href = './admin-dashboard.html';
+    window.location.href = './borrower-dashboard.html';
   }, 2000);
 }
 
-function adminDataNotStored() {
-  alert('Admin data not stored');
+function borrowerDataNotStored() {
+  alert('Borrower data not stored');
 }
 
 function runWhenAllFormIsValid() {
-  const adminData = getAdminDataFromForm();
+  const borrowerData = getAdminDataFromForm();
 
   indexDB.createDatabase(
     {
-      storeName: 'admin-data',
-      data: adminData,
-      runSuccessStatus: adminDataIsStored,
-      runErrorStatus: adminDataNotStored,
+      storeName: 'borrower-data',
+      data: borrowerData,
+      runSuccessStatus: borrowerDataIsStored,
+      runErrorStatus: borrowerDataNotStored,
     },
     'storeData',
   );

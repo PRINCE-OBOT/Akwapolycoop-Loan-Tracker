@@ -6,17 +6,7 @@ import '../../assets/style-border-button.css';
 
 import indexDB from '../../module/indexDB/indexDB';
 
-import Modal from '../../module/modal/modal';
-
 const html = document.querySelector('html');
-
-const btnLogout = document.querySelector('.logout-button');
-const dialog = document.querySelector('dialog');
-const btnCancel = dialog.querySelector('.btn-cancel');
-const btnYes = dialog.querySelector('.btn-yes');
-
-new Modal({ btnShowModal: btnLogout, btnCloseModal: btnCancel, dialog });
-new Modal({ btnShowModal: btnLogout, btnCloseModal: btnYes, dialog });
 
 class BorrowerSessionManager {
   constructor() {

@@ -23,8 +23,14 @@ header {
   display: flex;
   gap: 10px;
   align-items: center;
+  flex-wrap: wrap;
 }
-
+.greeting {
+  width: max-content;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-wrap: nowrap;
+}
 :where(.admin-login, .admin-sign-up).hide {
   display: none;
 }
@@ -133,7 +139,7 @@ header {
 }
 
 [class$='loan-section'] {
-  background: var(--ink);
+  background: linear-gradient(var(--transparent-black), var(--ink));
   border-radius: 10px;
   display: flex;
   flex-direction: column;

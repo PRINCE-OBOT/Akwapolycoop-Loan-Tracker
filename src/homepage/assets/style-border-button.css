@@ -1,15 +1,20 @@
 .admin-login,
 .admin-sign-up,
 .logout-button,
-.admin-dashboard {
+.admin-dashboard,
+.borrower-login,
+.borrower-sign-up,
+.borrower-dashboard {
   display: flex;
-  padding: 2px 20px;
+  padding: 4px 5px;
   border-radius: 5px;
-  border: 3px solid var(--transparent-black);
+  border: 1.6px solid var(--transparent-black);
   background:
     linear-gradient(var(--white)) padding-box,
     linear-gradient(45deg, var(--dark-yellow), var(--primary-accent)) border-box;
   border-color: transparent;
   color: var(--ink);
   width: max-content;
+  display: flex;
+  align-items: center;
 }

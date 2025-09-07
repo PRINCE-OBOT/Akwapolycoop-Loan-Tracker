@@ -17,9 +17,6 @@ const password = document.querySelector('#password');
 const dialog = document.querySelector('dialog');
 const loginStatus = dialog.querySelector('.login-status');
 
-const adminDashboardReference = document.createElement('a');
-adminDashboardReference.href = './admin-dashboard.html';
-
 function failModifyingAdminData() {
   alert('indexedDB was not able to modify isAdminLogin state');
 }
@@ -32,7 +29,7 @@ function openAdminDashboard() {
   setLoginStatusTextContent('Logging in...');
 
   setTimeout(() => {
-    adminDashboardReference.click();
+    window.location.href = './admin-dashboard.html';
   }, 2000);
 }
 
@@ -68,11 +65,12 @@ function checkIfKeyValueExistAndIsAdminLogin() {
     {
       storeName: 'admin-data',
       keyPathValue: 'admin',
+      key: 'isAdminLogin',
       runSuccessStatus: runWhenKeyValueExistAndAdminLoginIsTrue,
       runFairStatus: runWhenKeyValueExistAndAdminIsFalse,
       runErrorStatus: runWhenKeyValueDoesNotExist,
     },
-    'checkIfKeyValueExistAndIsAdminLogin',
+    'checkIfKeyPathValueExistAndFieldIsTrue',
   );
 }
 

@@ -6,6 +6,56 @@
     <title>Borrower Login</title>
   </head>
   <body>
-    <p>Borrower Login</p>
+    <div class="container">
+      <header>
+        <div class="logo-section">
+          <img
+            src="../../assets/images/akp-loan-tracker-logo.svg"
+            alt="akwapolycoop loan tracker logo"
+          />
+        </div>
+
+        <div class="navigation-section">
+          <a href="./index.html">Home</a>
+
+          <a href="./borrower-dashboard.html" class="borrower-dashboard">
+            <img src="../../assets/images/admin-dasboard-plain-color.svg" alt="" />
+            Borrower Dashboard</a
+          >
+
+          <a href="./borrower-sign-up.html" class="borrower-sign-up">
+            <img src="../../assets/images/admin-sign-up_plain-color.svg" alt="" />
+            Borrower Sign up</a
+          >
+        </div>
+      </header>
+
+      <main>
+        <form action="" novalidate>
+          <h3 class="heading">Borrower Login</h3>
+          <img class="security-icon" src="../../assets/images/security.svg" alt="security-image" />
+          <div class="user-name">
+            <label for="username">username</label>
+            <input type="text" id="username" placeholder="username" pattern="^[\.]{1,}$" required />
+          </div>
+
+          <div class="password">
+            <label for="password">Password</label>
+            <input type="text" id="password" placeholder="Password" pattern="^[\.]{1,}$" required />
+          </div>
+
+          <div class="btn-login-section">
+            <button class="btn-login" type="button">Login</button>
+            <output class="display-login-progress"></output>
+          </div>
+        </form>
+      </main>
+
+      <dialog closedby="any">
+        <div class="dialog-login-section">
+          <h4 class="login-status"></h4>
+        </div>
+      </dialog>
+    </div>
   </body>
 </html>

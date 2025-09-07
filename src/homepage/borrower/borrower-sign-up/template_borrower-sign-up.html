@@ -4,10 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <script>
-      document.querySelector('html').style.display = 'none';
-    </script>
-    <title>Borrower Dashboard</title>
+    <title>Borrower Sign up</title>
   </head>
 
   <body>
@@ -22,8 +19,15 @@
 
         <div class="navigation-section">
           <a href="./index.html">Home</a>
+          <a href="./borrower-login.html" class="borrower-login">
+            <img src="../../assets/images/admin-login_plain-color.svg" alt="" />
+            Borrower Login</a
+          >
 
-          <button type="button" class="logout-button">Logout</button>
+          <a href="./borrower-dashboard.html" class="borrower-dashboard">
+            <img src="../../assets/images/admin-dasboard-plain-color.svg" alt="" />
+            Borrower Dashboard</a
+          >
         </div>
       </header>
 
@@ -95,11 +99,9 @@
         </form>
       </main>
 
-      <dialog class="dialog-logout" closedby="any">
-        <div class="dialog-logout-section">
-          <h4>Are you sure you want to log out</h4>
-          <button type="button" class="btn-cancel">Cancel</button>
-          <button type="button" class="btn-yes">Yes</button>
+      <dialog closedby="any">
+        <div class="dialog-signup-section">
+          <h4>Submitting data...</h4>
         </div>
       </dialog>
     </div>
