@@ -114,7 +114,33 @@ input {
 input::placeholder {
   color: var(--grey);
 }
+.required-asterisk {
+  color: var(--clr-invalid);
+}
 .security-icon {
   height: 100px;
   opacity: 0.3;
+}
+
+.dialog-logout-section h4 {
+  color: var(--white);
+  font-weight: 400;
+  text-align: center;
+}
+.dialog-logout-section button {
+  min-width: 120px;
+  border-radius: 5px;
+  box-shadow: var(--box-shadow);
+  padding: 5px;
+  letter-spacing: 3px;
+}
+.btn-cancel {
+  background-color: var(--ink);
+  border: 1px solid var(--white);
+  color: var(--white);
+}
+.btn-yes {
+  background-color: var(--warning);
+  color: var(--white);
+  border: none;
 }

@@ -13,11 +13,10 @@ module.exports = {
     'admin-login': './src/homepage/admin/admin-login/template_admin-login.js',
 
     'admin-sign-up': './src/homepage/admin/admin-sign-up/template_admin-sign-up.js',
-    
-    'borrower-dashboard': './src/homepage/borrower/borrower-dashboard/template_borrower-dashboard.js',
 
-    'borrower-sign-up':
-      './src/homepage/borrower/borrower-sign-up/template_borrower-sign-up.js',
+    'borrower-register': './src/homepage/borrower/borrower-register/template_borrower-register.js',
+
+    'borrower-sign-up': './src/homepage/borrower/borrower-sign-up/template_borrower-sign-up.js',
 
     'borrower-login': './src/homepage/borrower/borrower-login/template_borrower-login.js',
   },
@@ -61,11 +60,11 @@ module.exports = {
       filename: 'borrower-sign-up.html',
       chunks: ['borrower-sign-up'],
     }),
-   
+
     new HTMLWebpackPlugins({
-      template: './src/homepage/borrower/borrower-dashboard/template_borrower-dashboard.html',
-      filename: 'borrower-dashboard.html',
-      chunks: ['borrower-dashboard'],
+      template: './src/homepage/borrower/borrower-register/template_borrower-register.html',
+      filename: 'borrower-register.html',
+      chunks: ['borrower-register'],
     }),
 
     new HTMLWebpackPlugins({

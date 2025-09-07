@@ -85,7 +85,7 @@ function borrowerDataIsStored() {
   }, 200);
 
   setTimeout(() => {
-    window.location.href = './borrower-dashboard.html';
+    window.location.href = './borrower-register.html';
   }, 2000);
 }
 

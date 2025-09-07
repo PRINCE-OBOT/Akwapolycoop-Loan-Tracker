@@ -1,0 +1,15 @@
+form {
+  min-width: min(1000px, 98%);
+}
+.btn-validate {
+  max-width: 120px;
+  padding: 8px 25px;
+  border-radius: 5px;
+  background: var(--ink);
+  color: #fff;
+  font-weight: 700;
+  border: none;
+  box-shadow: var(--box-shadow-transparent);
+  cursor: pointer;
+  margin-top: 45px;
+}

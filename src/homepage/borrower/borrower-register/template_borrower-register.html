@@ -29,13 +29,14 @@
 
       <main>
         <form action="" novalidate>
-          <h3 class="heading">Borrower Sign up Form</h3>
-          <img class="security-icon" src="../../assets/images/security.svg" alt="security-image" />
+          <h3 class="heading">Borrower Registration Form</h3>
 
-          <div class="field-section">
+          <fieldset class="field-section">
+            <legend>Personal Information</legend>
             <div class="first-name">
-              <label for="first-name">First Name</label>
+              <label for="first-name">First Name <span class="required-asterisk">*</span></label>
               <input
+                readonly
                 type="text"
                 id="first-name"
                 placeholder="First name"
@@ -44,10 +45,10 @@
               />
               <output id="first-name-message" class="show-message"></output>
             </div>
-
             <div class="last-name">
-              <label for="last-name">Last Name</label>
+              <label for="last-name">Last Name <span class="required-asterisk">*</span></label>
               <input
+                readonly
                 type="text"
                 id="last-name"
                 placeholder="Last name"
@@ -56,10 +57,10 @@
               />
               <output id="last-name-message" class="show-message"></output>
             </div>
-
             <div class="email">
-              <label for="email">Email</label>
+              <label for="email">Email <span class="required-asterisk">*</span></label>
               <input
+                readonly
                 type="email"
                 id="email"
                 placeholder="Email"
@@ -69,27 +70,18 @@
               <output id="email-message" class="show-message"></output>
             </div>
 
-            <div class="password">
-              <label for="password">Password</label>
-              <input
-                type="text"
-                id="password"
-                placeholder="Password"
-                pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{7,}$"
-                required
-              />
-              <output id="password-message" class="show-message"></output>
+            <div class="gender">
+              <select name="gender" id="gender">
+                <option value="null">-- Select gender --</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+              <output id="gender-message" class="show-message"></output>
             </div>
-
-            <div class="confirm-password">
-              <label for="confirm-password">Confirm Password</label>
-              <input type="text" id="confirm-password" placeholder="Confirm Password" required />
-              <output id="confirm-password-message" class="show-message"></output>
-            </div>
-          </div>
+          </fieldset>
 
           <div class="signup-btn-section">
-            <button class="btn-sign-up" type="button">Sign up</button>
+            <button class="btn-validate" type="button">Validate</button>
             <div class="display-signup-status"></div>
           </div>
         </form>

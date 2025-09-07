@@ -18,7 +18,7 @@ const dialog = document.querySelector('dialog');
 const loginStatus = dialog.querySelector('.login-status');
 
 const registerPageReference = document.createElement('a');
-registerPageReference.href = './borrower-dashboard.html';
+registerPageReference.href = './borrower-register.html';
 
 function failModifyingBorrowerData() {
   alert('indexedDB was not able to modify isBorrowerLogin state');
