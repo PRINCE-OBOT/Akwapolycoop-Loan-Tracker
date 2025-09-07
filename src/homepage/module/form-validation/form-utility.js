@@ -12,7 +12,7 @@ export default class FormUtility {
   }
 
   customCheckValidity() {
-    const isEveryInputValid = [...this.messages].every((input) => input.validity.valid);
+    const isEveryInputValid = [...this.inputs].every((input) => input.validity.valid);
 
     const isEveryMessageValid = [...this.messages].every((message) =>
       message.classList.contains('valid'),
@@ -84,6 +84,9 @@ export default class FormUtility {
     } else if (field.validity.valid && isFieldValid) {
       message = '✓';
       validityState = 'valid';
+    } else {
+      message = msg;
+      validityState = 'invalid';
     }
 
     message ? (fieldMessage.textContent = message) : fieldMessage.textContent;

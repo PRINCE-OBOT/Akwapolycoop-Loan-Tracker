@@ -9,13 +9,14 @@ import FormUtility from '../../module/form-validation/form-utility';
 import EmailValidator from '../../module/form-validation/email-validator';
 import NameValidator from '../../module/form-validation/name-validator';
 import TelValidator from '../../module/form-validation/tel-validator';
+import GenderValidator from '../../module/form-validation/gender-validator';
 
 import indexDB from '../../module/indexDB/indexDB';
 
 import Modal from '../../module/modal/modal';
 
-const messages = document.querySelectorAll('output.show-message');
-const inputs = document.querySelectorAll('input');
+const messages = document.querySelectorAll('output:not([readonly])');
+const inputs = document.querySelectorAll('input:not([readonly])');
 
 const email = document.querySelector('#email');
 const emailMessage = document.querySelector('#email-message');
@@ -29,8 +30,17 @@ const lastNameMessage = document.querySelector('#last-name-message');
 const phoneNumber = document.querySelector('#phone-number');
 const phoneNumberMessage = document.querySelector('#phone-number-message');
 
+const gender = document.querySelector('#gender');
+const genderMessage = document.querySelector('#gender-message');
+
+const btnValidate = document.querySelector('.btn-validate');
+const html = document.querySelector('html');
+
+const btnLogout = document.querySelector('.logout-button');
+console.log(messages);
 const dialog = document.querySelector('dialog');
-const btnSignUp = document.querySelector('.btn-validate');
+const btnCancel = dialog.querySelector('.btn-cancel');
+const btnYes = dialog.querySelector('.btn-yes');
 
 new EmailValidator({ email, emailMessage });
 
@@ -40,11 +50,7 @@ new NameValidator({ name: lastName, nameMessage: lastNameMessage });
 
 new TelValidator({ tel: phoneNumber, telMessage: phoneNumberMessage });
 
-const html = document.querySelector('html');
-
-const btnLogout = document.querySelector('.logout-button');
-const btnCancel = dialog.querySelector('.btn-cancel');
-const btnYes = dialog.querySelector('.btn-yes');
+new GenderValidator({ gender, genderMessage });
 
 new Modal({ btnShowModal: btnLogout, btnCloseModal: btnCancel, dialog });
 new Modal({ btnShowModal: btnLogout, btnCloseModal: btnYes, dialog });
@@ -136,7 +142,7 @@ function runWhenAllFormIsValid() {
 }
 
 new FormUtility({
-  buttonSubmit: btnSignUp,
+  buttonSubmit: btnValidate,
   messages,
   inputs,
   runWhenAllFormIsValid,
