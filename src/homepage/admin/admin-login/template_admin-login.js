@@ -38,8 +38,8 @@ function modifyExistingDataInDatabase() {
     {
       storeName: 'admin-data',
       keyPathValue: 'admin',
-      newValue: true,
-      key: 'isAdminLogin',
+      newValue: { isAdminLogin: true },
+      keys: ['isAdminLogin'],
 
       runSuccessStatus: openAdminDashboard,
       runErrorStatus: failModifyingAdminData,
@@ -57,7 +57,7 @@ function runWhenKeyValueExistAndAdminLoginIsTrue() {
 }
 
 function runWhenKeyValueDoesNotExist() {
-  alert('Key path value does not exist');
+  alert('keys path value does not exist');
 }
 
 function checkIfKeyValueExistAndIsAdminLogin() {
@@ -65,7 +65,7 @@ function checkIfKeyValueExistAndIsAdminLogin() {
     {
       storeName: 'admin-data',
       keyPathValue: 'admin',
-      key: 'isAdminLogin',
+      keys: 'isAdminLogin',
       runSuccessStatus: runWhenKeyValueExistAndAdminLoginIsTrue,
       runFairStatus: runWhenKeyValueExistAndAdminIsFalse,
       runErrorStatus: runWhenKeyValueDoesNotExist,

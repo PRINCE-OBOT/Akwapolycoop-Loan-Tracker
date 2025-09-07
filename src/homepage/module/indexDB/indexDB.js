@@ -76,12 +76,12 @@ const indexDB = {
   },
 
   checkIfKeyPathValueExistAndFieldIsTrue(
-    { storeName, key, keyPathValue, runErrorStatus, runSuccessStatus, runFairStatus },
+    { storeName, keys, keyPathValue, runErrorStatus, runSuccessStatus, runFairStatus },
     db,
   ) {
     function returnData(data) {
       if (data !== undefined) {
-        if (data[key]) {
+        if (data[keys]) {
           runSuccessStatus();
           return;
         }
@@ -101,16 +101,18 @@ const indexDB = {
     );
   },
   modifyExistingData(
-    { storeName, key, keyPathValue, newValue, runSuccessStatus, runErrorStatus },
+    { storeName, keys, keyPathValue, newValue, runSuccessStatus, runErrorStatus },
     db,
   ) {
     function returnData(data) {
-      if (data[key] === undefined) {
-        // Fallback to default admin dashboard
-        runErrorStatus();
-        return;
-      }
-      data[key] = newValue;
+      keys.forEach((key) => {
+        if (data[key] === undefined) {
+          // Fallback to default admin dashboard
+          runErrorStatus();
+          return;
+        }
+        data[key] = newValue[key];
+      });
       indexDB.storeData({ storeName, data, runSuccessStatus, runErrorStatus }, db);
     }
 

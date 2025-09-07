@@ -41,8 +41,8 @@ function modifyExistingDataInDatabase() {
     {
       storeName: 'borrower-data',
       keyPathValue: 'borrower',
-      newValue: true,
-      key: 'isBorrowerLogin',
+      newValue: { isBorrowerLogin: true },
+      keys: ['isBorrowerLogin'],
 
       runSuccessStatus: openBorrowerRegistrationPage,
       runErrorStatus: failModifyingBorrowerData,
@@ -60,7 +60,7 @@ function runWhenKeyValueExistAndBorrowerLoginIsTrue() {
 }
 
 function runWhenKeyValueDoesNotExist() {
-  alert('Key path value does not exist');
+  alert('keys path value does not exist');
 }
 
 function checkIfKeyValueExistAndIsAdminLogin() {
@@ -68,7 +68,7 @@ function checkIfKeyValueExistAndIsAdminLogin() {
     {
       storeName: 'borrower-data',
       keyPathValue: 'borrower',
-      key: 'isBorrowerLogin',
+      keys: 'isBorrowerLogin',
       runSuccessStatus: runWhenKeyValueExistAndBorrowerLoginIsTrue,
       runFairStatus: runWhenKeyValueExistAndBorrowerLoginIsFalse,
       runErrorStatus: runWhenKeyValueDoesNotExist,

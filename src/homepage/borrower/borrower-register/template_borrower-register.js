@@ -75,7 +75,7 @@ class BorrowerSessionManager {
       {
         storeName: 'borrower-data',
         keyPathValue: 'borrower',
-        key: 'isBorrowerLogin',
+        keys: 'isBorrowerLogin',
         runSuccessStatus: this.runWhenKeyValueExistAndBorrowerIsTrue.bind(this),
         runFairStatus: this.runWhenKeyValueExistAndBorrowerLoginIsFalse.bind(this),
         runErrorStatus: this.runWhenKeyValueDoesNotExist.bind(this),
@@ -118,7 +118,7 @@ class BorrowerSessionManager {
 
   runWhenKeyValueDoesNotExist() {
     window.location.href = './borrower-login.html';
-    console.log('Key value doest not exist');
+    console.log('keys value doest not exist');
   }
 
   logoutBorrower() {
@@ -126,8 +126,8 @@ class BorrowerSessionManager {
       {
         storeName: 'borrower-data',
         keyPathValue: 'borrower',
-        newValue: false,
-        key: 'isBorrowerLogin',
+        newValue: { isBorrowerLogin: false },
+        keys: ['isBorrowerLogin'],
         runSuccessStatus: this.checkIfKeyValueExistAndIsBorrowerLogin.bind(this),
         runErrorStatus: this.runWhenKeyValueDoesNotExist.bind(this),
       },
@@ -137,8 +137,23 @@ class BorrowerSessionManager {
 }
 new BorrowerSessionManager({ btnYes });
 
+// function modifyExistingDataInDatabase() {
+//   indexDB.createDatabase(
+//     {
+//       storeName: 'borrower-data',
+//       keyPathValue: 'borrower',
+//       newValue: true,
+//       keys: 'isAdminLogin',
+
+//       runSuccessStatus: openAdminDashboard,
+//       runErrorStatus: failModifyingAdminData,
+//     },
+//     'modifyExistingData',
+//   );
+// }
+
 function runWhenAllFormIsValid() {
-  alert('all form is valid');
+  // modifyExistingDataInDatabase()
 }
 
 new FormUtility({

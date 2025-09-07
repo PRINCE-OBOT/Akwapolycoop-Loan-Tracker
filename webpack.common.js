@@ -19,6 +19,8 @@ module.exports = {
     'borrower-sign-up': './src/homepage/borrower/borrower-sign-up/template_borrower-sign-up.js',
 
     'borrower-login': './src/homepage/borrower/borrower-login/template_borrower-login.js',
+    
+    'borrower-dashboard': './src/homepage/borrower/borrower-dashboard/template_borrower-dashboard.js',
   },
   output: {
     filename: '[name].js',
@@ -71,6 +73,12 @@ module.exports = {
       template: './src/homepage/borrower/borrower-login/template_borrower-login.html',
       filename: 'borrower-login.html',
       chunks: ['borrower-login'],
+    }),
+  
+    new HTMLWebpackPlugins({
+      template: './src/homepage/borrower/borrower-dashboard/template_borrower-dashboard.html',
+      filename: 'borrower-dashboard.html',
+      chunks: ['borrower-dashboard'],
     }),
   ],
   module: {

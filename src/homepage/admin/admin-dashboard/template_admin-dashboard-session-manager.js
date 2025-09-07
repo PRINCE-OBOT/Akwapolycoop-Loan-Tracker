@@ -42,11 +42,12 @@ export default class AdminSessionManager {
   }
 
   checkIfKeyValueExistAndIsAdminLogin() {
+    console.log('okay');
     indexDB.createDatabase(
       {
         storeName: 'admin-data',
         keyPathValue: 'admin',
-        key: 'isAdminLogin',
+        keys: 'isAdminLogin',
         runSuccessStatus: this.runWhenKeyValueExistAndAdminLoginIsTrue.bind(this),
         runFairStatus: this.runWhenKeyValueExistAndAdminLoginIsFalse.bind(this),
         runErrorStatus: this.runWhenKeyValueDoesNotExist.bind(this),
@@ -79,7 +80,7 @@ export default class AdminSessionManager {
   }
 
   runWhenKeyValueDoesNotExist() {
-    console.log('Key value doest not exist');
+    console.log('keys value doest not exist');
     this.runWhenKeyValueExistAndAdminLoginIsFalse();
     this.runWhenAdminLoanDataKeyLoanDataDoesNotExist();
   }
@@ -130,15 +131,15 @@ export default class AdminSessionManager {
       {
         storeName: 'admin-data',
         keyPathValue: 'admin',
-        newValue: false,
-        key: 'isAdminLogin',
+        newValue: { isAdminLogin: false },
+        keys: ['isAdminLogin'],
 
         // Use `checkIfKeyValueExistAndIsAdminLogin` in `runSuccessStatus`
         // to run `runWhenKeyValueExistAndAdminLoginIsTrue` and `runWhenKeyValueDoesNotExist`
         // as it handle both s properly base on
-        // whether key value exist and admin is logged in,
+        // whether keys value exist and admin is logged in,
         // instead of running `runWhenKeyValueExistAndAdminLoginIsTrue` directly on `runSuccessStatus`
-        // when `runErrorStatus` is just a fallback when  `key` is undefined
+        // when `runErrorStatus` is just a fallback when  `keys` is undefined
         // as `runWhenKeyValueDoesNotExist` is not handle properly in `modifyExistingData`
 
         runSuccessStatus: this.checkIfKeyValueExistAndIsAdminLogin.bind(this),
