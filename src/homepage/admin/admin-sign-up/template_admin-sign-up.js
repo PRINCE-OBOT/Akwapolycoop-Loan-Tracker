@@ -100,8 +100,8 @@ function runWhenAllFormIsValid() {
     {
       storeName: 'admin-data',
       data: adminData,
-      runSuccessStatus: adminDataIsStored,
-      runErrorStatus: adminDataNotStored,
+      trueState: adminDataIsStored,
+      undefinedState: adminDataNotStored,
     },
     'storeData',
   );

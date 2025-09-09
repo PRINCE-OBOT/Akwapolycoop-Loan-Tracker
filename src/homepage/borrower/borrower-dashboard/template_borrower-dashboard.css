@@ -2,18 +2,6 @@ form {
   min-width: min(1000px, 98%);
 }
 
-fieldset.field-section {
-  display: flex;
-  flex-wrap: wrap;
-  border: 1px solid var(--grey);
-  padding: 20px 20px 40px 20px;
-
-  & > * {
-    flex: 1;
-    min-width: max(40%, 150px);
-  }
-}
-
 legend {
   padding: 5px;
   letter-spacing: 2px;

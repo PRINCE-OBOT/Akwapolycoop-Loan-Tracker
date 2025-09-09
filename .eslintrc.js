@@ -13,6 +13,8 @@ module.exports = {
     "no-unused-expressions": "off",
     "no-alert": "off",
     "prefer-destructuring": "off",
-    "class-methods-use-this": "off"
+    "class-methods-use-this": "off",
+    "no-use-before-define": "off",
+    "no-plusplus": "off"
   },
 };

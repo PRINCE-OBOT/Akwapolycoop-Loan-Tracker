@@ -75,17 +75,20 @@ form {
   border-radius: 5px;
   text-align: center;
 }
-
 .field-section {
-  display: grid;
-  gap: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  border: 1px solid var(--grey);
+  padding: 20px 20px 40px 20px;
 }
 .field-section > div {
   display: flex;
   gap: 10px;
   flex-direction: column;
   position: relative;
+  flex: 1;
+  min-width: max(40%, 280px);
 }
 
 input,

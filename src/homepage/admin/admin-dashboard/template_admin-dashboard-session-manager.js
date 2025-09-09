@@ -47,11 +47,11 @@ export default class AdminSessionManager {
         storeName: 'admin-data',
         keyPathValue: 'admin',
         keys: 'isAdminLogin',
-        runSuccessStatus: this.runWhenKeyValueExistAndAdminLoginIsTrue.bind(this),
-        runFairStatus: this.runWhenKeyValueExistAndAdminLoginIsFalse.bind(this),
-        runErrorStatus: this.runWhenKeyValueDoesNotExist.bind(this),
+        trueState: this.runWhenKeyValueExistAndAdminLoginIsTrue.bind(this),
+        falseState: this.runWhenKeyValueExistAndAdminLoginIsFalse.bind(this),
+        undefinedState: this.runWhenKeyValueDoesNotExist.bind(this),
       },
-      'checkIfKeyPathValueExistAndFieldIsTrue',
+      'checkKeysValueState',
     );
   }
 
@@ -133,16 +133,16 @@ export default class AdminSessionManager {
         newValue: { isAdminLogin: false },
         keys: ['isAdminLogin'],
 
-        // Use `checkIfKeyValueExistAndIsAdminLogin` in `runSuccessStatus`
+        // Use `checkIfKeyValueExistAndIsAdminLogin` in `trueState`
         // to run `runWhenKeyValueExistAndAdminLoginIsTrue` and `runWhenKeyValueDoesNotExist`
         // as it handle both s properly base on
         // whether keys value exist and admin is logged in,
-        // instead of running `runWhenKeyValueExistAndAdminLoginIsTrue` directly on `runSuccessStatus`
-        // when `runErrorStatus` is just a fallback when  `keys` is undefined
+        // instead of running `runWhenKeyValueExistAndAdminLoginIsTrue` directly on `trueState`
+        // when `undefinedState` is just a fallback when  `keys` is undefined
         // as `runWhenKeyValueDoesNotExist` is not handle properly in `modifyData`
 
-        runSuccessStatus: this.checkIfKeyValueExistAndIsAdminLogin.bind(this),
-        runErrorStatus: this.runWhenKeyValueDoesNotExist.bind(this),
+        trueState: this.checkIfKeyValueExistAndIsAdminLogin.bind(this),
+        undefinedState: this.runWhenKeyValueDoesNotExist.bind(this),
       },
       'modifyData',
     );

@@ -41,8 +41,8 @@ function modifyDataInDatabase() {
       newValue: { isAdminLogin: true },
       keys: ['isAdminLogin'],
 
-      runSuccessStatus: openAdminDashboard,
-      runErrorStatus: failModifyingAdminData,
+      trueState: openAdminDashboard,
+      undefinedState: failModifyingAdminData,
     },
     'modifyData',
   );
@@ -66,11 +66,11 @@ function checkIfKeyValueExistAndIsAdminLogin() {
       storeName: 'admin-data',
       keyPathValue: 'admin',
       keys: 'isAdminLogin',
-      runSuccessStatus: runWhenKeyValueExistAndAdminLoginIsTrue,
-      runFairStatus: runWhenKeyValueExistAndAdminIsFalse,
-      runErrorStatus: runWhenKeyValueDoesNotExist,
+      trueState: runWhenKeyValueExistAndAdminLoginIsTrue,
+      falseState: runWhenKeyValueExistAndAdminIsFalse,
+      undefinedState: runWhenKeyValueDoesNotExist,
     },
-    'checkIfKeyPathValueExistAndFieldIsTrue',
+    'checkKeysValueState',
   );
 }
 
@@ -92,8 +92,8 @@ function processUserLoginDetails() {
       username: username.value,
       password: password.value,
       storeName: 'admin-data',
-      runSuccessStatus: runWhenDataIsCorrect,
-      runErrorStatus: runWhenDataIsIncorrect,
+      trueState: runWhenDataIsCorrect,
+      undefinedState: runWhenDataIsIncorrect,
     },
     'checkIfLoginDetailsMatch',
   );

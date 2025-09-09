@@ -1,8 +1,15 @@
 const indexDB = {
-  storeNameInStore: ['admin-data', 'admin-dashboard-loan-data', 'borrower-data'],
+  storeNameInStore: [
+    'admin-data',
+    'admin-dashboard-loan-data',
+    'borrower-loan-applicant-list',
+    'borrower-sign-up-list',
+    'borrower-recently-sign-up',
+    'borrower-recently-loan-applicant',
+  ],
 
   createDatabase(obj, functionToCall) {
-    const openRequest = indexedDB.open('akp-loan-tracker', 19);
+    const openRequest = indexedDB.open('akp-loan-tracker', 28);
 
     openRequest.onupgradeneeded = (e) => {
       const db = e.target.result;
@@ -23,45 +30,39 @@ const indexDB = {
     const storeHas = this.checkIfStoreHasName({ storeName }, db);
     if (storeHas.name) return;
 
-    db.createObjectStore(storeName, { keyPath: 'id' });
+    db.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
   },
 
-  storeData({ storeName, data, runSuccessStatus, runErrorStatus }, db) {
+  storeData({ storeName, data, trueState, undefinedState }, db) {
     const transaction = db.transaction(storeName, 'readwrite');
 
     const store = transaction.objectStore(storeName);
 
     const putData = store.put(data);
 
-    const previewDataStored = store.get(data.id);
-
-    previewDataStored.onsuccess = () => {
-      console.log('Preview Data', previewDataStored.result);
-    };
-
     putData.onsuccess = () => {
-      runSuccessStatus();
+      trueState();
     };
 
     putData.onerror = () => {
-      runErrorStatus();
+      undefinedState();
     };
   },
 
   checkIfLoginDetailsMatch(
-    { username, password, storeName, keyPathValue, runErrorStatus, runSuccessStatus },
+    { username, password, storeName, keyPathValue, undefinedState, trueState },
     db,
   ) {
     function returnData(data) {
       if (!data) {
-        runErrorStatus();
+        undefinedState();
         return;
       }
 
       if (data.username === username && data.password === password) {
-        runSuccessStatus();
+        trueState();
       } else {
-        runErrorStatus();
+        undefinedState();
       }
     }
 
@@ -75,20 +76,20 @@ const indexDB = {
     );
   },
 
-  checkIfKeyPathValueExistAndFieldIsTrue(
-    { storeName, keys, keyPathValue, runErrorStatus, runSuccessStatus, runFairStatus },
+  checkKeysValueState(
+    { storeName, keys, keyPathValue, undefinedState, trueState, falseState },
     db,
   ) {
     function returnData(data) {
       if (data !== undefined) {
         if (data[keys]) {
-          runSuccessStatus();
+          trueState();
           return;
         }
-        runFairStatus();
+        falseState();
         return;
       }
-      runErrorStatus();
+      undefinedState();
     }
 
     this.getData(
@@ -100,17 +101,47 @@ const indexDB = {
       db,
     );
   },
-  modifyData({ storeName, keys, keyPathValue, newValue, runSuccessStatus, runErrorStatus }, db) {
+
+  checkIfDataExist(
+    { storeName, getMethod, firstName, lastName, email, trueState, falseState },
+    db,
+  ) {
+    function returnData(data) {
+      for (let i = 0; i < data.length; i++) {
+        if (
+          (data[i].firstName === firstName.value && data[i].lastName === lastName.value) ||
+          data[i].email === email.value
+        ) {
+          trueState();
+          return;
+        }
+      }
+      falseState();
+    }
+
+    this.getData(
+      {
+        storeName,
+        getMethod,
+        returnData,
+      },
+      db,
+    );
+  },
+  modifyData(
+    { storeName, keys, keyPathValue, newValue, getMethod, trueState, undefinedState },
+    db,
+  ) {
     function returnData(data) {
       keys.forEach((key) => {
         data[key] = newValue[key];
       });
-      indexDB.storeData({ storeName, data, runSuccessStatus, runErrorStatus }, db);
+      indexDB.storeData({ storeName, data, trueState, undefinedState }, db);
     }
 
-    this.getData({ storeName, keyPathValue, returnData }, db);
+    this.getData({ storeName, keyPathValue, getMethod, returnData }, db);
   },
-  getData({ storeName, keyPathValue, returnData }, db) {
+  getData({ storeName, keyPathValue, getMethod, returnData }, db) {
     const storeHas = this.checkIfStoreHasName({ storeName }, db);
 
     if (!storeHas.name) return;
@@ -119,7 +150,16 @@ const indexDB = {
 
     const store = transaction.objectStore(storeName);
 
-    const request = store.get(keyPathValue);
+    const listOfGetMethod = {
+      getAll() {
+        return store.getAll();
+      },
+      get() {
+        return store.get(keyPathValue);
+      },
+    };
+
+    const request = listOfGetMethod[getMethod]();
 
     request.onsuccess = (event) => {
       const data = event.target.result;

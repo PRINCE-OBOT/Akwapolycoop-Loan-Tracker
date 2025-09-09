@@ -34,6 +34,8 @@ const lastNameMessage = document.querySelector('#last-name-message');
 const dialog = document.querySelector('dialog');
 const btnSignUp = document.querySelector('.btn-sign-up');
 
+const displaySignUpStatus = document.querySelector('.display_borrower-sign-up-status');
+
 const form = document.querySelector('form');
 
 new PasswordValidator({
@@ -49,74 +51,146 @@ new NameValidator({ name: firstName, nameMessage: firstNameMessage });
 
 new NameValidator({ name: lastName, nameMessage: lastNameMessage });
 
-function generateUsername() {
-  const randomNumber = Math.floor(Math.random() * 200) + 1;
-  const alterFirstName = firstName.value.slice(0, 3);
-  const alterLastName = lastName.value.slice(0, 5);
-  const username = `${alterFirstName}_${alterLastName}${randomNumber}`;
+class BorrowerSignUpManager {
+  constructor() {
+    this.render();
+  }
 
-  return username;
+  render() {
+    window.addEventListener('pageshow', this.resetForm.bind(this));
+
+    new FormUtility({
+      buttonSubmit: btnSignUp,
+      messages,
+      inputs,
+      runWhenAllFormIsValid: this.runWhenAllFormIsValid.bind(this),
+    });
+  }
+
+  resetForm() {
+    form.reset();
+  }
+
+  runWhenAllFormIsValid() {
+    this.checkIfUserExistInLoanApplicantList();
+  }
+
+  borrowerDataNotStored() {
+    console.log('Borrower data not stored');
+  }
+
+  displaySignUpStatusModal() {
+    const modal = new Modal({ dialog });
+    modal.showModal();
+  }
+
+  userAlreadyExist() {
+    this.setBorrowerSignUpStatus('User already exist');
+
+    this.displaySignUpStatusModal();
+  }
+
+  checkBorrowerSignUpList() {
+    this.checkIfUserExistInBorrowerSignUpList();
+  }
+
+  checkIfUserExistInLoanApplicantList() {
+    indexDB.createDatabase(
+      {
+        storeName: 'borrower-loan-applicant-list',
+        getMethod: 'getAll',
+        firstName,
+        lastName,
+        email,
+        trueState: this.userAlreadyExist.bind(this),
+        falseState: this.checkBorrowerSignUpList.bind(this),
+      },
+      'checkIfDataExist',
+    );
+  }
+
+  checkIfUserExistInBorrowerSignUpList() {
+    indexDB.createDatabase(
+      {
+        storeName: 'borrower-sign-up-list',
+        getMethod: 'getAll',
+        firstName,
+        lastName,
+        email,
+        trueState: this.userAlreadyExist.bind(this),
+        falseState: this.storeDataToBorrowerSignUpList.bind(this),
+      },
+      'checkIfDataExist',
+    );
+  }
+
+  storeDataToBorrowerSignUpList() {
+    const borrowerData = this.getAdminDataFromForm();
+
+    indexDB.createDatabase(
+      {
+        storeName: 'borrower-sign-up-list',
+        data: borrowerData,
+        trueState: this.storeDataToBorrowerRecentlySignUp.bind(this),
+        undefinedState: this.borrowerDataNotStored.bind(this),
+      },
+      'storeData',
+    );
+  }
+
+  storeDataToBorrowerRecentlySignUp() {
+    const borrowerData = this.getAdminDataFromForm();
+
+    borrowerData.id = 'recent-sign-up';
+    indexDB.createDatabase(
+      {
+        storeName: 'borrower-recently-sign-up',
+        data: borrowerData,
+        trueState: this.borrowerDataCompletelyStore.bind(this),
+        undefinedState: this.borrowerDataNotStored.bind(this),
+      },
+      'storeData',
+    );
+  }
+
+  borrowerDataCompletelyStore() {
+    this.setBorrowerSignUpStatus('Signing up...');
+
+    this.displaySignUpStatusModal();
+
+    setTimeout(() => {
+      window.location.href = './borrower-dashboard.html';
+    }, 2000);
+  }
+
+  generateUsername() {
+    const randomNumber = Math.floor(Math.random() * 200) + 1;
+    const alterFirstName = firstName.value.slice(0, 3);
+    const alterLastName = lastName.value.slice(0, 5);
+    const username = `${alterFirstName}_${alterLastName}${randomNumber}`;
+
+    return username;
+  }
+
+  getAdminDataFromForm() {
+    const username = this.generateUsername();
+
+    const borrowerData = {
+      firstName: firstName.value,
+      lastName: lastName.value,
+      email: email.value,
+      password: password.value,
+      confirmPassword: confirmPassword.value,
+      username,
+      isBorrowerLogin: true,
+      isProfileGenerated: false,
+    };
+    return borrowerData;
+  }
+
+  setBorrowerSignUpStatus(text) {
+    displaySignUpStatus.textContent = text;
+  }
 }
 
-function displaySignUpStatusModal() {
-  const modal = new Modal({ dialog });
-  modal.showModal();
-}
-
-function getAdminDataFromForm() {
-  const username = generateUsername();
-
-  const borrowerData = {
-    id: 'borrower',
-    firstName: firstName.value,
-    lastName: lastName.value,
-    email: email.value,
-    password: password.value,
-    confirmPassword: confirmPassword.value,
-    username,
-    isBorrowerLogin: true,
-    isProfileGenerated: false,
-  };
-  return borrowerData;
-}
-
-function borrowerDataIsStored() {
-  setTimeout(() => {
-    displaySignUpStatusModal();
-  }, 200);
-
-  setTimeout(() => {
-    window.location.href = './borrower-dashboard.html';
-  }, 2000);
-}
-
-function borrowerDataNotStored() {
-  alert('Borrower data not stored');
-}
-
-function runWhenAllFormIsValid() {
-  const borrowerData = getAdminDataFromForm();
-
-  indexDB.createDatabase(
-    {
-      storeName: 'borrower-data',
-      data: borrowerData,
-      runSuccessStatus: borrowerDataIsStored,
-      runErrorStatus: borrowerDataNotStored,
-    },
-    'storeData',
-  );
-}
-
-new FormUtility({
-  buttonSubmit: btnSignUp,
-  messages,
-  inputs,
-  runWhenAllFormIsValid,
-});
-
-function resetForm() {
-  form.reset();
-}
-
-window.addEventListener('pageshow', resetForm);
+new BorrowerSignUpManager();

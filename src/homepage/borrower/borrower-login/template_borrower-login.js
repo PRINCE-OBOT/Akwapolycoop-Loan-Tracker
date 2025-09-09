@@ -39,13 +39,13 @@ function openBorrowerRegistrationPage() {
 function modifyDataInDatabase() {
   indexDB.createDatabase(
     {
-      storeName: 'borrower-data',
+      storeName: 'recent-borrower-data',
       keyPathValue: 'borrower',
       newValue: { isBorrowerLogin: true },
       keys: ['isBorrowerLogin'],
 
-      runSuccessStatus: openBorrowerRegistrationPage,
-      runErrorStatus: failModifyingBorrowerData,
+      trueState: openBorrowerRegistrationPage,
+      undefinedState: failModifyingBorrowerData,
     },
     'modifyData',
   );
@@ -66,14 +66,14 @@ function runWhenKeyValueDoesNotExist() {
 function checkIfKeyValueExistAndIsAdminLogin() {
   indexDB.createDatabase(
     {
-      storeName: 'borrower-data',
+      storeName: 'recent-borrower-data',
       keyPathValue: 'borrower',
       keys: 'isBorrowerLogin',
-      runSuccessStatus: runWhenKeyValueExistAndBorrowerLoginIsTrue,
-      runFairStatus: runWhenKeyValueExistAndBorrowerLoginIsFalse,
-      runErrorStatus: runWhenKeyValueDoesNotExist,
+      trueState: runWhenKeyValueExistAndBorrowerLoginIsTrue,
+      falseState: runWhenKeyValueExistAndBorrowerLoginIsFalse,
+      undefinedState: runWhenKeyValueDoesNotExist,
     },
-    'checkIfKeyPathValueExistAndFieldIsTrue',
+    'checkKeysValueState',
   );
 }
 
@@ -94,9 +94,9 @@ function processUserLoginDetails() {
       keyPathValue: 'borrower',
       username: username.value,
       password: password.value,
-      storeName: 'borrower-data',
-      runSuccessStatus: runWhenDataIsCorrect,
-      runErrorStatus: runWhenDataIsIncorrect,
+      storeName: 'recent-borrower-data',
+      trueState: runWhenDataIsCorrect,
+      undefinedState: runWhenDataIsIncorrect,
     },
     'checkIfLoginDetailsMatch',
   );

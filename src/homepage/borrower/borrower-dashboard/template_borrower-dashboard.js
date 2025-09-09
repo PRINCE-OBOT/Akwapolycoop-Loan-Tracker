@@ -64,7 +64,7 @@ class BorrowerSessionManager {
   }
 
   render() {
-    this.checkIfKeyValueExistAndIsProfileGenerated({ btnYes });
+    this.checkIfBorrowerProfileIsGenerated({ btnYes });
     this.bindEvent();
   }
 
@@ -72,21 +72,21 @@ class BorrowerSessionManager {
     this.btnYes.addEventListener('click', this.logoutBorrower.bind(this));
   }
 
-  checkIfKeyValueExistAndIsProfileGenerated() {
+  checkIfBorrowerProfileIsGenerated() {
     indexDB.createDatabase(
       {
-        storeName: 'borrower-data',
+        storeName: 'recent-borrower-data',
         keyPathValue: 'borrower',
         keys: 'isProfileBorrowerGenerated',
-        runSuccessStatus: this.runWhenKeyValueExistAndIsBorrowerProfileGenerated.bind(this),
-        runFairStatus: this.runWhenKeyValueExistAndIsBorrowerProfileGeneratedFalse.bind(this),
-        runErrorStatus: this.runWhenKeyValueDoesNotExist.bind(this),
+        trueState: this.runWhenBorrowerProfileIsGenerated.bind(this),
+        falseState: this.runWhenBorrowerProfileIsNotGenerated.bind(this),
+        undefinedState: this.runWhenKeyValueDoesNotExist.bind(this),
       },
-      'checkIfKeyPathValueExistAndFieldIsTrue',
+      'checkKeysValueState',
     );
   }
 
-  runWhenKeyValueExistAndIsBorrowerProfileGenerated() {
+  runWhenBorrowerProfileIsGenerated() {
     window.location.href = './borrower-profile.html';
   }
 
@@ -104,7 +104,7 @@ class BorrowerSessionManager {
   getBorrowerDataFromDatabase() {
     indexDB.createDatabase(
       {
-        storeName: 'borrower-data',
+        storeName: 'recent-borrower-data',
         keyPathValue: 'borrower',
         returnData: this.returnData.bind(this),
       },
@@ -112,26 +112,26 @@ class BorrowerSessionManager {
     );
   }
 
-  runWhenKeyValueExistAndIsBorrowerProfileGeneratedFalse() {
+  runWhenBorrowerProfileIsNotGenerated() {
     indexDB.createDatabase(
       {
-        storeName: 'borrower-data',
+        storeName: 'recent-borrower-data',
         keyPathValue: 'borrower',
         keys: 'isBorrowerLogin',
-        runSuccessStatus: this.runWhenKeyValueExistAndIsBorrowerLogin.bind(this),
-        runFairStatus: this.runWhenKeyValueExistAndIsBorrowerLoginIsFalse.bind(this),
-        runErrorStatus: this.runWhenKeyValueDoesNotExist.bind(this),
+        trueState: this.runWhenBorrowerIsLogin.bind(this),
+        falseState: this.runWhenBorrowerIsNotLogin.bind(this),
+        undefinedState: this.runWhenKeyValueDoesNotExist.bind(this),
       },
-      'checkIfKeyPathValueExistAndFieldIsTrue',
+      'checkKeysValueState',
     );
   }
 
-  runWhenKeyValueExistAndIsBorrowerLogin() {
+  runWhenBorrowerIsLogin() {
     html.style.display = 'block';
     this.getBorrowerDataFromDatabase();
   }
 
-  runWhenKeyValueExistAndIsBorrowerLoginIsFalse() {
+  runWhenBorrowerIsNotLogin() {
     window.location.href = './borrower-login.html';
     console.log('You are not logged in');
   }
@@ -144,12 +144,12 @@ class BorrowerSessionManager {
   logoutBorrower() {
     indexDB.createDatabase(
       {
-        storeName: 'borrower-data',
+        storeName: 'recent-borrower-data',
         keyPathValue: 'borrower',
         newValue: { isBorrowerLogin: false },
         keys: ['isBorrowerLogin'],
-        runSuccessStatus: this.checkIfKeyValueExistAndIsProfileGenerated.bind(this),
-        runErrorStatus: this.runWhenKeyValueDoesNotExist.bind(this),
+        trueState: this.checkIfBorrowerProfileIsGenerated.bind(this),
+        undefinedState: this.runWhenKeyValueDoesNotExist.bind(this),
       },
       'modifyData',
     );
@@ -172,7 +172,7 @@ function openAdminDashboard() {
 function modifyDataInDatabase() {
   indexDB.createDatabase(
     {
-      storeName: 'borrower-data',
+      storeName: 'recent-borrower-data',
       keyPathValue: 'borrower',
       newValue: {
         gender: gender.value,
@@ -181,8 +181,8 @@ function modifyDataInDatabase() {
       },
       keys: ['gender', 'phone-number', 'isProfileBorrowerGenerated'],
 
-      runSuccessStatus: openAdminDashboard,
-      runErrorStatus: failModifyingAdminData,
+      trueState: openAdminDashboard,
+      undefinedState: failModifyingAdminData,
     },
     'modifyData',
   );

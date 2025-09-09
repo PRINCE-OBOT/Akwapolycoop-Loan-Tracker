@@ -54,8 +54,8 @@ function storeAdminLoanDataToDatabase() {
     {
       storeName: 'admin-dashboard-loan-data',
       data: adminLoanData,
-      runSuccessStatus: adminDashboardLoanDataIsStored,
-      runErrorStatus: adminDashboardLoanDataNotStored,
+      trueState: adminDashboardLoanDataIsStored,
+      undefinedState: adminDashboardLoanDataNotStored,
     },
     'storeData',
   );

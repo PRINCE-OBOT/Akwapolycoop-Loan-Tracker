@@ -132,7 +132,7 @@ input::placeholder {
   opacity: 0.3;
 }
 
-.dialog-logout-section h4 {
+dialog h4 {
   color: var(--white);
   font-weight: 400;
   text-align: center;
