@@ -59,40 +59,46 @@ new Modal({ btnShowModal: btnLogout, btnCloseModal: btnYes, dialog });
 
 class BorrowerSessionManager {
   constructor() {
-    this.btnYes = btnYes;
     this.render();
   }
 
   render() {
-    this.checkIfBorrowerProfileIsGenerated({ btnYes });
     this.bindEvent();
+    this.checkIfThereIsRecentLoanApplicant();
+    new FormUtility({
+      buttonSubmit: btnValidate,
+      messages,
+      inputs,
+      runWhenAllFormIsValid: this.modifyRecentBorrowerSignUp.bind(this),
+    });
   }
 
   bindEvent() {
-    this.btnYes.addEventListener('click', this.logoutBorrower.bind(this));
+    btnYes.addEventListener('click', this.logoutBorrower.bind(this));
   }
 
-  checkIfBorrowerProfileIsGenerated() {
+  checkIfThereIsRecentLoanApplicant() {
     indexDB.createDatabase(
       {
-        storeName: 'recent-borrower-data',
-        keyPathValue: 'borrower',
-        keys: 'isProfileBorrowerGenerated',
-        trueState: this.runWhenBorrowerProfileIsGenerated.bind(this),
-        falseState: this.runWhenBorrowerProfileIsNotGenerated.bind(this),
-        undefinedState: this.runWhenKeyValueDoesNotExist.bind(this),
+        storeName: 'borrower-recently-loan-applicant',
+        keyPathValue: 'recent-loan-applicant',
+        key: 'isRecentLoanApplicant',
+        getMethod: 'get',
+        trueState: this.navigateToProfilePage.bind(this),
+        falseState: this.checkIfThereIsRecentSignUpBorrower.bind(this),
+        undefinedState: this.checkIfThereIsRecentSignUpBorrower.bind(this),
       },
       'checkKeysValueState',
     );
   }
 
-  runWhenBorrowerProfileIsGenerated() {
+  navigateToProfilePage() {
     window.location.href = './borrower-profile.html';
   }
 
   returnData(data) {
     if (data === undefined) {
-      this.setGreetingTextContent('You do not have a data');
+      console.log('Did not find key in store');
       return;
     }
 
@@ -101,100 +107,173 @@ class BorrowerSessionManager {
     email.value = data.email;
   }
 
-  getBorrowerDataFromDatabase() {
+  getRecentSignUpBorrower() {
     indexDB.createDatabase(
       {
-        storeName: 'recent-borrower-data',
-        keyPathValue: 'borrower',
+        storeName: 'borrower-recently-sign-up',
+        keyPathValue: 'recent-sign-up',
+        getMethod: 'get',
         returnData: this.returnData.bind(this),
       },
       'getData',
     );
   }
 
-  runWhenBorrowerProfileIsNotGenerated() {
+  checkIfThereIsRecentSignUpBorrower() {
     indexDB.createDatabase(
       {
-        storeName: 'recent-borrower-data',
-        keyPathValue: 'borrower',
-        keys: 'isBorrowerLogin',
-        trueState: this.runWhenBorrowerIsLogin.bind(this),
-        falseState: this.runWhenBorrowerIsNotLogin.bind(this),
-        undefinedState: this.runWhenKeyValueDoesNotExist.bind(this),
+        storeName: 'borrower-recently-sign-up',
+        keyPathValue: 'recent-sign-up',
+        key: 'isRecentSignUpBorrower',
+        getMethod: 'get',
+        trueState: this.recentSignUpBorrowerExist.bind(this),
+        falseState: this.redirectToLoginPage.bind(this),
+        undefinedState: this.redirectToLoginPage.bind(this),
       },
       'checkKeysValueState',
     );
   }
 
-  runWhenBorrowerIsLogin() {
+  recentSignUpBorrowerExist() {
     html.style.display = 'block';
-    this.getBorrowerDataFromDatabase();
+    this.getRecentSignUpBorrower();
   }
 
-  runWhenBorrowerIsNotLogin() {
+  redirectToLoginPage() {
     window.location.href = './borrower-login.html';
     console.log('You are not logged in');
-  }
-
-  runWhenKeyValueDoesNotExist() {
-    window.location.href = './borrower-login.html';
-    console.log('keys value doest not exist');
   }
 
   logoutBorrower() {
     indexDB.createDatabase(
       {
-        storeName: 'recent-borrower-data',
-        keyPathValue: 'borrower',
-        newValue: { isBorrowerLogin: false },
-        keys: ['isBorrowerLogin'],
-        trueState: this.checkIfBorrowerProfileIsGenerated.bind(this),
+        storeName: 'borrower-recently-sign-up',
+        keyPathValue: 'recent-sign-up',
+        newValue: { isRecentSignUpBorrower: false },
+        keys: ['isRecentSignUpBorrower'],
+        getMethod: 'get',
+        trueState: this.redirectToLoginPage.bind(this),
         undefinedState: this.runWhenKeyValueDoesNotExist.bind(this),
       },
       'modifyData',
     );
   }
-}
-new BorrowerSessionManager({ btnYes });
 
-function failModifyingAdminData() {
-  alert('indexedDB was not able to update borrower Dashboard data');
-}
+  runWhenKeyValueDoesNotExist() {
+    console.log('Key does not exist');
+  }
 
-function openAdminDashboard() {
-  displayRegistrationProcess.textContent = 'Generating Profile...';
+  modifyRecentBorrowerSignUp() {
+    indexDB.createDatabase(
+      {
+        storeName: 'borrower-recently-sign-up',
+        keyPathValue: 'recent-sign-up',
+        getMethod: 'get',
+        newValue: {
+          isRecentSignUpBorrower: false,
+        },
+        keys: ['isRecentSignUpBorrower'],
 
-  setTimeout(() => {
-    window.location.href = './borrower-dashboard.html';
-  }, 2000);
-}
-
-function modifyDataInDatabase() {
-  indexDB.createDatabase(
-    {
-      storeName: 'recent-borrower-data',
-      keyPathValue: 'borrower',
-      newValue: {
-        gender: gender.value,
-        'phone-number': phoneNumber.value,
-        isProfileBorrowerGenerated: true,
+        trueState: this.getDataInRecentSignUp.bind(this),
+        undefinedState: this.failModifyingAdminData.bind(this),
       },
-      keys: ['gender', 'phone-number', 'isProfileBorrowerGenerated'],
+      'modifyData',
+    );
+  }
 
-      trueState: openAdminDashboard,
-      undefinedState: failModifyingAdminData,
-    },
-    'modifyData',
-  );
+  getDataInRecentSignUp() {
+    indexDB.createDatabase(
+      {
+        storeName: 'borrower-recently-sign-up',
+        getMethod: 'get',
+        keyPathValue: 'recent-sign-up',
+        returnData: this.storeDataToLoanApplicantList.bind(this),
+        trueState: this.processNavigatingToProfilePage.bind(this),
+        undefinedState: this.failModifyingAdminData.bind(this),
+      },
+      'getData',
+    );
+  }
+
+  getDataInRecentSignUpForRecentApplicant() {
+    indexDB.createDatabase(
+      {
+        storeName: 'borrower-recently-sign-up',
+        getMethod: 'get',
+        keyPathValue: 'recent-sign-up',
+        returnData: this.storeDataToBorrowerRecentLoanApplicant.bind(this),
+        trueState: this.processNavigatingToProfilePage.bind(this),
+        undefinedState: this.failModifyingAdminData.bind(this),
+      },
+      'getData',
+    );
+  }
+
+  storeDataToLoanApplicantList(data) {
+    const keys = ['id', 'isRecentLoanApplicant'];
+
+    for (let i = 0; i < keys.length; i++) {
+      delete data[keys[i]];
+    }
+
+    indexDB.createDatabase(
+      {
+        storeName: 'borrower-loan-applicant-list',
+        data,
+        trueState: this.getDataInRecentSignUpForRecentApplicant.bind(this),
+        undefinedState: this.dataNotStored.bind(this),
+      },
+      'storeData',
+    );
+  }
+
+  storeDataToBorrowerRecentLoanApplicant(data) {
+    data.id = 'recent-loan-applicant';
+    data.isRecentLoanApplicant = true;
+
+    indexDB.createDatabase(
+      {
+        storeName: 'borrower-recently-loan-applicant',
+        data,
+        trueState: this.navigateToProfilePage.bind(this),
+        undefinedState: this.dataNotStored.bind(this),
+      },
+      'storeData',
+    );
+  }
+
+  dataNotStored() {
+    console.log('Not stored');
+  }
+
+  dataNotStoredToBorrowerLoanApplicantList() {
+    console.log('Data not stored to loan applicant list');
+  }
+
+  storeDataToRecentLoanApplicant(data) {
+    delete data.id;
+
+    indexDB.createDatabase(
+      {
+        storeName: 'borrower-loan-applicant-list',
+        data,
+        trueState: this.storeDataToRecentLoanApplicant.bind(this),
+        undefinedState: this.dataNotStoredToBorrowerLoanApplicantList.bind(this),
+      },
+      'storeData',
+    );
+  }
+
+  processNavigatingToProfilePage() {
+    displayRegistrationProcess.textContent = 'Generating Profile...';
+
+    setTimeout(() => {
+      this.navigateToProfilePage();
+    }, 2000);
+  }
+
+  failModifyingAdminData() {
+    alert('indexedDB was not able to update borrower Dashboard data');
+  }
 }
-
-function runWhenAllFormIsValid() {
-  modifyDataInDatabase();
-}
-
-new FormUtility({
-  buttonSubmit: btnValidate,
-  messages,
-  inputs,
-  runWhenAllFormIsValid,
-});
+new BorrowerSessionManager();

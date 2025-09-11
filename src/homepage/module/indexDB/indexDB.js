@@ -77,12 +77,12 @@ const indexDB = {
   },
 
   checkKeysValueState(
-    { storeName, keys, keyPathValue, undefinedState, trueState, falseState },
+    { storeName, key, getMethod, keyPathValue, undefinedState, trueState, falseState },
     db,
   ) {
     function returnData(data) {
       if (data !== undefined) {
-        if (data[keys]) {
+        if (data[key]) {
           trueState();
           return;
         }
@@ -96,6 +96,7 @@ const indexDB = {
       {
         storeName,
         keyPathValue,
+        getMethod,
         returnData,
       },
       db,
@@ -133,6 +134,11 @@ const indexDB = {
     db,
   ) {
     function returnData(data) {
+      if (data === undefined) {
+        undefinedState();
+        return;
+      }
+
       keys.forEach((key) => {
         data[key] = newValue[key];
       });

@@ -67,12 +67,28 @@ class BorrowerSignUpManager {
     });
   }
 
+  modifyRecentLoanApplicantValue() {
+    console.log('run');
+    indexDB.createDatabase(
+      {
+        storeName: 'borrower-recently-loan-applicant',
+        keyPathValue: 'recent-loan-applicant',
+        newValue: { isRecentLoanApplicant: false },
+        keys: ['isRecentLoanApplicant'],
+        getMethod: 'get',
+        trueState: this.checkIfUserExistInLoanApplicantList.bind(this),
+        undefinedState: this.checkIfUserExistInLoanApplicantList.bind(this),
+      },
+      'modifyData',
+    );
+  }
+
   resetForm() {
     form.reset();
   }
 
   runWhenAllFormIsValid() {
-    this.checkIfUserExistInLoanApplicantList();
+    this.modifyRecentLoanApplicantValue();
   }
 
   borrowerDataNotStored() {
@@ -182,8 +198,8 @@ class BorrowerSignUpManager {
       password: password.value,
       confirmPassword: confirmPassword.value,
       username,
-      isBorrowerLogin: true,
-      isProfileGenerated: false,
+      isRecentSignUpBorrower: true,
+      isRecentLoanApplicant: false,
     };
     return borrowerData;
   }
