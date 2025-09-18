@@ -61,7 +61,7 @@
 //         newValue: { isBorrowerLogin: false },
 //         keys: ['isBorrowerLogin'],
 //         trueState: this.checkIfBorrowerProfileIsGenerated.bind(this),
-//         undefinedState: this.runWhenKeyValueDoesNotExist.bind(this),
+//         undefinedState: this.keyValueDoesNotExist.bind(this),
 //       },
 //       'modifyData',
 //     );

@@ -38,6 +38,7 @@ function modifyDataInDatabase() {
     {
       storeName: 'admin-data',
       keyPathValue: 'admin',
+      getMethod: 'get',
       newValue: { isAdminLogin: true },
       keys: ['isAdminLogin'],
 
@@ -52,25 +53,25 @@ function runWhenKeyValueExistAndAdminIsFalse() {
   modifyDataInDatabase();
 }
 
-function runWhenKeyValueExistAndAdminLoginIsTrue() {
+function adminIsLogin() {
   setLoginStatusTextContent('Admin Already Exist');
 }
 
-function runWhenKeyValueDoesNotExist() {
+function keyValueDoesNotExist() {
   alert('keys path value does not exist');
 }
 
-function checkIfKeyValueExistAndIsAdminLogin() {
+function checkIfAdminIsLogin() {
   indexDB.createDatabase(
     {
       storeName: 'admin-data',
       keyPathValue: 'admin',
-      keys: 'isAdminLogin',
-      trueState: runWhenKeyValueExistAndAdminLoginIsTrue,
+      getMethod: 'get',
+      trueState: adminIsLogin,
       falseState: runWhenKeyValueExistAndAdminIsFalse,
-      undefinedState: runWhenKeyValueDoesNotExist,
+      undefinedState: keyValueDoesNotExist,
     },
-    'checkKeysValueState',
+    'checkIfThereIsRecentData',
   );
 }
 
@@ -79,7 +80,7 @@ function runWhenDataIsIncorrect() {
 }
 
 function runWhenDataIsCorrect() {
-  checkIfKeyValueExistAndIsAdminLogin();
+  checkIfAdminIsLogin();
 }
 
 function processUserLoginDetails() {
@@ -92,6 +93,7 @@ function processUserLoginDetails() {
       username: username.value,
       password: password.value,
       storeName: 'admin-data',
+      getMethod: 'get',
       trueState: runWhenDataIsCorrect,
       undefinedState: runWhenDataIsIncorrect,
     },

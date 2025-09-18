@@ -6,6 +6,21 @@ const approvedLoanValue = document.querySelector('.approved-loan-value');
 const pendingLoanValue = document.querySelector('.pending-loan-value');
 const declineLoanValue = document.querySelector('.decline-loan-value');
 
+function storeAdminLoanDataToDatabase() {
+  const adminLoanData = getAdminDashboardLoanData();
+
+  indexDB.createDatabase(
+    {
+      storeName: 'admin-dashboard-loan-data',
+      data: adminLoanData,
+      trueState: adminDashboardLoanDataIsStored,
+      undefinedState: adminDashboardLoanDataNotStored,
+    },
+    'storeData',
+  );
+}
+storeAdminLoanDataToDatabase();
+
 function getAdminDashboardLoanData() {
   const adminLoanData = {
     id: 'admin-loan-data',
@@ -40,25 +55,11 @@ function setDeclineLoanTextContent(textContent) {
 }
 
 function adminDashboardLoanDataIsStored() {
-  alert('Admin default loan data successfully stored');
+  console.log('Admin default loan data successfully stored');
 }
 
 function adminDashboardLoanDataNotStored() {
   console.log('admin default loan data not successfully stored');
-}
-
-function storeAdminLoanDataToDatabase() {
-  const adminLoanData = getAdminDashboardLoanData();
-
-  indexDB.createDatabase(
-    {
-      storeName: 'admin-dashboard-loan-data',
-      data: adminLoanData,
-      trueState: adminDashboardLoanDataIsStored,
-      undefinedState: adminDashboardLoanDataNotStored,
-    },
-    'storeData',
-  );
 }
 
 function getAdminLoanDataFromDatabase() {
@@ -79,16 +80,28 @@ function getAdminLoanDataFromDatabase() {
     {
       storeName: 'admin-dashboard-loan-data',
       keyPathValue: 'admin-loan-data',
+      getMethod: 'get',
       returnData,
     },
     'getData',
   );
 }
-function runWhenKeyValueExistAndAdminDashboardLoanDataIsTrue() {
-  getAdminLoanDataFromDatabase();
+
+function checkIfAdminLoanDataExist() {
+  indexDB.createDatabase(
+    {
+      storeName: 'admin-dashboard-loan-data',
+      keyPathValue: 'admin-loan-data',
+      getMethod: 'get',
+      trueState: getAdminLoanDataFromDatabase,
+      falseState: useDefaultAdminLoanData,
+      undefinedState: useDefaultAdminLoanData,
+    },
+    'checkIfThereIsRecentData',
+  );
 }
 
-function runWhenKeyValueExistAndAdminDashboardLoanIsFalse() {
+function useDefaultAdminLoanData() {
   const defaultLoanValue = '0000';
   setTotalLoanTextContent(defaultLoanValue);
   setApproveLoanTextContent(defaultLoanValue);
@@ -97,12 +110,4 @@ function runWhenKeyValueExistAndAdminDashboardLoanIsFalse() {
   setDeclineLoanTextContent(defaultLoanValue);
 }
 
-function runWhenAdminLoanDataKeyLoanDataDoesNotExist() {
-  storeAdminLoanDataToDatabase();
-}
-
-export {
-  runWhenAdminLoanDataKeyLoanDataDoesNotExist,
-  runWhenKeyValueExistAndAdminDashboardLoanDataIsTrue,
-  runWhenKeyValueExistAndAdminDashboardLoanIsFalse,
-};
+export { useDefaultAdminLoanData, checkIfAdminLoanDataExist };

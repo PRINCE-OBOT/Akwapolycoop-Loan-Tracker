@@ -4,11 +4,7 @@ const common = require('./webpack.common.js');
 module.exports = merge(common, {
   mode: 'development',
   devServer: {
-    watchFiles: [
-      './src/homepage/template_homepage.html',
-      './src/homepage/admin/admin-dashboard/template_admin-dashboard.html',
-      './src/homepage/admin/admin-login/template_admin-login.html',
-    ],
+    watchFiles: ['src/**/*.html',],
   },
   devtool: 'inline-source-map',
   module: {
@@ -19,5 +15,4 @@ module.exports = merge(common, {
       },
     ],
   },
-
 });

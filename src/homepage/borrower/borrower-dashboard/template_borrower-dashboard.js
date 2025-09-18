@@ -69,7 +69,7 @@ class BorrowerSessionManager {
       buttonSubmit: btnValidate,
       messages,
       inputs,
-      runWhenAllFormIsValid: this.modifyRecentBorrowerSignUp.bind(this),
+      runWhenAllFormIsValid: this.getDataInRecentSignUp.bind(this),
     });
   }
 
@@ -82,13 +82,12 @@ class BorrowerSessionManager {
       {
         storeName: 'borrower-recently-loan-applicant',
         keyPathValue: 'recent-loan-applicant',
-        key: 'isRecentLoanApplicant',
         getMethod: 'get',
         trueState: this.navigateToProfilePage.bind(this),
         falseState: this.checkIfThereIsRecentSignUpBorrower.bind(this),
         undefinedState: this.checkIfThereIsRecentSignUpBorrower.bind(this),
       },
-      'checkKeysValueState',
+      'checkIfThereIsRecentData',
     );
   }
 
@@ -107,7 +106,7 @@ class BorrowerSessionManager {
     email.value = data.email;
   }
 
-  getRecentSignUpBorrower() {
+  getRecentSignUpBorrowerData() {
     indexDB.createDatabase(
       {
         storeName: 'borrower-recently-sign-up',
@@ -124,22 +123,21 @@ class BorrowerSessionManager {
       {
         storeName: 'borrower-recently-sign-up',
         keyPathValue: 'recent-sign-up',
-        key: 'isRecentSignUpBorrower',
         getMethod: 'get',
-        trueState: this.recentSignUpBorrowerExist.bind(this),
-        falseState: this.redirectToLoginPage.bind(this),
-        undefinedState: this.redirectToLoginPage.bind(this),
+        trueState: this.navigateToDashboardPage.bind(this),
+        falseState: this.navigateToLoginPage.bind(this),
+        undefinedState: this.navigateToLoginPage.bind(this),
       },
-      'checkKeysValueState',
+      'checkIfThereIsRecentData',
     );
   }
 
-  recentSignUpBorrowerExist() {
+  navigateToDashboardPage() {
     html.style.display = 'block';
-    this.getRecentSignUpBorrower();
+    this.getRecentSignUpBorrowerData();
   }
 
-  redirectToLoginPage() {
+  navigateToLoginPage() {
     window.location.href = './borrower-login.html';
     console.log('You are not logged in');
   }
@@ -149,36 +147,19 @@ class BorrowerSessionManager {
       {
         storeName: 'borrower-recently-sign-up',
         keyPathValue: 'recent-sign-up',
-        newValue: { isRecentSignUpBorrower: false },
-        keys: ['isRecentSignUpBorrower'],
-        getMethod: 'get',
-        trueState: this.redirectToLoginPage.bind(this),
-        undefinedState: this.runWhenKeyValueDoesNotExist.bind(this),
+        trueState: this.navigateToLoginPage.bind(this),
+        undefinedState: this.errorWhileDeletingKey.bind(this),
       },
-      'modifyData',
+      'deleteKey',
     );
   }
 
-  runWhenKeyValueDoesNotExist() {
+  errorWhileDeletingKey() {
+    console.log('Error while deleting key');
+  }
+
+  keyValueDoesNotExist() {
     console.log('Key does not exist');
-  }
-
-  modifyRecentBorrowerSignUp() {
-    indexDB.createDatabase(
-      {
-        storeName: 'borrower-recently-sign-up',
-        keyPathValue: 'recent-sign-up',
-        getMethod: 'get',
-        newValue: {
-          isRecentSignUpBorrower: false,
-        },
-        keys: ['isRecentSignUpBorrower'],
-
-        trueState: this.getDataInRecentSignUp.bind(this),
-        undefinedState: this.failModifyingAdminData.bind(this),
-      },
-      'modifyData',
-    );
   }
 
   getDataInRecentSignUp() {
@@ -187,55 +168,42 @@ class BorrowerSessionManager {
         storeName: 'borrower-recently-sign-up',
         getMethod: 'get',
         keyPathValue: 'recent-sign-up',
-        returnData: this.storeDataToLoanApplicantList.bind(this),
-        trueState: this.processNavigatingToProfilePage.bind(this),
-        undefinedState: this.failModifyingAdminData.bind(this),
+        returnData: this.storeDataToRecentLoanApplicantAndLoanApplicantList.bind(this),
+        undefinedState: this.noDataReturn.bind(this),
       },
       'getData',
     );
   }
 
-  getDataInRecentSignUpForRecentApplicant() {
-    indexDB.createDatabase(
-      {
-        storeName: 'borrower-recently-sign-up',
-        getMethod: 'get',
-        keyPathValue: 'recent-sign-up',
-        returnData: this.storeDataToBorrowerRecentLoanApplicant.bind(this),
-        trueState: this.processNavigatingToProfilePage.bind(this),
-        undefinedState: this.failModifyingAdminData.bind(this),
-      },
-      'getData',
-    );
+  noDataReturn() {
+    console.log('No data return');
   }
 
-  storeDataToLoanApplicantList(data) {
-    const keys = ['id', 'isRecentLoanApplicant'];
-
-    for (let i = 0; i < keys.length; i++) {
-      delete data[keys[i]];
-    }
-
-    indexDB.createDatabase(
-      {
-        storeName: 'borrower-loan-applicant-list',
-        data,
-        trueState: this.getDataInRecentSignUpForRecentApplicant.bind(this),
-        undefinedState: this.dataNotStored.bind(this),
-      },
-      'storeData',
-    );
+  storeDataToRecentLoanApplicant() {
+    console.log('loan store in recent loan applicant');
   }
 
-  storeDataToBorrowerRecentLoanApplicant(data) {
+  storeDataToRecentLoanApplicantAndLoanApplicantList(data) {
     data.id = 'recent-loan-applicant';
-    data.isRecentLoanApplicant = true;
 
     indexDB.createDatabase(
       {
         storeName: 'borrower-recently-loan-applicant',
         data,
-        trueState: this.navigateToProfilePage.bind(this),
+        trueState: this.storeDataToRecentLoanApplicant.bind(this),
+        undefinedState: this.dataNotStored.bind(this),
+      },
+      'storeData',
+    );
+
+    const { ...cloneData } = data;
+    delete cloneData.id;
+
+    indexDB.createDatabase(
+      {
+        storeName: 'borrower-loan-applicant-list',
+        data: cloneData,
+        trueState: this.deleteRecentBorrowerSignUp.bind(this),
         undefinedState: this.dataNotStored.bind(this),
       },
       'storeData',
@@ -246,21 +214,15 @@ class BorrowerSessionManager {
     console.log('Not stored');
   }
 
-  dataNotStoredToBorrowerLoanApplicantList() {
-    console.log('Data not stored to loan applicant list');
-  }
-
-  storeDataToRecentLoanApplicant(data) {
-    delete data.id;
-
+  deleteRecentBorrowerSignUp() {
     indexDB.createDatabase(
       {
-        storeName: 'borrower-loan-applicant-list',
-        data,
-        trueState: this.storeDataToRecentLoanApplicant.bind(this),
-        undefinedState: this.dataNotStoredToBorrowerLoanApplicantList.bind(this),
+        storeName: 'borrower-recently-sign-up',
+        keyPathValue: 'recent-sign-up',
+        trueState: this.navigateToProfilePage.bind(this),
+        undefinedState: this.errorWhileDeletingKey.bind(this),
       },
-      'storeData',
+      'deleteKey',
     );
   }
 

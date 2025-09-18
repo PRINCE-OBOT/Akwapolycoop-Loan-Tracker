@@ -1,9 +1,8 @@
 import indexDB from '../../module/indexDB/indexDB';
 
 import {
-  runWhenAdminLoanDataKeyLoanDataDoesNotExist,
-  runWhenKeyValueExistAndAdminDashboardLoanDataIsTrue,
-  runWhenKeyValueExistAndAdminDashboardLoanIsFalse,
+  checkIfAdminLoanDataExist,
+  useDefaultAdminLoanData,
 } from './template_admin-dashboard-loan-data-value';
 
 import {
@@ -20,19 +19,13 @@ export default class AdminSessionManager {
     this.btnYes = btnYes;
     this.navigationSection = navigationSection;
     this.adminGreeting = adminGreeting;
-    ((this.runWhenAdminLoanDataKeyLoanDataDoesNotExist =
-      runWhenAdminLoanDataKeyLoanDataDoesNotExist),
-      (this.runWhenKeyValueExistAndAdminDashboardLoanDataIsTrue =
-        runWhenKeyValueExistAndAdminDashboardLoanDataIsTrue),
-      (this.runWhenKeyValueExistAndAdminDashboardLoanIsFalse =
-        runWhenKeyValueExistAndAdminDashboardLoanIsFalse),
-      (this.adminLoginAndSignupSection = adminLoginAndSignupSection),
-      (this.adminProfileSection = adminProfileSection),
-      this.render());
+    this.render();
   }
 
+  // fix checking when user sign up but information is not gotten from the database to fill in the dashboard
+
   render() {
-    this.checkIfKeyValueExistAndIsAdminLogin();
+    this.checkIfAdminIsLogin();
     this.selectLogoutButtonInAdminProfileSection();
     this.bindEvent();
   }
@@ -41,47 +34,40 @@ export default class AdminSessionManager {
     this.btnYes.addEventListener('click', this.logoutAdmin.bind(this));
   }
 
-  checkIfKeyValueExistAndIsAdminLogin() {
+  checkIfAdminIsLogin() {
     indexDB.createDatabase(
       {
         storeName: 'admin-data',
         keyPathValue: 'admin',
-        keys: 'isAdminLogin',
-        trueState: this.runWhenKeyValueExistAndAdminLoginIsTrue.bind(this),
-        falseState: this.runWhenKeyValueExistAndAdminLoginIsFalse.bind(this),
-        undefinedState: this.runWhenKeyValueDoesNotExist.bind(this),
+        getMethod: 'get',
+        trueState: this.adminIsLogin.bind(this),
+        undefinedState: this.adminIsNotLogin.bind(this),
       },
-      'checkKeysValueState',
+      'checkIfThereIsRecentData',
     );
   }
 
   selectLogoutButtonInAdminProfileSection() {
-    this.btnLogout = this.adminProfileSection.querySelector('.logout-button');
+    this.btnLogout = adminProfileSection.querySelector('.logout-button');
     new Modal({ btnShowModal: this.btnLogout, btnCloseModal: this.btnCancel, dialog: this.dialog });
     new Modal({ btnShowModal: this.btnLogout, btnCloseModal: this.btnYes, dialog: this.dialog });
   }
 
   insertAdminProfileSection() {
     this.removeNavigationSectionChild('.adminLoginSection');
-    this.appendNavigationSectionChild(this.adminProfileSection);
+    this.appendNavigationSectionChild(adminProfileSection);
   }
 
-  runWhenKeyValueExistAndAdminLoginIsTrue() {
+  adminIsLogin() {
     this.insertAdminProfileSection();
     this.getAdminUsernameFromDatabase();
-    this.runWhenKeyValueExistAndAdminDashboardLoanDataIsTrue();
+    checkIfAdminLoanDataExist();
   }
 
-  runWhenKeyValueExistAndAdminLoginIsFalse() {
+  adminIsNotLogin() {
     this.insertAdminLoginAndSignup();
     this.setGreetingTextContent('You are not logged in');
-    this.runWhenKeyValueExistAndAdminDashboardLoanIsFalse();
-  }
-
-  runWhenKeyValueDoesNotExist() {
-    console.log('keys value doest not exist');
-    this.runWhenKeyValueExistAndAdminLoginIsFalse();
-    this.runWhenAdminLoanDataKeyLoanDataDoesNotExist();
+    useDefaultAdminLoanData();
   }
 
   removeNavigationSectionChild(navigationToSectionRemove) {
@@ -98,7 +84,7 @@ export default class AdminSessionManager {
 
   insertAdminLoginAndSignup() {
     this.removeNavigationSectionChild('.adminProfileSection');
-    this.appendNavigationSectionChild(this.adminLoginAndSignupSection);
+    this.appendNavigationSectionChild(adminLoginAndSignupSection);
   }
 
   setGreetingTextContent(greetingTextContent) {
@@ -119,6 +105,7 @@ export default class AdminSessionManager {
       {
         storeName: 'admin-data',
         keyPathValue: 'admin',
+        getMethod: 'get',
         returnData: this.returnData.bind(this),
       },
       'getData',
@@ -130,21 +117,10 @@ export default class AdminSessionManager {
       {
         storeName: 'admin-data',
         keyPathValue: 'admin',
-        newValue: { isAdminLogin: false },
-        keys: ['isAdminLogin'],
-
-        // Use `checkIfKeyValueExistAndIsAdminLogin` in `trueState`
-        // to run `runWhenKeyValueExistAndAdminLoginIsTrue` and `runWhenKeyValueDoesNotExist`
-        // as it handle both s properly base on
-        // whether keys value exist and admin is logged in,
-        // instead of running `runWhenKeyValueExistAndAdminLoginIsTrue` directly on `trueState`
-        // when `undefinedState` is just a fallback when  `keys` is undefined
-        // as `runWhenKeyValueDoesNotExist` is not handle properly in `modifyData`
-
-        trueState: this.checkIfKeyValueExistAndIsAdminLogin.bind(this),
-        undefinedState: this.runWhenKeyValueDoesNotExist.bind(this),
+        trueState: this.render.bind(this),
+        undefinedState: this.errorWhileDeletingKey.bind(this),
       },
-      'modifyData',
+      'deleteKey',
     );
   }
 }

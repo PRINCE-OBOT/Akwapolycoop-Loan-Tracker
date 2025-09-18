@@ -50,44 +50,35 @@ const indexDB = {
   },
 
   checkIfLoginDetailsMatch(
-    { username, password, storeName, keyPathValue, undefinedState, trueState },
+    { username, password, storeName, getMethod, undefinedState, trueState },
     db,
   ) {
     function returnData(data) {
-      if (!data) {
-        undefinedState();
-        return;
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].username === username.value && data[i].password === password.value) {
+          trueState();
+          return;
+        }
       }
-
-      if (data.username === username && data.password === password) {
-        trueState();
-      } else {
-        undefinedState();
-      }
+      undefinedState();
     }
-
     this.getData(
       {
         storeName,
-        keyPathValue,
+        getMethod,
         returnData,
       },
       db,
     );
   },
 
-  checkKeysValueState(
-    { storeName, key, getMethod, keyPathValue, undefinedState, trueState, falseState },
-    db,
-  ) {
+  checkIfThereIsRecentData({ storeName, getMethod, keyPathValue, undefinedState, trueState }, db) {
     function returnData(data) {
       if (data !== undefined) {
-        if (data[key]) {
+        if (data.id) {
           trueState();
           return;
         }
-        falseState();
-        return;
       }
       undefinedState();
     }
@@ -103,7 +94,7 @@ const indexDB = {
     );
   },
 
-  checkIfDataExist(
+  checkIfUserAlreadyHaveAccount(
     { storeName, getMethod, firstName, lastName, email, trueState, falseState },
     db,
   ) {
@@ -147,11 +138,10 @@ const indexDB = {
 
     this.getData({ storeName, keyPathValue, getMethod, returnData }, db);
   },
-  getData({ storeName, keyPathValue, getMethod, returnData }, db) {
+  getData({ storeName, keyPathValue, getMethod, returnData, undefinedState }, db) {
     const storeHas = this.checkIfStoreHasName({ storeName }, db);
 
     if (!storeHas.name) return;
-
     const transaction = db.transaction(storeName, 'readwrite');
 
     const store = transaction.objectStore(storeName);
@@ -171,6 +161,29 @@ const indexDB = {
       const data = event.target.result;
 
       returnData(data);
+    };
+
+    request.onerror = () => {
+      undefinedState();
+    };
+  },
+
+  deleteKey({ storeName, keyPathValue, trueState, undefinedState }, db) {
+    const storeHas = this.checkIfStoreHasName({ storeName }, db);
+
+    if (!storeHas.name) return;
+    const transaction = db.transaction(storeName, 'readwrite');
+
+    const store = transaction.objectStore(storeName);
+
+    const deleteRequest = store.delete(keyPathValue);
+
+    deleteRequest.onsuccess = () => {
+      trueState();
+    };
+
+    deleteRequest.onerror = () => {
+      undefinedState();
     };
   },
 

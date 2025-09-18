@@ -63,32 +63,12 @@ class BorrowerSignUpManager {
       buttonSubmit: btnSignUp,
       messages,
       inputs,
-      runWhenAllFormIsValid: this.runWhenAllFormIsValid.bind(this),
+      runWhenAllFormIsValid: this.checkIfUserExistInLoanApplicantList.bind(this),
     });
-  }
-
-  modifyRecentLoanApplicantValue() {
-    console.log('run');
-    indexDB.createDatabase(
-      {
-        storeName: 'borrower-recently-loan-applicant',
-        keyPathValue: 'recent-loan-applicant',
-        newValue: { isRecentLoanApplicant: false },
-        keys: ['isRecentLoanApplicant'],
-        getMethod: 'get',
-        trueState: this.checkIfUserExistInLoanApplicantList.bind(this),
-        undefinedState: this.checkIfUserExistInLoanApplicantList.bind(this),
-      },
-      'modifyData',
-    );
   }
 
   resetForm() {
     form.reset();
-  }
-
-  runWhenAllFormIsValid() {
-    this.modifyRecentLoanApplicantValue();
   }
 
   borrowerDataNotStored() {
@@ -107,7 +87,18 @@ class BorrowerSignUpManager {
   }
 
   checkBorrowerSignUpList() {
-    this.checkIfUserExistInBorrowerSignUpList();
+    indexDB.createDatabase(
+      {
+        storeName: 'borrower-sign-up-list',
+        getMethod: 'getAll',
+        firstName,
+        lastName,
+        email,
+        trueState: this.userAlreadyExist.bind(this),
+        falseState: this.storeDataToBorrowerSignUpList.bind(this),
+      },
+      'checkIfUserAlreadyHaveAccount',
+    );
   }
 
   checkIfUserExistInLoanApplicantList() {
@@ -121,22 +112,7 @@ class BorrowerSignUpManager {
         trueState: this.userAlreadyExist.bind(this),
         falseState: this.checkBorrowerSignUpList.bind(this),
       },
-      'checkIfDataExist',
-    );
-  }
-
-  checkIfUserExistInBorrowerSignUpList() {
-    indexDB.createDatabase(
-      {
-        storeName: 'borrower-sign-up-list',
-        getMethod: 'getAll',
-        firstName,
-        lastName,
-        email,
-        trueState: this.userAlreadyExist.bind(this),
-        falseState: this.storeDataToBorrowerSignUpList.bind(this),
-      },
-      'checkIfDataExist',
+      'checkIfUserAlreadyHaveAccount',
     );
   }
 
@@ -162,14 +138,30 @@ class BorrowerSignUpManager {
       {
         storeName: 'borrower-recently-sign-up',
         data: borrowerData,
-        trueState: this.borrowerDataCompletelyStore.bind(this),
+        trueState: this.deleteRecentLoanApplicant.bind(this),
         undefinedState: this.borrowerDataNotStored.bind(this),
       },
       'storeData',
     );
   }
 
-  borrowerDataCompletelyStore() {
+  deleteRecentLoanApplicant() {
+    indexDB.createDatabase(
+      {
+        storeName: 'borrower-recently-loan-applicant',
+        keyPathValue: 'recent-loan-applicant',
+        trueState: this.navigateToDashboardPage.bind(this),
+        undefinedState: this.errorWhileDeletingKey.bind(this),
+      },
+      'deleteKey',
+    );
+  }
+
+  errorWhileDeletingKey() {
+    alert('error while deleting recent loan applicant');
+  }
+
+  navigateToDashboardPage() {
     this.setBorrowerSignUpStatus('Signing up...');
 
     this.displaySignUpStatusModal();
@@ -198,8 +190,6 @@ class BorrowerSignUpManager {
       password: password.value,
       confirmPassword: confirmPassword.value,
       username,
-      isRecentSignUpBorrower: true,
-      isRecentLoanApplicant: false,
     };
     return borrowerData;
   }

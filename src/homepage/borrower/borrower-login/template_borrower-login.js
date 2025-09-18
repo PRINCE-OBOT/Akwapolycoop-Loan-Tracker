@@ -17,97 +17,88 @@ const password = document.querySelector('#password');
 const dialog = document.querySelector('dialog');
 const loginStatus = dialog.querySelector('.login-status');
 
-const registerPageReference = document.createElement('a');
-registerPageReference.href = './borrower-dashboard.html';
+class LoginManager {
+  constructor() {
+    this.render();
+  }
 
-function failModifyingBorrowerData() {
-  alert('indexedDB was not able to modify isBorrowerLogin state');
+  render() {
+    new PasswordLogin({ field: password });
+
+    new PasswordLogin({ field: username });
+
+    new LoginCheck({
+      loginButton: btnLogin,
+      inputs,
+      runWhenFormIsFilled: this.checkIfLoanApplicantExist.bind(this),
+    });
+  }
+
+  setLoginStatusTextContent(textContent) {
+    loginStatus.textContent = textContent;
+  }
+
+  displayLoginStatusModal() {
+    setTimeout(() => {
+      const modal = new Modal({ dialog });
+      modal.showModal();
+    }, 200);
+  }
+
+  navigateToProfilePage() {
+    this.setLoginStatusTextContent('Logging in...');
+
+    this.displayLoginStatusModal();
+
+    setTimeout(() => {
+      window.location.href = './borrower-profile.html';
+    }, 2000);
+  }
+
+  navigateToDashboardPage() {
+    this.setLoginStatusTextContent('Logging in...');
+
+    this.displayLoginStatusModal();
+
+    setTimeout(() => {
+      window.location.href = './borrower-dashboard.html';
+    }, 2000);
+  }
+
+  incorrectUsernameOrPassword() {
+    this.setLoginStatusTextContent('Incorrect Username or Password');
+
+    this.displayLoginStatusModal();
+  }
+
+  checkIfBorrowerHasSignUp() {
+    indexDB.createDatabase(
+      {
+        storeName: 'borrower-sign-up-list',
+        getMethod: 'getAll',
+        username,
+        password,
+        trueState: this.navigateToDashboardPage.bind(this),
+        undefinedState: this.incorrectUsernameOrPassword.bind(this),
+      },
+      'checkIfLoginDetailsMatch',
+    );
+    this.setLoginStatusTextContent('Incorrect username or password');
+  }
+
+  checkIfLoanApplicantExist() {
+    indexDB.createDatabase(
+      {
+        storeName: 'borrower-loan-applicant-list',
+        getMethod: 'getAll',
+        username,
+        password,
+        trueState: this.navigateToProfilePage.bind(this),
+        undefinedState: this.checkIfBorrowerHasSignUp.bind(this),
+      },
+      'checkIfLoginDetailsMatch',
+    );
+  }
 }
 
-function setLoginStatusTextContent(textContent) {
-  loginStatus.textContent = textContent;
-}
-
-function openBorrowerRegistrationPage() {
-  setLoginStatusTextContent('Logging in...');
-
-  setTimeout(() => {
-    registerPageReference.click();
-  }, 2000);
-}
-
-function modifyDataInDatabase() {
-  indexDB.createDatabase(
-    {
-      storeName: 'recent-borrower-data',
-      keyPathValue: 'borrower',
-      newValue: { isBorrowerLogin: true },
-      keys: ['isBorrowerLogin'],
-
-      trueState: openBorrowerRegistrationPage,
-      undefinedState: failModifyingBorrowerData,
-    },
-    'modifyData',
-  );
-}
-
-function runWhenKeyValueExistAndBorrowerLoginIsFalse() {
-  modifyDataInDatabase();
-}
-
-function runWhenKeyValueExistAndBorrowerLoginIsTrue() {
-  setLoginStatusTextContent('Borrower Already Exist');
-}
-
-function runWhenKeyValueDoesNotExist() {
-  alert('keys path value does not exist');
-}
-
-function checkIfKeyValueExistAndIsAdminLogin() {
-  indexDB.createDatabase(
-    {
-      storeName: 'recent-borrower-data',
-      keyPathValue: 'borrower',
-      keys: 'isBorrowerLogin',
-      trueState: runWhenKeyValueExistAndBorrowerLoginIsTrue,
-      falseState: runWhenKeyValueExistAndBorrowerLoginIsFalse,
-      undefinedState: runWhenKeyValueDoesNotExist,
-    },
-    'checkKeysValueState',
-  );
-}
-
-function runWhenDataIsIncorrect() {
-  setLoginStatusTextContent('Incorrect username or password');
-}
-
-function runWhenDataIsCorrect() {
-  checkIfKeyValueExistAndIsAdminLogin();
-}
-
-function processUserLoginDetails() {
-  const modal = new Modal({ dialog });
-  modal.showModal();
-
-  indexDB.createDatabase(
-    {
-      keyPathValue: 'borrower',
-      username: username.value,
-      password: password.value,
-      storeName: 'recent-borrower-data',
-      trueState: runWhenDataIsCorrect,
-      undefinedState: runWhenDataIsIncorrect,
-    },
-    'checkIfLoginDetailsMatch',
-  );
-}
-
-new PasswordLogin({ field: password });
-
-new PasswordLogin({ field: username });
-
-new LoginCheck({
-  loginButton: btnLogin,
-  inputs,
-  runWhenFormIsFilled: processUserLoginDetails,
-});
+new LoginManager();

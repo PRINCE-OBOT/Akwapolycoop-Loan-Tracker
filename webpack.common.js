@@ -3,12 +3,9 @@ const HTMLWebpackPlugins = require('html-webpack-plugin');
 
 module.exports = {
   entry: {
-    homepage: './src/homepage/template_homepage.js',
+    index: './src/homepage/template_homepage.js',
 
     'admin-dashboard': './src/homepage/admin/admin-dashboard/template_admin-dashboard.js',
-
-    'admin-dashboard-loan-data':
-      './src/homepage/admin/admin-dashboard/template_admin-dashboard-loan-data-value.js',
 
     'admin-login': './src/homepage/admin/admin-login/template_admin-login.js',
 
@@ -20,31 +17,30 @@ module.exports = {
 
     'borrower-dashboard':
       './src/homepage/borrower/borrower-dashboard/template_borrower-dashboard.js',
-    
-      'borrower-profile':
-      './src/homepage/borrower/borrower-profile/template_borrower-profile.js',
+
+    'borrower-profile': './src/homepage/borrower/borrower-profile/template_borrower-profile.js',
   },
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
     clean: true,
   },
-
+  cache: false,
   devServer: {
     open: true,
-    liveReload: true,
+    hot: true,
   },
   plugins: [
     new HTMLWebpackPlugins({
       template: './src/homepage/template_homepage.html',
       filename: 'index.html',
-      chunks: ['homepage'],
+      chunks: ['index'],
     }),
 
     new HTMLWebpackPlugins({
       template: './src/homepage/admin/admin-dashboard/template_admin-dashboard.html',
       filename: 'admin-dashboard.html',
-      chunks: ['admin-dashboard', 'admin-dashboard-loan-data'],
+      chunks: ['admin-dashboard'],
     }),
 
     new HTMLWebpackPlugins({
@@ -78,12 +74,6 @@ module.exports = {
     }),
 
     new HTMLWebpackPlugins({
-      template: './src/homepage/borrower/borrower-dashboard/template_borrower-dashboard.html',
-      filename: 'borrower-dashboard.html',
-      chunks: ['borrower-dashboard'],
-    }),
-  
-    new HTMLWebpackPlugins({
       template: './src/homepage/borrower/borrower-profile/template_borrower-profile.html',
       filename: 'borrower-profile.html',
       chunks: ['borrower-profile'],
@@ -96,7 +86,7 @@ module.exports = {
         use: ['html-loader'],
       },
       {
-        test: /\.(png|jpe?g|git|svg)$/i,
+        test: /\.(png|jpe?g|gif|svg)$/i,
         type: 'asset/resource',
       },
     ],
