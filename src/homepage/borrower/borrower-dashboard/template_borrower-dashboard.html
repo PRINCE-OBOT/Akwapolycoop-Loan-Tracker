@@ -31,8 +31,9 @@
         <form action="" novalidate>
           <h3 class="heading">Borrower Dashboard Form</h3>
 
-          <fieldset class="field-section">
+          <fieldset class="field-section personal-information">
             <legend>Personal Information</legend>
+
             <div class="first-name">
               <label for="first-name">First Name <span class="required-asterisk">*</span></label>
               <input
@@ -45,6 +46,7 @@
               />
               <output readonly id="first-name-message" class="show-message"></output>
             </div>
+
             <div class="last-name">
               <label for="last-name">Last Name <span class="required-asterisk">*</span></label>
               <input
@@ -57,6 +59,7 @@
               />
               <output readonly id="last-name-message" class="show-message"></output>
             </div>
+
             <div class="email">
               <label for="email">Email <span class="required-asterisk">*</span></label>
               <input
@@ -87,12 +90,54 @@
               <input
                 type="tel"
                 id="phone-number"
-                placeholder="+234"
+                placeholder="08153555726"
                 pattern="^[0-9]{10,11}$"
                 required
               />
               <output id="phone-number-message" class="show-message"></output>
             </div>
+
+            <div class="date-of-birth">
+              <label for="date-of-birth"
+                >Date of Birth<span class="required-asterisk">*</span></label
+              >
+              <input type="date" id="date-of-birth" />
+              <output id="date-of-birth-message" class="show-message"></output>
+            </div>
+
+            <div class="resident-address">
+              <label for="resident-address"
+                >Resident Address <span class="required-asterisk">*</span></label
+              >
+              <textarea name="" id="resident-address"></textarea>
+              <output id="resident-address-message" class="show-message"></output>
+            </div>
+          </fieldset>
+
+          <fieldset class="field-section">
+            <legend>Identity</legend>
+
+            <div class="nin">
+              <label for="nin">NIN <span class="required-asterisk">*</span></label>
+              <input
+                type="text"
+                id="nin"
+                placeholder="43474898980"
+                pattern="^[0-9]{11}$"
+                required
+              />
+              <output id="nin-message" class="show-message"></output>
+            </div>
+
+            <div class="passport">
+              <label for="passport">Passport<span class="required-asterisk">*</span></label>
+              <input type="file" id="passport" required />
+              <output id="passport-message" class="show-message"></output>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Employment & Income</legend>
           </fieldset>
 
           <div class="signup-btn-section">

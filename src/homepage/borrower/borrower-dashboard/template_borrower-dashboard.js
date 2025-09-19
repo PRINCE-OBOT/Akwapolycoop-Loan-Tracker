@@ -1,5 +1,5 @@
-import './template_borrower-dashboard.css';
 import '../../admin/admin-sign-up/template_admin-sign-up.css';
+import './template_borrower-dashboard.css';
 import '../../assets/reset.css';
 import '../../assets/font.css';
 import '../../assets/common_general.css';
@@ -185,6 +185,9 @@ class BorrowerSessionManager {
 
   storeDataToRecentLoanApplicantAndLoanApplicantList(data) {
     data.id = 'recent-loan-applicant';
+
+    // After learning async, come modify this code so
+    // `deleteRecentBorrowerSignUp` runs only when `storeDataToRecentLoanApplicant` has run
 
     indexDB.createDatabase(
       {

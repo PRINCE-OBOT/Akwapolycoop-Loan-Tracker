@@ -1,3 +1,6 @@
+input.user-interact:is(:valid, :invalid) {
+  border-color: transparent;
+}
 form {
   min-width: min(1000px, 98%);
 }
@@ -10,8 +13,8 @@ legend {
 select {
   appearance: none;
 }
-option[value='null'] {
-  color: var(--grey);
+textarea {
+  resize: none;
 }
 .btn-validate {
   max-width: 120px;

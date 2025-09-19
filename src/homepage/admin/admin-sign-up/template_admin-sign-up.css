@@ -87,11 +87,13 @@ form {
   gap: 10px;
   flex-direction: column;
   position: relative;
-  flex: 1;
+  flex: 150px;
+  min-width: 40%;
 }
 
 input,
-select {
+select,
+textarea {
   min-height: 44px;
   padding-left: 10px;
   flex: 1;
@@ -105,14 +107,14 @@ select {
     color: var(--transparent-black);
   }
 }
-
+input[type='file'] {
+  padding: 0;
+  box-shadow: none;
+  max-width: clamp(150px, 150px + 10vw, 300px);
+}
 .password,
 .confirm-password {
   margin-top: 10px;
-}
-
-.email {
-  grid-column: 1 / -1;
 }
 
 .signup-btn-section {
