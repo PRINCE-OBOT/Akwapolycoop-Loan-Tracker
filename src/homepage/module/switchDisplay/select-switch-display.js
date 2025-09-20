@@ -1,7 +1,7 @@
 export default class SelectSwitchDisplay {
-  constructor({ select, input }) {
+  constructor({ select, inputs }) {
     this.select = select;
-    this.input = input;
+    this.inputs = inputs;
 
     this.render();
   }
@@ -26,10 +26,14 @@ export default class SelectSwitchDisplay {
   }
 
   hideElement() {
-    this.input.classList.add('hide');
+    this.inputs.forEach((input) => {
+      input.classList.add('hide');
+    });
   }
 
   showElement() {
-    this.input.classList.remove('hide');
+    this.inputs.forEach((input) => {
+      input.classList.remove('hide');
+    });
   }
 }

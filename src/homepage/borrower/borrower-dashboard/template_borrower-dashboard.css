@@ -16,7 +16,7 @@ select {
 textarea {
   resize: none;
 }
-.company-or-business-name.hide {
+:is(.company-or-business-name, .monthly-income, .current-job-year).hide {
   display: none;
 }
 .btn-submit-application {

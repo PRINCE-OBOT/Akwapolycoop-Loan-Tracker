@@ -48,6 +48,8 @@ const btnYes = dialog.querySelector('.btn-yes');
 
 const employmentStatus = document.querySelector('#employment-status');
 const companyBusinessName = document.querySelector('.company-or-business-name');
+const monthlyIncome = document.querySelector('.monthly-income');
+const currentJobYear = document.querySelector('.current-job-year');
 
 new EmailValidator({ email, emailMessage });
 
@@ -62,11 +64,6 @@ new GenderValidator({ gender, genderMessage });
 new Modal({ btnShowModal: btnLogout, btnCloseModal: btnCancel, dialog });
 new Modal({ btnShowModal: btnLogout, btnCloseModal: btnYes, dialog });
 
-new SelectSwitchDisplay({
-  select: employmentStatus,
-  input: companyBusinessName,
-});
-
 class BorrowerSessionManager {
   constructor() {
     this.render();
@@ -80,6 +77,10 @@ class BorrowerSessionManager {
       messages,
       inputs,
       runWhenAllFormIsValid: this.getDataInRecentSignUp.bind(this),
+    });
+    new SelectSwitchDisplay({
+      select: employmentStatus,
+      inputs: [companyBusinessName, monthlyIncome, currentJobYear],
     });
   }
 
