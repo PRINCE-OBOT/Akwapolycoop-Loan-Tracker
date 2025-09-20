@@ -29,13 +29,16 @@
 
       <main>
         <form action="" novalidate>
-          <h3 class="heading">Borrower Dashboard Form</h3>
+          <h3 class="heading">Loan Application Form</h3>
 
           <fieldset class="field-section personal-information">
             <legend>Personal Information</legend>
 
             <div class="first-name">
-              <label for="first-name">First Name <span class="required-asterisk">*</span></label>
+              <label for="first-name">
+                First Name
+                <span class="required-asterisk">*</span>
+              </label>
               <input
                 readonly
                 type="text"
@@ -48,7 +51,10 @@
             </div>
 
             <div class="last-name">
-              <label for="last-name">Last Name <span class="required-asterisk">*</span></label>
+              <label for="last-name">
+                Last Name
+                <span class="required-asterisk">*</span>
+              </label>
               <input
                 readonly
                 type="text"
@@ -61,7 +67,10 @@
             </div>
 
             <div class="email">
-              <label for="email">Email <span class="required-asterisk">*</span></label>
+              <label for="email">
+                Email
+                <span class="required-asterisk">*</span>
+              </label>
               <input
                 readonly
                 type="email"
@@ -74,7 +83,10 @@
             </div>
 
             <div class="gender">
-              <label for="gender">Select Gender <span class="required-asterisk">*</span></label>
+              <label for="gender">
+                Select Gender
+                <span class="required-asterisk">*</span>
+              </label>
               <select name="gender" id="gender">
                 <option value="null">-- Select gender --</option>
                 <option value="male">Male</option>
@@ -84,9 +96,10 @@
             </div>
 
             <div class="phone-number">
-              <label for="phone-number"
-                >Phone Number <span class="required-asterisk">*</span></label
-              >
+              <label for="phone-number">
+                Phone Number
+                <span class="required-asterisk">*</span>
+              </label>
               <input
                 type="tel"
                 id="phone-number"
@@ -98,17 +111,19 @@
             </div>
 
             <div class="date-of-birth">
-              <label for="date-of-birth"
-                >Date of Birth<span class="required-asterisk">*</span></label
-              >
+              <label for="date-of-birth">
+                Date of Birth
+                <span class="required-asterisk">*</span>
+              </label>
               <input type="date" id="date-of-birth" />
               <output id="date-of-birth-message" class="show-message"></output>
             </div>
 
             <div class="resident-address">
-              <label for="resident-address"
-                >Resident Address <span class="required-asterisk">*</span></label
-              >
+              <label for="resident-address">
+                Resident Address
+                <span class="required-asterisk">*</span>
+              </label>
               <textarea name="" id="resident-address"></textarea>
               <output id="resident-address-message" class="show-message"></output>
             </div>
@@ -118,7 +133,10 @@
             <legend>Identity</legend>
 
             <div class="nin">
-              <label for="nin">NIN <span class="required-asterisk">*</span></label>
+              <label for="nin">
+                NIN
+                <span class="required-asterisk">*</span>
+              </label>
               <input
                 type="text"
                 id="nin"
@@ -130,18 +148,115 @@
             </div>
 
             <div class="passport">
-              <label for="passport">Passport<span class="required-asterisk">*</span></label>
+              <label for="passport">
+                Passport
+                <span class="required-asterisk">*</span>
+              </label>
               <input type="file" id="passport" required />
               <output id="passport-message" class="show-message"></output>
             </div>
           </fieldset>
 
-          <fieldset>
+          <fieldset class="field-section">
             <legend>Employment & Income</legend>
+
+            <div class="employment-status">
+              <label for="employment-status">
+                Employment Status
+                <span class="required-asterisk">*</span>
+              </label>
+              <select id="employment-status">
+                <option value="">-- Select Employment Status --</option>
+                <option value="employed (full-time)" data-business-name="needed">
+                  Employed (Full-Time)
+                </option>
+                <option value="employed (part-time)" data-business-name="needed">
+                  Employed (Part-Time)
+                </option>
+                <option value="self-employed" data-business-name="needed">Self-Employed</option>
+                <option value="unemployed" data-business-name="not-needed">Unemployed</option>
+                <option value="student" data-business-name="not-needed">Student</option>
+                <option value="retired" data-business-name="not-needed">Retired</option>
+              </select>
+              <output id="employment-status-message" class="show-message"></output>
+            </div>
+
+            <div class="company-or-business-name">
+              <label for="company-or-business-name">
+                Business Name
+                <span class="required-asterisk">*</span>
+              </label>
+              <input
+                type="text"
+                id="company-or-business-name"
+                placeholder="Company or Business Name"
+                pattern="^[a-zA-Z0-9]{1,}$"
+                required
+              />
+              <output id="company-or-business-name-message" class="show-message"></output>
+            </div>
+
+            <div class="monthly-income">
+              <label for="monthly-income">
+                Monthly Income
+                <span class="required-asterisk">*</span>
+              </label>
+              <input
+                type="text"
+                id="monthly-income"
+                placeholder="e.g 20000"
+                pattern="^[0-9]{5,}$"
+                required
+              />
+              <output id="monthly-income-message" class="show-message"></output>
+            </div>
+
+            <div class="current-job-year">
+              <label for="current-job-year">
+                Year at Current Job
+                <span class="required-asterisk">*</span>
+              </label>
+              <input
+                type="text"
+                id="current-job-year"
+                placeholder="e.g 2"
+                pattern="^[0-9]{5,}$"
+                required
+              />
+              <output id="current-job-year-message" class="show-message"></output>
+            </div>
+          </fieldset>
+
+          <fieldset class="field-section">
+            <legend>Loan Request</legend>
+
+            <div class="desired-amount">
+              <label for="desired-amount">
+                Desired Amount
+                <span class="required-asterisk">*</span>
+              </label>
+              <input
+                type="text"
+                id="desired-amount"
+                placeholder="e.g 50000"
+                pattern="^[0-9]{4,}$"
+                required
+              />
+              <output id="desired-amount-message" class="show-message"></output>
+            </div>
+
+            <div class="tenor">
+              <label for="tenor">
+                Tenor (Days)
+                <span class="required-asterisk">*</span>
+              </label>
+              <input type="text" id="tenor" placeholder="e.g 5" pattern="^[0-9]{1,}$" required />
+              <output id="tenor-message" class="show-message"></output>
+            </div>
           </fieldset>
 
           <div class="signup-btn-section">
-            <button class="btn-validate" type="button">Validate</button>
+            <button class="btn-submit-application" type="button">Submit Application</button>
             <span class="displayRegistrationProcess"></span>
           </div>
         </form>
