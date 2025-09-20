@@ -15,6 +15,8 @@ import indexDB from '../../module/indexDB/indexDB';
 
 import Modal from '../../module/modal/modal';
 
+import SelectSwitchDisplay from '../../module/switchDisplay/select-switch-display';
+
 const messages = document.querySelectorAll('output:not([readonly])');
 const inputs = document.querySelectorAll('input:not([readonly])');
 
@@ -44,6 +46,9 @@ const dialog = document.querySelector('dialog');
 const btnCancel = dialog.querySelector('.btn-cancel');
 const btnYes = dialog.querySelector('.btn-yes');
 
+const employmentStatus = document.querySelector('#employment-status');
+const companyBusinessName = document.querySelector('.company-or-business-name');
+
 new EmailValidator({ email, emailMessage });
 
 new NameValidator({ name: firstName, nameMessage: firstNameMessage });
@@ -56,6 +61,11 @@ new GenderValidator({ gender, genderMessage });
 
 new Modal({ btnShowModal: btnLogout, btnCloseModal: btnCancel, dialog });
 new Modal({ btnShowModal: btnLogout, btnCloseModal: btnYes, dialog });
+
+new SelectSwitchDisplay({
+  select: employmentStatus,
+  input: companyBusinessName,
+});
 
 class BorrowerSessionManager {
   constructor() {

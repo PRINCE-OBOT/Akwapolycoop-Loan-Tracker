@@ -16,6 +16,9 @@ select {
 textarea {
   resize: none;
 }
+.company-or-business-name.hide {
+  display: none;
+}
 .btn-submit-application {
   padding: 8px 25px;
   border-radius: 5px;

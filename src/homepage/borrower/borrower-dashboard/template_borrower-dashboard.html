@@ -166,17 +166,18 @@
                 <span class="required-asterisk">*</span>
               </label>
               <select id="employment-status">
-                <option value="">-- Select Employment Status --</option>
-                <option value="employed (full-time)" data-business-name="needed">
+                <!-- data-switch `showElement` and `hideElement` are function name in switchDisplay to switch the display mode of `business-name` -->
+                <option value="" data-switch="hideElement">-- Select Employment Status --</option>
+                <option value="employed (full-time)" data-switch="showElement">
                   Employed (Full-Time)
                 </option>
-                <option value="employed (part-time)" data-business-name="needed">
+                <option value="employed (part-time)" data-switch="showElement">
                   Employed (Part-Time)
                 </option>
-                <option value="self-employed" data-business-name="needed">Self-Employed</option>
-                <option value="unemployed" data-business-name="not-needed">Unemployed</option>
-                <option value="student" data-business-name="not-needed">Student</option>
-                <option value="retired" data-business-name="not-needed">Retired</option>
+                <option value="self-employed" data-switch="showElement">Self-Employed</option>
+                <option value="unemployed" data-switch="hideElement">Unemployed</option>
+                <option value="student" data-switch="hideElement">Student</option>
+                <option value="retired" data-switch="hideElement">Retired</option>
               </select>
               <output id="employment-status-message" class="show-message"></output>
             </div>
