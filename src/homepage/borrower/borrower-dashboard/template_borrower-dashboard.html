@@ -124,7 +124,11 @@
                 Resident Address
                 <span class="required-asterisk">*</span>
               </label>
-              <textarea name="" id="resident-address"></textarea>
+              <textarea
+                name=""
+                id="resident-address"
+                pattern="(?=.*\s)(?=.*[a-zA-Z])(?=.*[0-9])"
+              ></textarea>
               <output id="resident-address-message" class="show-message"></output>
             </div>
           </fieldset>

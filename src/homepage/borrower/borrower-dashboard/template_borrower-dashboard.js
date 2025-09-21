@@ -11,6 +11,7 @@ import NameValidator from '../../module/form-validation/name-validator';
 import TelValidator from '../../module/form-validation/tel-validator';
 import GenderValidator from '../../module/form-validation/gender-validator';
 import DateOfBirthValidator from '../../module/form-validation/date-of-birth-validator';
+import AddressValidator from '../../module/form-validation/address-validator';
 
 import indexDB from '../../module/indexDB/indexDB';
 
@@ -39,6 +40,9 @@ const genderMessage = document.querySelector('#gender-message');
 const dateOfBirth = document.querySelector('#date-of-birth');
 const dateOfBirthMessage = document.querySelector('#date-of-birth-message');
 
+const address = document.querySelector('#resident-address');
+const addressMessage = document.querySelector('#resident-address-message');
+
 const displayRegistrationProcess = document.querySelector('.displayRegistrationProcess');
 
 const btnValidate = document.querySelector('.btn-submit-application');
@@ -56,16 +60,12 @@ const monthlyIncome = document.querySelector('.monthly-income');
 const currentJobYear = document.querySelector('.current-job-year');
 
 new EmailValidator({ email, emailMessage });
-
 new NameValidator({ name: firstName, nameMessage: firstNameMessage });
-
 new NameValidator({ name: lastName, nameMessage: lastNameMessage });
-
 new TelValidator({ tel: phoneNumber, telMessage: phoneNumberMessage });
-
 new GenderValidator({ gender, genderMessage });
-
 new DateOfBirthValidator({ dateOfBirth, dateOfBirthMessage });
+new AddressValidator({ address, addressMessage });
 
 new Modal({ btnShowModal: btnLogout, btnCloseModal: btnCancel, dialog });
 new Modal({ btnShowModal: btnLogout, btnCloseModal: btnYes, dialog });

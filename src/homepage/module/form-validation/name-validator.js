@@ -4,19 +4,15 @@ export default class NameValidator {
   constructor({ name, nameMessage }) {
     this.name = name;
     this.nameMessage = nameMessage;
-    this.bindEvent = this.bindEvent();
+
+    this.bindEvent();
   }
 
   bindEvent() {
-    this.name.addEventListener('input', () =>
-      this.validateName({
-        name: this.name,
-        nameMessage: this.nameMessage,
-      }),
-    );
+    this.name.addEventListener('input', this.validateName.bind(this));
   }
 
-  validateName({ name, nameMessage }) {
+  validateName() {
     FormUtility.hasUserInteract({
       field: this.name,
     });
@@ -26,19 +22,20 @@ export default class NameValidator {
     });
 
     const nameField = FormUtility.resetFieldStyle({
-      field: name,
-      fieldMessage: nameMessage,
+      field: this.name,
+      fieldMessage: this.nameMessage,
     });
+
     if (nameField.empty) return;
 
     const pattern = /^[a-zA-Z]{1,}$/;
 
-    const isNameValid = pattern.test(name.value);
+    const isNameValid = pattern.test(this.name.value);
 
     FormUtility.validateClientAndServerState({
-      field: name,
+      field: this.name,
       isFieldValid: isNameValid,
-      fieldMessage: nameMessage,
+      fieldMessage: this.nameMessage,
       msg: 'Incorrect name',
     });
   }
