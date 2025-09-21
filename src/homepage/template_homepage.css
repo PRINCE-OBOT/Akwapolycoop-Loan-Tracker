@@ -103,7 +103,7 @@ header {
   gap: 20px;
   padding: 40px;
   margin-top: 50px;
-  border-radius: 50px;
+  border-radius: 50px 50px 0 0;
   background-color: var(--secondary-accent-faint);
 }
 .trusted-by-section,
@@ -153,10 +153,8 @@ header {
 }
 
 footer {
-  margin-top: 50px;
   padding: 100px 20px;
   background: var(--ink);
-  border-radius: 20px;
   position: relative;
 }
 .back-to-top {

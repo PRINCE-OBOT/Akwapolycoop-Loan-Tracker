@@ -10,6 +10,7 @@ import EmailValidator from '../../module/form-validation/email-validator';
 import NameValidator from '../../module/form-validation/name-validator';
 import TelValidator from '../../module/form-validation/tel-validator';
 import GenderValidator from '../../module/form-validation/gender-validator';
+import DateOfBirthValidator from '../../module/form-validation/date-of-birth-validator';
 
 import indexDB from '../../module/indexDB/indexDB';
 
@@ -35,9 +36,12 @@ const phoneNumberMessage = document.querySelector('#phone-number-message');
 const gender = document.querySelector('#gender');
 const genderMessage = document.querySelector('#gender-message');
 
+const dateOfBirth = document.querySelector('#date-of-birth');
+const dateOfBirthMessage = document.querySelector('#date-of-birth-message');
+
 const displayRegistrationProcess = document.querySelector('.displayRegistrationProcess');
 
-const btnValidate = document.querySelector('.btn-validate');
+const btnValidate = document.querySelector('.btn-submit-application');
 const html = document.querySelector('html');
 
 const btnLogout = document.querySelector('.logout-button');
@@ -61,6 +65,8 @@ new TelValidator({ tel: phoneNumber, telMessage: phoneNumberMessage });
 
 new GenderValidator({ gender, genderMessage });
 
+new DateOfBirthValidator({ dateOfBirth, dateOfBirthMessage });
+
 new Modal({ btnShowModal: btnLogout, btnCloseModal: btnCancel, dialog });
 new Modal({ btnShowModal: btnLogout, btnCloseModal: btnYes, dialog });
 
@@ -72,15 +78,15 @@ class BorrowerSessionManager {
   render() {
     this.bindEvent();
     this.checkIfThereIsRecentLoanApplicant();
+    new SelectSwitchDisplay({
+      select: employmentStatus,
+      inputs: [companyBusinessName, monthlyIncome, currentJobYear],
+    });
     new FormUtility({
       buttonSubmit: btnValidate,
       messages,
       inputs,
       runWhenAllFormIsValid: this.getDataInRecentSignUp.bind(this),
-    });
-    new SelectSwitchDisplay({
-      select: employmentStatus,
-      inputs: [companyBusinessName, monthlyIncome, currentJobYear],
     });
   }
 

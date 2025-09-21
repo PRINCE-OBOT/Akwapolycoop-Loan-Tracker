@@ -62,7 +62,7 @@ export default class FormUtility {
     if (field.value !== '') return { empty: false };
 
     fieldMessage.value = '';
-    field.classList.remove('invalid', 'valid');
+    fieldMessage.classList.remove('invalid', 'valid');
 
     return { empty: true };
   }
