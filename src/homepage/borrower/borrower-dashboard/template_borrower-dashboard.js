@@ -12,6 +12,7 @@ import TelValidator from '../../module/form-validation/tel-validator';
 import GenderValidator from '../../module/form-validation/gender-validator';
 import DateOfBirthValidator from '../../module/form-validation/date-of-birth-validator';
 import AddressValidator from '../../module/form-validation/address-validator';
+import NINValidator from '../../module/form-validation/nin-validator';
 
 import indexDB from '../../module/indexDB/indexDB';
 
@@ -43,6 +44,9 @@ const dateOfBirthMessage = document.querySelector('#date-of-birth-message');
 const address = document.querySelector('#resident-address');
 const addressMessage = document.querySelector('#resident-address-message');
 
+const nin = document.querySelector('#nin');
+const ninMessage = document.querySelector('#nin-message');
+
 const displayRegistrationProcess = document.querySelector('.displayRegistrationProcess');
 
 const btnValidate = document.querySelector('.btn-submit-application');
@@ -66,6 +70,7 @@ new TelValidator({ tel: phoneNumber, telMessage: phoneNumberMessage });
 new GenderValidator({ gender, genderMessage });
 new DateOfBirthValidator({ dateOfBirth, dateOfBirthMessage });
 new AddressValidator({ address, addressMessage });
+new NINValidator({ nin, ninMessage });
 
 new Modal({ btnShowModal: btnLogout, btnCloseModal: btnCancel, dialog });
 new Modal({ btnShowModal: btnLogout, btnCloseModal: btnYes, dialog });
