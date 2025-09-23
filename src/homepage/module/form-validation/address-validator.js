@@ -26,7 +26,7 @@ export default class AddressValidator {
     });
     if (nameField.empty) return;
 
-    const pattern = /(?=.*\s)(?=.*[a-zA-Z])(?=.*[0-9])/;
+    const pattern = /(?=.*\s)(?=.*[a-zA-Z])(?=.*[0-9]).{20,}/;
 
     const isAddressValid = pattern.test(this.address.value);
 

@@ -54,7 +54,7 @@ main {
 
 form {
   flex: 1;
-  padding: 20px;
+  padding: 5px;
   border-radius: 5px;
   box-shadow: var(--box-shadow);
   background: linear-gradient(var(--white), #f6f8fb);
@@ -83,22 +83,33 @@ form {
   gap: 28px;
   border: 1px solid var(--grey);
   padding: 20px 20px 40px 20px;
+  background: var(--white);
+  border: 1px solid var(--transparent-black);
+  border-radius: 10px;
 }
+
 .field-section > div {
   display: flex;
   gap: 10px;
   flex-direction: column;
   position: relative;
-  flex: 150px;
-  min-width: 40%;
+  flex: max(40%, 200px);
 }
+.field-section > div[class$='resident-address'] {
+  flex: max(40%, 300px);
+}
+
 label {
   width: max-content;
 }
 input,
+select {
+  min-height: 44px;
+  max-height: 44px;
+}
+input,
 select,
 textarea {
-  min-height: 44px;
   padding-left: 10px;
   flex: 1;
   border-radius: 5px;
@@ -106,11 +117,11 @@ textarea {
   background: var(--transparent-white);
   border-color: var(--transparent-white);
   box-shadow: var(--box-shadow);
-
-  &::placeholder {
-    color: var(--transparent-black);
-  }
 }
+::placeholder {
+  color: var(--grey);
+}
+
 input[type='file'] {
   padding: 0;
   box-shadow: none;

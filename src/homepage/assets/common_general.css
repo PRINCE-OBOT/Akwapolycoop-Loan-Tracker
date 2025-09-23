@@ -120,9 +120,6 @@ label {
 input {
   color: var(--transparent-black);
 }
-input::placeholder {
-  color: var(--grey);
-}
 
 .required-asterisk {
   color: var(--clr-invalid);

@@ -1,8 +1,8 @@
 input.user-interact:is(:valid, :invalid) {
   border-color: transparent;
 }
-form {
-  min-width: min(1000px, 98%);
+form.loan-application-form {
+  max-width: 1000px;
 }
 
 legend {

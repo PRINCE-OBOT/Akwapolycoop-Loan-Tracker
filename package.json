@@ -23,7 +23,6 @@
     "prepare": "husky"
   },
   "repository": {
-    "type": "git",
     "url": "git+https://github.com/PRINCE-OBOT/Restaurant-Page.git"
   },
   "keywords": [],
@@ -34,7 +33,6 @@
   },
   "homepage": "https://github.com/PRINCE-OBOT/Restaurant-Page#readme",
   "devDependencies": {
-    "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^7.1.2",
     "css-minimizer-webpack-plugin": "^7.0.2",
     "eslint": "^8.57.1",
