@@ -13,6 +13,7 @@ import GenderValidator from '../../module/form-validation/gender-validator';
 import DateOfBirthValidator from '../../module/form-validation/date-of-birth-validator';
 import AddressValidator from '../../module/form-validation/address-validator';
 import NINValidator from '../../module/form-validation/nin-validator';
+import PassportValidator from '../../module/form-validation/passport-validator';
 
 import indexDB from '../../module/indexDB/indexDB';
 
@@ -47,6 +48,9 @@ const addressMessage = document.querySelector('#resident-address-message');
 const nin = document.querySelector('#nin');
 const ninMessage = document.querySelector('#nin-message');
 
+const passport = document.querySelector('#passport');
+const passportMessage = document.querySelector('#passport-message');
+
 const displayRegistrationProcess = document.querySelector('.displayRegistrationProcess');
 
 const btnValidate = document.querySelector('.btn-submit-application');
@@ -71,6 +75,7 @@ new GenderValidator({ gender, genderMessage });
 new DateOfBirthValidator({ dateOfBirth, dateOfBirthMessage });
 new AddressValidator({ address, addressMessage });
 new NINValidator({ nin, ninMessage });
+new PassportValidator({ passport, passportMessage });
 
 new Modal({ btnShowModal: btnLogout, btnCloseModal: btnCancel, dialog });
 new Modal({ btnShowModal: btnLogout, btnCloseModal: btnYes, dialog });
