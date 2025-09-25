@@ -1,14 +1,13 @@
 export default class FormUtility {
-  constructor({ buttonSubmit, messages, inputs, runWhenAllFormIsValid }) {
-    this.buttonSubmit = buttonSubmit;
+  constructor({ messages, inputs, runWhenAllFormIsValid }) {
     this.messages = messages;
     this.inputs = inputs;
     this.runWhenAllFormIsValid = runWhenAllFormIsValid;
-    this.bindEvent();
+    this.render();
   }
 
-  bindEvent() {
-    this.buttonSubmit.addEventListener('click', this.customCheckValidity.bind(this));
+  render() {
+    this.customCheckValidity();
   }
 
   customCheckValidity() {

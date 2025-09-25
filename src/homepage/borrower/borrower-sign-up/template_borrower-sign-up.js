@@ -58,9 +58,15 @@ class BorrowerSignUpManager {
 
   render() {
     window.addEventListener('pageshow', this.resetForm.bind(this));
+    this.bindEvent();
+  }
 
+  bindEvent() {
+    btnSignUp.addEventListener('click', this.checkFormValidity.bind(this));
+  }
+
+  checkFormValidity() {
     new FormUtility({
-      buttonSubmit: btnSignUp,
       messages,
       inputs,
       runWhenAllFormIsValid: this.checkIfUserExistInLoanApplicantList.bind(this),

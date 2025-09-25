@@ -57,9 +57,9 @@ form {
   padding: 5px;
   border-radius: 5px;
   box-shadow: var(--box-shadow);
-  background: linear-gradient(var(--white), #f6f8fb);
-  max-width: 700px;
+  background: linear-gradient(var(--white), #dae4d9);
   margin: 0 auto 0;
+  max-width: 900px;
   display: flex;
   flex-direction: column;
   gap: 20px;

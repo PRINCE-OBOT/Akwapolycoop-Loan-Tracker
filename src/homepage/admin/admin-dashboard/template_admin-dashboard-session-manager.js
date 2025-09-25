@@ -123,4 +123,8 @@ export default class AdminSessionManager {
       'deleteKey',
     );
   }
+
+  errorWhileDeletingKey() {
+    console.log('did not delete nothing');
+  }
 }

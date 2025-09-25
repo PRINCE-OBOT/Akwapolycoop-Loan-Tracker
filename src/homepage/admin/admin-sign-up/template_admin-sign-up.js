@@ -13,28 +13,38 @@ import indexDB from '../../module/indexDB/indexDB';
 
 import Modal from '../../module/modal/modal';
 
-const messages = document.querySelectorAll('output.show-message');
-const inputs = document.querySelectorAll('input');
+const form = document.querySelector('.admin-sign-up-form');
 
-const password = document.querySelector('#password');
-const passwordMessage = document.querySelector('#password-message');
+const messages = form.querySelectorAll('output.show-message');
+const inputs = form.querySelectorAll('input');
 
-const confirmPassword = document.querySelector('#confirm-password');
-const confirmPasswordMessage = document.querySelector('#confirm-password-message');
+const password = form.querySelector('#password');
+const passwordMessage = form.querySelector('#password-message');
 
-const email = document.querySelector('#email');
-const emailMessage = document.querySelector('#email-message');
+const confirmPassword = form.querySelector('#confirm-password');
+const confirmPasswordMessage = form.querySelector('#confirm-password-message');
 
-const firstName = document.querySelector('#first-name');
-const firstNameMessage = document.querySelector('#first-name-message');
+const email = form.querySelector('#email');
+const emailMessage = form.querySelector('#email-message');
 
-const lastName = document.querySelector('#last-name');
-const lastNameMessage = document.querySelector('#last-name-message');
+const firstName = form.querySelector('#first-name');
+const firstNameMessage = form.querySelector('#first-name-message');
 
+const lastName = form.querySelector('#last-name');
+const lastNameMessage = form.querySelector('#last-name-message');
+
+const btnSignUp = form.querySelector('.btn-sign-up');
 const dialog = document.querySelector('dialog');
-const btnSignUp = document.querySelector('.btn-sign-up');
 
-const form = document.querySelector('form');
+btnSignUp.addEventListener('click', checkFormValidity);
+
+function checkFormValidity() {
+  new FormUtility({
+    messages,
+    inputs,
+    runWhenAllFormIsValid,
+  });
+}
 
 new PasswordValidator({
   password,
@@ -90,7 +100,7 @@ function adminDataIsStored() {
 }
 
 function adminDataNotStored() {
-  alert('Admin data not stored');
+  console.log('Admin data not stored');
 }
 
 function runWhenAllFormIsValid() {
@@ -106,13 +116,6 @@ function runWhenAllFormIsValid() {
     'storeData',
   );
 }
-
-new FormUtility({
-  buttonSubmit: btnSignUp,
-  messages,
-  inputs,
-  runWhenAllFormIsValid,
-});
 
 function resetForm() {
   form.reset();

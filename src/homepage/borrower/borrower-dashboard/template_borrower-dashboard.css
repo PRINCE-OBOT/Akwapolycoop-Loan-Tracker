@@ -2,7 +2,7 @@ input.user-interact:is(:valid, :invalid) {
   border-color: transparent;
 }
 form.loan-application-form {
-  max-width: 1000px;
+  max-width: 1150px;
 }
 
 legend {
@@ -16,9 +16,7 @@ select {
 textarea {
   resize: none;
 }
-:is(.company-or-business-name, .monthly-income, .current-job-year).hide {
-  display: none;
-}
+
 .btn-submit-application {
   padding: 8px 25px;
   border-radius: 5px;

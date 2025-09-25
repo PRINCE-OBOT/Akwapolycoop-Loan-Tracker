@@ -19,41 +19,50 @@ import indexDB from '../../module/indexDB/indexDB';
 
 import Modal from '../../module/modal/modal';
 
+import {
+  companyBusinessName,
+  monthlyIncome,
+  currentJobYear,
+} from './template_borrower-dashboard-created-element';
+
 import SelectSwitchDisplay from '../../module/switchDisplay/select-switch-display';
 
-const messages = document.querySelectorAll('output:not([readonly])');
-const inputs = document.querySelectorAll('input:not([readonly])');
+const form = document.querySelector('.loan-application-form');
 
-const email = document.querySelector('#email');
-const emailMessage = document.querySelector('#email-message');
+const email = form.querySelector('#email');
+const emailMessage = form.querySelector('#email-message');
 
-const firstName = document.querySelector('#first-name');
-const firstNameMessage = document.querySelector('#first-name-message');
+const firstName = form.querySelector('#first-name');
+const firstNameMessage = form.querySelector('#first-name-message');
 
-const lastName = document.querySelector('#last-name');
-const lastNameMessage = document.querySelector('#last-name-message');
+const lastName = form.querySelector('#last-name');
+const lastNameMessage = form.querySelector('#last-name-message');
 
-const phoneNumber = document.querySelector('#phone-number');
-const phoneNumberMessage = document.querySelector('#phone-number-message');
+const phoneNumber = form.querySelector('#phone-number');
+const phoneNumberMessage = form.querySelector('#phone-number-message');
 
-const gender = document.querySelector('#gender');
-const genderMessage = document.querySelector('#gender-message');
+const gender = form.querySelector('#gender');
+const genderMessage = form.querySelector('#gender-message');
 
-const dateOfBirth = document.querySelector('#date-of-birth');
-const dateOfBirthMessage = document.querySelector('#date-of-birth-message');
+const dateOfBirth = form.querySelector('#date-of-birth');
+const dateOfBirthMessage = form.querySelector('#date-of-birth-message');
 
-const address = document.querySelector('#resident-address');
-const addressMessage = document.querySelector('#resident-address-message');
+const address = form.querySelector('#resident-address');
+const addressMessage = form.querySelector('#resident-address-message');
 
-const nin = document.querySelector('#nin');
-const ninMessage = document.querySelector('#nin-message');
+const nin = form.querySelector('#nin');
+const ninMessage = form.querySelector('#nin-message');
 
-const passport = document.querySelector('#passport');
-const passportMessage = document.querySelector('#passport-message');
+const passport = form.querySelector('#passport');
+const passportMessage = form.querySelector('#passport-message');
+
+const btnSubmitApplication = form.querySelector('.btn-submit-application');
+
+const employmentStatus = form.querySelector('#employment-status');
+const employmentIncomeFieldset = form.querySelector('.employment-and-income');
 
 const displayRegistrationProcess = document.querySelector('.displayRegistrationProcess');
 
-const btnValidate = document.querySelector('.btn-submit-application');
 const html = document.querySelector('html');
 
 const btnLogout = document.querySelector('.logout-button');
@@ -61,11 +70,6 @@ const btnLogout = document.querySelector('.logout-button');
 const dialog = document.querySelector('dialog');
 const btnCancel = dialog.querySelector('.btn-cancel');
 const btnYes = dialog.querySelector('.btn-yes');
-
-const employmentStatus = document.querySelector('#employment-status');
-const companyBusinessName = document.querySelector('.company-or-business-name');
-const monthlyIncome = document.querySelector('.monthly-income');
-const currentJobYear = document.querySelector('.current-job-year');
 
 new EmailValidator({ email, emailMessage });
 new NameValidator({ name: firstName, nameMessage: firstNameMessage });
@@ -91,17 +95,24 @@ class BorrowerSessionManager {
     new SelectSwitchDisplay({
       select: employmentStatus,
       inputs: [companyBusinessName, monthlyIncome, currentJobYear],
-    });
-    new FormUtility({
-      buttonSubmit: btnValidate,
-      messages,
-      inputs,
-      runWhenAllFormIsValid: this.getDataInRecentSignUp.bind(this),
+      container: employmentIncomeFieldset,
     });
   }
 
   bindEvent() {
     btnYes.addEventListener('click', this.logoutBorrower.bind(this));
+    btnSubmitApplication.addEventListener('click', this.checkFormValidity.bind(this));
+  }
+
+  checkFormValidity() {
+    const messages = form.querySelectorAll('output:not([readonly])');
+    const inputs = form.querySelectorAll('input:not([readonly])');
+
+    new FormUtility({
+      messages,
+      inputs,
+      runWhenAllFormIsValid: this.getDataInRecentSignUp.bind(this),
+    });
   }
 
   checkIfThereIsRecentLoanApplicant() {
