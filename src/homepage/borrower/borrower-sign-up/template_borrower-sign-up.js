@@ -5,9 +5,8 @@ import '../../assets/common_general.css';
 import '../../assets/style-border-button.css';
 
 import FormUtility from '../../module/form-validation/form-utility';
-import EmailValidator from '../../module/form-validation/email-validator';
 import PasswordValidator from '../../module/form-validation/password-validator';
-import NameValidator from '../../module/form-validation/name-validator';
+import InputFieldValidator from '../../module/form-validation/input-field-validator';
 
 import indexDB from '../../module/indexDB/indexDB';
 
@@ -38,18 +37,33 @@ const displaySignUpStatus = document.querySelector('.display_borrower-sign-up-st
 
 const form = document.querySelector('form');
 
+new InputFieldValidator({
+  field: firstName,
+  fieldMessage: firstNameMessage,
+  pattern: /^[a-zA-Z]{1,}$/,
+  fieldErrorMessage: 'Incorrect name format',
+});
+
+new InputFieldValidator({
+  field: lastName,
+  fieldMessage: lastNameMessage,
+  pattern: /^[a-zA-Z]{1,}$/,
+  fieldErrorMessage: 'Incorrect name format',
+});
+
+new InputFieldValidator({
+  field: email,
+  fieldMessage: emailMessage,
+  pattern: /^[a-zA-Z0-9.]{4,}@(gmail|yahoo|hotmail).com$/,
+  fieldErrorMessage: 'Incorrect name format',
+});
+
 new PasswordValidator({
   password,
   passwordMessage,
   confirmPassword,
   confirmPasswordMessage,
 });
-
-new EmailValidator({ email, emailMessage });
-
-new NameValidator({ name: firstName, nameMessage: firstNameMessage });
-
-new NameValidator({ name: lastName, nameMessage: lastNameMessage });
 
 class BorrowerSignUpManager {
   constructor() {

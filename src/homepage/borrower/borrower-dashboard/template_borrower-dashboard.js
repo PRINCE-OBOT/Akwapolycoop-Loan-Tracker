@@ -6,21 +6,12 @@ import '../../assets/common_general.css';
 import '../../assets/style-border-button.css';
 
 import FormUtility from '../../module/form-validation/form-utility';
-import EmailValidator from '../../module/form-validation/email-validator';
-import NameValidator from '../../module/form-validation/name-validator';
-import TelValidator from '../../module/form-validation/tel-validator';
-import GenderValidator from '../../module/form-validation/gender-validator';
-import DateOfBirthValidator from '../../module/form-validation/date-of-birth-validator';
-import AddressValidator from '../../module/form-validation/address-validator';
-import NINValidator from '../../module/form-validation/nin-validator';
-import PassportValidator from '../../module/form-validation/passport-validator';
-import BusinessNameValidator from '../../module/form-validation/business-name-validator';
+import InputFieldValidator from '../../module/form-validation/input-field-validator';
+import SelectFieldValidator from '../../module/form-validation/select-field-validator copy';
 
 import indexDB from '../../module/indexDB/indexDB';
 
 import Modal from '../../module/modal/modal';
-
-import EmploymentStatusValidator from '../../module/form-validation/employment-status-validator';
 
 import {
   businessNameContainer,
@@ -33,13 +24,10 @@ import SelectSwitchDisplay from '../../module/switchDisplay/select-switch-displa
 const form = document.querySelector('.loan-application-form');
 
 const email = form.querySelector('#email');
-const emailMessage = form.querySelector('#email-message');
 
 const firstName = form.querySelector('#first-name');
-const firstNameMessage = form.querySelector('#first-name-message');
 
 const lastName = form.querySelector('#last-name');
-const lastNameMessage = form.querySelector('#last-name-message');
 
 const phoneNumber = form.querySelector('#phone-number');
 const phoneNumberMessage = form.querySelector('#phone-number-message');
@@ -63,8 +51,17 @@ const businessName = businessNameContainer.querySelector('#business-name');
 const businessNameMessage = businessNameContainer.querySelector('#business-name-message');
 
 const employmentAndIncome = form.querySelector('.employment-and-income');
+
 const employmentStatus = form.querySelector('#employment-status');
 const employmentStatusMessage = form.querySelector('#employment-status-message');
+
+const monthlyIncome = monthlyIncomeContainer.querySelector('#monthly-income');
+const monthlyIncomeMessage = monthlyIncomeContainer.querySelector('#monthly-income-message');
+
+const currentJobDuration = currentJobYearContainer.querySelector('#current-job-duration');
+const currentJobDurationMessage = currentJobYearContainer.querySelector(
+  '#current-job-duration-message',
+);
 
 const btnSubmitApplication = form.querySelector('.btn-submit-application');
 
@@ -78,17 +75,73 @@ const dialog = document.querySelector('dialog');
 const btnCancel = dialog.querySelector('.btn-cancel');
 const btnYes = dialog.querySelector('.btn-yes');
 
-new EmailValidator({ email, emailMessage });
-new NameValidator({ name: firstName, nameMessage: firstNameMessage });
-new NameValidator({ name: lastName, nameMessage: lastNameMessage });
-new TelValidator({ tel: phoneNumber, telMessage: phoneNumberMessage });
-new GenderValidator({ gender, genderMessage });
-new DateOfBirthValidator({ dateOfBirth, dateOfBirthMessage });
-new AddressValidator({ address, addressMessage });
-new NINValidator({ nin, ninMessage });
-new PassportValidator({ passport, passportMessage });
-new EmploymentStatusValidator({ employmentStatus, employmentStatusMessage });
-new BusinessNameValidator({ businessName, businessNameMessage });
+new InputFieldValidator({
+  field: phoneNumber,
+  fieldMessage: phoneNumberMessage,
+  pattern: /0?[0-9]{10}/,
+  fieldErrorMessage: 'Incorrect Phone Number',
+});
+
+new InputFieldValidator({
+  field: nin,
+  fieldMessage: ninMessage,
+  pattern: /^[0-9]{11}$/,
+  fieldErrorMessage: 'Invalid NIN',
+});
+
+new InputFieldValidator({
+  field: businessName,
+  fieldMessage: businessNameMessage,
+  pattern: /^[a-zA-Z0-9_' -]{5,}$/,
+  fieldErrorMessage: 'Business Name not Descriptive',
+});
+
+new InputFieldValidator({
+  field: address,
+  fieldMessage: addressMessage,
+  pattern: /(?=.*\s)(?=.*[a-zA-Z])(?=.*[0-9]).{20,}/,
+  fieldErrorMessage: 'Address not Descriptive',
+});
+
+new InputFieldValidator({
+  field: dateOfBirth,
+  fieldMessage: dateOfBirthMessage,
+  pattern: /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/,
+  fieldErrorMessage: 'Incorrect Date of Birth',
+});
+
+new InputFieldValidator({
+  field: passport,
+  fieldMessage: passportMessage,
+  pattern: /^.+\.(png|jpe?g)$/,
+  fieldErrorMessage: 'Unsupported Image Format',
+});
+
+new InputFieldValidator({
+  field: monthlyIncome,
+  fieldMessage: monthlyIncomeMessage,
+  pattern: /^[1-9]{1}[0-9]{3,}$/,
+  fieldErrorMessage: 'Not within range',
+});
+
+new InputFieldValidator({
+  field: currentJobDuration,
+  fieldMessage: currentJobDurationMessage,
+  pattern: /^([1-9]+ [a-zA-Z]+)( [1-9]+ [a-zA-Z]+)*$/,
+  fieldErrorMessage: 'Not within range',
+});
+
+new SelectFieldValidator({
+  field: gender,
+  fieldMessage: genderMessage,
+  fieldErrorMessage: "You've not selected a gender",
+});
+
+new SelectFieldValidator({
+  field: employmentStatus,
+  fieldMessage: employmentStatusMessage,
+  fieldErrorMessage: "You've not selected an Employment Status",
+});
 
 new Modal({ btnShowModal: btnLogout, btnCloseModal: btnCancel, dialog });
 new Modal({ btnShowModal: btnLogout, btnCloseModal: btnYes, dialog });

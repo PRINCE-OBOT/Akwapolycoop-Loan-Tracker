@@ -47,7 +47,6 @@
                 pattern="^[a-zA-Z]{1,}$"
                 required
               />
-              <output readonly id="first-name-message" class="show-message"></output>
             </div>
 
             <div class="last-name">
@@ -63,7 +62,6 @@
                 pattern="^[a-zA-Z]{1,}$"
                 required
               />
-              <output readonly id="last-name-message" class="show-message"></output>
             </div>
 
             <div class="email">
@@ -79,7 +77,6 @@
                 pattern="^[a-zA-Z0-9.]{4,}@(gmail|yahoo|hotmail).com$"
                 required
               />
-              <output readonly id="email-message" class="show-message"></output>
             </div>
 
             <div class="gender">
@@ -104,7 +101,7 @@
                 type="tel"
                 id="phone-number"
                 placeholder="08153555726"
-                pattern="^[0-9]{10,11}$"
+                pattern="^0?[0-9]{10}$"
                 required
               />
               <output id="phone-number-message" class="show-message"></output>
@@ -143,13 +140,7 @@
                 NIN
                 <span class="required-asterisk">*</span>
               </label>
-              <input
-                type="text"
-                id="nin"
-                placeholder="43474898980"
-                pattern="^[0-9]{11}$"
-                required
-              />
+              <input type="tel" id="nin" placeholder="43474898980" pattern="^[0-9]{11}$" required />
               <output id="nin-message" class="show-message"></output>
             </div>
 

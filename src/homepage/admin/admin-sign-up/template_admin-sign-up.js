@@ -5,9 +5,8 @@ import '../../assets/common_general.css';
 import '../../assets/style-border-button.css';
 
 import FormUtility from '../../module/form-validation/form-utility';
-import EmailValidator from '../../module/form-validation/email-validator';
 import PasswordValidator from '../../module/form-validation/password-validator';
-import NameValidator from '../../module/form-validation/name-validator';
+import InputFieldValidator from '../../module/form-validation/input-field-validator';
 
 import indexDB from '../../module/indexDB/indexDB';
 
@@ -53,11 +52,26 @@ new PasswordValidator({
   confirmPasswordMessage,
 });
 
-new EmailValidator({ email, emailMessage });
+new InputFieldValidator({
+  field: firstName,
+  fieldMessage: firstNameMessage,
+  pattern: /^[a-zA-Z]{1,}$/,
+  fieldErrorMessage: 'Incorrect name format',
+});
 
-new NameValidator({ name: firstName, nameMessage: firstNameMessage });
+new InputFieldValidator({
+  field: lastName,
+  fieldMessage: lastNameMessage,
+  pattern: /^[a-zA-Z]{1,}$/,
+  fieldErrorMessage: 'Incorrect name format',
+});
 
-new NameValidator({ name: lastName, nameMessage: lastNameMessage });
+new InputFieldValidator({
+  field: email,
+  fieldMessage: emailMessage,
+  pattern: /^[a-zA-Z0-9.]{4,}@(gmail|yahoo|hotmail).com$/,
+  fieldErrorMessage: 'Incorrect email',
+});
 
 function generateUsername() {
   const randomNumber = Math.floor(Math.random() * 200) + 1;
