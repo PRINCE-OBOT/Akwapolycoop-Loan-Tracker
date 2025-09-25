@@ -1,46 +1,32 @@
 import FormUtility from './form-utility';
 
-// continue from employment status, change the name to employment status and call it in borrower-dashboard.js
 export default class EmploymentStatusValidator {
-  constructor({ gender, genderMessage }) {
-    this.gender = gender;
-    this.genderMessage = genderMessage;
+  constructor({ employmentStatus, employmentStatusMessage }) {
+    this.employmentStatus = employmentStatus;
+    this.employmentStatusMessage = employmentStatusMessage;
     this.bindEvent();
   }
 
   bindEvent() {
-    this.gender.addEventListener('change', () =>
-      this.validateName({
-        gender: this.gender,
-        genderMessage: this.genderMessage,
-      }),
-    );
+    this.employmentStatus.addEventListener('change', this.validateName.bind(this));
   }
 
-  validateName({ gender, genderMessage }) {
+  validateName() {
     FormUtility.hasUserInteract({
-      field: this.gender,
+      field: this.employmentStatus,
     });
 
     FormUtility.removeInvalidHighlightFromInput({
-      field: this.gender,
+      field: this.employmentStatus,
     });
 
-    const genderField = FormUtility.resetFieldStyle({
-      field: gender,
-      fieldMessage: genderMessage,
-    });
-    if (genderField.empty) return;
-
-    const pattern = /^(male|female)$/;
-
-    const isGenderValid = pattern.test(gender.value);
+    const isEmploymentStatusValid = this.employmentStatus.value !== '';
 
     FormUtility.validateClientAndServerState({
-      field: gender,
-      isFieldValid: isGenderValid,
-      fieldMessage: genderMessage,
-      msg: 'You have not selected a gender',
+      field: this.employmentStatus,
+      fieldMessage: this.employmentStatusMessage,
+      isFieldValid: isEmploymentStatusValid,
+      msg: "You've not selected an Employment Status",
     });
   }
 }

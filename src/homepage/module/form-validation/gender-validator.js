@@ -25,15 +25,7 @@ export default class GenderValidator {
       field: this.gender,
     });
 
-    const genderField = FormUtility.resetFieldStyle({
-      field: gender,
-      fieldMessage: genderMessage,
-    });
-    if (genderField.empty) return;
-
-    const pattern = /^(male|female)$/;
-
-    const isGenderValid = pattern.test(gender.value);
+    const isGenderValid = this.gender.value !== '';
 
     FormUtility.validateClientAndServerState({
       field: gender,

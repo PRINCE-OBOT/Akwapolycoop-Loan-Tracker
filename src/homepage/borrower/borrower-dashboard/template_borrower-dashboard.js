@@ -19,6 +19,8 @@ import indexDB from '../../module/indexDB/indexDB';
 
 import Modal from '../../module/modal/modal';
 
+import EmploymentStatusValidator from '../../module/form-validation/employment-status-validator';
+
 import {
   companyBusinessName,
   monthlyIncome,
@@ -56,10 +58,11 @@ const ninMessage = form.querySelector('#nin-message');
 const passport = form.querySelector('#passport');
 const passportMessage = form.querySelector('#passport-message');
 
-const btnSubmitApplication = form.querySelector('.btn-submit-application');
-
+const employmentAndIncome = form.querySelector('.employment-and-income');
 const employmentStatus = form.querySelector('#employment-status');
-const employmentIncomeFieldset = form.querySelector('.employment-and-income');
+const employmentStatusMessage = form.querySelector('#employment-status-message');
+
+const btnSubmitApplication = form.querySelector('.btn-submit-application');
 
 const displayRegistrationProcess = document.querySelector('.displayRegistrationProcess');
 
@@ -80,6 +83,7 @@ new DateOfBirthValidator({ dateOfBirth, dateOfBirthMessage });
 new AddressValidator({ address, addressMessage });
 new NINValidator({ nin, ninMessage });
 new PassportValidator({ passport, passportMessage });
+new EmploymentStatusValidator({ employmentStatus, employmentStatusMessage });
 
 new Modal({ btnShowModal: btnLogout, btnCloseModal: btnCancel, dialog });
 new Modal({ btnShowModal: btnLogout, btnCloseModal: btnYes, dialog });
@@ -95,7 +99,7 @@ class BorrowerSessionManager {
     new SelectSwitchDisplay({
       select: employmentStatus,
       inputs: [companyBusinessName, monthlyIncome, currentJobYear],
-      container: employmentIncomeFieldset,
+      container: employmentAndIncome,
     });
   }
 
