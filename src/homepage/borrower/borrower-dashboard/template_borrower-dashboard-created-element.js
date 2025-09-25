@@ -1,23 +1,23 @@
-const companyBusinessName = document.createElement('div');
-const monthlyIncome = document.createElement('div');
-const currentJobYear = document.createElement('div');
+const businessNameContainer = document.createElement('div');
+const monthlyIncomeContainer = document.createElement('div');
+const currentJobYearContainer = document.createElement('div');
 
-companyBusinessName.innerHTML = `
+businessNameContainer.innerHTML = `
 <label for="company-or-business-name">
   Business Name
   <span class="required-asterisk">*</span>
 </label>
 <input
   type="text"
-  id="company-or-business-name"
+  id="business-name"
   placeholder="Company or Business Name"
-  pattern="^[a-zA-Z0-9]{1,}$"
+  pattern="^[a-zA-Z0-9_ ]{5,}$"
   required
 />
-<output id="company-or-business-name-message" class="show-message"></output>
+<output id="business-name-message" class="show-message"></output>
 `;
 
-monthlyIncome.innerHTML = `
+monthlyIncomeContainer.innerHTML = `
 <label for="monthly-income">
   Monthly Income
   <span class="required-asterisk">*</span>
@@ -31,7 +31,7 @@ monthlyIncome.innerHTML = `
 />
 <output id="monthly-income-message" class="show-message"></output>
 `;
-currentJobYear.innerHTML = `
+currentJobYearContainer.innerHTML = `
 <label for="current-job-year">
   Year at Current Job
   <span class="required-asterisk">*</span>
@@ -46,4 +46,4 @@ currentJobYear.innerHTML = `
 <output id="current-job-year-message" class="show-message"></output>
 `;
 
-export { companyBusinessName, monthlyIncome, currentJobYear };
+export { businessNameContainer, monthlyIncomeContainer, currentJobYearContainer };

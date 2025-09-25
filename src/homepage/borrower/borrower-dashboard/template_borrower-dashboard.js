@@ -14,6 +14,7 @@ import DateOfBirthValidator from '../../module/form-validation/date-of-birth-val
 import AddressValidator from '../../module/form-validation/address-validator';
 import NINValidator from '../../module/form-validation/nin-validator';
 import PassportValidator from '../../module/form-validation/passport-validator';
+import BusinessNameValidator from '../../module/form-validation/business-name-validator';
 
 import indexDB from '../../module/indexDB/indexDB';
 
@@ -22,9 +23,9 @@ import Modal from '../../module/modal/modal';
 import EmploymentStatusValidator from '../../module/form-validation/employment-status-validator';
 
 import {
-  companyBusinessName,
-  monthlyIncome,
-  currentJobYear,
+  businessNameContainer,
+  monthlyIncomeContainer,
+  currentJobYearContainer,
 } from './template_borrower-dashboard-created-element';
 
 import SelectSwitchDisplay from '../../module/switchDisplay/select-switch-display';
@@ -58,6 +59,9 @@ const ninMessage = form.querySelector('#nin-message');
 const passport = form.querySelector('#passport');
 const passportMessage = form.querySelector('#passport-message');
 
+const businessName = businessNameContainer.querySelector('#business-name');
+const businessNameMessage = businessNameContainer.querySelector('#business-name-message');
+
 const employmentAndIncome = form.querySelector('.employment-and-income');
 const employmentStatus = form.querySelector('#employment-status');
 const employmentStatusMessage = form.querySelector('#employment-status-message');
@@ -84,6 +88,7 @@ new AddressValidator({ address, addressMessage });
 new NINValidator({ nin, ninMessage });
 new PassportValidator({ passport, passportMessage });
 new EmploymentStatusValidator({ employmentStatus, employmentStatusMessage });
+new BusinessNameValidator({ businessName, businessNameMessage });
 
 new Modal({ btnShowModal: btnLogout, btnCloseModal: btnCancel, dialog });
 new Modal({ btnShowModal: btnLogout, btnCloseModal: btnYes, dialog });
@@ -98,7 +103,7 @@ class BorrowerSessionManager {
     this.checkIfThereIsRecentLoanApplicant();
     new SelectSwitchDisplay({
       select: employmentStatus,
-      inputs: [companyBusinessName, monthlyIncome, currentJobYear],
+      inputs: [businessNameContainer, monthlyIncomeContainer, currentJobYearContainer],
       container: employmentAndIncome,
     });
   }
