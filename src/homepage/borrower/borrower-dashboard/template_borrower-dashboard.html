@@ -84,8 +84,8 @@
                 Select Gender
                 <span class="required-asterisk">*</span>
               </label>
-              <select name="gender" id="gender">
-                <option value="">-- Select gender --</option>
+              <select name="gender" id="gender" data-validate-field="validateSelectElement">
+                <option value="null">-- Select gender --</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
               </select>
@@ -102,6 +102,7 @@
                 id="phone-number"
                 placeholder="08153555726"
                 pattern="^0?[0-9]{10}$"
+                data-validate-field="validatePhoneNumber"
                 required
               />
               <output id="phone-number-message" class="show-message"></output>
@@ -112,7 +113,12 @@
                 Date of Birth
                 <span class="required-asterisk">*</span>
               </label>
-              <input type="date" id="date-of-birth" />
+              <input
+                type="date"
+                id="date-of-birth"
+                pattern="^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                data-validate-field="validateDateOfBirth"
+              />
               <output id="date-of-birth-message" class="show-message"></output>
             </div>
 
@@ -126,6 +132,7 @@
                 placeholder="e.g Plot 45 Circular Road, Opp. Clan Avenue, Ikot Ekpene, Akwa Ibom State"
                 id="resident-address"
                 pattern="(?=.*\s)(?=.*[a-zA-Z])(?=.*[0-9]).{20,}"
+                data-validate-field="validateAddress"
                 rows="3"
               ></textarea>
               <output id="resident-address-message" class="show-message"></output>
@@ -140,7 +147,14 @@
                 NIN
                 <span class="required-asterisk">*</span>
               </label>
-              <input type="tel" id="nin" placeholder="43474898980" pattern="^[0-9]{11}$" required />
+              <input
+                type="tel"
+                id="nin"
+                placeholder="43474898980"
+                pattern="^[0-9]{11}$"
+                data-validate-field="validateNIN"
+                required
+              />
               <output id="nin-message" class="show-message"></output>
             </div>
 
@@ -149,7 +163,13 @@
                 Passport
                 <span class="required-asterisk">*</span>
               </label>
-              <input type="file" id="passport" accept=".png,.jpg,.jpeg" required />
+              <input
+                type="file"
+                id="passport"
+                accept=".png,.jpg,.jpeg"
+                data-validate-field="validatePassport"
+                required
+              />
               <output id="passport-message" class="show-message"></output>
             </div>
           </fieldset>
@@ -162,9 +182,11 @@
                 Employment Status
                 <span class="required-asterisk">*</span>
               </label>
-              <select id="employment-status">
+              <select id="employment-status" data-validate-field="validateSelectElement">
                 <!-- data-switch `showElement` and `hideElement` are function name in switchDisplay to switch the display mode of `business-name` -->
-                <option value="" data-switch="hideElement">-- Select Employment Status --</option>
+                <option value="null" data-switch="hideElement">
+                  -- Select Employment Status --
+                </option>
                 <option value="employed (full-time)" data-switch="showElement">
                   Employed (Full-Time)
                 </option>
@@ -189,10 +211,11 @@
                 <span class="required-asterisk">*</span>
               </label>
               <input
-                type="text"
+                type="number"
                 id="desired-amount"
                 placeholder="e.g 50000"
-                pattern="^[0-9]{4,}$"
+                min="4000"
+                data-validate-field="validateDesiredAmount"
                 required
               />
               <output id="desired-amount-message" class="show-message"></output>
@@ -203,7 +226,14 @@
                 Tenor (Days)
                 <span class="required-asterisk">*</span>
               </label>
-              <input type="text" id="tenor" placeholder="e.g 5" pattern="^[0-9]{1,}$" required />
+              <input
+                type="number"
+                id="tenor"
+                placeholder="e.g 5"
+                min="1"
+                data-validate-field="validateTenor"
+                required
+              />
               <output id="tenor-message" class="show-message"></output>
             </div>
           </fieldset>
@@ -221,6 +251,7 @@
                 id="guarantor-first-name"
                 placeholder="Okeoghene"
                 pattern="^[a-zA-Z]{1,}$"
+                data-validate-field="validateName"
                 required
               />
               <output id="guarantor-first-name-message" class="show-message"></output>
@@ -236,9 +267,10 @@
                 id="guarantor-last-name"
                 placeholder="Wonderful"
                 pattern="^[a-zA-Z]{1,}$"
+                data-validate-field="validateName"
                 required
               />
-              <output id="last-name-message" class="show-message"></output>
+              <output id="guarantor-last-name-message" class="show-message"></output>
             </div>
 
             <div class="guarantor-email">
@@ -248,9 +280,10 @@
               </label>
               <input
                 type="email"
-                id="email"
+                id="guarantor-email"
                 placeholder="okeowonderfult38@gmaill.com"
                 pattern="^[a-zA-Z0-9.]{4,}@(gmail|yahoo|hotmail).com$"
+                data-validate-field="validateEmail"
                 required
               />
               <output id="guarantor-email-message" class="show-message"></output>
@@ -261,8 +294,12 @@
                 Select Gender
                 <span class="required-asterisk">*</span>
               </label>
-              <select name="guarantor-gender" id="guarantor-gender">
-                <option value="">-- Select gender --</option>
+              <select
+                name="guarantor-gender"
+                id="guarantor-gender"
+                data-validate-field="validateSelectElement"
+              >
+                <option value="null">-- Select gender --</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
               </select>
@@ -279,6 +316,7 @@
                 id="phone-number"
                 placeholder="08153555726"
                 pattern="^[0-9]{10,11}$"
+                data-validate-field="validatePhoneNumber"
                 required
               />
               <output id="guarantor-phone-number-message" class="show-message"></output>
@@ -289,7 +327,13 @@
                 Date of Birth
                 <span class="required-asterisk">*</span>
               </label>
-              <input type="date" id="guarantor-date-of-birth" />
+              <input
+                type="date"
+                id="guarantor-date-of-birth"
+                pattern="^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                data-validate-field="validateDateOfBirth"
+                required
+              />
               <output id="guarantor-date-of-birth-message" class="show-message"></output>
             </div>
 
@@ -304,6 +348,8 @@
                 id="guarantor-resident-address"
                 pattern="(?=.*\s)(?=.*[a-zA-Z])(?=.*[0-9]).{20,}"
                 rows="3"
+                data-validate-field="validateAddress"
+                required
               ></textarea>
               <output id="guarantor-resident-address-message" class="show-message"></output>
             </div>

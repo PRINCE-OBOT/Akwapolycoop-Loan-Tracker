@@ -6,57 +6,33 @@ import '../../assets/style-border-button.css';
 
 import FormUtility from '../../module/form-validation/form-utility';
 import PasswordValidator from '../../module/form-validation/password-validator';
-import InputFieldValidator from '../../module/form-validation/input-field-validator';
+import handleFieldValidationLogic from '../../module/form-validation/input-field-validator';
 
 import indexDB from '../../module/indexDB/indexDB';
 
 import Modal from '../../module/modal/modal';
 
-const messages = document.querySelectorAll('output.show-message');
-const inputs = document.querySelectorAll('input');
+const form = document.querySelector('form');
 
-const password = document.querySelector('#password');
-const passwordMessage = document.querySelector('#password-message');
+const messages = form.querySelectorAll('output.show-message');
+const inputs = form.querySelectorAll('input');
 
-const confirmPassword = document.querySelector('#confirm-password');
-const confirmPasswordMessage = document.querySelector('#confirm-password-message');
+const firstName = form.querySelector('#first-name');
+const lastName = form.querySelector('#last-name');
+const email = form.querySelector('#email');
 
-const email = document.querySelector('#email');
-const emailMessage = document.querySelector('#email-message');
+const password = form.querySelector('#password');
+const passwordMessage = form.querySelector('#password-message');
 
-const firstName = document.querySelector('#first-name');
-const firstNameMessage = document.querySelector('#first-name-message');
-
-const lastName = document.querySelector('#last-name');
-const lastNameMessage = document.querySelector('#last-name-message');
+const confirmPassword = form.querySelector('#confirm-password');
+const confirmPasswordMessage = form.querySelector('#confirm-password-message');
 
 const dialog = document.querySelector('dialog');
 const btnSignUp = document.querySelector('.btn-sign-up');
 
 const displaySignUpStatus = document.querySelector('.display_borrower-sign-up-status');
 
-const form = document.querySelector('form');
-
-new InputFieldValidator({
-  field: firstName,
-  fieldMessage: firstNameMessage,
-  pattern: /^[a-zA-Z]{1,}$/,
-  fieldErrorMessage: 'Incorrect name format',
-});
-
-new InputFieldValidator({
-  field: lastName,
-  fieldMessage: lastNameMessage,
-  pattern: /^[a-zA-Z]{1,}$/,
-  fieldErrorMessage: 'Incorrect name format',
-});
-
-new InputFieldValidator({
-  field: email,
-  fieldMessage: emailMessage,
-  pattern: /^[a-zA-Z0-9.]{4,}@(gmail|yahoo|hotmail).com$/,
-  fieldErrorMessage: 'Incorrect name format',
-});
+form.addEventListener('input', handleFieldValidationLogic);
 
 new PasswordValidator({
   password,

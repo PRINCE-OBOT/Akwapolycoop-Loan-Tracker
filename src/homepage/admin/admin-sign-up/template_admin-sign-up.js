@@ -6,7 +6,7 @@ import '../../assets/style-border-button.css';
 
 import FormUtility from '../../module/form-validation/form-utility';
 import PasswordValidator from '../../module/form-validation/password-validator';
-import InputFieldValidator from '../../module/form-validation/input-field-validator';
+import handleFieldValidationLogic from '../../module/form-validation/input-field-validator';
 
 import indexDB from '../../module/indexDB/indexDB';
 
@@ -24,18 +24,14 @@ const confirmPassword = form.querySelector('#confirm-password');
 const confirmPasswordMessage = form.querySelector('#confirm-password-message');
 
 const email = form.querySelector('#email');
-const emailMessage = form.querySelector('#email-message');
-
 const firstName = form.querySelector('#first-name');
-const firstNameMessage = form.querySelector('#first-name-message');
-
 const lastName = form.querySelector('#last-name');
-const lastNameMessage = form.querySelector('#last-name-message');
 
 const btnSignUp = form.querySelector('.btn-sign-up');
 const dialog = document.querySelector('dialog');
 
 btnSignUp.addEventListener('click', checkFormValidity);
+form.addEventListener('input', handleFieldValidationLogic);
 
 function checkFormValidity() {
   new FormUtility({
@@ -50,27 +46,6 @@ new PasswordValidator({
   passwordMessage,
   confirmPassword,
   confirmPasswordMessage,
-});
-
-new InputFieldValidator({
-  field: firstName,
-  fieldMessage: firstNameMessage,
-  pattern: /^[a-zA-Z]{1,}$/,
-  fieldErrorMessage: 'Incorrect name format',
-});
-
-new InputFieldValidator({
-  field: lastName,
-  fieldMessage: lastNameMessage,
-  pattern: /^[a-zA-Z]{1,}$/,
-  fieldErrorMessage: 'Incorrect name format',
-});
-
-new InputFieldValidator({
-  field: email,
-  fieldMessage: emailMessage,
-  pattern: /^[a-zA-Z0-9.]{4,}@(gmail|yahoo|hotmail).com$/,
-  fieldErrorMessage: 'Incorrect email',
 });
 
 function generateUsername() {

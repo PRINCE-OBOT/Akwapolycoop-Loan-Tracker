@@ -6,8 +6,7 @@ import '../../assets/common_general.css';
 import '../../assets/style-border-button.css';
 
 import FormUtility from '../../module/form-validation/form-utility';
-import InputFieldValidator from '../../module/form-validation/input-field-validator';
-import SelectFieldValidator from '../../module/form-validation/select-field-validator copy';
+import handleFieldValidationLogic from '../../module/form-validation/input-field-validator';
 
 import indexDB from '../../module/indexDB/indexDB';
 
@@ -16,7 +15,7 @@ import Modal from '../../module/modal/modal';
 import {
   businessNameContainer,
   monthlyIncomeContainer,
-  currentJobYearContainer,
+  currentJobDurationContainer,
 } from './template_borrower-dashboard-created-element';
 
 import SelectSwitchDisplay from '../../module/switchDisplay/select-switch-display';
@@ -29,39 +28,9 @@ const firstName = form.querySelector('#first-name');
 
 const lastName = form.querySelector('#last-name');
 
-const phoneNumber = form.querySelector('#phone-number');
-const phoneNumberMessage = form.querySelector('#phone-number-message');
-
-const gender = form.querySelector('#gender');
-const genderMessage = form.querySelector('#gender-message');
-
-const dateOfBirth = form.querySelector('#date-of-birth');
-const dateOfBirthMessage = form.querySelector('#date-of-birth-message');
-
-const address = form.querySelector('#resident-address');
-const addressMessage = form.querySelector('#resident-address-message');
-
-const nin = form.querySelector('#nin');
-const ninMessage = form.querySelector('#nin-message');
-
-const passport = form.querySelector('#passport');
-const passportMessage = form.querySelector('#passport-message');
-
-const businessName = businessNameContainer.querySelector('#business-name');
-const businessNameMessage = businessNameContainer.querySelector('#business-name-message');
-
 const employmentAndIncome = form.querySelector('.employment-and-income');
 
 const employmentStatus = form.querySelector('#employment-status');
-const employmentStatusMessage = form.querySelector('#employment-status-message');
-
-const monthlyIncome = monthlyIncomeContainer.querySelector('#monthly-income');
-const monthlyIncomeMessage = monthlyIncomeContainer.querySelector('#monthly-income-message');
-
-const currentJobDuration = currentJobYearContainer.querySelector('#current-job-duration');
-const currentJobDurationMessage = currentJobYearContainer.querySelector(
-  '#current-job-duration-message',
-);
 
 const btnSubmitApplication = form.querySelector('.btn-submit-application');
 
@@ -75,73 +44,7 @@ const dialog = document.querySelector('dialog');
 const btnCancel = dialog.querySelector('.btn-cancel');
 const btnYes = dialog.querySelector('.btn-yes');
 
-new InputFieldValidator({
-  field: phoneNumber,
-  fieldMessage: phoneNumberMessage,
-  pattern: /0?[0-9]{10}/,
-  fieldErrorMessage: 'Incorrect Phone Number',
-});
-
-new InputFieldValidator({
-  field: nin,
-  fieldMessage: ninMessage,
-  pattern: /^[0-9]{11}$/,
-  fieldErrorMessage: 'Invalid NIN',
-});
-
-new InputFieldValidator({
-  field: businessName,
-  fieldMessage: businessNameMessage,
-  pattern: /^[a-zA-Z0-9_' -]{5,}$/,
-  fieldErrorMessage: 'Business Name not Descriptive',
-});
-
-new InputFieldValidator({
-  field: address,
-  fieldMessage: addressMessage,
-  pattern: /(?=.*\s)(?=.*[a-zA-Z])(?=.*[0-9]).{20,}/,
-  fieldErrorMessage: 'Address not Descriptive',
-});
-
-new InputFieldValidator({
-  field: dateOfBirth,
-  fieldMessage: dateOfBirthMessage,
-  pattern: /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/,
-  fieldErrorMessage: 'Incorrect Date of Birth',
-});
-
-new InputFieldValidator({
-  field: passport,
-  fieldMessage: passportMessage,
-  pattern: /^.+\.(png|jpe?g)$/,
-  fieldErrorMessage: 'Unsupported Image Format',
-});
-
-new InputFieldValidator({
-  field: monthlyIncome,
-  fieldMessage: monthlyIncomeMessage,
-  pattern: /^[1-9]{1}[0-9]{3,}$/,
-  fieldErrorMessage: 'Not within range',
-});
-
-new InputFieldValidator({
-  field: currentJobDuration,
-  fieldMessage: currentJobDurationMessage,
-  pattern: /^([1-9]+ [a-zA-Z]+)( [1-9]+ [a-zA-Z]+)*$/,
-  fieldErrorMessage: 'Not within range',
-});
-
-new SelectFieldValidator({
-  field: gender,
-  fieldMessage: genderMessage,
-  fieldErrorMessage: "You've not selected a gender",
-});
-
-new SelectFieldValidator({
-  field: employmentStatus,
-  fieldMessage: employmentStatusMessage,
-  fieldErrorMessage: "You've not selected an Employment Status",
-});
+form.addEventListener('input', handleFieldValidationLogic);
 
 new Modal({ btnShowModal: btnLogout, btnCloseModal: btnCancel, dialog });
 new Modal({ btnShowModal: btnLogout, btnCloseModal: btnYes, dialog });
@@ -156,7 +59,7 @@ class BorrowerSessionManager {
     this.checkIfThereIsRecentLoanApplicant();
     new SelectSwitchDisplay({
       select: employmentStatus,
-      inputs: [businessNameContainer, monthlyIncomeContainer, currentJobYearContainer],
+      inputs: [businessNameContainer, monthlyIncomeContainer, currentJobDurationContainer],
       container: employmentAndIncome,
     });
   }
@@ -167,7 +70,7 @@ class BorrowerSessionManager {
   }
 
   checkFormValidity() {
-    const messages = form.querySelectorAll('output:not([readonly])');
+    const messages = form.querySelectorAll('output.show-message');
     const inputs = form.querySelectorAll('input:not([readonly])');
 
     new FormUtility({
