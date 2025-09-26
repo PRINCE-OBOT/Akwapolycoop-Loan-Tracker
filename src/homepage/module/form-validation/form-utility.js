@@ -3,6 +3,7 @@ export default class FormUtility {
     this.messages = messages;
     this.inputs = inputs;
     this.runWhenAllFormIsValid = runWhenAllFormIsValid;
+
     this.render();
   }
 
@@ -21,10 +22,13 @@ export default class FormUtility {
       window.scrollTo(0, 0);
       this.runWhenAllFormIsValid();
     } else {
-      const invalidInputs = [...this.inputs].filter((input) => !input.validity.valid);
+      const invalidMessages = [...this.messages].filter(
+        (message) => !message.classList.contains('valid'),
+      );
 
-      invalidInputs.forEach((invalidInput) => {
-        invalidInput.classList.add('invalid');
+      invalidMessages.forEach((invalidMessage) => {
+        const input = invalidMessage.closest('div').querySelector('[data-validate-field]');
+        input.classList.add('invalid');
       });
     }
   }

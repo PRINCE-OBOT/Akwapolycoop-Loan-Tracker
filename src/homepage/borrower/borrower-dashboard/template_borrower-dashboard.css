@@ -8,7 +8,9 @@ form.loan-application-form {
 legend {
   padding: 5px;
   letter-spacing: 2px;
-  color: var(--ink);
+  background: linear-gradient(var(--primary-accent), var(--grey)) text;
+  font-weight: 600;
+  color: transparent;
 }
 select {
   appearance: none;

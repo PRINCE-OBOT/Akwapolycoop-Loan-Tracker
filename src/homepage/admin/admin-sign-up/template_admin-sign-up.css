@@ -1,23 +1,15 @@
-input {
-  &:where(:invalid, :valid) {
-    border: 2px solid;
-    border-color: var(--transparent-black);
-  }
-
+[data-validate-field].invalid {
+  border: 1.5px solid var(--clr-invalid);
+}
+[data-validate-field] {
   &.user-interact:invalid {
-    border-color: var(--clr-invalid);
+    border: 1.5px solid var(--clr-invalid);
   }
-
   &.user-interact:valid {
-    border-color: var(--clr-valid);
-  }
-  &.invalid {
-    border-color: var(--clr-invalid);
+    border: none;
   }
 }
-:focus {
-  outline: none;
-}
+
 .show-message {
   position: absolute;
   bottom: -2px;
@@ -80,11 +72,12 @@ form {
 .field-section {
   display: flex;
   flex-wrap: wrap;
-  gap: 28px;
+  row-gap: 33px;
+  column-gap: 25px;
   border: 1px solid var(--grey);
   padding: 20px 20px 40px 20px;
   background: var(--white);
-  border: 1px solid var(--transparent-black);
+  border: 1px solid var(--grey);
   border-radius: 10px;
 }
 
@@ -95,6 +88,7 @@ form {
   position: relative;
   flex: max(40%, 200px);
 }
+
 .field-section > div[class$='resident-address'] {
   flex: max(40%, 300px);
 }
@@ -115,8 +109,8 @@ textarea {
   border-radius: 5px;
   border-style: solid;
   background: var(--transparent-white);
-  border-color: var(--transparent-white);
   box-shadow: var(--box-shadow);
+  border: none;
 }
 ::placeholder {
   color: var(--grey);
