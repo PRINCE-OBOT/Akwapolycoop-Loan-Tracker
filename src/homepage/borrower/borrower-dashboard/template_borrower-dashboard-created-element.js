@@ -12,7 +12,7 @@ businessNameContainer.innerHTML = `
   id="business-name"
   placeholder="Company or Business Name"
   pattern="^[a-zA-Z0-9_ ' -]{5,}$"
-  data-validate-field="validateBusinessName"
+  data-set-field-validation-value="setBusinessNameValidationValue"
   required
 />
 <output id="business-name-message" class="show-message"></output>
@@ -28,7 +28,7 @@ monthlyIncomeContainer.innerHTML = `
   id="monthly-income"
   placeholder="e.g 20000"
   min="20000"
-  data-validate-field="validateMonthlyIncome"
+  data-set-field-validation-value="setMonthlyIncomeValidationValue"
   required
 />
 <output id="monthly-income-message" class="show-message"></output>
@@ -43,7 +43,7 @@ currentJobDurationContainer.innerHTML = `
   id="current-job-duration"
   placeholder="e.g 1 year 2 months"
   pattern="^([1-9]+ (months?|years?|days?))( [1-9]+ (months?|years?|days?))*$"
-  data-validate-field="validateCurrentJobDuration"
+  data-set-field-validation-value="setCurrentJobDurationValidationValue"
   required
 />
 <output id="current-job-duration-message" class="show-message"></output>

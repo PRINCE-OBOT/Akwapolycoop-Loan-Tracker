@@ -39,148 +39,96 @@ class FieldValidator {
 }
 
 const validation = {
-  validateName({ field, fieldMessage }) {
-    const isFieldValid = /^[a-zA-Z]{1,}$/.test(field.value);
-    new FieldValidator({
-      field,
-      fieldMessage,
-      isFieldValid,
-      fieldErrorMessage: 'Incorrect name format',
-    });
+  isFieldValid: null,
+  fieldErrorMessage: null,
+
+  setNameValidationValue({ field }) {
+    this.isFieldValid = /^[a-zA-Z]{1,}$/.test(field.value);
+    this.fieldErrorMessage = 'Incorrect name format';
   },
 
-  validateEmail({ field, fieldMessage }) {
-    const isFieldValid = /^[a-zA-Z0-9.]{4,}@(gmail|yahoo|hotmail).com$/.test(field.value);
-    new FieldValidator({
-      field,
-      fieldMessage,
-      isFieldValid,
-      fieldErrorMessage: 'Incorrect email format',
-    });
+  setEmailValidationValue({ field }) {
+    this.isFieldValid = /^[a-zA-Z0-9.]{4,}@(gmail|yahoo|hotmail).com$/.test(field.value);
+    this.fieldErrorMessage = 'Incorrect email format';
   },
 
-  validateAddress({ field, fieldMessage }) {
-    const isFieldValid = /(?=.*\s)(?=.*[a-zA-Z])(?=.*[0-9]).{20,}/.test(field.value);
-    new FieldValidator({
-      field,
-      fieldMessage,
-      isFieldValid,
-      fieldErrorMessage: 'Address not Descriptive',
-    });
+  setAddressValidationValue({ field }) {
+    this.isFieldValid = /(?=.*\s)(?=.*[a-zA-Z])(?=.*[0-9]).{20,}/.test(field.value);
+    this.fieldErrorMessage = 'Address not Descriptive';
   },
 
-  validateBusinessName({ field, fieldMessage }) {
-    const isFieldValid = /^[a-zA-Z0-9_' -]{5,}$/.test(field.value);
-    new FieldValidator({
-      field,
-      fieldMessage,
-      isFieldValid,
-      fieldErrorMessage: 'Business Name not Descriptive',
-    });
+  setBusinessNameValidationValue({ field }) {
+    this.isFieldValid = /^[a-zA-Z0-9_' -]{5,}$/.test(field.value);
+    this.fieldErrorMessage = 'Business Name not Descriptive';
   },
 
-  validateNIN({ field, fieldMessage }) {
-    const isFieldValid = /^[0-9]{11}$/.test(field.value);
-
-    new FieldValidator({
-      field,
-      fieldMessage,
-      isFieldValid,
-      fieldErrorMessage: 'Invalid NIN',
-    });
+  setNINValidationValue({ field }) {
+    this.isFieldValid = /^[0-9]{11}$/.test(field.value);
+    this.fieldErrorMessage = 'Invalid NIN';
   },
 
-  validatePhoneNumber({ field, fieldMessage }) {
-    const isFieldValid = /0?[0-9]{10}/.test(field.value);
-
-    new FieldValidator({
-      field,
-      fieldMessage,
-      isFieldValid,
-      fieldErrorMessage: 'Incorrect Phone Number',
-    });
+  setPhoneNumberValidationValue({ field }) {
+    this.isFieldValid = /0?[0-9]{10}/.test(field.value);
+    this.fieldErrorMessage = 'Incorrect Phone Number';
   },
 
-  validatePassport({ field, fieldMessage }) {
-    const isFieldValid = /^.+\.(png|jpe?g)$/.test(field.value);
-    new FieldValidator({
-      field,
-      fieldMessage,
-      isFieldValid,
-      fieldErrorMessage: 'Unsupported Image Format',
-    });
+  setPassportValidationValue({ field }) {
+    this.isFieldValid = /^.+\.(png|jpe?g)$/.test(field.value);
+    this.fieldErrorMessage = 'Unsupported Image Format';
   },
 
-  validateDateOfBirth({ field, fieldMessage }) {
-    const isFieldValid = /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(field.value);
-    new FieldValidator({
-      field,
-      fieldMessage,
-      isFieldValid,
-      fieldErrorMessage: 'Incorrect Date of Birth',
-    });
+  setDateOfBirthValidationValue({ field }) {
+    this.isFieldValid = /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(field.value);
+    this.fieldErrorMessage = 'Incorrect Date of Birth';
   },
 
-  validateMonthlyIncome({ field, fieldMessage }) {
-    const isFieldValid = +field.value >= 20000;
-    new FieldValidator({
-      field,
-      fieldMessage,
-      isFieldValid,
-      fieldErrorMessage: 'Not within range',
-    });
+  setMonthlyIncomeValidationValue({ field }) {
+    this.isFieldValid = +field.value >= 20000;
+    this.fieldErrorMessage = 'Not within range';
   },
 
-  validateCurrentJobDuration({ field, fieldMessage }) {
-    const isFieldValid = /^([1-9]+ (months?|years?|days?))( [1-9]+ (months?|years?|days?))*$/.test(
+  setCurrentJobDurationValidationValue({ field }) {
+    this.isFieldValid = /^([1-9]+ (months?|years?|days?))( [1-9]+ (months?|years?|days?))*$/.test(
       field.value,
+      (this.fieldErrorMessage = 'Not within range'),
     );
-    new FieldValidator({
-      field,
-      fieldMessage,
-      isFieldValid,
-      fieldErrorMessage: 'Not within range',
-    });
   },
 
-  validateDesiredAmount({ field, fieldMessage }) {
-    const isFieldValid = +field.value >= 4000;
-    new FieldValidator({
-      field,
-      fieldMessage,
-      isFieldValid,
-      fieldErrorMessage: 'Not within range',
-    });
+  setDesiredAmountValidationValue({ field }) {
+    this.isFieldValid = +field.value >= 4000;
+    this.fieldErrorMessage = 'Not within range';
   },
 
-  validateTenor({ field, fieldMessage }) {
-    const isFieldValid = +field.value >= 1;
-    new FieldValidator({
-      field,
-      fieldMessage,
-      isFieldValid,
-      fieldErrorMessage: 'Not within range',
-    });
+  validateTenor({ field }) {
+    this.isFieldValid = +field.value >= 1;
+    this.fieldErrorMessage = 'Not within range';
   },
 
-  validateSelectElement({ field, fieldMessage }) {
-    const isFieldValid = field.value !== 'null';
+  setSelectElementValidationValue({ field }) {
+    this.isFieldValid = field.value !== 'null';
+    this.fieldErrorMessage = "You've not selected an option";
+  },
+
+  validateField({ field, fieldMessage }) {
     new FieldValidator({
       field,
       fieldMessage,
-      isFieldValid,
-      fieldErrorMessage: "You've not selected an option",
+      isFieldValid: this.isFieldValid,
+      fieldErrorMessage: this.fieldErrorMessage,
     });
   },
 };
 
 function handleFieldValidationLogic(e) {
-  const validateField = e.target.dataset.validateField;
-  if (!validateField) return;
+  const setFieldValidationValue = e.target.dataset.setFieldValidationValue;
+  if (!setFieldValidationValue) return;
 
   const field = e.target;
+
+  validation[setFieldValidationValue]({ field });
+
   const fieldMessage = field.closest('div').querySelector('output.show-message');
 
-  validation[validateField]({ field, fieldMessage });
+  validation.validateField({ field, fieldMessage });
 }
 export default handleFieldValidationLogic;

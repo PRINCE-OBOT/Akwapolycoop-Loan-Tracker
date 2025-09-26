@@ -27,7 +27,9 @@ export default class FormUtility {
       );
 
       invalidMessages.forEach((invalidMessage) => {
-        const input = invalidMessage.closest('div').querySelector('[data-validate-field]');
+        const input = invalidMessage
+          .closest('div')
+          .querySelector('[data-set-field-validation-value]');
         input.classList.add('invalid');
       });
     }

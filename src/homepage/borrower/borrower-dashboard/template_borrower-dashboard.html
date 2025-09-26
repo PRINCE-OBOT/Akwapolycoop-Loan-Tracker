@@ -84,7 +84,11 @@
                 Select Gender
                 <span class="required-asterisk">*</span>
               </label>
-              <select name="gender" id="gender" data-validate-field="validateSelectElement">
+              <select
+                name="gender"
+                id="gender"
+                data-set-field-validation-value="setSelectElementValidationValue"
+              >
                 <option value="null">-- Select gender --</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
@@ -102,7 +106,7 @@
                 id="phone-number"
                 placeholder="08153555726"
                 pattern="^0?[0-9]{10}$"
-                data-validate-field="validatePhoneNumber"
+                data-set-field-validation-value="setPhoneNumberValidationValue"
                 required
               />
               <output id="phone-number-message" class="show-message"></output>
@@ -117,7 +121,7 @@
                 type="date"
                 id="date-of-birth"
                 pattern="^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
-                data-validate-field="validateDateOfBirth"
+                data-set-field-validation-value="setDateOfBirthValidationValue"
               />
               <output id="date-of-birth-message" class="show-message"></output>
             </div>
@@ -132,7 +136,7 @@
                 placeholder="e.g Plot 45 Circular Road, Opp. Clan Avenue, Ikot Ekpene, Akwa Ibom State"
                 id="resident-address"
                 pattern="(?=.*\s)(?=.*[a-zA-Z])(?=.*[0-9]).{20,}"
-                data-validate-field="validateAddress"
+                data-set-field-validation-value="setAddressValidationValue"
                 rows="3"
               ></textarea>
               <output id="resident-address-message" class="show-message"></output>
@@ -152,7 +156,7 @@
                 id="nin"
                 placeholder="43474898980"
                 pattern="^[0-9]{11}$"
-                data-validate-field="validateNIN"
+                data-set-field-validation-value="setNINValidationValue"
                 required
               />
               <output id="nin-message" class="show-message"></output>
@@ -167,7 +171,7 @@
                 type="file"
                 id="passport"
                 accept=".png,.jpg,.jpeg"
-                data-validate-field="validatePassport"
+                data-set-field-validation-value="setPassportValidationValue"
                 required
               />
               <output id="passport-message" class="show-message"></output>
@@ -182,7 +186,10 @@
                 Employment Status
                 <span class="required-asterisk">*</span>
               </label>
-              <select id="employment-status" data-validate-field="validateSelectElement">
+              <select
+                id="employment-status"
+                data-set-field-validation-value="setSelectElementValidationValue"
+              >
                 <!-- data-switch `showElement` and `hideElement` are function name in switchDisplay to switch the display mode of `business-name` -->
                 <option value="null" data-switch="hideElement">
                   -- Select Employment Status --
@@ -215,7 +222,7 @@
                 id="desired-amount"
                 placeholder="e.g 50000"
                 min="4000"
-                data-validate-field="validateDesiredAmount"
+                data-set-field-validation-value="setDesiredAmountValidationValue"
                 required
               />
               <output id="desired-amount-message" class="show-message"></output>
@@ -231,7 +238,7 @@
                 id="tenor"
                 placeholder="e.g 5"
                 min="1"
-                data-validate-field="validateTenor"
+                data-set-field-validation-value="validateTenor"
                 required
               />
               <output id="tenor-message" class="show-message"></output>
@@ -251,7 +258,7 @@
                 id="guarantor-first-name"
                 placeholder="Okeoghene"
                 pattern="^[a-zA-Z]{1,}$"
-                data-validate-field="validateName"
+                data-set-field-validation-value="setNameValidationValue"
                 required
               />
               <output id="guarantor-first-name-message" class="show-message"></output>
@@ -267,7 +274,7 @@
                 id="guarantor-last-name"
                 placeholder="Wonderful"
                 pattern="^[a-zA-Z]{1,}$"
-                data-validate-field="validateName"
+                data-set-field-validation-value="setNameValidationValue"
                 required
               />
               <output id="guarantor-last-name-message" class="show-message"></output>
@@ -283,7 +290,7 @@
                 id="guarantor-email"
                 placeholder="okeowonderfult38@gmaill.com"
                 pattern="^[a-zA-Z0-9.]{4,}@(gmail|yahoo|hotmail).com$"
-                data-validate-field="validateEmail"
+                data-set-field-validation-value="setEmailValidationValue"
                 required
               />
               <output id="guarantor-email-message" class="show-message"></output>
@@ -297,7 +304,7 @@
               <select
                 name="guarantor-gender"
                 id="guarantor-gender"
-                data-validate-field="validateSelectElement"
+                data-set-field-validation-value="setSelectElementValidationValue"
               >
                 <option value="null">-- Select gender --</option>
                 <option value="male">Male</option>
@@ -316,7 +323,7 @@
                 id="phone-number"
                 placeholder="08153555726"
                 pattern="^[0-9]{10,11}$"
-                data-validate-field="validatePhoneNumber"
+                data-set-field-validation-value="setPhoneNumberValidationValue"
                 required
               />
               <output id="guarantor-phone-number-message" class="show-message"></output>
@@ -331,7 +338,7 @@
                 type="date"
                 id="guarantor-date-of-birth"
                 pattern="^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
-                data-validate-field="validateDateOfBirth"
+                data-set-field-validation-value="setDateOfBirthValidationValue"
                 required
               />
               <output id="guarantor-date-of-birth-message" class="show-message"></output>
@@ -348,7 +355,7 @@
                 id="guarantor-resident-address"
                 pattern="(?=.*\s)(?=.*[a-zA-Z])(?=.*[0-9]).{20,}"
                 rows="3"
-                data-validate-field="validateAddress"
+                data-set-field-validation-value="setAddressValidationValue"
                 required
               ></textarea>
               <output id="guarantor-resident-address-message" class="show-message"></output>
