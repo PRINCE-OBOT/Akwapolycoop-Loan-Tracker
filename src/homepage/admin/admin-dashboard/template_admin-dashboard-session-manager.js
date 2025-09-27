@@ -40,10 +40,11 @@ export default class AdminSessionManager {
         storeName: 'admin-data',
         keyPathValue: 'admin',
         getMethod: 'get',
+        key: 'isAdminLogin',
         trueState: this.adminIsLogin.bind(this),
         undefinedState: this.adminIsNotLogin.bind(this),
       },
-      'checkIfThereIsRecentData',
+      'checkStateOfData',
     );
   }
 
@@ -117,10 +118,14 @@ export default class AdminSessionManager {
       {
         storeName: 'admin-data',
         keyPathValue: 'admin',
+        getMethod: 'get',
+        newValue: { isAdminLogin: false },
+        keys: ['isAdminLogin'],
+
         trueState: this.render.bind(this),
         undefinedState: this.errorWhileDeletingKey.bind(this),
       },
-      'deleteKey',
+      'modifyData',
     );
   }
 

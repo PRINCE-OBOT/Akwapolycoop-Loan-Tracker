@@ -1,4 +1,4 @@
-export default class FormUtility {
+export default class FieldValidationUtility {
   constructor({ messages, inputs, runWhenAllFormIsValid }) {
     this.messages = messages;
     this.inputs = inputs;

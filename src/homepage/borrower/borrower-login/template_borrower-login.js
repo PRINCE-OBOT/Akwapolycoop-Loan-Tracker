@@ -4,101 +4,91 @@ import '../../assets/font.css';
 import '../../assets/common_general.css';
 import '../../assets/style-border-button.css';
 
-import LoginCheck from '../../module/login/login-check';
-import PasswordLogin from '../../module/login/login-field';
+import handleFieldValidationLogic from '../../module/form-validation/field-validator';
+import FieldValidationUtility from '../../module/form-validation/field-utility';
 
 import indexDB from '../../module/indexDB/indexDB';
 import Modal from '../../module/modal/modal';
 
-const btnLogin = document.querySelector('.btn-login');
-const inputs = document.querySelectorAll('input');
-const username = document.querySelector('#username');
-const password = document.querySelector('#password');
+const form = document.querySelector('form');
+const username = form.querySelector('#username');
+const password = form.querySelector('#password');
+const inputs = form.querySelectorAll('input');
+const messages = form.querySelectorAll('output.show-message');
+const btnLogin = form.querySelector('.btn-login');
+
 const dialog = document.querySelector('dialog');
 const loginStatus = dialog.querySelector('.login-status');
 
-class LoginManager {
-  constructor() {
-    this.render();
-  }
+form.addEventListener('input', handleFieldValidationLogic);
+btnLogin.addEventListener('click', checkFormValidityState);
 
-  render() {
-    new PasswordLogin({ field: password });
-
-    new PasswordLogin({ field: username });
-
-    new LoginCheck({
-      loginButton: btnLogin,
-      inputs,
-      runWhenFormIsFilled: this.checkIfLoanApplicantExist.bind(this),
-    });
-  }
-
-  setLoginStatusTextContent(textContent) {
-    loginStatus.textContent = textContent;
-  }
-
-  displayLoginStatusModal() {
-    setTimeout(() => {
-      const modal = new Modal({ dialog });
-      modal.showModal();
-    }, 200);
-  }
-
-  navigateToProfilePage() {
-    this.setLoginStatusTextContent('Logging in...');
-
-    this.displayLoginStatusModal();
-
-    setTimeout(() => {
-      window.location.href = './borrower-profile.html';
-    }, 2000);
-  }
-
-  navigateToDashboardPage() {
-    this.setLoginStatusTextContent('Logging in...');
-
-    this.displayLoginStatusModal();
-
-    setTimeout(() => {
-      window.location.href = './borrower-dashboard.html';
-    }, 2000);
-  }
-
-  incorrectUsernameOrPassword() {
-    this.setLoginStatusTextContent('Incorrect Username or Password');
-
-    this.displayLoginStatusModal();
-  }
-
-  checkIfBorrowerHasSignUp() {
-    indexDB.createDatabase(
-      {
-        storeName: 'borrower-sign-up-list',
-        getMethod: 'getAll',
-        username,
-        password,
-        trueState: this.navigateToDashboardPage.bind(this),
-        undefinedState: this.incorrectUsernameOrPassword.bind(this),
-      },
-      'checkIfLoginDetailsMatch',
-    );
-    this.setLoginStatusTextContent('Incorrect username or password');
-  }
-
-  checkIfLoanApplicantExist() {
-    indexDB.createDatabase(
-      {
-        storeName: 'borrower-loan-applicant-list',
-        getMethod: 'getAll',
-        username,
-        password,
-        trueState: this.navigateToProfilePage.bind(this),
-        undefinedState: this.checkIfBorrowerHasSignUp.bind(this),
-      },
-      'checkIfLoginDetailsMatch',
-    );
-  }
+// Form validity state is just checking that the form is filled, i.e the form is not empty
+function checkFormValidityState() {
+  new FieldValidationUtility({
+    messages,
+    inputs,
+    runWhenAllFormIsValid: checkIfLoanApplicantExist,
+  });
 }
 
-new LoginManager();
+function checkIfLoanApplicantExist() {
+  indexDB.createDatabase(
+    {
+      storeName: 'borrower-loan-applicant-list',
+      getMethod: 'getAll',
+      username,
+      password,
+      trueState: navigateToProfilePage,
+      undefinedState: checkIfBorrowerAlreadySignUp,
+    },
+    'checkIfLoginDetailsMatch',
+  );
+}
+
+function checkIfBorrowerAlreadySignUp() {
+  indexDB.createDatabase(
+    {
+      storeName: 'borrower-sign-up-list',
+      getMethod: 'getAll',
+      username,
+      password,
+      trueState: navigateToDashboardPage,
+      undefinedState: incorrectUsernameOrPassword,
+    },
+    'checkIfLoginDetailsMatch',
+  );
+}
+
+function showLoginStatusModal() {
+  const modal = new Modal({ dialog });
+  modal.showModal();
+}
+
+function setLoginStatusTextContent(textContent) {
+  loginStatus.textContent = textContent;
+  showLoginStatusModal();
+}
+
+function successLoginStatusTextContent() {
+  setLoginStatusTextContent('Logging in...');
+}
+
+function navigateToProfilePage() {
+  successLoginStatusTextContent();
+  setTimeout(() => {
+    window.location.href = './borrower-profile.html';
+  }, 2000);
+}
+
+function navigateToDashboardPage() {
+  successLoginStatusTextContent();
+
+  setTimeout(() => {
+    window.location.href = './borrower-dashboard.html';
+  }, 2000);
+}
+
+function incorrectUsernameOrPassword() {
+  setLoginStatusTextContent('Incorrect Username or Password');
+}

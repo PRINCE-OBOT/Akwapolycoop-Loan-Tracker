@@ -55,7 +55,7 @@ a {
 p {
   max-width: 50ch;
 }
-:focus {
+:is(input, textarea, select):focus {
   outline: 1.5px solid var(--dark-yellow);
   outline-offset: 2px;
 }

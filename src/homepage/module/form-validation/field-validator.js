@@ -1,4 +1,4 @@
-import FormUtility from './form-utility';
+import FieldValidationUtility from './field-utility';
 
 class FieldValidator {
   constructor({ field, fieldMessage, isFieldValid, fieldErrorMessage }) {
@@ -15,21 +15,21 @@ class FieldValidator {
   }
 
   validateField() {
-    FormUtility.hasUserInteract({
+    FieldValidationUtility.hasUserInteract({
       field: this.field,
     });
 
-    FormUtility.removeInvalidHighlightFromInput({
+    FieldValidationUtility.removeInvalidHighlightFromInput({
       field: this.field,
     });
 
-    const nameField = FormUtility.resetFieldStyle({
+    const nameField = FieldValidationUtility.resetFieldStyle({
       field: this.field,
       fieldMessage: this.fieldMessage,
     });
     if (nameField.empty) return;
 
-    FormUtility.validateClientAndServerState({
+    FieldValidationUtility.validateClientAndServerState({
       field: this.field,
       fieldMessage: this.fieldMessage,
       isFieldValid: this.isFieldValid,
@@ -92,6 +92,10 @@ const validation = {
       field.value,
       (this.fieldErrorMessage = 'Not within range'),
     );
+  },
+
+  setEmptyFieldValidationValue({ field }) {
+    this.isFieldValid = /.+/.test(field.value);
   },
 
   setDesiredAmountValidationValue({ field }) {

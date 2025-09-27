@@ -5,8 +5,9 @@ import '../../assets/font.css';
 import '../../assets/common_general.css';
 import '../../assets/style-border-button.css';
 
-import FormUtility from '../../module/form-validation/form-utility';
-import handleFieldValidationLogic from '../../module/form-validation/input-field-validator';
+import FieldValidationUtility from '../../module/form-validation/field-utility';
+import handleFieldValidationLogic from '../../module/form-validation/field-validator';
+import SelectSwitchDisplay from '../../module/switchDisplay/select-switch-display';
 
 import indexDB from '../../module/indexDB/indexDB';
 
@@ -17,8 +18,6 @@ import {
   monthlyIncomeContainer,
   currentJobDurationContainer,
 } from './template_borrower-dashboard-created-element';
-
-import SelectSwitchDisplay from '../../module/switchDisplay/select-switch-display';
 
 const form = document.querySelector('.loan-application-form');
 
@@ -73,7 +72,7 @@ class BorrowerSessionManager {
     const messages = form.querySelectorAll('output.show-message');
     const inputs = form.querySelectorAll('input:not([readonly])');
 
-    new FormUtility({
+    new FieldValidationUtility({
       messages,
       inputs,
       runWhenAllFormIsValid: this.getDataInRecentSignUp.bind(this),

@@ -50,7 +50,7 @@ const indexDB = {
   },
 
   checkIfLoginDetailsMatch(
-    { username, password, storeName, getMethod, undefinedState, trueState },
+    { username, password, storeName, getMethod, keyPathValue, undefinedState, trueState },
     db,
   ) {
     function returnData(data) {
@@ -66,6 +66,7 @@ const indexDB = {
       {
         storeName,
         getMethod,
+        keyPathValue,
         returnData,
       },
       db,
@@ -79,6 +80,28 @@ const indexDB = {
           trueState();
           return;
         }
+      }
+      undefinedState();
+    }
+
+    this.getData(
+      {
+        storeName,
+        keyPathValue,
+        getMethod,
+        returnData,
+      },
+      db,
+    );
+  },
+  checkStateOfData({ storeName, key, getMethod, keyPathValue, undefinedState, trueState }, db) {
+    function returnData(data) {
+      if (data !== undefined) {
+        if (data[key]) {
+          trueState();
+          return;
+        }
+        undefinedState();
       }
       undefinedState();
     }
@@ -142,6 +165,7 @@ const indexDB = {
     const storeHas = this.checkIfStoreHasName({ storeName }, db);
 
     if (!storeHas.name) return;
+
     const transaction = db.transaction(storeName, 'readwrite');
 
     const store = transaction.objectStore(storeName);

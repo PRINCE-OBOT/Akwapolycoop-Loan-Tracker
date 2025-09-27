@@ -57,10 +57,12 @@ input {
     color: var(--clr-transparent);
   }
   .invalid {
-    border-color: var(--clr-invalid);
+    border-color: red;
   }
 }
-
+.show-message {
+  display: none;
+}
 .btn-login {
   max-width: 120px;
   padding: 8px 30px;

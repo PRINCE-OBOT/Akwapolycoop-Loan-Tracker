@@ -36,12 +36,28 @@
           <img class="security-icon" src="../../assets/images/security.svg" alt="security-image" />
           <div class="user-name">
             <label for="username">username</label>
-            <input type="text" id="username" placeholder="username" pattern="^[\.]{1,}$" required />
+            <input
+              type="text"
+              id="username"
+              placeholder="username"
+              pattern="^.{1,}$"
+              data-set-field-validation-value="setEmptyFieldValidationValue"
+              required
+            />
+            <output id="username-message" class="show-message"></output>
           </div>
 
           <div class="password">
             <label for="password">Password</label>
-            <input type="text" id="password" placeholder="Password" pattern="^[\.]{1,}$" required />
+            <input
+              type="text"
+              id="password"
+              placeholder="Password"
+              pattern="^.{1,}$"
+              data-set-field-validation-value="setEmptyFieldValidationValue"
+              required
+            />
+            <output id="password-message" class="show-message"></output>
           </div>
 
           <div class="btn-login-section">

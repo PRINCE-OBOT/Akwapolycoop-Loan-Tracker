@@ -4,9 +4,9 @@ import '../../assets/font.css';
 import '../../assets/common_general.css';
 import '../../assets/style-border-button.css';
 
-import FormUtility from '../../module/form-validation/form-utility';
+import FieldValidationUtility from '../../module/form-validation/field-utility';
 import PasswordValidator from '../../module/form-validation/password-validator';
-import handleFieldValidationLogic from '../../module/form-validation/input-field-validator';
+import handleFieldValidationLogic from '../../module/form-validation/field-validator';
 
 import indexDB from '../../module/indexDB/indexDB';
 
@@ -56,7 +56,7 @@ class BorrowerSignUpManager {
   }
 
   checkFormValidity() {
-    new FormUtility({
+    new FieldValidationUtility({
       messages,
       inputs,
       runWhenAllFormIsValid: this.checkIfUserExistInLoanApplicantList.bind(this),

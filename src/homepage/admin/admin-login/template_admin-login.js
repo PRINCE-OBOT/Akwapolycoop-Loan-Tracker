@@ -4,36 +4,92 @@ import '../../assets/font.css';
 import '../../assets/common_general.css';
 import '../../assets/style-border-button.css';
 
-import LoginCheck from '../../module/login/login-check';
-import PasswordLogin from '../../module/login/login-field';
+import handleFieldValidationLogic from '../../module/form-validation/field-validator';
+import FieldValidationUtility from '../../module/form-validation/field-utility';
 
 import indexDB from '../../module/indexDB/indexDB';
 import Modal from '../../module/modal/modal';
 
-const btnLogin = document.querySelector('.btn-login');
-const inputs = document.querySelectorAll('input');
-const username = document.querySelector('#username');
-const password = document.querySelector('#password');
+const form = document.querySelector('form');
+const username = form.querySelector('#username');
+const password = form.querySelector('#password');
+const inputs = form.querySelectorAll('input');
+const messages = form.querySelectorAll('output.show-message');
+const btnLogin = form.querySelector('.btn-login');
+
 const dialog = document.querySelector('dialog');
 const loginStatus = dialog.querySelector('.login-status');
 
-function failModifyingAdminData() {
-  alert('indexedDB was not able to modify isAdminLogin state');
+form.addEventListener('input', handleFieldValidationLogic);
+btnLogin.addEventListener('click', checkFormValidity);
+
+function showLoginStatusModal() {
+  const modal = new Modal({ dialog });
+  modal.showLoginStatusModal();
 }
 
 function setLoginStatusTextContent(textContent) {
   loginStatus.textContent = textContent;
+  showLoginStatusModal();
 }
 
-function openAdminDashboard() {
-  setLoginStatusTextContent('Logging in...');
+function setIncorrectLoginStatus() {
+  setLoginStatusTextContent('Incorrect username or password');
+}
 
+function setAdminAlreadyLoginStatus() {
+  setLoginStatusTextContent('Admin Already Exist');
+}
+
+function navigateToAdminDashboard() {
+  setLoginStatusTextContent('Logging in...');
   setTimeout(() => {
     window.location.href = './admin-dashboard.html';
   }, 2000);
 }
 
-function modifyDataInDatabase() {
+function failModifyingAdminData() {
+  console.log('indexedDB was not able to modify isAdminLogin state');
+}
+
+function checkFormValidity() {
+  new FieldValidationUtility({
+    messages,
+    inputs,
+    runWhenAllFormIsValid: checkIfLoginDetailsMatch,
+  });
+}
+
+function checkIfLoginDetailsMatch() {
+  indexDB.createDatabase(
+    {
+      storeName: 'admin-data',
+      keyPathValue: 'admin',
+      username,
+      password,
+      getMethod: 'getAll',
+      trueState: checkIfAdminIsAlreadyLogin,
+      undefinedState: setIncorrectLoginStatus,
+    },
+    'checkIfLoginDetailsMatch',
+  );
+}
+
+function checkIfAdminIsAlreadyLogin() {
+  indexDB.createDatabase(
+    {
+      storeName: 'admin-data',
+      keyPathValue: 'admin',
+      getMethod: 'get',
+      key: 'isAdminLogin',
+      trueState: setAdminAlreadyLoginStatus,
+      undefinedState: loginAdmin,
+    },
+    'checkStateOfData',
+  );
+}
+
+function loginAdmin() {
   indexDB.createDatabase(
     {
       storeName: 'admin-data',
@@ -42,71 +98,9 @@ function modifyDataInDatabase() {
       newValue: { isAdminLogin: true },
       keys: ['isAdminLogin'],
 
-      trueState: openAdminDashboard,
+      trueState: navigateToAdminDashboard,
       undefinedState: failModifyingAdminData,
     },
     'modifyData',
   );
 }
-
-function runWhenKeyValueExistAndAdminIsFalse() {
-  modifyDataInDatabase();
-}
-
-function adminIsLogin() {
-  setLoginStatusTextContent('Admin Already Exist');
-}
-
-function keyValueDoesNotExist() {
-  alert('keys path value does not exist');
-}
-
-function checkIfAdminIsLogin() {
-  indexDB.createDatabase(
-    {
-      storeName: 'admin-data',
-      keyPathValue: 'admin',
-      getMethod: 'get',
-      trueState: adminIsLogin,
-      falseState: runWhenKeyValueExistAndAdminIsFalse,
-      undefinedState: keyValueDoesNotExist,
-    },
-    'checkIfThereIsRecentData',
-  );
-}
-
-function runWhenDataIsIncorrect() {
-  setLoginStatusTextContent('Incorrect username or password');
-}
-
-function runWhenDataIsCorrect() {
-  checkIfAdminIsLogin();
-}
-
-function processUserLoginDetails() {
-  const modal = new Modal({ dialog });
-  modal.showModal();
-
-  indexDB.createDatabase(
-    {
-      keyPathValue: 'admin',
-      username: username.value,
-      password: password.value,
-      storeName: 'admin-data',
-      getMethod: 'get',
-      trueState: runWhenDataIsCorrect,
-      undefinedState: runWhenDataIsIncorrect,
-    },
-    'checkIfLoginDetailsMatch',
-  );
-}
-
-new PasswordLogin({ field: password });
-
-new PasswordLogin({ field: username });
-
-new LoginCheck({
-  loginButton: btnLogin,
-  inputs,
-  runWhenFormIsFilled: processUserLoginDetails,
-});
