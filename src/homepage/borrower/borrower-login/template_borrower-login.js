@@ -10,7 +10,7 @@ import FieldValidationUtility from '../../module/form-validation/field-utility';
 import indexDB from '../../module/indexDB/indexDB';
 import Modal from '../../module/modal/modal';
 
-const form = document.querySelector('form');
+const form = document.querySelector('.borrower-login-form');
 const username = form.querySelector('#username');
 const password = form.querySelector('#password');
 const inputs = form.querySelectorAll('input');

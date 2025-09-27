@@ -12,7 +12,7 @@ import indexDB from '../../module/indexDB/indexDB';
 
 import Modal from '../../module/modal/modal';
 
-const form = document.querySelector('form');
+const form = document.querySelector('.borrower-sign-up-form');
 const messages = form.querySelectorAll('output.show-message');
 const inputs = form.querySelectorAll('input');
 const firstName = form.querySelector('#first-name');
