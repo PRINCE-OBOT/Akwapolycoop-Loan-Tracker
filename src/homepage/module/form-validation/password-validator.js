@@ -7,7 +7,7 @@ export default class Password {
     this.confirmPassword = confirmPassword;
     this.confirmPasswordMessage = confirmPasswordMessage;
     this.isPasswordValid = null;
-    this.bindEvent = this.bindEvent();
+    this.bindEvent();
   }
 
   bindEvent() {

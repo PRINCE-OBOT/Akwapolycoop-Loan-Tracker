@@ -19,16 +19,8 @@ const btnYes = dialog.querySelector('.btn-yes');
 const adminGreeting = document.querySelector('.greeting');
 const LoanerManagementTbody = document.querySelector('tbody');
 
-new AdminSessionManager({
-  btnYes,
-  navigationSection,
-  adminGreeting,
-  dialog,
-  btnCancel,
-});
+new AdminSessionManager({ btnYes, navigationSection, adminGreeting, dialog, btnCancel });
 
 new Navigation({ btnSection: headerBottomSection, contentSection, activeIndex: 0 });
 
-new LoanerManagement({
-  tbody: LoanerManagementTbody,
-});
+new LoanerManagement({ tbody: LoanerManagementTbody });

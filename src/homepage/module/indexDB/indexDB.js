@@ -124,8 +124,9 @@ const indexDB = {
     function returnData(data) {
       for (let i = 0; i < data.length; i++) {
         if (
-          (data[i].firstName === firstName.value && data[i].lastName === lastName.value) ||
-          data[i].email === email.value
+          (data[i].firstName.toLowerCase() === firstName.value.toLowerCase() &&
+            data[i].lastName.toLowerCase() === lastName.value.toLowerCase()) ||
+          data[i].email.toLowerCase() === email.value.toLowerCase()
         ) {
           trueState();
           return;

@@ -65,17 +65,17 @@ class BorrowerSessionManager {
 
   bindEvent() {
     btnYes.addEventListener('click', this.logoutBorrower.bind(this));
-    btnSubmitApplication.addEventListener('click', this.checkFormValidity.bind(this));
+    btnSubmitApplication.addEventListener('click', this.checkIfAllFieldFillIsValid.bind(this));
   }
 
-  checkFormValidity() {
+  checkIfAllFieldFillIsValid() {
     const messages = form.querySelectorAll('output.show-message');
     const inputs = form.querySelectorAll('input:not([readonly])');
 
     new FieldValidationUtility({
       messages,
       inputs,
-      runWhenAllFormIsValid: this.getDataInRecentSignUp.bind(this),
+      runWhenAllFieldFillIsValid: this.getDataInRecentSignUp.bind(this),
     });
   }
 

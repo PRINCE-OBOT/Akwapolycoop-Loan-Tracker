@@ -1,8 +1,8 @@
 export default class FieldValidationUtility {
-  constructor({ messages, inputs, runWhenAllFormIsValid }) {
+  constructor({ messages, inputs, runWhenAllFieldFillIsValid }) {
     this.messages = messages;
     this.inputs = inputs;
-    this.runWhenAllFormIsValid = runWhenAllFormIsValid;
+    this.runWhenAllFieldFillIsValid = runWhenAllFieldFillIsValid;
 
     this.render();
   }
@@ -20,7 +20,7 @@ export default class FieldValidationUtility {
 
     if (isEveryMessageValid && isEveryInputValid) {
       window.scrollTo(0, 0);
-      this.runWhenAllFormIsValid();
+      this.runWhenAllFieldFillIsValid();
     } else {
       const invalidMessages = [...this.messages].filter(
         (message) => !message.classList.contains('valid'),

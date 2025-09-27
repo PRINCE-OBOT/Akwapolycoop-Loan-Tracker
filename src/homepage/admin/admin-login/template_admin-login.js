@@ -21,42 +21,18 @@ const dialog = document.querySelector('dialog');
 const loginStatus = dialog.querySelector('.login-status');
 
 form.addEventListener('input', handleFieldValidationLogic);
-btnLogin.addEventListener('click', checkFormValidity);
+btnLogin.addEventListener('click', checkIfAllFieldFillIsValid);
+window.addEventListener('pageshow', resetForm);
 
-function showLoginStatusModal() {
-  const modal = new Modal({ dialog });
-  modal.showLoginStatusModal();
+function resetForm() {
+  form.reset();
 }
 
-function setLoginStatusTextContent(textContent) {
-  loginStatus.textContent = textContent;
-  showLoginStatusModal();
-}
-
-function setIncorrectLoginStatus() {
-  setLoginStatusTextContent('Incorrect username or password');
-}
-
-function setAdminAlreadyLoginStatus() {
-  setLoginStatusTextContent('Admin Already Exist');
-}
-
-function navigateToAdminDashboard() {
-  setLoginStatusTextContent('Logging in...');
-  setTimeout(() => {
-    window.location.href = './admin-dashboard.html';
-  }, 2000);
-}
-
-function failModifyingAdminData() {
-  console.log('indexedDB was not able to modify isAdminLogin state');
-}
-
-function checkFormValidity() {
+function checkIfAllFieldFillIsValid() {
   new FieldValidationUtility({
     messages,
     inputs,
-    runWhenAllFormIsValid: checkIfLoginDetailsMatch,
+    runWhenAllFieldFillIsValid: checkIfLoginDetailsMatch,
   });
 }
 
@@ -103,4 +79,33 @@ function loginAdmin() {
     },
     'modifyData',
   );
+}
+
+function showLoginStatusModal() {
+  const modal = new Modal({ dialog });
+  modal.showModal();
+}
+
+function setLoginStatusTextContent(textContent) {
+  loginStatus.textContent = textContent;
+  showLoginStatusModal();
+}
+
+function setIncorrectLoginStatus() {
+  setLoginStatusTextContent('Incorrect username or password');
+}
+
+function setAdminAlreadyLoginStatus() {
+  setLoginStatusTextContent('Admin Already Exist');
+}
+
+function navigateToAdminDashboard() {
+  setLoginStatusTextContent('Logging in...');
+  setTimeout(() => {
+    window.location.href = './admin-dashboard.html';
+  }, 2000);
+}
+
+function failModifyingAdminData() {
+  console.log('indexedDB was not able to modify isAdminLogin state');
 }

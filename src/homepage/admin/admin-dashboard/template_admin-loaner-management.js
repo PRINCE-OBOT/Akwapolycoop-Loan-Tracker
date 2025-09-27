@@ -11,11 +11,8 @@ export default class LoanerManagement {
   }
 
   render() {
-    this.bindEvent();
     this.getLoanApplicantDataFromDatabase();
   }
-
-  bindEvent() {}
 
   createTableElementAndInsertLoanApplicantData(loanApplicantData) {
     loanApplicantData.forEach((data) => {

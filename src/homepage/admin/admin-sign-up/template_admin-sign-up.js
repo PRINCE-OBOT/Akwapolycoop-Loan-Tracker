@@ -13,7 +13,6 @@ import indexDB from '../../module/indexDB/indexDB';
 import Modal from '../../module/modal/modal';
 
 const form = document.querySelector('.admin-sign-up-form');
-
 const messages = form.querySelectorAll('output.show-message');
 const inputs = form.querySelectorAll('input');
 
@@ -26,27 +25,67 @@ const confirmPasswordMessage = form.querySelector('#confirm-password-message');
 const email = form.querySelector('#email');
 const firstName = form.querySelector('#first-name');
 const lastName = form.querySelector('#last-name');
-
 const btnSignUp = form.querySelector('.btn-sign-up');
+
 const dialog = document.querySelector('dialog');
+const signUpStatus = dialog.querySelector('.sign-up-status');
 
-btnSignUp.addEventListener('click', checkFormValidity);
 form.addEventListener('input', handleFieldValidationLogic);
+btnSignUp.addEventListener('click', checkIfAllFieldFillIsValid);
+window.addEventListener('pageshow', resetForm);
 
-function checkFormValidity() {
+function resetForm() {
+  form.reset();
+}
+
+function checkIfAllFieldFillIsValid() {
   new FieldValidationUtility({
     messages,
     inputs,
-    runWhenAllFormIsValid,
+    runWhenAllFieldFillIsValid: checkIfAdminAlreadySignUp,
   });
 }
 
-new PasswordValidator({
-  password,
-  passwordMessage,
-  confirmPassword,
-  confirmPasswordMessage,
-});
+function checkIfAdminAlreadySignUp() {
+  indexDB.createDatabase(
+    {
+      storeName: 'admin-data',
+      keyPathValue: 'admin',
+      getMethod: 'get',
+      trueState: acceptOnlyOneAdmin,
+      undefinedState: storeAdminDataToDatabase,
+    },
+    'checkIfThereIsRecentData',
+  );
+}
+
+function storeAdminDataToDatabase() {
+  const adminData = getAdminDataFromForm();
+
+  indexDB.createDatabase(
+    {
+      storeName: 'admin-data',
+      data: adminData,
+      trueState: navigateToAdminDashboard,
+      undefinedState: adminDataNotStored,
+    },
+    'storeData',
+  );
+}
+
+function setSignUpStatusTextContent(textContent) {
+  signUpStatus.textContent = textContent;
+  showSignUpStatusModal();
+}
+
+function showSignUpStatusModal() {
+  const modal = new Modal({ dialog });
+  modal.showModal();
+}
+
+function acceptOnlyOneAdmin() {
+  setSignUpStatusTextContent('Admin already sign up.\nAccept only one Admin!');
+}
 
 function generateUsername() {
   const randomNumber = Math.floor(Math.random() * 200) + 1;
@@ -55,11 +94,6 @@ function generateUsername() {
   const username = `${alterFirstName}_${alterLastName}${randomNumber}`;
 
   return username;
-}
-
-function displaySignUpStatusModal() {
-  const modal = new Modal({ dialog });
-  modal.showModal();
 }
 
 function getAdminDataFromForm() {
@@ -78,10 +112,8 @@ function getAdminDataFromForm() {
   return adminData;
 }
 
-function adminDataIsStored() {
-  setTimeout(() => {
-    displaySignUpStatusModal();
-  }, 200);
+function navigateToAdminDashboard() {
+  setSignUpStatusTextContent('Signing Up...');
 
   setTimeout(() => {
     window.location.href = './admin-dashboard.html';
@@ -92,22 +124,4 @@ function adminDataNotStored() {
   console.log('Admin data not stored');
 }
 
-function runWhenAllFormIsValid() {
-  const adminData = getAdminDataFromForm();
-
-  indexDB.createDatabase(
-    {
-      storeName: 'admin-data',
-      data: adminData,
-      trueState: adminDataIsStored,
-      undefinedState: adminDataNotStored,
-    },
-    'storeData',
-  );
-}
-
-function resetForm() {
-  form.reset();
-}
-
-window.addEventListener('pageshow', resetForm);
+new PasswordValidator({ password, passwordMessage, confirmPassword, confirmPasswordMessage });

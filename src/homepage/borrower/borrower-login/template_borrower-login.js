@@ -21,14 +21,13 @@ const dialog = document.querySelector('dialog');
 const loginStatus = dialog.querySelector('.login-status');
 
 form.addEventListener('input', handleFieldValidationLogic);
-btnLogin.addEventListener('click', checkFormValidityState);
+btnLogin.addEventListener('click', checkIfAllFieldFillIsValid);
 
-// Form validity state is just checking that the form is filled, i.e the form is not empty
-function checkFormValidityState() {
+function checkIfAllFieldFillIsValid() {
   new FieldValidationUtility({
     messages,
     inputs,
-    runWhenAllFormIsValid: checkIfLoanApplicantExist,
+    runWhenAllFieldFillIsValid: checkIfLoanApplicantExist,
   });
 }
 

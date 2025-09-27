@@ -22,8 +22,6 @@ export default class AdminSessionManager {
     this.render();
   }
 
-  // fix checking when user sign up but information is not gotten from the database to fill in the dashboard
-
   render() {
     this.checkIfAdminIsLogin();
     this.selectLogoutButtonInAdminProfileSection();
