@@ -320,7 +320,7 @@
               </label>
               <input
                 type="tel"
-                id="phone-number"
+                id="guarantor-phone-number"
                 placeholder="08153555726"
                 pattern="^[0-9]{10,11}$"
                 data-set-field-validation-value="setPhoneNumberValidationValue"
@@ -370,11 +370,11 @@
       </main>
 
       <dialog class="dialog-logout" closedby="any">
-        <div class="dialog-logout-section">
+        <form action="" method="dialog" class="dialog-logout-section">
           <h4>Are you sure you want to log out</h4>
-          <button type="button" class="btn-cancel">Cancel</button>
-          <button type="button" class="btn-yes">Yes</button>
-        </div>
+          <button class="btn-cancel">Cancel</button>
+          <button class="btn-yes">Yes</button>
+        </form>
       </dialog>
     </div>
   </body>

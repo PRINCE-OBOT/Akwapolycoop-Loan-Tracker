@@ -22,14 +22,29 @@ import {
 const form = document.querySelector('.loan-application-form');
 
 const email = form.querySelector('#email');
-
 const firstName = form.querySelector('#first-name');
-
 const lastName = form.querySelector('#last-name');
+const gender = form.querySelector('#gender');
+const phoneNumber = form.querySelector('#phone-number');
+const dateOfBirth = form.querySelector('#date-of-birth');
+const residentAddress = form.querySelector('#resident-address');
+const nin = form.querySelector('#nin');
+const passport = form.querySelector('#passport');
+const employmentStatus = form.querySelector('#employment-status');
+const businessName = businessNameContainer.querySelector('#business-name');
+const monthlyIncome = monthlyIncomeContainer.querySelector('#monthly-income');
+const currentJobDuration = currentJobDurationContainer.querySelector('#current-job-duration');
+const desiredAmount = form.querySelector('#desired-amount');
+const tenor = form.querySelector('#tenor');
+const guarantorFirstName = form.querySelector('#guarantor-first-name');
+const guarantorLastName = form.querySelector('#guarantor-last-name');
+const guarantorEmail = form.querySelector('#guarantor-email');
+const guarantorGender = form.querySelector('#guarantor-gender');
+const guarantorPhoneNumber = form.querySelector('#guarantor-phone-number');
+const guarantorDateOfBirth = form.querySelector('#guarantor-date-of-birth');
+const guarantorResidentAddress = form.querySelector('#guarantor-resident-address');
 
 const employmentAndIncome = form.querySelector('.employment-and-income');
-
-const employmentStatus = form.querySelector('#employment-status');
 
 const btnSubmitApplication = form.querySelector('.btn-submit-application');
 
@@ -40,13 +55,11 @@ const html = document.querySelector('html');
 const btnLogout = document.querySelector('.logout-button');
 
 const dialog = document.querySelector('dialog');
-const btnCancel = dialog.querySelector('.btn-cancel');
 const btnYes = dialog.querySelector('.btn-yes');
 
 form.addEventListener('input', handleFieldValidationLogic);
 
-new Modal({ btnShowModal: btnLogout, btnCloseModal: btnCancel, dialog });
-new Modal({ btnShowModal: btnLogout, btnCloseModal: btnYes, dialog });
+new Modal({ btnShowModal: btnLogout, dialog });
 
 class BorrowerSessionManager {
   constructor() {
@@ -164,13 +177,65 @@ class BorrowerSessionManager {
     console.log('Key does not exist');
   }
 
+  convertFileToDataURLFormat(data) {
+    const selectPassport = passport.files[0];
+
+    const reader = new FileReader();
+
+    reader.readAsDataURL(selectPassport);
+
+    reader.onload = (e) => {
+      data.passport = e.target.result;
+
+      this.getFormFieldData(data);
+    };
+  }
+
+  getFormFieldData(data) {
+    function setValue(element) {
+      data[element.id] = element.value;
+    }
+
+    const listOfFormField = [];
+
+    const selectedOption = employmentStatus.options[employmentStatus.selectedIndex];
+
+    if (selectedOption.dataset.switch === 'showElement') {
+      listOfFormField.unshift(businessName, monthlyIncome, currentJobDuration);
+    }
+
+    listOfFormField.unshift(
+      gender,
+      guarantorGender,
+      guarantorEmail,
+      guarantorLastName,
+      guarantorFirstName,
+      tenor,
+      desiredAmount,
+      nin,
+      phoneNumber,
+      dateOfBirth,
+      residentAddress,
+      guarantorPhoneNumber,
+      guarantorDateOfBirth,
+      guarantorResidentAddress,
+      employmentStatus,
+    );
+
+    listOfFormField.forEach((field) => {
+      setValue(field);
+    });
+
+    this.storeDataToRecentLoanApplicantAndLoanApplicantList(data);
+  }
+
   getDataInRecentSignUp() {
     indexDB.createDatabase(
       {
         storeName: 'borrower-recently-sign-up',
         getMethod: 'get',
         keyPathValue: 'recent-sign-up',
-        returnData: this.storeDataToRecentLoanApplicantAndLoanApplicantList.bind(this),
+        returnData: this.convertFileToDataURLFormat.bind(this),
         undefinedState: this.noDataReturn.bind(this),
       },
       'getData',
@@ -187,7 +252,6 @@ class BorrowerSessionManager {
 
   storeDataToRecentLoanApplicantAndLoanApplicantList(data) {
     data.id = 'recent-loan-applicant';
-
     // After learning async, come modify this code so
     // `deleteRecentBorrowerSignUp` runs only when `storeDataToRecentLoanApplicant` has run
 

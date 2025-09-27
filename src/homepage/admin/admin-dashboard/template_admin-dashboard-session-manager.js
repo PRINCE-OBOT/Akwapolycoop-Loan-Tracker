@@ -13,12 +13,12 @@ import {
 import Modal from '../../module/modal/modal';
 
 export default class AdminSessionManager {
-  constructor({ btnYes, navigationSection, adminGreeting, dialog, btnCancel }) {
+  constructor({ btnYes, navigationSection, adminGreeting, dialog }) {
     this.dialog = dialog;
-    this.btnCancel = btnCancel;
     this.btnYes = btnYes;
     this.navigationSection = navigationSection;
     this.adminGreeting = adminGreeting;
+
     this.render();
   }
 
@@ -48,8 +48,7 @@ export default class AdminSessionManager {
 
   selectLogoutButtonInAdminProfileSection() {
     this.btnLogout = adminProfileSection.querySelector('.logout-button');
-    new Modal({ btnShowModal: this.btnLogout, btnCloseModal: this.btnCancel, dialog: this.dialog });
-    new Modal({ btnShowModal: this.btnLogout, btnCloseModal: this.btnYes, dialog: this.dialog });
+    new Modal({ btnShowModal: this.btnLogout, dialog: this.dialog });
   }
 
   insertAdminProfileSection() {
