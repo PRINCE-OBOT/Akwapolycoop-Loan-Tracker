@@ -4,6 +4,7 @@ import '../../assets/font.css';
 import '../../assets/common_general.css';
 import '../../assets/style-border-button.css';
 
+import registerLocalStorageCustomMethod from '../../module/localStorage/localStorage';
 import handleFieldValidationLogic from '../../module/form-validation/field-validator';
 import FieldValidationUtility from '../../module/form-validation/field-utility';
 
@@ -23,6 +24,8 @@ const loginStatus = dialog.querySelector('.login-status');
 form.addEventListener('input', handleFieldValidationLogic);
 btnLogin.addEventListener('click', checkIfAllFieldFillIsValid);
 
+registerLocalStorageCustomMethod();
+
 function checkIfAllFieldFillIsValid() {
   new FieldValidationUtility({
     messages,
@@ -34,26 +37,12 @@ function checkIfAllFieldFillIsValid() {
 function checkIfLoanApplicantExist() {
   indexDB.createDatabase(
     {
-      storeName: 'borrower-loan-applicant-list',
-      getMethod: 'getAll',
-      username,
-      password,
-      trueState: navigateToProfilePage,
-      undefinedState: checkIfBorrowerAlreadySignUp,
-    },
-    'checkIfLoginDetailsMatch',
-  );
-}
-
-function checkIfBorrowerAlreadySignUp() {
-  indexDB.createDatabase(
-    {
-      storeName: 'borrower-sign-up-list',
+      storeName: 'loan-applicant-list',
       getMethod: 'getAll',
       username,
       password,
       trueState: navigateToDashboardPage,
-      undefinedState: incorrectUsernameOrPassword,
+      undefinedState: displayIncorrectUsernameOrPassword,
     },
     'checkIfLoginDetailsMatch',
   );
@@ -73,14 +62,8 @@ function successLoginStatusTextContent() {
   setLoginStatusTextContent('Logging in...');
 }
 
-function navigateToProfilePage() {
-  successLoginStatusTextContent();
-  setTimeout(() => {
-    window.location.href = './borrower-profile.html';
-  }, 2000);
-}
-
-function navigateToDashboardPage() {
+function navigateToDashboardPage(id) {
+  localStorage.setData({ key: 'recent-loan-applicant', data: { id } });
   successLoginStatusTextContent();
 
   setTimeout(() => {
@@ -88,6 +71,6 @@ function navigateToDashboardPage() {
   }, 2000);
 }
 
-function incorrectUsernameOrPassword() {
+function displayIncorrectUsernameOrPassword() {
   setLoginStatusTextContent('Incorrect Username or Password');
 }

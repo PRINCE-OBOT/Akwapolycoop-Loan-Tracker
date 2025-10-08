@@ -50,7 +50,7 @@ const indexDB = {
     function returnData(data) {
       for (let i = 0; i < data.length; i++) {
         if (data[i].username === username.value && data[i].password === password.value) {
-          trueState();
+          trueState(data[i].id);
           return;
         }
       }
