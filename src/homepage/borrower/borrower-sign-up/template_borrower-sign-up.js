@@ -5,6 +5,7 @@ import '../../assets/font.css';
 import '../../assets/common_general.css';
 import '../../assets/style-border-button.css';
 
+import registerLocalStorageCustomMethod from '../../module/localStorage/localStorage';
 import FieldValidationUtility from '../../module/form-validation/field-utility';
 import PasswordValidator from '../../module/form-validation/password-validator';
 import handleFieldValidationLogic from '../../module/form-validation/field-validator';
@@ -32,6 +33,8 @@ form.addEventListener('input', handleFieldValidationLogic);
 btnSignUp.addEventListener('click', checkIfAllFieldFillIsValid);
 window.addEventListener('pageshow', resetForm);
 
+registerLocalStorageCustomMethod();
+
 function resetForm() {
   form.reset();
 }
@@ -47,74 +50,40 @@ function checkIfAllFieldFillIsValid() {
 function checkIfUserExistInLoanApplicantList() {
   indexDB.createDatabase(
     {
-      storeName: 'borrower-loan-applicant-list',
+      storeName: 'loan-applicant-list',
       getMethod: 'getAll',
       firstName,
       lastName,
       email,
       trueState: accountAlreadyExist,
-      falseState: checkIfUserExistInBorrowerSignUpList,
+      falseState: storeDataToLoanApplicantList,
     },
     'checkIfUserAlreadyHaveAccount',
   );
 }
 
-function checkIfUserExistInBorrowerSignUpList() {
-  indexDB.createDatabase(
-    {
-      storeName: 'borrower-sign-up-list',
-      getMethod: 'getAll',
-      firstName,
-      lastName,
-      email,
-      trueState: accountAlreadyExist,
-      falseState: storeDataToBorrowerSignUpList,
-    },
-    'checkIfUserAlreadyHaveAccount',
-  );
-}
-
-function storeDataToBorrowerSignUpList() {
-  const borrowerData = getAdminDataFromForm();
+function storeDataToLoanApplicantList() {
+  const loanApplicantData = getAdminDataFromForm();
 
   indexDB.createDatabase(
     {
-      storeName: 'borrower-sign-up-list',
-      data: borrowerData,
-      trueState: storeDataToBorrowerRecentlySignUp,
-      undefinedState: borrowerDataNotStored,
+      storeName: 'loan-applicant-list',
+      data: loanApplicantData,
+      trueState: changeIdStateInLocalStorageToTrue,
+      undefinedState: loanApplicantDataNotStore,
     },
     'storeData',
   );
 }
 
-function storeDataToBorrowerRecentlySignUp() {
-  const borrowerData = getAdminDataFromForm();
+function changeIdStateInLocalStorageToTrue(id) {
+  localStorage.modifyData({
+    key: 'recent-loan-applicant',
+    objKeys: ['id'],
+    newValue: { id },
+  });
 
-  borrowerData.id = 'recent-sign-up';
-  indexDB.createDatabase(
-    {
-      storeName: 'borrower-recently-sign-up',
-      data: borrowerData,
-      // Deleting recent loan applicant allow dashboard.html to navigate to dashboard.html
-      // instead of navigating to profilePage.html when their is recent loan applicant
-      trueState: deleteRecentLoanApplicant,
-      undefinedState: borrowerDataNotStored,
-    },
-    'storeData',
-  );
-}
-
-function deleteRecentLoanApplicant() {
-  indexDB.createDatabase(
-    {
-      storeName: 'borrower-recently-loan-applicant',
-      keyPathValue: 'recent-loan-applicant',
-      trueState: navigateToDashboardPage,
-      undefinedState: errorWhileDeletingKey,
-    },
-    'deleteKey',
-  );
+  navigateToDashboardPage();
 }
 
 function navigateToDashboardPage() {
@@ -162,11 +131,7 @@ function setBorrowerSignUpStatus(text) {
   displaySignUpStatusModal();
 }
 
-function errorWhileDeletingKey() {
-  console.log('error while deleting recent loan applicant');
-}
-
-function borrowerDataNotStored() {
+function loanApplicantDataNotStore() {
   console.log('Borrower data not stored');
 }
 

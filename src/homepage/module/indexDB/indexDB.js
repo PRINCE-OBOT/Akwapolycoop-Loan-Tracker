@@ -2,7 +2,7 @@ const indexDB = {
   storeNameInStore: ['admin', 'loan-applicant-list'],
 
   createDatabase(obj, functionToCall) {
-    const openRequest = indexedDB.open('akp-loan-tracker', 29);
+    const openRequest = indexedDB.open('akp-loan-tracker', 30);
 
     openRequest.onupgradeneeded = (e) => {
       const db = e.target.result;
@@ -34,8 +34,8 @@ const indexDB = {
 
     const putData = store.put(data);
 
-    putData.onsuccess = () => {
-      trueState();
+    putData.onsuccess = (e) => {
+      trueState(e.target.result);
     };
 
     putData.onerror = () => {
