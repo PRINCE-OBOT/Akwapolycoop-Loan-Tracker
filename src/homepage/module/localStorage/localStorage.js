@@ -11,17 +11,17 @@ const registerLocalStorageCustomMethod = () => {
     return JSON.parse(stringifyData);
   };
 
-  localStorage.__proto__.modifyData = function ({ key, objKeys, newValue }) {
-    const data = localStorage.getData({ key });
+  // localStorage.__proto__.modifyData = function ({ key, objKeys, newValue }) {
+  //   const data = localStorage.getData({ key });
 
-    if (!data) return;
+  //   if (!data) return;
 
-    objKeys.forEach((objKey) => {
-      data[objKey] = newValue[objKey];
-    });
+  //   objKeys.forEach((objKey) => {
+  //     data[objKey] = newValue[objKey];
+  //   });
 
-    localStorage.setItem({ key, data });
-  };
+  //   localStorage.setItem({ key, data });
+  // };
 };
 
 export default registerLocalStorageCustomMethod;

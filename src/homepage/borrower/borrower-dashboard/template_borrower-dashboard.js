@@ -6,6 +6,7 @@ import '../../assets/font.css';
 import '../../assets/common_general.css';
 import '../../assets/style-border-button.css';
 
+import registerLocalStorageCustomMethod from '../../module/localStorage/localStorage';
 import FieldValidationUtility from '../../module/form-validation/field-utility';
 import handleFieldValidationLogic from '../../module/form-validation/field-validator';
 import SelectSwitchDisplay from '../../module/switchDisplay/select-switch-display';
@@ -49,8 +50,6 @@ const employmentAndIncome = form.querySelector('.employment-and-income');
 
 const btnSubmitApplication = form.querySelector('.btn-submit-application');
 
-const displayRegistrationProcess = document.querySelector('.displayRegistrationProcess');
-
 const html = document.querySelector('html');
 
 const btnLogout = document.querySelector('.logout-button');
@@ -59,6 +58,7 @@ const dialog = document.querySelector('dialog');
 const btnYes = dialog.querySelector('.btn-yes');
 
 form.addEventListener('input', handleFieldValidationLogic);
+registerLocalStorageCustomMethod();
 
 new Modal({ btnShowModal: btnLogout, dialog });
 
@@ -94,21 +94,31 @@ class BorrowerSessionManager {
   }
 
   checkIfThereIsRecentLoanApplicant() {
+    const data = localStorage.getData({ key: 'recent-loan-applicant' });
+
+    if (data === null) {
+      this.navigateToLoginPage();
+      return;
+    }
+
+    html.style.display = 'block';
+
+    const id = data.id;
+
     indexDB.createDatabase(
       {
-        storeName: 'borrower-recently-loan-applicant',
-        keyPathValue: 'recent-loan-applicant',
+        storeName: 'loan-applicant-list',
+        keyPathValue: id,
         getMethod: 'get',
-        trueState: this.navigateToProfilePage.bind(this),
-        falseState: this.checkIfThereIsRecentSignUpBorrower.bind(this),
-        undefinedState: this.checkIfThereIsRecentSignUpBorrower.bind(this),
+        returnData: this.returnData.bind(this),
+        undefinedState: this.errorGettingData.bind(this),
       },
-      'checkIfThereIsRecentData',
+      'getData',
     );
   }
 
-  navigateToProfilePage() {
-    window.location.href = './borrower-profile.html';
+  errorGettingData() {
+    console.log('Error while getting data from dashboard');
   }
 
   returnData(data) {
@@ -116,41 +126,10 @@ class BorrowerSessionManager {
       console.log('Did not find key in store');
       return;
     }
-
+    console.log(data);
     firstName.value = data.firstName;
     lastName.value = data.lastName;
     email.value = data.email;
-  }
-
-  getRecentSignUpBorrowerData() {
-    indexDB.createDatabase(
-      {
-        storeName: 'borrower-recently-sign-up',
-        keyPathValue: 'recent-sign-up',
-        getMethod: 'get',
-        returnData: this.returnData.bind(this),
-      },
-      'getData',
-    );
-  }
-
-  checkIfThereIsRecentSignUpBorrower() {
-    indexDB.createDatabase(
-      {
-        storeName: 'borrower-recently-sign-up',
-        keyPathValue: 'recent-sign-up',
-        getMethod: 'get',
-        trueState: this.navigateToDashboardPage.bind(this),
-        falseState: this.navigateToLoginPage.bind(this),
-        undefinedState: this.navigateToLoginPage.bind(this),
-      },
-      'checkIfThereIsRecentData',
-    );
-  }
-
-  navigateToDashboardPage() {
-    html.style.display = 'block';
-    this.getRecentSignUpBorrowerData();
   }
 
   navigateToLoginPage() {
@@ -159,19 +138,8 @@ class BorrowerSessionManager {
   }
 
   logoutBorrower() {
-    indexDB.createDatabase(
-      {
-        storeName: 'borrower-recently-sign-up',
-        keyPathValue: 'recent-sign-up',
-        trueState: this.navigateToLoginPage.bind(this),
-        undefinedState: this.errorWhileDeletingKey.bind(this),
-      },
-      'deleteKey',
-    );
-  }
-
-  errorWhileDeletingKey() {
-    console.log('Error while deleting key');
+    localStorage.removeItem('recent-loan-applicant');
+    this.navigateToLoginPage();
   }
 
   keyValueDoesNotExist() {
@@ -228,84 +196,6 @@ class BorrowerSessionManager {
     });
 
     this.storeDataToRecentLoanApplicantAndLoanApplicantList(data);
-  }
-
-  getDataInRecentSignUp() {
-    indexDB.createDatabase(
-      {
-        storeName: 'borrower-recently-sign-up',
-        getMethod: 'get',
-        keyPathValue: 'recent-sign-up',
-        returnData: this.convertFileToDataURLFormat.bind(this),
-        undefinedState: this.noDataReturn.bind(this),
-      },
-      'getData',
-    );
-  }
-
-  noDataReturn() {
-    console.log('No data return');
-  }
-
-  storeDataToRecentLoanApplicant() {
-    console.log('loan store in recent loan applicant');
-  }
-
-  storeDataToRecentLoanApplicantAndLoanApplicantList(data) {
-    data.id = 'recent-loan-applicant';
-    // After learning async, come modify this code so
-    // `deleteRecentBorrowerSignUp` runs only when `storeDataToRecentLoanApplicant` has run
-
-    indexDB.createDatabase(
-      {
-        storeName: 'borrower-recently-loan-applicant',
-        data,
-        trueState: this.storeDataToRecentLoanApplicant.bind(this),
-        undefinedState: this.dataNotStored.bind(this),
-      },
-      'storeData',
-    );
-
-    const { ...cloneData } = data;
-    delete cloneData.id;
-
-    indexDB.createDatabase(
-      {
-        storeName: 'borrower-loan-applicant-list',
-        data: cloneData,
-        trueState: this.deleteRecentBorrowerSignUp.bind(this),
-        undefinedState: this.dataNotStored.bind(this),
-      },
-      'storeData',
-    );
-  }
-
-  dataNotStored() {
-    console.log('Not stored');
-  }
-
-  deleteRecentBorrowerSignUp() {
-    indexDB.createDatabase(
-      {
-        storeName: 'borrower-recently-sign-up',
-        keyPathValue: 'recent-sign-up',
-        trueState: this.navigateToProfilePage.bind(this),
-        undefinedState: this.errorWhileDeletingKey.bind(this),
-      },
-      'deleteKey',
-    );
-  }
-
-  processNavigatingToProfilePage() {
-    displayRegistrationProcess.textContent = 'Generating Profile...';
-
-    setTimeout(() => {
-      this.navigateToProfilePage();
-    }, 2000);
-  }
-
-  failModifyingAdminData() {
-    alert('indexedDB was not able to update borrower Dashboard data');
   }
 }
 new BorrowerSessionManager();

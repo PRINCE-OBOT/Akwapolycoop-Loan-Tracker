@@ -69,19 +69,16 @@ function storeDataToLoanApplicantList() {
     {
       storeName: 'loan-applicant-list',
       data: loanApplicantData,
-      trueState: changeIdStateInLocalStorageToTrue,
+      trueState: storeLoanApplicantIDInLocalStorage,
       undefinedState: loanApplicantDataNotStore,
     },
     'storeData',
   );
 }
 
-function changeIdStateInLocalStorageToTrue(id) {
-  localStorage.modifyData({
-    key: 'recent-loan-applicant',
-    objKeys: ['id'],
-    newValue: { id },
-  });
+function storeLoanApplicantIDInLocalStorage(id) {
+  const data = { id };
+  localStorage.setData({ key: 'recent-loan-applicant', data });
 
   navigateToDashboardPage();
 }
