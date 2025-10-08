@@ -7,6 +7,11 @@ header {
   justify-content: space-between;
   flex-wrap: wrap;
 }
+main {
+  flex-direction: column;
+  display: flex;
+  flex-wrap: wrap;
+}
 .admin,
 .borrower,
 .contact-us {

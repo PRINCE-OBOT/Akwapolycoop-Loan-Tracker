@@ -1,17 +1,5 @@
-header {
-  display: flex;
-  gap: 10px;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
 input.invalid {
   border-color: var(--clr-invalid);
-}
-
-main {
-  display: flex;
-  justify-content: center;
-  padding-top: 50px;
 }
 
 form {

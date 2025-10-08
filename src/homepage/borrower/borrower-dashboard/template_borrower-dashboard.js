@@ -1,4 +1,5 @@
-import '../../admin/admin-sign-up/template_admin-sign-up.css';
+import '../../assets/form-logic.css';
+import '../../assets/form.css';
 import './template_borrower-dashboard.css';
 import '../../assets/reset.css';
 import '../../assets/font.css';

@@ -1,20 +1,14 @@
 const indexDB = {
-  storeNameInStore: [
-    'admin-data',
-    'admin-dashboard-loan-data',
-    'borrower-loan-applicant-list',
-    'borrower-sign-up-list',
-    'borrower-recently-sign-up',
-    'borrower-recently-loan-applicant',
-  ],
+  storeNameInStore: ['admin', 'loan-applicant-list'],
 
   createDatabase(obj, functionToCall) {
-    const openRequest = indexedDB.open('akp-loan-tracker', 28);
+    const openRequest = indexedDB.open('akp-loan-tracker', 29);
 
     openRequest.onupgradeneeded = (e) => {
       const db = e.target.result;
 
       indexDB.storeNameInStore.forEach((storeName) => {
+        // db.deleteObjectStore(storeName);
         this.createObjectStore({ storeName }, db);
       });
     };

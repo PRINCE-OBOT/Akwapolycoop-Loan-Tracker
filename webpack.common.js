@@ -9,8 +9,6 @@ module.exports = {
 
     'admin-login': './src/homepage/admin/admin-login/template_admin-login.js',
 
-    'admin-sign-up': './src/homepage/admin/admin-sign-up/template_admin-sign-up.js',
-
     'borrower-sign-up': './src/homepage/borrower/borrower-sign-up/template_borrower-sign-up.js',
 
     'borrower-login': './src/homepage/borrower/borrower-login/template_borrower-login.js',
@@ -18,7 +16,6 @@ module.exports = {
     'borrower-dashboard':
       './src/homepage/borrower/borrower-dashboard/template_borrower-dashboard.js',
 
-    'borrower-profile': './src/homepage/borrower/borrower-profile/template_borrower-profile.js',
   },
   output: {
     filename: '[name].js',
@@ -50,12 +47,6 @@ module.exports = {
     }),
 
     new HTMLWebpackPlugins({
-      template: './src/homepage/admin/admin-sign-up/template_admin-sign-up.html',
-      filename: 'admin-sign-up.html',
-      chunks: ['admin-sign-up'],
-    }),
-
-    new HTMLWebpackPlugins({
       template: './src/homepage/borrower/borrower-sign-up/template_borrower-sign-up.html',
       filename: 'borrower-sign-up.html',
       chunks: ['borrower-sign-up'],
@@ -73,11 +64,6 @@ module.exports = {
       chunks: ['borrower-login'],
     }),
 
-    new HTMLWebpackPlugins({
-      template: './src/homepage/borrower/borrower-profile/template_borrower-profile.html',
-      filename: 'borrower-profile.html',
-      chunks: ['borrower-profile'],
-    }),
   ],
   module: {
     rules: [

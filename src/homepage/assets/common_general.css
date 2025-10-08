@@ -33,7 +33,18 @@ html {
   width: min(90%, 1200px);
   margin: 0 auto 0;
 }
+main {
+  display: flex;
+  justify-content: center;
+  padding-top: 50px;
+}
 
+header {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
 .navigation-section {
   display: flex;
   gap: 20px;
