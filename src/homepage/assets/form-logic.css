@@ -1,0 +1,36 @@
+[data-set-field-validation-value].invalid {
+  border: 1.5px solid var(--clr-invalid);
+}
+[data-set-field-validation-value] {
+  &.user-interact:invalid {
+    border: 1.5px solid var(--clr-invalid);
+  }
+  &.user-interact:valid {
+    border: none;
+  }
+}
+
+.show-message {
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  transform: translateY(100%);
+  font-style: italic;
+  font-size: clamp(var(--fs-xxsm), var(--fs-xxsm) + 0.8vw, var(--fs-sm));
+  &.invalid {
+    color: var(--clr-invalid);
+  }
+  &.valid {
+    color: var(--clr-valid);
+  }
+}
+
+#confirm-password {
+  &.invalid {
+    border-color: var(--clr-invalid);
+  }
+  &.valid {
+    border-color: var(--clr-valid);
+  }
+}

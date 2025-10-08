@@ -1,0 +1,101 @@
+form {
+  flex: 1;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: var(--box-shadow);
+  background: var(--white);
+  margin: 0 auto 0;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  background: linear-gradient(50deg, var(--ink), var(--primary-accent));
+  color: var(--white);
+  padding: 35px 0;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.field-section {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 33px;
+  column-gap: 25px;
+  border: 1px solid var(--grey);
+  padding: 20px 20px 40px 20px;
+  background: var(--white);
+  border: 1px solid var(--grey);
+  border-radius: 10px;
+}
+
+.field-section > div {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  position: relative;
+  flex: max(40%, 200px);
+}
+
+.field-section > div[class$='resident-address'] {
+  flex: max(40%, 300px);
+}
+
+label {
+  width: max-content;
+}
+input,
+select {
+  min-height: 44px;
+  max-height: 44px;
+}
+input,
+select,
+textarea {
+  padding-left: 10px;
+  flex: 1;
+  border-radius: 5px;
+  border-style: solid;
+  background: var(--transparent-white);
+  box-shadow: var(--box-shadow);
+  border: none;
+}
+::placeholder {
+  color: var(--grey);
+}
+
+input[type='file'] {
+  padding: 0;
+  box-shadow: none;
+  max-width: clamp(150px, 150px + 10vw, 300px);
+}
+.password,
+.confirm-password {
+  margin-top: 10px;
+}
+
+.signup-btn-section {
+  padding-top: 40px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+.btn-sign-up {
+  max-width: 120px;
+  padding: 8px 25px;
+  border-radius: 5px;
+  background: var(--ink);
+  color: #fff;
+  font-weight: 700;
+  border: none;
+  box-shadow: var(--box-shadow-transparent);
+  cursor: pointer;
+}
+.dialog-signup-section h4 {
+  color: var(--white);
+}
