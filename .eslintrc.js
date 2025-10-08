@@ -16,5 +16,7 @@ module.exports = {
     'class-methods-use-this': 'off',
     'no-use-before-define': 'off',
     'no-plusplus': 'off',
+    "no-underscore-dangle": "off",
+    "func-names": "off"
   },
 };
