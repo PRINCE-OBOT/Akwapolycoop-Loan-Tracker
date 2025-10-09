@@ -1,8 +1,8 @@
 import eventBus from '../event-bus/event';
 
-import loanApplicantForm from '../../borrower/borrower-dashboard/template_borrower-loan-applicant-form';
-import takeLoan from '../../borrower/borrower-dashboard/template_borrower-take-loan';
-import myLoan from '../../borrower/borrower-dashboard/template_borrower-myLoan';
+import loanApplicantForm from '../../borrower/borrower-dashboard/loan-applicant-form';
+import takeLoan from '../../borrower/borrower-dashboard/take-loan';
+import myLoan from '../../borrower/borrower-dashboard/myLoan';
 
 const contents = {
   loanApplicantForm,

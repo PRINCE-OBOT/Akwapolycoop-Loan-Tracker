@@ -5,7 +5,7 @@ import {
   businessNameContainer,
   monthlyIncomeContainer,
   currentJobDurationContainer,
-} from './template_borrower-dashboard-created-element';
+} from './employment-and-income-content';
 
 const loanApplicantForm = () => {
   const form = document.createElement('form');
