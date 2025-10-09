@@ -1,60 +1,22 @@
 import handleFieldValidationLogic from '../../module/form-validation/field-validator';
+import SelectSwitchDisplay from '../../module/switchDisplay/select-switch-display';
+
+import {
+  businessNameContainer,
+  monthlyIncomeContainer,
+  currentJobDurationContainer,
+} from './template_borrower-dashboard-created-element';
 
 const loanApplicantForm = () => {
   const form = document.createElement('form');
   form.classList.add('loan-application-form');
-  form.setAttribute('novalidate');
+  form.novalidate;
 
   form.innerHTML = `
-    <h3 class="heading">Loan Application Form</h3>
+    <h3 class="heading">Loan Applicant Form</h3>
     
               <fieldset class="field-section personal-information">
                 <legend>Personal Information</legend>
-    
-                <div class="first-name">
-                  <label for="first-name">
-                    First Name
-                    <span class="required-asterisk">*</span>
-                  </label>
-                  <input
-                    readonly
-                    type="text"
-                    id="first-name"
-                    placeholder="James"
-                    pattern="^[a-zA-Z]{1,}$"
-                    required
-                  />
-                </div>
-    
-                <div class="last-name">
-                  <label for="last-name">
-                    Last Name
-                    <span class="required-asterisk">*</span>
-                  </label>
-                  <input
-                    readonly
-                    type="text"
-                    id="last-name"
-                    placeholder="Town"
-                    pattern="^[a-zA-Z]{1,}$"
-                    required
-                  />
-                </div>
-    
-                <div class="email">
-                  <label for="email">
-                    Email
-                    <span class="required-asterisk">*</span>
-                  </label>
-                  <input
-                    readonly
-                    type="email"
-                    id="email"
-                    placeholder="jamestown34@gmaill.com"
-                    pattern="^[a-zA-Z0-9.]{4,}@(gmail|yahoo|hotmail).com$"
-                    required
-                  />
-                </div>
     
                 <div class="gender">
                   <label for="gender">
@@ -345,7 +307,17 @@ const loanApplicantForm = () => {
                 <span class="displayRegistrationProcess"></span>
               </div>
     `;
+
+  const employmentStatus = form.querySelector('#employment-status');
+  const employmentAndIncome = form.querySelector('.employment-and-income');
+
   form.addEventListener('input', handleFieldValidationLogic);
+
+  new SelectSwitchDisplay({
+    select: employmentStatus,
+    inputs: [businessNameContainer, monthlyIncomeContainer, currentJobDurationContainer],
+    container: employmentAndIncome,
+  });
 
   return form;
 };

@@ -21,12 +21,6 @@ import indexDB from '../../module/indexDB/indexDB';
 import Modal from '../../module/modal/modal';
 import eventBus from '../../module/event-bus/event';
 
-// import {
-//   businessNameContainer,
-//   monthlyIncomeContainer,
-//   currentJobDurationContainer,
-// } from './template_borrower-dashboard-created-element';
-
 // const form = document.querySelector('.loan-application-form');
 
 // const email = form.querySelector('#email');
@@ -38,7 +32,7 @@ import eventBus from '../../module/event-bus/event';
 // const residentAddress = form.querySelector('#resident-address');
 // const nin = form.querySelector('#nin');
 // const passport = form.querySelector('#passport');
-// const employmentStatus = form.querySelector('#employment-status');
+
 // const businessName = businessNameContainer.querySelector('#business-name');
 // const monthlyIncome = monthlyIncomeContainer.querySelector('#monthly-income');
 // const currentJobDuration = currentJobDurationContainer.querySelector('#current-job-duration');
@@ -51,8 +45,6 @@ import eventBus from '../../module/event-bus/event';
 // const guarantorPhoneNumber = form.querySelector('#guarantor-phone-number');
 // const guarantorDateOfBirth = form.querySelector('#guarantor-date-of-birth');
 // const guarantorResidentAddress = form.querySelector('#guarantor-resident-address');
-
-// const employmentAndIncome = form.querySelector('.employment-and-income');
 
 // const btnSubmitApplication = form.querySelector('.btn-submit-application');
 
@@ -72,11 +64,18 @@ appendContent.prototype.holder = contentHolder;
 
 leftSideBar.addEventListener('click', setContentInDashboardHolder);
 
+const loanApplicantFormEvent = new CustomEvent('custom-change-content', {
+  detail: {
+    contentKey: 'loanApplicantForm',
+  },
+});
+
 const takeLoanEvent = new CustomEvent('custom-change-content', {
   detail: {
     contentKey: 'takeLoan',
   },
 });
+
 const myLoan = new CustomEvent('custom-change-content', {
   detail: {
     contentKey: 'myLoan',
@@ -84,6 +83,7 @@ const myLoan = new CustomEvent('custom-change-content', {
 });
 
 const setContentEvent = {
+  'loan-applicant-form': loanApplicantFormEvent,
   'take-loan': takeLoanEvent,
   'my-loan': myLoan,
 };
@@ -106,11 +106,6 @@ class BorrowerSessionManager {
   render() {
     this.bindEvent();
     this.checkIfThereIsRecentLoanApplicant();
-    // new SelectSwitchDisplay({
-    //   select: employmentStatus,
-    //   inputs: [businessNameContainer, monthlyIncomeContainer, currentJobDurationContainer],
-    //   container: employmentAndIncome,
-    // });
   }
 
   bindEvent() {
