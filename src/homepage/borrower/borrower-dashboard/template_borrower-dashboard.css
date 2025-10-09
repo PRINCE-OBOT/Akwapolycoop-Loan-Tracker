@@ -1,3 +1,13 @@
+.left-side-bar {
+  max-width: 300px;
+}
+.content-holder {
+  flex: 200px;
+}
+main {
+  background-color: rgb(165, 141, 141);
+  /* justify-content: none; */
+}
 input.user-interact:is(:valid, :invalid) {
   border-color: transparent;
 }

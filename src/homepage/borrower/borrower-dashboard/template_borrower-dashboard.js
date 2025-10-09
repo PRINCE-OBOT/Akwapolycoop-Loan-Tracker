@@ -9,11 +9,17 @@ import '../../assets/style-border-button.css';
 import registerLocalStorageCustomMethod from '../../module/localStorage/localStorage';
 import FieldValidationUtility from '../../module/form-validation/field-utility';
 
+import {
+  appendContent,
+  bindCustomChangeContentEvent,
+} from '../../module/content-holder/content-holder';
+
 // import SelectSwitchDisplay from '../../module/switchDisplay/select-switch-display';
 
 import indexDB from '../../module/indexDB/indexDB';
 
 import Modal from '../../module/modal/modal';
+import eventBus from '../../module/event-bus/event';
 
 // import {
 //   businessNameContainer,
@@ -50,6 +56,8 @@ import Modal from '../../module/modal/modal';
 
 // const btnSubmitApplication = form.querySelector('.btn-submit-application');
 
+const leftSideBar = document.querySelector('.left-side-bar');
+const contentHolder = document.querySelector('.content-holder');
 const html = document.querySelector('html');
 
 const btnLogout = document.querySelector('.logout-button');
@@ -58,6 +66,35 @@ const dialog = document.querySelector('dialog');
 const btnYes = dialog.querySelector('.btn-yes');
 
 registerLocalStorageCustomMethod();
+bindCustomChangeContentEvent();
+
+appendContent.prototype.holder = contentHolder;
+
+leftSideBar.addEventListener('click', setContentInDashboardHolder);
+
+const takeLoanEvent = new CustomEvent('custom-change-content', {
+  detail: {
+    contentKey: 'takeLoan',
+  },
+});
+const myLoan = new CustomEvent('custom-change-content', {
+  detail: {
+    contentKey: 'myLoan',
+  },
+});
+
+const setContentEvent = {
+  'take-loan': takeLoanEvent,
+  'my-loan': myLoan,
+};
+
+function setContentInDashboardHolder(e) {
+  const setContent = e.target.dataset.customSet;
+
+  if (!setContent) return;
+
+  eventBus.dispatchEvent(setContentEvent[setContent]);
+}
 
 new Modal({ btnShowModal: btnLogout, dialog });
 
