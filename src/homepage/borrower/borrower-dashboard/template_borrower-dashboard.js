@@ -8,6 +8,7 @@ import '../../assets/style-border-button.css';
 
 import registerLocalStorageCustomMethod from '../../module/localStorage/localStorage';
 import bindAllFieldValidEvent from './is-all-field-valid';
+import compositionPipeLine from '../../module/composition/compositionPipeLine';
 
 import {
   appendContent,
@@ -42,7 +43,7 @@ bindCustomChangeContentEvent();
 bindSubmitApplicationButton();
 bindSubmitLoanButton();
 bindAllFieldValidEvent();
-getRecentLoanApplicantData();
+// getRecentLoanApplicantData();
 
 appendContent.prototype.holder = contentHolder;
 
@@ -54,11 +55,11 @@ const loanApplicantFormEvent = new CustomEvent('custom-change-content', {
   },
 });
 
-const takeLoanEvent = new CustomEvent('custom-change-content', {
-  detail: {
-    contentKey: 'takeLoan',
-  },
-});
+// const takeLoanEvent = new CustomEvent('custom-change-content', {
+//   detail: {
+//     contentKey: 'takeLoan',
+//   },
+// });
 
 const myLoanEvent = new CustomEvent('custom-change-content', {
   detail: {
@@ -87,33 +88,46 @@ function setContentInDashboardHolder(e) {
   setContentEvent[setContent]();
 }
 
-setContentInDashboardHolder({ target: { dataset: { customSet: 'loan-applicant-form' } } });
+// setContentInDashboardHolder({ target: { dataset: { customSet: 'my-loan' } } });
 
-function getRecentLoanApplicantData() {
+const loanApplicantDataDemo = () => {
+  alert('Demo worked data stored');
+};
+
+compositionPipeLine.prototype.firstCallback = loanApplicantDataDemo;
+
+const getRecentLoanApplicantID = () => {
   const data = localStorage.getData({ key: 'recent-loan-applicant' });
+  return data.id;
+};
 
+const getRecentLoanApplicantData = ({ returnValue, returnData }) => {
+  // returnValue is `id` of recent-loan-applicant in localStorage
   indexDB.interact(
     {
       storeName: 'loan-applicant-list',
       getMethod: 'get',
-      keyPathValue: data.id,
-      returnData: checkIfLoanApplicantFormDataExist,
+      keyPathValue: returnValue,
+      returnData,
       undefinedState: errorGettingData,
     },
     'getData',
   );
-}
+};
 
-function checkIfLoanApplicantFormDataExist(data) {
-  if (!data.loanApplicantFormData) {
-    leftSideBar.prepend(loanApplicantForm);
+compositionPipeLine(getRecentLoanApplicantID, getRecentLoanApplicantData);
 
-    alert('Please submit your "LOAN APPLICATION FORM" to take loan');
-    return;
-  }
+// const prependLoanApplicationFormBeforeSideBar = () => {
+//   leftSideBar.prepend(loanApplicantForm);
+// };
 
-  eventBus.dispatchEvent(takeLoanEvent);
-}
+// const displaySubmitLoanApplicationForm = () => {
+//   alert('Please submit your "LOAN APPLICATION FORM" to take loan');
+// };
+
+// const dispatchTakeLoanEvent = () => {
+//   eventBus.dispatchEvent(takeLoanEvent);
+// };
 
 function errorGettingData() {
   console.log('Error getting data');
