@@ -63,7 +63,7 @@ function checkIfUserExistInLoanApplicantList() {
 }
 
 function storeDataToLoanApplicantList() {
-  const loanApplicantData = getAdminDataFromForm();
+  const loanApplicantData = getSignUpDataFromForm();
 
   indexDB.createDatabase(
     {
@@ -100,18 +100,21 @@ function generateUsername() {
   return username.toLowerCase();
 }
 
-function getAdminDataFromForm() {
+function getSignUpDataFromForm() {
   const username = generateUsername();
 
-  const borrowerData = {
-    firstName: firstName.value,
-    lastName: lastName.value,
-    email: email.value,
-    password: password.value,
-    confirmPassword: confirmPassword.value,
-    username,
+  const SignUpData = {
+    signUpData: {
+      firstName: firstName.value,
+      lastName: lastName.value,
+      email: email.value,
+      password: password.value,
+      confirmPassword: confirmPassword.value,
+      username,
+    },
   };
-  return borrowerData;
+
+  return SignUpData;
 }
 
 function accountAlreadyExist() {

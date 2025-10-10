@@ -49,7 +49,10 @@ const indexDB = {
   ) {
     function returnData(data) {
       for (let i = 0; i < data.length; i++) {
-        if (data[i].username === username.value && data[i].password === password.value) {
+        if (
+          data[i].signUpData.username === username.value &&
+          data[i].signUpData.password === password.value
+        ) {
           trueState(data[i].id);
           return;
         }
