@@ -2,7 +2,7 @@ import eventBus from '../event-bus/event';
 
 import loanApplicantForm from '../../borrower/borrower-dashboard/loan-applicant-form';
 import takeLoan from '../../borrower/borrower-dashboard/take-loan';
-import myLoan from '../../borrower/borrower-dashboard/myLoan';
+import { myLoan } from '../../borrower/borrower-dashboard/myLoan';
 
 const contents = {
   loanApplicantForm,

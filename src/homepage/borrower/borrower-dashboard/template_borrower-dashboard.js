@@ -6,8 +6,8 @@ import '../../assets/font.css';
 import '../../assets/common_general.css';
 import '../../assets/style-border-button.css';
 
-import bindAllFieldValidEvent from './is-all-field-valid';
 import registerLocalStorageCustomMethod from '../../module/localStorage/localStorage';
+import bindAllFieldValidEvent from './is-all-field-valid';
 
 import {
   appendContent,
@@ -21,6 +21,7 @@ import indexDB from '../../module/indexDB/indexDB';
 
 import Modal from '../../module/modal/modal';
 import eventBus from '../../module/event-bus/event';
+import { getRecentLoanApplicantListOfTakenLoan } from './myLoan';
 
 const leftSideBar = document.querySelector('.left-side-bar');
 const contentHolder = document.querySelector('.content-holder');
@@ -60,10 +61,17 @@ const myLoanEvent = new CustomEvent('custom-change-content', {
   },
 });
 
+const insertTakeLoanDataToMyLoanEvent = new CustomEvent('get-data-in-indexedDB');
+
 const setContentEvent = {
   'loan-applicant-form': () => eventBus.dispatchEvent(loanApplicantFormEvent),
   'take-loan': () => getRecentLoanApplicantData(),
-  'my-loan': () => eventBus.dispatchEvent(myLoanEvent),
+  'my-loan': () => {
+    eventBus.dispatchEvent(myLoanEvent);
+
+    eventBus.dispatchEvent(insertTakeLoanDataToMyLoanEvent);
+    eventBus.removeEventListener('get-data-in-indexedDB', getRecentLoanApplicantListOfTakenLoan);
+  },
 };
 
 function setContentInDashboardHolder(e) {
@@ -96,6 +104,7 @@ function checkIfLoanApplicantFormDataExist(data) {
     alert('You have not filled the LOAN APPLICATION FORM');
     return;
   }
+
   eventBus.dispatchEvent(takeLoanEvent);
 }
 
