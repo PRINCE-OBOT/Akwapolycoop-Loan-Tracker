@@ -6,6 +6,7 @@ import '../../assets/font.css';
 import '../../assets/common_general.css';
 import '../../assets/style-border-button.css';
 
+import bindAllFieldValidEvent from './is-all-field-valid';
 import registerLocalStorageCustomMethod from '../../module/localStorage/localStorage';
 
 import {
@@ -14,6 +15,7 @@ import {
 } from '../../module/content-holder/content-holder';
 
 import bindSubmitApplicationButton from './loan-applicant-form-handle-submission';
+import bindSubmitLoanButton from './take-loan-submission';
 
 import indexDB from '../../module/indexDB/indexDB';
 
@@ -33,6 +35,8 @@ const btnYes = dialog.querySelector('.btn-yes');
 registerLocalStorageCustomMethod();
 bindCustomChangeContentEvent();
 bindSubmitApplicationButton();
+bindSubmitLoanButton();
+bindAllFieldValidEvent();
 
 appendContent.prototype.holder = contentHolder;
 
@@ -50,16 +54,16 @@ const takeLoanEvent = new CustomEvent('custom-change-content', {
   },
 });
 
-const myLoan = new CustomEvent('custom-change-content', {
+const myLoanEvent = new CustomEvent('custom-change-content', {
   detail: {
     contentKey: 'myLoan',
   },
 });
 
 const setContentEvent = {
-  'loan-applicant-form': loanApplicantFormEvent,
-  'take-loan': takeLoanEvent,
-  'my-loan': myLoan,
+  'loan-applicant-form': () => eventBus.dispatchEvent(loanApplicantFormEvent),
+  'take-loan': () => getRecentLoanApplicantData(),
+  'my-loan': () => eventBus.dispatchEvent(myLoanEvent),
 };
 
 function setContentInDashboardHolder(e) {
@@ -67,10 +71,38 @@ function setContentInDashboardHolder(e) {
 
   if (!setContent) return;
 
-  eventBus.dispatchEvent(setContentEvent[setContent]);
+  setContentEvent[setContent]();
 }
 
 setContentInDashboardHolder({ target: { dataset: { customSet: 'loan-applicant-form' } } });
+
+function getRecentLoanApplicantData() {
+  const data = localStorage.getData({ key: 'recent-loan-applicant' });
+
+  indexDB.interact(
+    {
+      storeName: 'loan-applicant-list',
+      getMethod: 'get',
+      keyPathValue: data.id,
+      returnData: checkIfLoanApplicantFormDataExist,
+      undefinedState: errorGettingData,
+    },
+    'getData',
+  );
+}
+
+function checkIfLoanApplicantFormDataExist(data) {
+  if (!data.loanApplicantFormData) {
+    alert('You have not filled the LOAN APPLICATION FORM');
+    return;
+  }
+  eventBus.dispatchEvent(takeLoanEvent);
+}
+
+function errorGettingData() {
+  console.log('Error getting data');
+}
+
 new Modal({ btnShowModal: btnLogout, dialog });
 
 class BorrowerSessionManager {
@@ -99,7 +131,7 @@ class BorrowerSessionManager {
 
     const id = data.id;
 
-    indexDB.createDatabase(
+    indexDB.interact(
       {
         storeName: 'loan-applicant-list',
         keyPathValue: id,

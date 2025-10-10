@@ -48,7 +48,7 @@ function checkIfAllFieldFillIsValid() {
 }
 
 function checkIfUserExistInLoanApplicantList() {
-  indexDB.createDatabase(
+  indexDB.interact(
     {
       storeName: 'loan-applicant-list',
       getMethod: 'getAll',
@@ -65,7 +65,7 @@ function checkIfUserExistInLoanApplicantList() {
 function storeDataToLoanApplicantList() {
   const loanApplicantData = getSignUpDataFromForm();
 
-  indexDB.createDatabase(
+  indexDB.interact(
     {
       storeName: 'loan-applicant-list',
       data: loanApplicantData,

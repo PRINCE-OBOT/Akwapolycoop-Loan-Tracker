@@ -37,7 +37,7 @@ function checkIfAllFieldFillIsValid() {
 }
 
 function checkIfLoginDetailsMatch() {
-  indexDB.createDatabase(
+  indexDB.interact(
     {
       storeName: 'admin-data',
       keyPathValue: 'admin',
@@ -52,7 +52,7 @@ function checkIfLoginDetailsMatch() {
 }
 
 function checkIfAdminIsAlreadyLogin() {
-  indexDB.createDatabase(
+  indexDB.interact(
     {
       storeName: 'admin-data',
       keyPathValue: 'admin',
@@ -66,7 +66,7 @@ function checkIfAdminIsAlreadyLogin() {
 }
 
 function loginAdmin() {
-  indexDB.createDatabase(
+  indexDB.interact(
     {
       storeName: 'admin-data',
       keyPathValue: 'admin',

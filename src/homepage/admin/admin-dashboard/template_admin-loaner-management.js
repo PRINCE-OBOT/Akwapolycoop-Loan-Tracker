@@ -33,7 +33,7 @@ export default class LoanerManagement {
   }
 
   getLoanApplicantDataFromDatabase() {
-    indexDB.createDatabase(
+    indexDB.interact(
       {
         storeName: 'borrower-loan-applicant-list',
         getMethod: 'getAll',

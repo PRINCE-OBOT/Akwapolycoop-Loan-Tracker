@@ -87,6 +87,16 @@ const validation = {
     this.fieldErrorMessage = 'Not within range';
   },
 
+  setAccountNumberValidationValue({ field }) {
+    this.isFieldValid = /^[0-9]{10}$/.test(field.value);
+    this.fieldErrorMessage = 'Invalid Account Number';
+  },
+
+  setValidatePurposeOfLoan({ field }) {
+    this.isFieldValid = /^[a-z ]{8,}$/.test(field.value);
+    this.fieldErrorMessage = 'Purpose of Loan not descriptive';
+  },
+
   setCurrentJobDurationValidationValue({ field }) {
     this.isFieldValid = /^([1-9]+ (months?|years?|days?))( [1-9]+ (months?|years?|days?))*$/.test(
       field.value,
@@ -103,14 +113,28 @@ const validation = {
     this.fieldErrorMessage = 'Not within range';
   },
 
-  validateTenor({ field }) {
+  setValidateTenorValue({ field }) {
     this.isFieldValid = +field.value >= 1;
     this.fieldErrorMessage = 'Not within range';
+  },
+
+  setPatternForEmptyField({ field }) {
+    this.isFieldValid = field.value.trim() !== '';
   },
 
   setSelectElementValidationValue({ field }) {
     this.isFieldValid = field.value !== 'null';
     this.fieldErrorMessage = "You've not selected an option";
+  },
+
+  setAccountNameValidationValue({ field }) {
+    this.isFieldValid = /[a-z]+ ([a-z]+ ?)+/.test(field.value);
+    this.fieldErrorMessage = 'Invalid Account Name';
+  },
+
+  setBankNameValidationValue({ field }) {
+    this.setPatternForEmptyField({ field });
+    this.fieldErrorMessage = 'No Bank name';
   },
 
   validateField({ field, fieldMessage }) {

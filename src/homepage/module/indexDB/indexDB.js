@@ -1,7 +1,7 @@
 const indexDB = {
   storeNameInStore: ['admin', 'loan-applicant-list'],
 
-  createDatabase(obj, functionToCall) {
+  interact(obj, functionToCall) {
     const openRequest = indexedDB.open('akp-loan-tracker', 30);
 
     openRequest.onupgradeneeded = (e) => {
@@ -70,50 +70,6 @@ const indexDB = {
     );
   },
 
-  checkIfThereIsRecentData({ storeName, getMethod, keyPathValue, undefinedState, trueState }, db) {
-    function returnData(data) {
-      if (data !== undefined) {
-        if (data.id) {
-          trueState();
-          return;
-        }
-      }
-      undefinedState();
-    }
-
-    this.getData(
-      {
-        storeName,
-        keyPathValue,
-        getMethod,
-        returnData,
-      },
-      db,
-    );
-  },
-  checkStateOfData({ storeName, key, getMethod, keyPathValue, undefinedState, trueState }, db) {
-    function returnData(data) {
-      if (data !== undefined) {
-        if (data[key]) {
-          trueState();
-          return;
-        }
-        undefinedState();
-      }
-      undefinedState();
-    }
-
-    this.getData(
-      {
-        storeName,
-        keyPathValue,
-        getMethod,
-        returnData,
-      },
-      db,
-    );
-  },
-
   checkIfUserAlreadyHaveAccount(
     { storeName, getMethod, firstName, lastName, email, trueState, falseState },
     db,
@@ -121,9 +77,9 @@ const indexDB = {
     function returnData(data) {
       for (let i = 0; i < data.length; i++) {
         if (
-          (data[i].firstName.toLowerCase() === firstName.value.toLowerCase() &&
-            data[i].lastName.toLowerCase() === lastName.value.toLowerCase()) ||
-          data[i].email.toLowerCase() === email.value.toLowerCase()
+          (data[i].signUpData.firstName.toLowerCase() === firstName.value.toLowerCase() &&
+            data[i].signUpData.lastName.toLowerCase() === lastName.value.toLowerCase()) ||
+          data[i].signUpData.email.toLowerCase() === email.value.toLowerCase()
         ) {
           trueState();
           return;
@@ -132,15 +88,9 @@ const indexDB = {
       falseState();
     }
 
-    this.getData(
-      {
-        storeName,
-        getMethod,
-        returnData,
-      },
-      db,
-    );
+    this.getData({ storeName, getMethod, returnData }, db);
   },
+
   modifyData(
     { storeName, keys, keyPathValue, newValue, getMethod, trueState, undefinedState },
     db,
@@ -159,6 +109,7 @@ const indexDB = {
 
     this.getData({ storeName, keyPathValue, getMethod, returnData }, db);
   },
+
   getData({ storeName, keyPathValue, getMethod, returnData, undefinedState }, db) {
     const storeHas = this.checkIfStoreHasName({ storeName }, db);
 

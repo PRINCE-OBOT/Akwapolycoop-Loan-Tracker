@@ -29,7 +29,8 @@ textarea {
   resize: none;
 }
 
-.btn-submit-application {
+.btn-submit-application,
+.btn-submit-loan {
   padding: 8px 25px;
   border-radius: 5px;
   background: var(--ink);

@@ -33,7 +33,7 @@ export default class AdminSessionManager {
   }
 
   checkIfAdminIsLogin() {
-    indexDB.createDatabase(
+    indexDB.interact(
       {
         storeName: 'admin-data',
         keyPathValue: 'admin',
@@ -99,7 +99,7 @@ export default class AdminSessionManager {
   }
 
   getAdminUsernameFromDatabase() {
-    indexDB.createDatabase(
+    indexDB.interact(
       {
         storeName: 'admin-data',
         keyPathValue: 'admin',
@@ -111,7 +111,7 @@ export default class AdminSessionManager {
   }
 
   logoutAdmin() {
-    indexDB.createDatabase(
+    indexDB.interact(
       {
         storeName: 'admin-data',
         keyPathValue: 'admin',

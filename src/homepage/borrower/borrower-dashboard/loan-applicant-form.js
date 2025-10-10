@@ -82,6 +82,42 @@ const loanApplicantForm = (function () {
                 </div>
               </fieldset>
     
+              
+    
+              <fieldset class="field-section employment-and-income">
+                <legend>Employment & Income</legend>
+    
+                <div class="employment-status">
+                  <label for="employment-status">
+                    Employment Status
+                    <span class="required-asterisk">*</span>
+                  </label>
+                  <select
+                    id="employment-status"
+                    data-set-field-validation-value="setSelectElementValidationValue"
+                  >
+                    // data-switch showElement and hideElement are function name in switchDisplay to switch the display mode of business-name
+
+                    <option value="null" data-switch="hideElement">
+                      -- Select Employment Status --
+                    </option>
+                    <option value="employed (full-time)" data-switch="showElement">
+                      Employed (Full-Time)
+                    </option>
+                    <option value="employed (part-time)" data-switch="showElement">
+                      Employed (Part-Time)
+                    </option>
+                    <option value="self-employed" data-switch="showElement">Self-Employed</option>
+                    <option value="unemployed" data-switch="hideElement">Unemployed</option>
+                    <option value="student" data-switch="hideElement">Student</option>
+                    <option value="retired" data-switch="hideElement">Retired</option>
+                  </select>
+                  <output id="employment-status-message" class="show-message"></output>
+                </div>
+              </fieldset>
+
+
+
               <fieldset class="field-section">
                 <legend>Identity</legend>
     
@@ -116,75 +152,61 @@ const loanApplicantForm = (function () {
                   <output id="passport-message" class="show-message"></output>
                 </div>
               </fieldset>
-    
-              <fieldset class="field-section employment-and-income">
-                <legend>Employment & Income</legend>
-    
-                <div class="employment-status">
-                  <label for="employment-status">
-                    Employment Status
-                    <span class="required-asterisk">*</span>
-                  </label>
-                  <select
-                    id="employment-status"
-                    data-set-field-validation-value="setSelectElementValidationValue"
-                  >
-                    // data-switch showElement and hideElement are function name in switchDisplay to switch the display mode of business-name
-
-                    <option value="null" data-switch="hideElement">
-                      -- Select Employment Status --
-                    </option>
-                    <option value="employed (full-time)" data-switch="showElement">
-                      Employed (Full-Time)
-                    </option>
-                    <option value="employed (part-time)" data-switch="showElement">
-                      Employed (Part-Time)
-                    </option>
-                    <option value="self-employed" data-switch="showElement">Self-Employed</option>
-                    <option value="unemployed" data-switch="hideElement">Unemployed</option>
-                    <option value="student" data-switch="hideElement">Student</option>
-                    <option value="retired" data-switch="hideElement">Retired</option>
-                  </select>
-                  <output id="employment-status-message" class="show-message"></output>
-                </div>
-              </fieldset>
-    
+              
               <fieldset class="field-section">
-                <legend>Loan Request</legend>
+                <legend>Account Details</legend>
     
-                <div class="desired-amount">
-                  <label for="desired-amount">
-                    Desired Amount
+                <div class="account-number">
+                  <label for="account-number">
+                    Account Number
                     <span class="required-asterisk">*</span>
                   </label>
                   <input
                     type="number"
-                    id="desired-amount"
-                    placeholder="e.g 50000"
-                    min="4000"
-                    data-set-field-validation-value="setDesiredAmountValidationValue"
+                    id="account-number"
+                    placeholder="8059054434"
+                    pattern="^[0-9]{10}$"
+                    data-set-field-validation-value="setAccountNumberValidationValue"
                     required
                   />
-                  <output id="desired-amount-message" class="show-message"></output>
+                  <output id="account-number-message" class="show-message"></output>
                 </div>
-    
-                <div class="tenor">
-                  <label for="tenor">
-                    Tenor (Days)
+                
+                <div class="account-name">
+                  <label for="account-name">
+                    Account name
                     <span class="required-asterisk">*</span>
                   </label>
                   <input
-                    type="number"
-                    id="tenor"
-                    placeholder="e.g 5"
+                    type="text"
+                    id="account-name"
+                    placeholder="James Town"
+                    pattern="[a-z]+ ([a-z]+ ?)+"
+                    data-set-field-validation-value="setAccountNameValidationValue"
+                    required
+                  />
+                  <output id="account-name-message" class="show-message"></output>
+                </div>
+                
+                <div class="bank-name">
+                  <label for="bank-name">
+                    Bank name
+                    <span class="required-asterisk">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="bank-name"
+                    placeholder="Opay"
                     min="1"
-                    data-set-field-validation-value="validateTenor"
+                    data-set-field-validation-value="setBankNameValidationValue"
                     required
                   />
-                  <output id="tenor-message" class="show-message"></output>
+                  <output id="bank-name-message" class="show-message"></output>
                 </div>
-              </fieldset>
     
+                
+              </fieldset>
+       
               <fieldset class="field-section">
                 <legend>Guarantor Information</legend>
     
@@ -302,7 +324,7 @@ const loanApplicantForm = (function () {
                 </div>
               </fieldset>
     
-              <div class="signup-btn-section">
+              <div>
                 <button class="btn-submit-application" type="button">Submit Application</button>
               </div>
     `;

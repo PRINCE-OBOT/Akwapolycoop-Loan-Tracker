@@ -35,7 +35,7 @@ function checkIfAllFieldFillIsValid() {
 }
 
 function checkIfLoanApplicantExist() {
-  indexDB.createDatabase(
+  indexDB.interact(
     {
       storeName: 'loan-applicant-list',
       getMethod: 'getAll',

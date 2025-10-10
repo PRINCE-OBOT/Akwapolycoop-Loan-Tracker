@@ -9,7 +9,7 @@ const declineLoanValue = document.querySelector('.decline-loan-value');
 function storeAdminLoanDataToDatabase() {
   const adminLoanData = getAdminDashboardLoanData();
 
-  indexDB.createDatabase(
+  indexDB.interact(
     {
       storeName: 'admin-dashboard-loan-data',
       data: adminLoanData,
@@ -76,7 +76,7 @@ function getAdminLoanDataFromDatabase() {
     setDeclineLoanTextContent(data.declineLoan);
   }
 
-  indexDB.createDatabase(
+  indexDB.interact(
     {
       storeName: 'admin-dashboard-loan-data',
       keyPathValue: 'admin-loan-data',
@@ -88,7 +88,7 @@ function getAdminLoanDataFromDatabase() {
 }
 
 function checkIfAdminLoanDataExist() {
-  indexDB.createDatabase(
+  indexDB.interact(
     {
       storeName: 'admin-dashboard-loan-data',
       keyPathValue: 'admin-loan-data',
