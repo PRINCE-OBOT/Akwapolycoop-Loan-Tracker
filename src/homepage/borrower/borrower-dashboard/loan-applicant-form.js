@@ -7,7 +7,7 @@ import {
   currentJobDurationContainer,
 } from './employment-and-income-content';
 
-const loanApplicantForm = () => {
+const loanApplicantForm = (function () {
   const form = document.createElement('form');
   form.classList.add('loan-application-form');
   form.novalidate;
@@ -304,22 +304,21 @@ const loanApplicantForm = () => {
     
               <div class="signup-btn-section">
                 <button class="btn-submit-application" type="button">Submit Application</button>
-                <span class="displayRegistrationProcess"></span>
               </div>
     `;
 
-  const employmentStatus = form.querySelector('#employment-status');
-  const employmentAndIncome = form.querySelector('.employment-and-income');
-
-  form.addEventListener('input', handleFieldValidationLogic);
-
-  new SelectSwitchDisplay({
-    select: employmentStatus,
-    inputs: [businessNameContainer, monthlyIncomeContainer, currentJobDurationContainer],
-    container: employmentAndIncome,
-  });
-
   return form;
-};
+})();
+
+const employmentStatus = loanApplicantForm.querySelector('#employment-status');
+const employmentAndIncome = loanApplicantForm.querySelector('.employment-and-income');
+
+loanApplicantForm.addEventListener('input', handleFieldValidationLogic);
+
+new SelectSwitchDisplay({
+  select: employmentStatus,
+  inputs: [businessNameContainer, monthlyIncomeContainer, currentJobDurationContainer],
+  container: employmentAndIncome,
+});
 
 export default loanApplicantForm;

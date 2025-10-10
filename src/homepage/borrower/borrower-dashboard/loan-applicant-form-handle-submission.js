@@ -8,7 +8,7 @@ import {
 } from './employment-and-income-content';
 import FieldValidationUtility from '../../module/form-validation/field-utility';
 
-const form = loanApplicantForm();
+const form = loanApplicantForm;
 
 const gender = form.querySelector('#gender');
 const phoneNumber = form.querySelector('#phone-number');
@@ -76,6 +76,7 @@ function convertFileToDataURLFormat(data) {
   reader.readAsDataURL(selectedPassport);
 
   reader.onload = (e) => {
+    data.loanApplicantFormData = {};
     data.loanApplicantFormData.passport = e.target.result;
 
     insertMoreFormFieldValues(data);
@@ -141,7 +142,5 @@ function loanApplicantDataNotStore() {
 function errorGettingData() {
   console.log('Error while getting data');
 }
-
-console.log('hey');
 
 export default bindSubmitApplicationButton;

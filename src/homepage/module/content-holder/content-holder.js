@@ -13,7 +13,7 @@ const contents = {
 function appendContent(e) {
   const detail = e.detail;
 
-  const content = contents[detail.contentKey]();
+  const content = contents[detail.contentKey];
 
   appendContent.prototype.holder.innerHTML = '';
   appendContent.prototype.holder.append(content);

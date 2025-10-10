@@ -6,13 +6,14 @@ import '../../assets/font.css';
 import '../../assets/common_general.css';
 import '../../assets/style-border-button.css';
 
-import bindSubmitApplicationButton from './loan-applicant-form-handle-submission';
 import registerLocalStorageCustomMethod from '../../module/localStorage/localStorage';
 
 import {
   appendContent,
   bindCustomChangeContentEvent,
 } from '../../module/content-holder/content-holder';
+
+import bindSubmitApplicationButton from './loan-applicant-form-handle-submission';
 
 import indexDB from '../../module/indexDB/indexDB';
 
@@ -21,15 +22,13 @@ import eventBus from '../../module/event-bus/event';
 
 const leftSideBar = document.querySelector('.left-side-bar');
 const contentHolder = document.querySelector('.content-holder');
-// const html = document.querySelector('html');
+
+const html = document.querySelector('html');
 
 const btnLogout = document.querySelector('.logout-button');
 
 const dialog = document.querySelector('dialog');
 const btnYes = dialog.querySelector('.btn-yes');
-
-// console.log(this)
-// Curious why `this` is no longer referencing the global window object
 
 registerLocalStorageCustomMethod();
 bindCustomChangeContentEvent();
@@ -71,6 +70,7 @@ function setContentInDashboardHolder(e) {
   eventBus.dispatchEvent(setContentEvent[setContent]);
 }
 
+setContentInDashboardHolder({ target: { dataset: { customSet: 'loan-applicant-form' } } });
 new Modal({ btnShowModal: btnLogout, dialog });
 
 class BorrowerSessionManager {
@@ -95,7 +95,7 @@ class BorrowerSessionManager {
       return;
     }
 
-    // html.style.display = 'block';
+    html.style.display = 'block';
 
     const id = data.id;
 
