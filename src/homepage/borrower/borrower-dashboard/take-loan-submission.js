@@ -1,3 +1,4 @@
+import { startOfToday, format } from 'date-fns';
 import eventBus from '../../module/event-bus/event';
 import indexDB from '../../module/indexDB/indexDB';
 
@@ -7,7 +8,7 @@ const form = takeLoan;
 
 const desiredAmount = form.querySelector('#desired-amount');
 const tenor = form.querySelector('#tenor');
-// const loanPurpose = form.querySelector('#loan-purpose');
+const loanPurpose = form.querySelector('#loan-purpose');
 
 const btnSubmitLoan = form.querySelector('.btn-submit-loan');
 
@@ -34,16 +35,29 @@ function getLoanApplicantDataIndexedDB(data) {
   );
 }
 
+function formatTodayDate() {
+  const today = startOfToday();
+  return format(today, 'yyyy-MM-dd');
+}
+
 function insertMoreFormFieldValues(data) {
   if (!data.takeLoan) data.takeLoan = [];
 
-  const takeLoanData = {};
+  const loanApplicantTakeLoanLength = data.takeLoan.length + 1;
+
+  const takeLoanData = {
+    outstandingBalance: 0,
+    status: 'pending',
+    paidStatus: 'Incomplete',
+    loanID: `LOAN${data.id}-00${loanApplicantTakeLoanLength}`,
+    date: formatTodayDate(),
+  };
 
   function setValue(element) {
     takeLoanData[element.id] = element.value;
   }
 
-  const listOfFormField = [tenor, desiredAmount];
+  const listOfFormField = [tenor, desiredAmount, loanPurpose];
 
   listOfFormField.forEach((field) => {
     setValue(field);
@@ -67,7 +81,7 @@ function storeDataLoanApplicantList(data) {
 }
 
 function displayTakeLoanSubmissionStatus() {
-  alert('You taken loan has been submitted');
+  alert('Your taken loan has been submitted, your request will be processed.');
 }
 
 function loanApplicantDataNotStore() {

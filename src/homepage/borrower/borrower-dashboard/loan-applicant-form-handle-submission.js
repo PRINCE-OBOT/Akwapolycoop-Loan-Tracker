@@ -1,3 +1,4 @@
+import { startOfToday, format } from 'date-fns';
 import indexDB from '../../module/indexDB/indexDB';
 
 import loanApplicantForm from './loan-applicant-form';
@@ -76,7 +77,14 @@ function convertFileToDataURLFormat(data) {
   };
 }
 
+function formatTodayDate() {
+  const today = startOfToday();
+  return format(today, 'EEEE do, MMMM, yyyy');
+}
+
 function insertMoreFormFieldValues(data) {
+  data.loanApplicantFormData.date = formatTodayDate();
+
   function setValue(element) {
     data.loanApplicantFormData[element.id] = element.value;
   }
