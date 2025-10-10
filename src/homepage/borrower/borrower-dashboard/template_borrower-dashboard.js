@@ -33,11 +33,16 @@ const btnLogout = document.querySelector('.logout-button');
 const dialog = document.querySelector('dialog');
 const btnYes = dialog.querySelector('.btn-yes');
 
+const loanApplicantForm = document.createElement('li');
+loanApplicantForm.textContent = 'Loan Application Form';
+loanApplicantForm.setAttribute('data-custom-set', 'loan-applicant-form');
+
 registerLocalStorageCustomMethod();
 bindCustomChangeContentEvent();
 bindSubmitApplicationButton();
 bindSubmitLoanButton();
 bindAllFieldValidEvent();
+getRecentLoanApplicantData();
 
 appendContent.prototype.holder = contentHolder;
 
@@ -101,7 +106,9 @@ function getRecentLoanApplicantData() {
 
 function checkIfLoanApplicantFormDataExist(data) {
   if (!data.loanApplicantFormData) {
-    alert('You have not filled the LOAN APPLICATION FORM');
+    leftSideBar.prepend(loanApplicantForm);
+
+    alert('Please submit your "LOAN APPLICATION FORM" to take loan');
     return;
   }
 

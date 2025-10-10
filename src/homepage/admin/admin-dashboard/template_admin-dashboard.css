@@ -34,16 +34,6 @@ header {
 :where(.admin-login, .admin-sign-up).hide {
   display: none;
 }
-.admin-profile {
-  height: var(--profile-dim);
-  width: var(--profile-dim);
-  background: linear-gradient(var(--primary-accent), var(--dark-yellow));
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .header_middle_section {
   margin-top: 20px;
   display: flex;

@@ -26,7 +26,7 @@ adminLoginAndSignupSection.classList.add('adminLoginAndSignupSection');
 
 adminProfileSection.innerHTML = `
 <button type="button" class="logout-button">Logout</button>
-<div class="admin-profile">P</div>
+<div class="profile">P</div>
 `;
 
 adminProfileSection.classList.add('adminProfileSection');

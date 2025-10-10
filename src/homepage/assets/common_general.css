@@ -45,6 +45,15 @@ header {
   justify-content: space-between;
   flex-wrap: wrap;
 }
+.profile {
+  height: var(--profile-dim);
+  width: var(--profile-dim);
+  background: linear-gradient(var(--primary-accent), var(--dark-yellow));
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .navigation-section {
   display: flex;
   gap: 20px;
