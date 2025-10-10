@@ -47,6 +47,63 @@ bindAllFieldValidEvent();
 
 appendContent.prototype.holder = contentHolder;
 
+// setContentInDashboardHolder({ target: { dataset: { customSet: 'my-loan' } } });
+
+const prependLoanApplicationFormBeforeSideBar = () => {
+  leftSideBar.prepend(loanApplicantForm);
+};
+
+const dispatchTakeLoanEvent = () => {
+  eventBus.dispatchEvent(takeLoanEvent);
+};
+
+const displayLoanApplicationFormNotSubmitted = (data) => {
+  const process = () =>
+    data.loanApplicantFormData
+      ? dispatchTakeLoanEvent()
+      : alert('Loan Application Form Not Submitted');
+
+  process();
+};
+
+const prependWhenLoanApplicantDataDoesNotExist = (data) => {
+  const process = () =>
+    !data.loanApplicantFormData ? prependLoanApplicationFormBeforeSideBar() : null;
+
+  process();
+};
+
+compositionPipeLine.prototype.firstCallback = prependWhenLoanApplicantDataDoesNotExist;
+
+const getRecentLoanApplicantID = () => {
+  const data = localStorage.getData({ key: 'recent-loan-applicant' });
+  return data.id;
+};
+
+const getRecentLoanApplicantData = ({ returnValue, firstCallback }) => {
+  // returnValue is `id` of recent-loan-applicant in localStorage
+  indexDB.interact(
+    {
+      storeName: 'loan-applicant-list',
+      getMethod: 'get',
+      keyPathValue: returnValue,
+      returnData: firstCallback,
+      undefinedState: errorGettingData,
+    },
+    'getData',
+  );
+};
+// the composition purpose is just to return the recentLoanApplicantData
+compositionPipeLine(getRecentLoanApplicantID, getRecentLoanApplicantData);
+
+// const displaySubmitLoanApplicationForm = () => {
+//   alert('Please submit your "LOAN APPLICATION FORM" to take loan');
+// };
+
+function errorGettingData() {
+  console.log('Error getting data');
+}
+
 leftSideBar.addEventListener('click', setContentInDashboardHolder);
 
 const loanApplicantFormEvent = new CustomEvent('custom-change-content', {
@@ -55,11 +112,11 @@ const loanApplicantFormEvent = new CustomEvent('custom-change-content', {
   },
 });
 
-// const takeLoanEvent = new CustomEvent('custom-change-content', {
-//   detail: {
-//     contentKey: 'takeLoan',
-//   },
-// });
+const takeLoanEvent = new CustomEvent('custom-change-content', {
+  detail: {
+    contentKey: 'takeLoan',
+  },
+});
 
 const myLoanEvent = new CustomEvent('custom-change-content', {
   detail: {
@@ -71,7 +128,10 @@ const insertTakeLoanDataToMyLoanEvent = new CustomEvent('get-data-in-indexedDB')
 
 const setContentEvent = {
   'loan-applicant-form': () => eventBus.dispatchEvent(loanApplicantFormEvent),
-  'take-loan': () => getRecentLoanApplicantData(),
+  'take-loan': () => {
+    compositionPipeLine.prototype.firstCallback = displayLoanApplicationFormNotSubmitted;
+    compositionPipeLine(getRecentLoanApplicantID, getRecentLoanApplicantData);
+  },
   'my-loan': () => {
     eventBus.dispatchEvent(myLoanEvent);
 
@@ -86,51 +146,6 @@ function setContentInDashboardHolder(e) {
   if (!setContent) return;
 
   setContentEvent[setContent]();
-}
-
-// setContentInDashboardHolder({ target: { dataset: { customSet: 'my-loan' } } });
-
-const loanApplicantDataDemo = () => {
-  alert('Demo worked data stored');
-};
-
-compositionPipeLine.prototype.firstCallback = loanApplicantDataDemo;
-
-const getRecentLoanApplicantID = () => {
-  const data = localStorage.getData({ key: 'recent-loan-applicant' });
-  return data.id;
-};
-
-const getRecentLoanApplicantData = ({ returnValue, returnData }) => {
-  // returnValue is `id` of recent-loan-applicant in localStorage
-  indexDB.interact(
-    {
-      storeName: 'loan-applicant-list',
-      getMethod: 'get',
-      keyPathValue: returnValue,
-      returnData,
-      undefinedState: errorGettingData,
-    },
-    'getData',
-  );
-};
-
-compositionPipeLine(getRecentLoanApplicantID, getRecentLoanApplicantData);
-
-// const prependLoanApplicationFormBeforeSideBar = () => {
-//   leftSideBar.prepend(loanApplicantForm);
-// };
-
-// const displaySubmitLoanApplicationForm = () => {
-//   alert('Please submit your "LOAN APPLICATION FORM" to take loan');
-// };
-
-// const dispatchTakeLoanEvent = () => {
-//   eventBus.dispatchEvent(takeLoanEvent);
-// };
-
-function errorGettingData() {
-  console.log('Error getting data');
 }
 
 new Modal({ btnShowModal: btnLogout, dialog });
