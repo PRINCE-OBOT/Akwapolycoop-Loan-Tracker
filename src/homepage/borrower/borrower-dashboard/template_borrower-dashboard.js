@@ -8,7 +8,7 @@ import '../../assets/style-border-button.css';
 
 import registerLocalStorageCustomMethod from '../../module/localStorage/localStorage';
 import bindAllFieldValidEvent from './is-all-field-valid';
-import compositionPipeLine from '../../module/composition/compositionPipeLine';
+import pipe from '../../module/composition/pipe';
 
 import {
   appendContent,
@@ -38,19 +38,18 @@ const loanApplicantForm = document.createElement('li');
 loanApplicantForm.textContent = 'Loan Application Form';
 loanApplicantForm.setAttribute('data-custom-set', 'loan-applicant-form');
 
+new Modal({ btnShowModal: btnLogout, dialog });
+
 registerLocalStorageCustomMethod();
 bindCustomChangeContentEvent();
 bindSubmitApplicationButton();
 bindSubmitLoanButton();
 bindAllFieldValidEvent();
-// getRecentLoanApplicantData();
 
 appendContent.prototype.holder = contentHolder;
 
-// setContentInDashboardHolder({ target: { dataset: { customSet: 'my-loan' } } });
-
-const prependLoanApplicationFormBeforeSideBar = () => {
-  leftSideBar.prepend(loanApplicantForm);
+const setPipePrototypeCustomMethod = (method) => {
+  pipe.prototype.firstCallback = method;
 };
 
 const dispatchTakeLoanEvent = () => {
@@ -65,15 +64,6 @@ const displayLoanApplicationFormNotSubmitted = (data) => {
 
   process();
 };
-
-const prependWhenLoanApplicantDataDoesNotExist = (data) => {
-  const process = () =>
-    !data.loanApplicantFormData ? prependLoanApplicationFormBeforeSideBar() : null;
-
-  process();
-};
-
-compositionPipeLine.prototype.firstCallback = prependWhenLoanApplicantDataDoesNotExist;
 
 const getRecentLoanApplicantID = () => {
   const data = localStorage.getData({ key: 'recent-loan-applicant' });
@@ -93,18 +83,21 @@ const getRecentLoanApplicantData = ({ returnValue, firstCallback }) => {
     'getData',
   );
 };
-// the composition purpose is just to return the recentLoanApplicantData
-compositionPipeLine(getRecentLoanApplicantID, getRecentLoanApplicantData);
 
-// const displaySubmitLoanApplicationForm = () => {
-//   alert('Please submit your "LOAN APPLICATION FORM" to take loan');
-// };
+const makeBorrowerDashboardDisplayBlock = () => {
+  html.style.display = 'block';
+};
+
+const removeRecentLoanApplicantDataFromLocalStorage = () =>
+  localStorage.removeItem('recent-loan-applicant');
+
+const navigateToLoginPage = () => {
+  window.location.href = './borrower-login.html';
+};
 
 function errorGettingData() {
   console.log('Error getting data');
 }
-
-leftSideBar.addEventListener('click', setContentInDashboardHolder);
 
 const loanApplicantFormEvent = new CustomEvent('custom-change-content', {
   detail: {
@@ -129,8 +122,8 @@ const insertTakeLoanDataToMyLoanEvent = new CustomEvent('get-data-in-indexedDB')
 const setContentEvent = {
   'loan-applicant-form': () => eventBus.dispatchEvent(loanApplicantFormEvent),
   'take-loan': () => {
-    compositionPipeLine.prototype.firstCallback = displayLoanApplicationFormNotSubmitted;
-    compositionPipeLine(getRecentLoanApplicantID, getRecentLoanApplicantData);
+    setPipePrototypeCustomMethod(displayLoanApplicationFormNotSubmitted);
+    pipe(getRecentLoanApplicantID, getRecentLoanApplicantData);
   },
   'my-loan': () => {
     eventBus.dispatchEvent(myLoanEvent);
@@ -148,66 +141,38 @@ function setContentInDashboardHolder(e) {
   setContentEvent[setContent]();
 }
 
-new Modal({ btnShowModal: btnLogout, dialog });
+const logoutBorrower = () => {
+  pipe(removeRecentLoanApplicantDataFromLocalStorage, navigateToLoginPage);
+};
 
-class BorrowerSessionManager {
-  constructor() {
-    this.render();
-  }
+const prependLoanApplicationFormBeforeSideBar = () => {
+  leftSideBar.prepend(loanApplicantForm);
+};
 
-  render() {
-    this.bindEvent();
-    this.checkIfThereIsRecentLoanApplicant();
-  }
+const prependWhenLoanApplicantDataDoesNotExist = (data) => {
+  !data.loanApplicantFormData ? prependLoanApplicationFormBeforeSideBar() : null;
+};
 
-  bindEvent() {
-    btnYes.addEventListener('click', this.logoutBorrower.bind(this));
-  }
+function insertLoanApplicantDataToDashboardPage(data) {
+  console.log('Loan applicant data gotten');
 
-  checkIfThereIsRecentLoanApplicant() {
-    const data = localStorage.getData({ key: 'recent-loan-applicant' });
-
-    if (data === null) {
-      this.navigateToLoginPage();
-      return;
-    }
-
-    html.style.display = 'block';
-
-    const id = data.id;
-
-    indexDB.interact(
-      {
-        storeName: 'loan-applicant-list',
-        keyPathValue: id,
-        getMethod: 'get',
-        returnData: this.loanApplicantData.bind(this),
-        undefinedState: this.errorGettingData.bind(this),
-      },
-      'getData',
-    );
-  }
-
-  loanApplicantData() {
-    console.log('Loan applicant data');
-  }
-
-  errorGettingData() {
-    console.log('Error while getting data from dashboard');
-  }
-
-  navigateToLoginPage() {
-    window.location.href = './borrower-login.html';
-    console.log('You are not logged in');
-  }
-
-  logoutBorrower() {
-    localStorage.removeItem('recent-loan-applicant');
-    this.navigateToLoginPage();
-  }
-
-  keyValueDoesNotExist() {
-    console.log('Key does not exist');
-  }
+  prependWhenLoanApplicantDataDoesNotExist(data);
 }
-new BorrowerSessionManager();
+
+(function checkIfThereIsRecentLoanApplicant() {
+  const id = getRecentLoanApplicantID();
+
+  if (!id) {
+    navigateToLoginPage();
+    return;
+  }
+
+  // `insertLoanApplicantDataToDashboardPage` is the callback function to when
+  // the recentLoanApplicantData is retrieve from indexedDB
+  setPipePrototypeCustomMethod(insertLoanApplicantDataToDashboardPage);
+
+  pipe(makeBorrowerDashboardDisplayBlock, () => id, getRecentLoanApplicantData);
+})();
+
+leftSideBar.addEventListener('click', setContentInDashboardHolder);
+btnYes.addEventListener('click', logoutBorrower);
