@@ -8,7 +8,6 @@ import '../../assets/style-border-button.css';
 
 import registerLocalStorageCustomMethod from '../../module/localStorage/localStorage';
 import bindAllFieldValidEvent from './is-all-field-valid';
-import pipe from '../../module/composition/pipe';
 
 import {
   appendContent,
@@ -48,40 +47,19 @@ bindAllFieldValidEvent();
 
 appendContent.prototype.holder = contentHolder;
 
-const setPipePrototypeCustomMethod = (method) => {
-  pipe.prototype.firstCallback = method;
-};
-
 const dispatchTakeLoanEvent = () => {
   eventBus.dispatchEvent(takeLoanEvent);
 };
 
-const displayLoanApplicationFormNotSubmitted = (data) => {
-  const process = () =>
-    data.loanApplicantFormData
-      ? dispatchTakeLoanEvent()
-      : alert('Loan Application Form Not Submitted');
-
-  process();
+const checkIfLoanApplicantFormDataExist = (data) => {
+  data.loanApplicantFormData
+    ? dispatchTakeLoanEvent()
+    : alert('Loan Application Form Not Submitted');
 };
 
 const getRecentLoanApplicantID = () => {
   const data = localStorage.getData({ key: 'recent-loan-applicant' });
   return data.id;
-};
-
-const getRecentLoanApplicantData = ({ returnValue, firstCallback }) => {
-  // returnValue is `id` of recent-loan-applicant in localStorage
-  indexDB.interact(
-    {
-      storeName: 'loan-applicant-list',
-      getMethod: 'get',
-      keyPathValue: returnValue,
-      returnData: firstCallback,
-      undefinedState: errorGettingData,
-    },
-    'getData',
-  );
 };
 
 const makeBorrowerDashboardDisplayBlock = () => {
@@ -95,10 +73,23 @@ const navigateToLoginPage = () => {
   window.location.href = './borrower-login.html';
 };
 
-function errorGettingData() {
+const errorGettingData = () => {
   console.log('Error getting data');
-}
+};
 
+const getRecentLoanApplicantData = ({ id, returnData }) => {
+  // returnValue is `id` of recent-loan-applicant in localStorage
+  indexDB.interact(
+    {
+      storeName: 'loan-applicant-list',
+      getMethod: 'get',
+      keyPathValue: id,
+      returnData,
+      undefinedState: errorGettingData,
+    },
+    'getData',
+  );
+};
 const loanApplicantFormEvent = new CustomEvent('custom-change-content', {
   detail: {
     contentKey: 'loanApplicantForm',
@@ -122,8 +113,8 @@ const insertTakeLoanDataToMyLoanEvent = new CustomEvent('get-data-in-indexedDB')
 const setContentEvent = {
   'loan-applicant-form': () => eventBus.dispatchEvent(loanApplicantFormEvent),
   'take-loan': () => {
-    setPipePrototypeCustomMethod(displayLoanApplicationFormNotSubmitted);
-    pipe(getRecentLoanApplicantID, getRecentLoanApplicantData);
+    const id = getRecentLoanApplicantID();
+    getRecentLoanApplicantData({ id, returnData: checkIfLoanApplicantFormDataExist });
   },
   'my-loan': () => {
     eventBus.dispatchEvent(myLoanEvent);
@@ -142,7 +133,8 @@ function setContentInDashboardHolder(e) {
 }
 
 const logoutBorrower = () => {
-  pipe(removeRecentLoanApplicantDataFromLocalStorage, navigateToLoginPage);
+  removeRecentLoanApplicantDataFromLocalStorage();
+  navigateToLoginPage();
 };
 
 const prependLoanApplicationFormBeforeSideBar = () => {
@@ -169,10 +161,11 @@ function insertLoanApplicantDataToDashboardPage(data) {
 
   // `insertLoanApplicantDataToDashboardPage` is the callback function to when
   // the recentLoanApplicantData is retrieve from indexedDB
-  setPipePrototypeCustomMethod(insertLoanApplicantDataToDashboardPage);
-
-  pipe(makeBorrowerDashboardDisplayBlock, () => id, getRecentLoanApplicantData);
+  makeBorrowerDashboardDisplayBlock();
+  getRecentLoanApplicantData({ id, returnData: insertLoanApplicantDataToDashboardPage });
 })();
 
 leftSideBar.addEventListener('click', setContentInDashboardHolder);
 btnYes.addEventListener('click', logoutBorrower);
+
+// ==== remove pipe as it is not needed when the composition does not transform data ====
