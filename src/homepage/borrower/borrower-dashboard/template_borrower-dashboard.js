@@ -77,19 +77,6 @@ const errorGettingData = () => {
   console.log('Error getting data');
 };
 
-const getRecentLoanApplicantData = ({ id, returnData }) => {
-  // returnValue is `id` of recent-loan-applicant in localStorage
-  indexDB.interact(
-    {
-      storeName: 'loan-applicant-list',
-      getMethod: 'get',
-      keyPathValue: id,
-      returnData,
-      undefinedState: errorGettingData,
-    },
-    'getData',
-  );
-};
 const loanApplicantFormEvent = new CustomEvent('custom-change-content', {
   detail: {
     contentKey: 'loanApplicantForm',
@@ -110,18 +97,25 @@ const myLoanEvent = new CustomEvent('custom-change-content', {
 
 const insertTakeLoanDataToMyLoanEvent = new CustomEvent('get-data-in-indexedDB');
 
-const setContentEvent = {
-  'loan-applicant-form': () => eventBus.dispatchEvent(loanApplicantFormEvent),
-  'take-loan': () => {
-    const id = getRecentLoanApplicantID();
-    getRecentLoanApplicantData({ id, returnData: checkIfLoanApplicantFormDataExist });
-  },
-  'my-loan': () => {
-    eventBus.dispatchEvent(myLoanEvent);
+const handleLoanApplicantForm = () => {
+  eventBus.dispatchEvent(loanApplicantFormEvent);
+};
 
-    eventBus.dispatchEvent(insertTakeLoanDataToMyLoanEvent);
-    eventBus.removeEventListener('get-data-in-indexedDB', getRecentLoanApplicantListOfTakenLoan);
-  },
+const handleTakeLoan = () => {
+  const id = getRecentLoanApplicantID();
+  getRecentLoanApplicantData({ id, returnData: checkIfLoanApplicantFormDataExist });
+};
+
+const handleMyLoan = () => {
+  eventBus.dispatchEvent(myLoanEvent);
+  eventBus.dispatchEvent(insertTakeLoanDataToMyLoanEvent);
+  eventBus.removeEventListener('get-data-in-indexedDB', getRecentLoanApplicantListOfTakenLoan);
+};
+
+const setContentEvent = {
+  'loan-applicant-form': handleLoanApplicantForm,
+  'take-loan': handleTakeLoan,
+  'my-loan': handleMyLoan,
 };
 
 function setContentInDashboardHolder(e) {
@@ -151,6 +145,19 @@ function insertLoanApplicantDataToDashboardPage(data) {
   prependWhenLoanApplicantDataDoesNotExist(data);
 }
 
+const getRecentLoanApplicantData = ({ id, returnData }) => {
+  indexDB.interact(
+    {
+      storeName: 'loan-applicant-list',
+      getMethod: 'get',
+      keyPathValue: id,
+      returnData,
+      undefinedState: errorGettingData,
+    },
+    'getData',
+  );
+};
+
 (function checkIfThereIsRecentLoanApplicant() {
   const id = getRecentLoanApplicantID();
 
@@ -159,7 +166,7 @@ function insertLoanApplicantDataToDashboardPage(data) {
     return;
   }
 
-  // `insertLoanApplicantDataToDashboardPage` is the callback function to when
+  // `insertLoanApplicantDataToDashboardPage` is the callback function to run when
   // the recentLoanApplicantData is retrieve from indexedDB
   makeBorrowerDashboardDisplayBlock();
   getRecentLoanApplicantData({ id, returnData: insertLoanApplicantDataToDashboardPage });
