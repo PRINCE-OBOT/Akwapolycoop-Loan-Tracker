@@ -9,10 +9,7 @@ import '../../assets/style-border-button.css';
 import registerLocalStorageCustomMethod from '../../module/localStorage/localStorage';
 import bindAllFieldValidEvent from './is-all-field-valid';
 
-import {
-  appendContent,
-  bindCustomChangeContentEvent,
-} from '../../module/content-holder/content-holder';
+import appendContent from '../../module/content-holder/content-holder';
 
 import bindSubmitApplicationButton from './loan-applicant-form-handle-submission';
 import bindSubmitLoanButton from './take-loan-submission';
@@ -43,7 +40,6 @@ new Modal({ btnShowModal: btnLogout, dialog });
 // - Use custom method such `getData` and `setData` in localStorage
 registerLocalStorageCustomMethod();
 // - Click on element *specifically* in the sidebar to change content in the dashboard
-bindCustomChangeContentEvent();
 // - Click on `submit application` and `submit loan` button to submit the form
 bindSubmitApplicationButton();
 bindSubmitLoanButton();
@@ -64,7 +60,7 @@ const checkIfLoanApplicantFormDataExist = (data) => {
 
 const getRecentLoanApplicantID = () => {
   const data = localStorage.getData({ key: 'recent-loan-applicant' });
-  return data.id;
+  return data?.id;
 };
 
 const makeBorrowerDashboardDisplayBlock = () => {
@@ -104,25 +100,25 @@ const events = {
 
 const insertTakeLoanDataToMyLoanEvent = new CustomEvent('get-data-in-indexedDB');
 
-const handleLoanApplicantForm = () => {
+const showLoanApplicantForm = () => {
   eventBus.dispatchEvent(events.loanApplicantForm);
 };
 
-const handleTakeLoan = () => {
+const showTakeLoan = () => {
   const id = getRecentLoanApplicantID();
   getRecentLoanApplicantData({ id, returnData: checkIfLoanApplicantFormDataExist });
 };
 
-const handleMyLoan = () => {
+const showMyLoan = () => {
   eventBus.dispatchEvent(events.myLoan);
   eventBus.dispatchEvent(insertTakeLoanDataToMyLoanEvent);
   eventBus.removeEventListener('get-data-in-indexedDB', getRecentLoanApplicantListOfTakenLoan);
 };
 
 const contentHandler = {
-  'loan-applicant-form': handleLoanApplicantForm,
-  'take-loan': handleTakeLoan,
-  'my-loan': handleMyLoan,
+  'loan-applicant-form': showLoanApplicantForm,
+  'take-loan': showTakeLoan,
+  'my-loan': showMyLoan,
 };
 
 function setContentInDashboardHolder(e) {

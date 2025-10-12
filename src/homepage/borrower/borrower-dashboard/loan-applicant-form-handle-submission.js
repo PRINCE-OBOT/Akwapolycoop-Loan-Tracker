@@ -48,7 +48,7 @@ const bindSubmitApplicationButton = () =>
   );
 
 function getLoanApplicantDataIndexedDB(data) {
-  const id = data.id;
+  const id = data?.id;
 
   indexDB.interact(
     {

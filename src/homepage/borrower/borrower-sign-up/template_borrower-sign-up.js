@@ -29,78 +29,52 @@ const btnSignUp = form.querySelector('.btn-sign-up');
 const dialog = document.querySelector('dialog');
 const displaySignUpStatus = dialog.querySelector('.display_borrower-sign-up-status');
 
-form.addEventListener('input', handleFieldValidationLogic);
-btnSignUp.addEventListener('click', checkIfAllFieldFillIsValid);
-window.addEventListener('pageshow', resetForm);
-
 registerLocalStorageCustomMethod();
 
 function resetForm() {
   form.reset();
 }
 
-function checkIfAllFieldFillIsValid() {
-  new FieldValidationUtility({
-    messages,
-    inputs,
-    runWhenAllFieldFillIsValid: checkIfUserExistInLoanApplicantList,
-  });
-}
-
-function checkIfUserExistInLoanApplicantList() {
-  indexDB.interact(
-    {
-      storeName: 'loan-applicant-list',
-      getMethod: 'getAll',
-      firstName,
-      lastName,
-      email,
-      trueState: accountAlreadyExist,
-      falseState: storeDataToLoanApplicantList,
-    },
-    'checkIfUserAlreadyHaveAccount',
-  );
-}
-
-function storeDataToLoanApplicantList() {
-  const loanApplicantData = getSignUpDataFromForm();
-
-  indexDB.interact(
-    {
-      storeName: 'loan-applicant-list',
-      data: loanApplicantData,
-      trueState: storeLoanApplicantIDInLocalStorage,
-      undefinedState: loanApplicantDataNotStore,
-    },
-    'storeData',
-  );
-}
+const processNavigatingToDashboard = () => {
+  setBorrowerSignUpStatus('Signing up...');
+  navigateToDashboardPage();
+};
 
 function storeLoanApplicantIDInLocalStorage(id) {
-  const data = { id };
-  localStorage.setData({ key: 'recent-loan-applicant', data });
-
-  navigateToDashboardPage();
+  localStorage.setData({ key: 'recent-loan-applicant', data: { id } });
+  processNavigatingToDashboard();
 }
 
-function navigateToDashboardPage() {
-  setBorrowerSignUpStatus('Signing up...');
+const modal = new Modal({ dialog });
+const displaySignUpStatusModal = () => {
+  modal.showModal();
+};
 
+function navigateToDashboardPage() {
   setTimeout(() => {
     window.location.href = './borrower-dashboard.html';
   }, 2000);
 }
 
-function generateUsername() {
+const setBorrowerSignUpStatus = (textContent) => {
+  displaySignUpStatus.textContent = textContent;
+  displaySignUpStatusModal();
+};
+
+const loanApplicantDataNotStore = () => {
+  console.log('Borrower data not stored');
+};
+
+const generateUsername = () => {
   const randomNumber = Math.floor(Math.random() * 200) + 1;
   const alterFirstName = firstName.value.slice(0, 3);
   const alterLastName = lastName.value.slice(0, 5);
   const username = `${alterFirstName}_${alterLastName}${randomNumber}`;
 
   return username.toLowerCase();
-}
+};
 
-function getSignUpDataFromForm() {
+const getSignUpDataFromForm = () => {
   const username = generateUsername();
 
   const SignUpData = {
@@ -115,24 +89,51 @@ function getSignUpDataFromForm() {
   };
 
   return SignUpData;
-}
+};
 
-function accountAlreadyExist() {
+const storeDataToLoanApplicantList = () => {
+  const loanApplicantData = getSignUpDataFromForm();
+
+  indexDB.interact(
+    {
+      storeName: 'loan-applicant-list',
+      data: loanApplicantData,
+      trueState: storeLoanApplicantIDInLocalStorage,
+      undefinedState: loanApplicantDataNotStore,
+    },
+    'storeData',
+  );
+};
+
+const accountAlreadyExist = () => {
   setBorrowerSignUpStatus('Account already exist');
-}
+};
 
-function displaySignUpStatusModal() {
-  const modal = new Modal({ dialog });
-  modal.showModal();
-}
+const checkIfUserExistInLoanApplicantList = () => {
+  indexDB.interact(
+    {
+      storeName: 'loan-applicant-list',
+      getMethod: 'getAll',
+      firstName,
+      lastName,
+      email,
+      trueState: accountAlreadyExist,
+      falseState: storeDataToLoanApplicantList,
+    },
+    'checkIfUserAlreadyHaveAccount',
+  );
+};
 
-function setBorrowerSignUpStatus(text) {
-  displaySignUpStatus.textContent = text;
-  displaySignUpStatusModal();
-}
+const checkIfAllFieldFillIsValid = () => {
+  new FieldValidationUtility({
+    messages,
+    inputs,
+    runWhenAllFieldFillIsValid: checkIfUserExistInLoanApplicantList,
+  });
+};
 
-function loanApplicantDataNotStore() {
-  console.log('Borrower data not stored');
-}
+btnSignUp.addEventListener('click', checkIfAllFieldFillIsValid);
+form.addEventListener('input', handleFieldValidationLogic);
+window.addEventListener('pageshow', resetForm);
 
 new PasswordValidator({ password, passwordMessage, confirmPassword, confirmPasswordMessage });

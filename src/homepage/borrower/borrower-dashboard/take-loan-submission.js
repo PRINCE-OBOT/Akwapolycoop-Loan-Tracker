@@ -26,7 +26,7 @@ function getLoanApplicantDataIndexedDB(data) {
   indexDB.interact(
     {
       storeName: 'loan-applicant-list',
-      keyPathValue: data.id,
+      keyPathValue: data?.id,
       getMethod: 'get',
       returnData: insertMoreFormFieldValues,
       undefinedState: errorGettingData,
@@ -48,7 +48,7 @@ function insertMoreFormFieldValues(data) {
     outstandingBalance: 0,
     status: 'pending',
     paidStatus: 'Incomplete',
-    loanID: `LOAN${data.id}-00${loanApplicantTakeLoanLength}`,
+    loanID: `LOAN${data?.id}-00${loanApplicantTakeLoanLength}`,
     dateAndTime: formatDateToISOFormat(),
   };
 

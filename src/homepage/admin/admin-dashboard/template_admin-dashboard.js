@@ -4,8 +4,6 @@ import '../../assets/font.css';
 import '../../assets/common_general.css';
 import '../../assets/style-border-button.css';
 
-import Navigation from '../../module/navigation/navigation';
-
 import LoanerManagement from './template_admin-loaner-management';
 
 import indexDB from '../../module/indexDB/indexDB';
@@ -17,9 +15,11 @@ import indexDB from '../../module/indexDB/indexDB';
 
 import Modal from '../../module/modal/modal';
 import registerLocalStorageCustomMethod from '../../module/localStorage/localStorage';
+import appendContent from '../../module/content-holder/content-holder';
+import eventBus from '../../module/event-bus/event';
 
 const headerBottomSection = document.querySelector('.header_bottom-section');
-const contentSection = document.querySelector('.content-section');
+const contentHolder = document.querySelector('.content-holder');
 const btnLogout = document.querySelector('.logout-button');
 const dialog = document.querySelector('dialog');
 const btnYes = dialog.querySelector('.btn-yes');
@@ -29,14 +29,51 @@ const html = document.querySelector('html');
 
 registerLocalStorageCustomMethod();
 
+appendContent.prototype.holder = contentHolder;
+
 const logoutAdmin = () => {};
+
+const events = {
+  adminDashboard: new CustomEvent('custom-change-content', {
+    detail: {
+      contentKey: 'adminDashboard',
+    },
+  }),
+
+  loanerManagement: new CustomEvent('custom-change-content', {
+    detail: {
+      contentKey: 'loanerManagement',
+    },
+  }),
+};
+
+const showAdminDashboard = () => {
+  eventBus.dispatchEvent(events.adminDashboard);
+};
+
+const showLoanerManagement = () => {
+  eventBus.dispatchEvent(events.loanerManagement);
+};
+
+const contentHandler = {
+  'admin-dashboard': showAdminDashboard,
+  'loaner-management': showLoanerManagement,
+};
+
+function setContentInDashboardHolder(e) {
+  const contentKey = e.target.dataset.contentKey;
+
+  if (!contentKey) return;
+
+  contentHandler[contentKey]();
+}
 
 const errorGettingData = () => {
   console.log('Error while getting data');
 };
 
 const insertAdminDataToDashboardPage = () => {
-  alert('Admin data gotten');
+  console.log('Admin data gotten');
 };
 
 const getRecentAdminData = ({ id, returnData }) => {
@@ -80,8 +117,7 @@ const getRecentAdminID = () => {
 })();
 
 btnYes.addEventListener('click', logoutAdmin);
-
-new Navigation({ btnSection: headerBottomSection, contentSection, activeIndex: 0 });
+headerBottomSection.addEventListener('click', setContentInDashboardHolder);
 
 new LoanerManagement({ tbody: LoanerManagementTbody });
 new Modal({ btnShowModal: btnLogout, dialog });

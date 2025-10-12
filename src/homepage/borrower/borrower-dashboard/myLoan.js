@@ -42,7 +42,7 @@ function getRecentLoanApplicantListOfTakenLoan() {
   indexDB.interact(
     {
       storeName: 'loan-applicant-list',
-      keyPathValue: data.id,
+      keyPathValue: data?.id,
       getMethod: 'get',
       returnData: insertLoanApplicantDataToTable,
       undefineState: errorWhileGettingData,
