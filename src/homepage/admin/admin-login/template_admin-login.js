@@ -41,12 +41,7 @@ const setLoginStatusTextContent = (textContent) => {
   showLoginStatusModal();
 };
 
-const setRecentAdminIDInLocalStorage = () => {
-  localStorage.setData({ key: 'recent-admin', data: { id: 1 } });
-};
-
 const processNavigatingToDashboard = () => {
-  setRecentAdminIDInLocalStorage();
   setLoginStatusTextContent('Logging in...');
   navigateToDashboardPage();
 };
