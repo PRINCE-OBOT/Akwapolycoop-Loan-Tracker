@@ -62,7 +62,7 @@ const navigateToLoginPage = () => {
 
 const getRecentAdminID = () => {
   const data = localStorage.getData({ key: 'recent-admin' });
-  return data.id;
+  return data?.id;
 };
 
 (function checkIfAdminRecentlyLogin() {

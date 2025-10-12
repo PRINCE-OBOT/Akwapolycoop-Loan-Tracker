@@ -5,6 +5,9 @@ module.exports = {
     node: true,
     es2021: true,
   },
+  parserOptions: {
+    ecmaVersion: 2020
+  },
   rules: {
     'no-new': 'off',
     'no-console': 'off',
@@ -18,6 +21,7 @@ module.exports = {
     'no-plusplus': 'off',
     "no-underscore-dangle": "off",
     "func-names": "off",
-    "no-proto": "off"
+    "no-proto": "off",
+    ". eslint": "off",
   },
 };
