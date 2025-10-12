@@ -1,8 +1,10 @@
+import { compareAsc, parse } from 'date-fns';
+import indexDB from '../../module/indexDB/indexDB';
+
 const loanerManagement = (function createLoanerManagementContent() {
   const div = document.createElement('div');
 
   div.innerHTML = `
- <div class="loaner-management-content">
             <h5>Oversee and manage all loan applications within the system.</h5>
 
             <div class="filter-section">
@@ -32,22 +34,63 @@ const loanerManagement = (function createLoanerManagementContent() {
 
                 <thead>
                   <tr>
-                    <th>Borrower Name</th>
+                    <th>S/N</th>
+                    <th>Loan ID</th>
+                    <th>Name</th>
                     <th>Amount</th>
                     <th>Status</th>
-                    <th>Application Date</th>
-                    <th rowspan="3">Actions</th>
+                    <th>Date</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
 
                 <tbody></tbody>
               </table>
             </div>
-          </div>`;
+          `;
 
   div.classList.add('loaner-management-content');
 
   return div;
 })();
 
-export default loanerManagement;
+function errorWhileGettingData() {
+  console.log('Error while getting data');
+}
+
+const sortTakenLoan = (takeLoanList) => {
+  const format = 'EEEE dd, MMMM, yyyy, hh:mm:ss a';
+
+  takeLoanList.sort((prev, next) => {
+    const prevDateAndTime = parse(prev.dateAndTime, format, new Date());
+    const nextDataAndTime = parse(next.dateAndTime, format, new Date());
+    return compareAsc(prevDateAndTime, nextDataAndTime);
+  });
+  console.log(takeLoanList);
+};
+
+const getTakeLoan = (loanApplicantListData) => {
+  const takeLoanList = [];
+
+  loanApplicantListData.forEach((data) => {
+    if (!data.takeLoan) return;
+    data.takeLoan.forEach((takeLoan) => takeLoanList.push(takeLoan));
+  });
+
+  sortTakenLoan(takeLoanList);
+};
+
+const getLoanApplicant = () => {
+  indexDB.interact(
+    {
+      storeName: 'loan-applicant-list',
+      getMethod: 'getAll',
+      returnData: getTakeLoan,
+      undefineState: errorWhileGettingData,
+    },
+    'getData',
+  );
+};
+getLoanApplicant();
+
+export { loanerManagement, getLoanApplicant };

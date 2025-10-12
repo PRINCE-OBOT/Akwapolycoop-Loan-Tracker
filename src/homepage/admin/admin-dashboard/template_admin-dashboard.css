@@ -68,8 +68,11 @@ header {
   align-items: center;
   gap: 5px;
 }
+/* Fix display of the admin dashboard layout */
+main {
+  display: block;
+}
 .content-holder {
-  padding-top: 50px;
   flex: 1;
 }
 
@@ -83,7 +86,6 @@ header {
   gap: 10px;
   flex-wrap: wrap;
   position: relative;
-  overflow: hidden;
 
   & > * {
     flex: 1;
@@ -153,6 +155,7 @@ header {
 .loaner-management-content {
   flex-direction: column;
   gap: 15px;
+  overflow: auto;
 }
 .filter-section,
 .loan-list-section {
@@ -191,7 +194,7 @@ select[name='borrower-search-status'] {
 
 .loan-list-section {
   box-shadow: var(--box-shadow);
-  overflow-y: auto;
+  /* overflow-y: auto; */
 }
 caption {
   text-align: left;

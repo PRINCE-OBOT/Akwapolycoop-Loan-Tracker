@@ -4,7 +4,7 @@ import loanApplicantForm from '../../borrower/borrower-dashboard/loan-applicant-
 import takeLoan from '../../borrower/borrower-dashboard/take-loan';
 import { myLoan } from '../../borrower/borrower-dashboard/myLoan';
 import adminDashboardContent from '../../admin/admin-dashboard/admin-dashboard-content';
-import loanerManagement from '../../admin/admin-dashboard/loaner-management';
+import { loanerManagement } from '../../admin/admin-dashboard/loaner-management';
 
 const contents = {
   loanApplicantForm,

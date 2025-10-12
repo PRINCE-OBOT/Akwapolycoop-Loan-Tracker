@@ -4,8 +4,6 @@ import '../../assets/font.css';
 import '../../assets/common_general.css';
 import '../../assets/style-border-button.css';
 
-import LoanerManagement from './template_admin-loaner-management';
-
 import indexDB from '../../module/indexDB/indexDB';
 
 // import {
@@ -23,7 +21,7 @@ const contentHolder = document.querySelector('.content-holder');
 const btnLogout = document.querySelector('.logout-button');
 const dialog = document.querySelector('dialog');
 const btnYes = dialog.querySelector('.btn-yes');
-const LoanerManagementTbody = document.querySelector('tbody');
+// const LoanerManagementTbody = document.querySelector('tbody');
 
 const html = document.querySelector('html');
 
@@ -50,11 +48,12 @@ const events = {
 const showAdminDashboard = () => {
   eventBus.dispatchEvent(events.adminDashboard);
 };
-showAdminDashboard();
+// showAdminDashboard();
 
 const showLoanerManagement = () => {
   eventBus.dispatchEvent(events.loanerManagement);
 };
+showLoanerManagement();
 
 const contentHandler = {
   'admin-dashboard': showAdminDashboard,
@@ -120,5 +119,5 @@ const getRecentAdminID = () => {
 btnYes.addEventListener('click', logoutAdmin);
 headerBottomSection.addEventListener('click', setContentInDashboardHolder);
 
-new LoanerManagement({ tbody: LoanerManagementTbody });
+// new LoanerManagement({ tbody: LoanerManagementTbody });
 new Modal({ btnShowModal: btnLogout, dialog });

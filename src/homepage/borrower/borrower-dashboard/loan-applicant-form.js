@@ -181,7 +181,7 @@ const loanApplicantForm = (function () {
                     type="text"
                     id="account-name"
                     placeholder="James Town"
-                    pattern="[a-z]+ ([a-z]+ ?)+"
+                    pattern="[A-Za-z]+ ([A-Za-z]+ ?)+"
                     data-set-field-validation-value="setAccountNameValidationValue"
                     required
                   />

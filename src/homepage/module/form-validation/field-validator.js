@@ -53,12 +53,12 @@ const validation = {
   },
 
   setAddressValidationValue({ field }) {
-    this.isFieldValid = /(?=.*\s)(?=.*[a-zA-Z])(?=.*[0-9]).{20,}/.test(field.value);
+    this.isFieldValid = /(?=.*\s)(?=.*[a-zA-Z])(?=.*[0-9]).{20,}/i.test(field.value);
     this.fieldErrorMessage = 'Address not Descriptive';
   },
 
   setBusinessNameValidationValue({ field }) {
-    this.isFieldValid = /^[a-zA-Z0-9_' -]{5,}$/.test(field.value);
+    this.isFieldValid = /^[a-zA-Z0-9_' -]{5,}$/i.test(field.value);
     this.fieldErrorMessage = 'Business Name not Descriptive';
   },
 
@@ -93,7 +93,7 @@ const validation = {
   },
 
   setValidatePurposeOfLoan({ field }) {
-    this.isFieldValid = /^[a-z ]{8,}$/.test(field.value);
+    this.isFieldValid = /^[a-z ]{8,}$/i.test(field.value);
     this.fieldErrorMessage = 'Purpose of Loan not descriptive';
   },
 
@@ -128,7 +128,7 @@ const validation = {
   },
 
   setAccountNameValidationValue({ field }) {
-    this.isFieldValid = /[a-z]+ ([a-z]+ ?)+/.test(field.value);
+    this.isFieldValid = /[a-z]+ ([a-z]+ ?)+/i.test(field.value);
     this.fieldErrorMessage = 'Invalid Account Name';
   },
 
