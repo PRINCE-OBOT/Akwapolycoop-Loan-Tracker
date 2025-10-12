@@ -31,6 +31,7 @@ const showLoginStatusModal = () => {
 
 const setLoginStatusTextContent = (textContent) => {
   loginStatus.textContent = textContent;
+  showLoginStatusModal();
 };
 
 const navigateToDashboardPage = () => {
@@ -50,7 +51,6 @@ const displayIncorrectUsernameOrPassword = () => {
 const processNavigatingToDashboard = (id) => {
   setLoanApplicantIDInLocalStorage(id);
   setLoginStatusTextContent('Logging in...');
-  showLoginStatusModal();
   navigateToDashboardPage();
 };
 

@@ -22,18 +22,30 @@ const loginStatus = dialog.querySelector('.login-status');
 
 const modal = new Modal({ dialog });
 
-const showLoginStatusModal = () => {
-  modal.showModal();
-};
-
 const error = () => {
   console.log('Error');
+};
+
+const resetForm = () => {
+  form.reset();
+};
+
+const adminLoginDataStore = () => {
+  console.log('Admin data stored');
+};
+
+const showLoginStatusModal = () => {
+  modal.showModal();
 };
 
 const navigateToDashboardPage = () => {
   setTimeout(() => {
     window.location.href = './admin-dashboard.html';
   }, 2000);
+};
+
+const setLoanApplicantIDInLocalStorage = () => {
+  localStorage.setData({ key: 'recent-admin', data: { id: 1 } });
 };
 
 const setLoginStatusTextContent = (textContent) => {
@@ -43,15 +55,8 @@ const setLoginStatusTextContent = (textContent) => {
 
 const processNavigatingToDashboard = () => {
   setLoginStatusTextContent('Logging in...');
+  setLoanApplicantIDInLocalStorage();
   navigateToDashboardPage();
-};
-
-const checkIfAllFieldFillIsValid = () => {
-  new FieldValidationUtility({
-    messages,
-    inputs,
-    runWhenAllFieldFillIsValid: checkIfLoginDataIsCorrect,
-  });
 };
 
 const checkIfLoginDataIsCorrect = () => {
@@ -68,12 +73,12 @@ const checkIfLoginDataIsCorrect = () => {
   );
 };
 
-const resetForm = () => {
-  form.reset();
-};
-
-const adminLoginDataStore = () => {
-  console.log('Admin data stored');
+const checkIfAllFieldFillIsValid = () => {
+  new FieldValidationUtility({
+    messages,
+    inputs,
+    runWhenAllFieldFillIsValid: checkIfLoginDataIsCorrect,
+  });
 };
 
 const storeAdminSignUpData = () => {
