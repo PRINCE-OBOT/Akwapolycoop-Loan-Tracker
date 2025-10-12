@@ -1,4 +1,4 @@
-import { startOfToday, format } from 'date-fns';
+import { format } from 'date-fns';
 import eventBus from '../../module/event-bus/event';
 import indexDB from '../../module/indexDB/indexDB';
 
@@ -35,9 +35,8 @@ function getLoanApplicantDataIndexedDB(data) {
   );
 }
 
-function formatTodayDate() {
-  const today = startOfToday();
-  return format(today, 'yyyy-MM-dd');
+function formatDateToISOFormat() {
+  return format(new Date(), 'EEEE dd, MMMM, yyyy, hh:mm:ss a');
 }
 
 function insertMoreFormFieldValues(data) {
@@ -50,7 +49,7 @@ function insertMoreFormFieldValues(data) {
     status: 'pending',
     paidStatus: 'Incomplete',
     loanID: `LOAN${data.id}-00${loanApplicantTakeLoanLength}`,
-    date: formatTodayDate(),
+    dateAndTime: formatDateToISOFormat(),
   };
 
   function setValue(element) {

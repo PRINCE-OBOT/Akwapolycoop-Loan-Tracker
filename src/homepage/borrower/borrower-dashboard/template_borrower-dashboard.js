@@ -35,20 +35,25 @@ const btnYes = dialog.querySelector('.btn-yes');
 
 const loanApplicantForm = document.createElement('li');
 loanApplicantForm.textContent = 'Loan Application Form';
-loanApplicantForm.setAttribute('data-custom-set', 'loan-applicant-form');
+loanApplicantForm.setAttribute('data-content-key', 'loan-applicant-form');
 
 new Modal({ btnShowModal: btnLogout, dialog });
 
+// Running the following function allow the following action to work:
+// - Use custom method such `getData` and `setData` in localStorage
 registerLocalStorageCustomMethod();
+// - Click on element *specifically* in the sidebar to change content in the dashboard
 bindCustomChangeContentEvent();
+// - Click on `submit application` and `submit loan` button to submit the form
 bindSubmitApplicationButton();
 bindSubmitLoanButton();
+// - Check whether all field to be submitted is valid
 bindAllFieldValidEvent();
 
 appendContent.prototype.holder = contentHolder;
 
 const dispatchTakeLoanEvent = () => {
-  eventBus.dispatchEvent(takeLoanEvent);
+  eventBus.dispatchEvent(events.takeLoan);
 };
 
 const checkIfLoanApplicantFormDataExist = (data) => {
@@ -77,28 +82,30 @@ const errorGettingData = () => {
   console.log('Error getting data');
 };
 
-const loanApplicantFormEvent = new CustomEvent('custom-change-content', {
-  detail: {
-    contentKey: 'loanApplicantForm',
-  },
-});
+const events = {
+  loanApplicantForm: new CustomEvent('custom-change-content', {
+    detail: {
+      contentKey: 'loanApplicantForm',
+    },
+  }),
 
-const takeLoanEvent = new CustomEvent('custom-change-content', {
-  detail: {
-    contentKey: 'takeLoan',
-  },
-});
+  takeLoan: new CustomEvent('custom-change-content', {
+    detail: {
+      contentKey: 'takeLoan',
+    },
+  }),
 
-const myLoanEvent = new CustomEvent('custom-change-content', {
-  detail: {
-    contentKey: 'myLoan',
-  },
-});
+  myLoan: new CustomEvent('custom-change-content', {
+    detail: {
+      contentKey: 'myLoan',
+    },
+  }),
+};
 
 const insertTakeLoanDataToMyLoanEvent = new CustomEvent('get-data-in-indexedDB');
 
 const handleLoanApplicantForm = () => {
-  eventBus.dispatchEvent(loanApplicantFormEvent);
+  eventBus.dispatchEvent(events.loanApplicantForm);
 };
 
 const handleTakeLoan = () => {
@@ -107,23 +114,23 @@ const handleTakeLoan = () => {
 };
 
 const handleMyLoan = () => {
-  eventBus.dispatchEvent(myLoanEvent);
+  eventBus.dispatchEvent(events.myLoan);
   eventBus.dispatchEvent(insertTakeLoanDataToMyLoanEvent);
   eventBus.removeEventListener('get-data-in-indexedDB', getRecentLoanApplicantListOfTakenLoan);
 };
 
-const setContentEvent = {
+const contentHandler = {
   'loan-applicant-form': handleLoanApplicantForm,
   'take-loan': handleTakeLoan,
   'my-loan': handleMyLoan,
 };
 
 function setContentInDashboardHolder(e) {
-  const setContent = e.target.dataset.customSet;
+  const contentKey = e.target.dataset.contentKey;
 
-  if (!setContent) return;
+  if (!contentKey) return;
 
-  setContentEvent[setContent]();
+  contentHandler[contentKey]();
 }
 
 const logoutBorrower = () => {
@@ -174,5 +181,3 @@ const getRecentLoanApplicantData = ({ id, returnData }) => {
 
 leftSideBar.addEventListener('click', setContentInDashboardHolder);
 btnYes.addEventListener('click', logoutBorrower);
-
-// ==== remove pipe as it is not needed when the composition does not transform data ====

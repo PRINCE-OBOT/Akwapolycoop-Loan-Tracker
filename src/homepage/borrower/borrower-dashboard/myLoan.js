@@ -1,12 +1,14 @@
+import { compareAsc, parse } from 'date-fns';
 import eventBus from '../../module/event-bus/event';
 import indexDB from '../../module/indexDB/indexDB';
+
 import registerLocalStorageCustomMethod from '../../module/localStorage/localStorage';
 
 registerLocalStorageCustomMethod();
 
 eventBus.addEventListener('get-data-in-indexedDB', getRecentLoanApplicantListOfTakenLoan);
 
-const myLoan = (function () {
+const myLoan = (function createTableHeading() {
   const table = document.createElement('table');
 
   table.innerHTML = `
@@ -24,6 +26,7 @@ const myLoan = (function () {
        <th>Tenor</th>
        <th>Status</th>
        <th>Date</th>
+       <th>Time</th>
      </tr>
    </thead>
 
@@ -48,6 +51,27 @@ function getRecentLoanApplicantListOfTakenLoan() {
   );
 }
 
+const getDate = (dateAndTime) => {
+  const date = dateAndTime.slice(0, dateAndTime.lastIndexOf(','));
+  console.log(
+    compareAsc(
+      parse(dateAndTime, 'EEEE dd, MMMM, yyyy, hh:mm:ss a', new Date()),
+      parse(dateAndTime, 'EEEE dd, MMMM, yyyy, hh:mm:ss a', new Date()),
+    ),
+  );
+  return date;
+};
+
+const getTime = (dateAndTime) => {
+  const time = dateAndTime.slice(dateAndTime.lastIndexOf(',') + 1);
+  return time;
+};
+
+const getSerialNumber = (index) => {
+  const serialNumber = index + 1;
+  return serialNumber;
+};
+
 function insertLoanApplicantDataToTable(loanApplicantData) {
   const tbody = myLoan.querySelector('tbody');
 
@@ -59,7 +83,9 @@ function insertLoanApplicantDataToTable(loanApplicantData) {
   loanApplicantData.takeLoan.forEach((data, index) => {
     const tr = document.createElement('tr');
 
-    const serialNumber = index + 1;
+    const serialNumber = getSerialNumber(index);
+    const date = getDate(data.dateAndTime);
+    const time = getTime(data.dateAndTime);
 
     tr.innerHTML = `
        <td>${serialNumber}</td>
@@ -67,7 +93,8 @@ function insertLoanApplicantDataToTable(loanApplicantData) {
        <td>${data['desired-amount']}</td>
        <td>${data.tenor}</td>
        <td>${data.status}</td>
-       <td>${data.date}</td>
+       <td>${date}</td>
+       <td>${time}</td>
       `;
 
     tbody.append(tr);
