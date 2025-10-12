@@ -68,15 +68,11 @@ header {
   align-items: center;
   gap: 5px;
 }
-.content-section {
+.content-holder {
   padding-top: 50px;
+  flex: 1;
 }
-.content-section > * {
-  display: none;
-}
-.content-section > *.active {
-  display: flex;
-}
+
 .admin-dashboard-content {
   flex-direction: column;
   gap: 40px;
@@ -115,12 +111,7 @@ header {
 .dashboard-borrower-section-right-side img {
   height: 300px;
 }
-.image-circle {
-  position: absolute;
-  right: -172px;
-  bottom: -190px;
-  opacity: 0.2;
-}
+
 .overview-metric-information-section {
   padding-top: 20px;
   display: grid;
