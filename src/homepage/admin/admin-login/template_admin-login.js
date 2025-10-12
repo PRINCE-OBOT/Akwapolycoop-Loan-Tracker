@@ -73,6 +73,45 @@ const resetForm = () => {
   form.reset();
 };
 
+const adminLoginDataStore = () => {
+  console.log('Admin data stored');
+};
+
+const storeAdminLoginData = () => {
+  const adminLoginData = {
+    id: 1,
+    username: 'admin',
+    password: 123456,
+  };
+
+  indexDB.interact(
+    {
+      storeName: 'admin',
+      data: adminLoginData,
+      trueState: adminLoginDataStore,
+      undefinedState: error,
+    },
+    'storeData',
+  );
+};
+
+const checkIfAdminLoginDataExist = (data) => {
+  if (!data) storeAdminLoginData();
+};
+
+(function getAdminLoginDataFromIndexedBD() {
+  indexDB.interact(
+    {
+      storeName: 'admin',
+      keyPathValue: 1,
+      getMethod: 'get',
+      returnData: checkIfAdminLoginDataExist,
+      undefinedState: error,
+    },
+    'getData',
+  );
+})();
+
 form.addEventListener('input', handleFieldValidationLogic);
 btnLogin.addEventListener('click', checkIfAllFieldFillIsValid);
 window.addEventListener('pageshow', resetForm);

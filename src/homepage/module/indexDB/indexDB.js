@@ -2,12 +2,15 @@ const indexDB = {
   storeNameInStore: ['admin', 'loan-applicant-list'],
 
   interact(obj, functionToCall) {
-    const openRequest = indexedDB.open('akp-loan-tracker', 30);
+    const openRequest = indexedDB.open('akp-loan-tracker', 33);
 
     openRequest.onupgradeneeded = (e) => {
       const db = e.target.result;
 
+      // insert individual store to be deleted
+      // db.deleteObjectStore('admin');
       indexDB.storeNameInStore.forEach((storeName) => {
+        // uncomment bellow to delete all store
         // db.deleteObjectStore(storeName);
         this.createObjectStore({ storeName }, db);
       });
@@ -24,7 +27,9 @@ const indexDB = {
     const storeHas = this.checkIfStoreHasName({ storeName }, db);
     if (storeHas.name) return;
 
-    db.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
+    db.createObjectStore(storeName, { keyPath: 'id' });
+    // uncomment bellow for autoIncrement
+    // db.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
   },
 
   storeData({ storeName, data, trueState, undefinedState }, db) {
