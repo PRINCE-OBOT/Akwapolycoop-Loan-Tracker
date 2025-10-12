@@ -1,6 +1,7 @@
-const loanerManagement = function createLoanerManagementContent() {
+const loanerManagement = (function createLoanerManagementContent() {
   const div = document.createElement('div');
-  `
+
+  div.innerHTML = `
  <div class="loaner-management-content">
             <h5>Oversee and manage all loan applications within the system.</h5>
 
@@ -44,9 +45,9 @@ const loanerManagement = function createLoanerManagementContent() {
             </div>
           </div>`;
 
-  div.classList('loaner-management-content');
+  div.classList.add('loaner-management-content');
 
   return div;
-};
+})();
 
 export default loanerManagement;
