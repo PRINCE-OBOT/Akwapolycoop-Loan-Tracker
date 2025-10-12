@@ -1,4 +1,11 @@
-const adminDashboardContent = function createAdminDashboardContent() {
+import chatWithAIImg from '../../assets/images/chat-with-ai.svg';
+import totalLoanApplicantImg from '../../assets/images/total-loan-applicant.svg';
+import revenueImg from '../../assets/images/revenue.svg';
+import pendingLoanImg from '../../assets/images/pending-loan.svg';
+import declineLoanImg from '../../assets/images/delined-loan.svg';
+import approveLoanImg from '../../assets/images/approve-loan.svg';
+
+const adminDashboardContent = (function createAdminDashboardContent() {
   const div = document.createElement('div');
 
   div.innerHTML = `
@@ -19,9 +26,8 @@ const adminDashboardContent = function createAdminDashboardContent() {
               </div>
 
               <div class="dashboard-borrower-section-right-side">
-                <img src="../../assets/images/chat-with-ai.svg" alt="Chat-with-ai" />
+              <img src="${chatWithAIImg}" alt="Chat with AI">
               </div>
-              <img class="image-circle" src="../../assets/images/circle-and-outer-lines_teal.svg" />
             </div>
 
             <div class="overview-metric-section">
@@ -30,7 +36,7 @@ const adminDashboardContent = function createAdminDashboardContent() {
               <div class="overview-metric-information-section">
                 <div class="total-applicant-loan-section">
                   <div class="total-loan-title-section">
-                    <img src="../../assets/images/total-loan-applicant.svg" alt="Total loan icon" />
+                  <img src="${totalLoanApplicantImg}" alt="Total Loan Applicant">
                     <h5>Total Loans Applicant</h5>
                   </div>
 
@@ -39,7 +45,7 @@ const adminDashboardContent = function createAdminDashboardContent() {
 
                 <div class="revenue-loan-section">
                   <div class="revenue-title-section">
-                    <img src="../../assets/images/revenue.svg" alt="Revenue icon" />
+                  <img src="${revenueImg}" alt="Revenue">
                     <h5>Revenue</h5>
                   </div>
 
@@ -48,7 +54,7 @@ const adminDashboardContent = function createAdminDashboardContent() {
 
                 <div class="approved-loan-section">
                   <div class="approved-loan-title-section">
-                    <img src="../../assets/images/approve-loan.svg" alt="Approved loan icon" />
+                  <img src="${approveLoanImg}" alt="Approve Loan">
                     <h5>Approved Loan</h5>
                   </div>
 
@@ -57,7 +63,7 @@ const adminDashboardContent = function createAdminDashboardContent() {
 
                 <div class="pending-loan-section">
                   <div class="pending-loan-title-section">
-                    <img src="../../assets/images/pending-loan.svg" alt="Pending Loan icon" />
+                  <img src="${pendingLoanImg}" alt="Pending Loan">
                     <h5>Pending Loan</h5>
                   </div>
                   <h2 class="pending-loan-value"></h2>
@@ -65,7 +71,7 @@ const adminDashboardContent = function createAdminDashboardContent() {
 
                 <div class="decline-loan-section">
                   <div class="decline-loan-title-section">
-                    <img src="../../assets/images/delined-loan.svg" alt="Decline Loan icon" />
+                  <img src="${declineLoanImg}" alt="Pending Loan">
                     <h5>Decline Loan</h5>
                   </div>
 
@@ -75,9 +81,9 @@ const adminDashboardContent = function createAdminDashboardContent() {
             </div>
           `;
 
-  div.classList('admin-dashboard-content');
+  div.classList.add('admin-dashboard-content');
 
   return div;
-};
+})();
 
 export default adminDashboardContent;

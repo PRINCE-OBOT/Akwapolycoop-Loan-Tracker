@@ -36,7 +36,7 @@ const logoutAdmin = () => {};
 const events = {
   adminDashboard: new CustomEvent('custom-change-content', {
     detail: {
-      contentKey: 'adminDashboard',
+      contentKey: 'adminDashboardContent',
     },
   }),
 
@@ -50,6 +50,7 @@ const events = {
 const showAdminDashboard = () => {
   eventBus.dispatchEvent(events.adminDashboard);
 };
+showAdminDashboard();
 
 const showLoanerManagement = () => {
   eventBus.dispatchEvent(events.loanerManagement);

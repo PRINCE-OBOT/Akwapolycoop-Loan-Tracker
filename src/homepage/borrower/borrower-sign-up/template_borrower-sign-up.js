@@ -31,9 +31,9 @@ const displaySignUpStatus = dialog.querySelector('.display_borrower-sign-up-stat
 
 registerLocalStorageCustomMethod();
 
-function resetForm() {
+const resetForm = () => {
   form.reset();
-}
+};
 
 const processNavigatingToDashboard = () => {
   setBorrowerSignUpStatus('Signing up...');
