@@ -1,4 +1,3 @@
-import { compareAsc, parse } from 'date-fns';
 import eventBus from '../../module/event-bus/event';
 import indexDB from '../../module/indexDB/indexDB';
 
@@ -53,12 +52,6 @@ function getRecentLoanApplicantListOfTakenLoan() {
 
 const getDate = (dateAndTime) => {
   const date = dateAndTime.slice(0, dateAndTime.lastIndexOf(','));
-  console.log(
-    compareAsc(
-      parse(dateAndTime, 'EEEE dd, MMMM, yyyy, hh:mm:ss a', new Date()),
-      parse(dateAndTime, 'EEEE dd, MMMM, yyyy, hh:mm:ss a', new Date()),
-    ),
-  );
   return date;
 };
 

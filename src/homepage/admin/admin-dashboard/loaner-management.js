@@ -36,10 +36,11 @@ const loanerManagement = (function createLoanerManagementContent() {
                   <tr>
                     <th>S/N</th>
                     <th>Loan ID</th>
-                    <th>Name</th>
-                    <th>Amount</th>
+                    <th>Amount (N)</th>
+                    <th>Tenor (Days)</th>
                     <th>Status</th>
                     <th>Date</th>
+                    <th>Time</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -58,6 +59,46 @@ function errorWhileGettingData() {
   console.log('Error while getting data');
 }
 
+const getDate = (dateAndTime) => {
+  const date = dateAndTime.slice(0, dateAndTime.lastIndexOf(','));
+  return date;
+};
+
+const getTime = (dateAndTime) => {
+  const time = dateAndTime.slice(dateAndTime.lastIndexOf(',') + 1);
+  return time;
+};
+
+const getSerialNumber = (index) => {
+  const serialNumber = index + 1;
+  return serialNumber;
+};
+
+function insertTakeLoanDataToTable(takeLoanList) {
+  const tbody = loanerManagement.querySelector('tbody');
+
+  takeLoanList.forEach((data, index) => {
+    const tr = document.createElement('tr');
+
+    const serialNumber = getSerialNumber(index);
+    const date = getDate(data.dateAndTime);
+    const time = getTime(data.dateAndTime);
+
+    tr.innerHTML = `
+       <td>${serialNumber}</td>
+       <td>${data.loanID}</td>
+       <td>${data['desired-amount']}</td>
+       <td>${data.tenor}</td>
+       <td>${data.status}</td>
+       <td>${date}</td>
+       <td>${time}</td>
+       <td>@</td>
+      `;
+
+    tbody.append(tr);
+  });
+}
+
 const sortTakenLoan = (takeLoanList) => {
   const format = 'EEEE dd, MMMM, yyyy, hh:mm:ss a';
 
@@ -66,7 +107,8 @@ const sortTakenLoan = (takeLoanList) => {
     const nextDataAndTime = parse(next.dateAndTime, format, new Date());
     return compareAsc(prevDateAndTime, nextDataAndTime);
   });
-  console.log(takeLoanList);
+
+  insertTakeLoanDataToTable(takeLoanList);
 };
 
 const getTakeLoan = (loanApplicantListData) => {
