@@ -65,9 +65,9 @@ const getRecentAdminID = () => {
   return data.id;
 };
 
-checkIfAdminRecentlyLogin();
-
-function checkIfAdminRecentlyLogin() {
+(function checkIfAdminRecentlyLogin() {
+  // The purpose of getting the admin ID is to be sure that
+  // admin has already sign up before and not to get the `id` value
   const id = getRecentAdminID();
 
   if (!id) {
@@ -77,7 +77,7 @@ function checkIfAdminRecentlyLogin() {
 
   makeAdminDashboardDisplayBlock();
   getRecentAdminData({ id, returnData: insertAdminDataToDashboardPage });
-}
+})();
 
 btnYes.addEventListener('click', logoutAdmin);
 

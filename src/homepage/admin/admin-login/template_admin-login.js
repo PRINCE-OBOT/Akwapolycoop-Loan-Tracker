@@ -9,6 +9,7 @@ import FieldValidationUtility from '../../module/form-validation/field-utility';
 
 import indexDB from '../../module/indexDB/indexDB';
 import Modal from '../../module/modal/modal';
+import registerLocalStorageCustomMethod from '../../module/localStorage/localStorage';
 
 const form = document.querySelector('.admin-login-form');
 const username = form.querySelector('#username');
@@ -21,6 +22,8 @@ const dialog = document.querySelector('dialog');
 const loginStatus = dialog.querySelector('.login-status');
 
 const modal = new Modal({ dialog });
+
+registerLocalStorageCustomMethod();
 
 const error = () => {
   console.log('Error');
