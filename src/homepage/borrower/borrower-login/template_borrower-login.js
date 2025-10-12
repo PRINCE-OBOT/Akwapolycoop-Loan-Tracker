@@ -21,56 +21,60 @@ const btnLogin = form.querySelector('.btn-login');
 const dialog = document.querySelector('dialog');
 const loginStatus = dialog.querySelector('.login-status');
 
-form.addEventListener('input', handleFieldValidationLogic);
-btnLogin.addEventListener('click', checkIfAllFieldFillIsValid);
+const modal = new Modal({ dialog });
 
 registerLocalStorageCustomMethod();
 
-function checkIfAllFieldFillIsValid() {
-  new FieldValidationUtility({
-    messages,
-    inputs,
-    runWhenAllFieldFillIsValid: checkIfLoanApplicantExist,
-  });
-}
+const showLoginStatusModal = () => {
+  modal.showModal();
+};
 
-function checkIfLoanApplicantExist() {
+const setLoginStatusTextContent = (textContent) => {
+  loginStatus.textContent = textContent;
+};
+
+const navigateToDashboardPage = () => {
+  setTimeout(() => {
+    window.location.href = './borrower-dashboard.html';
+  }, 2000);
+};
+
+const setLoanApplicantIDInLocalStorage = (id) => {
+  localStorage.setData({ key: 'recent-loan-applicant', data: { id } });
+};
+
+const displayIncorrectUsernameOrPassword = () => {
+  setLoginStatusTextContent('Incorrect Username or Password');
+};
+
+const processNavigatingToDashboard = (id) => {
+  setLoanApplicantIDInLocalStorage(id);
+  setLoginStatusTextContent('Logging in...');
+  showLoginStatusModal();
+  navigateToDashboardPage();
+};
+
+const checkIfLoanApplicantDataIsCorrect = () => {
   indexDB.interact(
     {
       storeName: 'loan-applicant-list',
       getMethod: 'getAll',
       username,
       password,
-      trueState: navigateToDashboardPage,
+      trueState: processNavigatingToDashboard,
       undefinedState: displayIncorrectUsernameOrPassword,
     },
     'checkIfLoginDetailsMatch',
   );
-}
+};
 
-function showLoginStatusModal() {
-  const modal = new Modal({ dialog });
-  modal.showModal();
-}
+const checkIfAllFieldFillIsValid = () => {
+  new FieldValidationUtility({
+    messages,
+    inputs,
+    runWhenAllFieldFillIsValid: checkIfLoanApplicantDataIsCorrect,
+  });
+};
 
-function setLoginStatusTextContent(textContent) {
-  loginStatus.textContent = textContent;
-  showLoginStatusModal();
-}
-
-function successLoginStatusTextContent() {
-  setLoginStatusTextContent('Logging in...');
-}
-
-function navigateToDashboardPage(id) {
-  localStorage.setData({ key: 'recent-loan-applicant', data: { id } });
-  successLoginStatusTextContent();
-
-  setTimeout(() => {
-    window.location.href = './borrower-dashboard.html';
-  }, 2000);
-}
-
-function displayIncorrectUsernameOrPassword() {
-  setLoginStatusTextContent('Incorrect Username or Password');
-}
+btnLogin.addEventListener('click', checkIfAllFieldFillIsValid);
+form.addEventListener('input', handleFieldValidationLogic);

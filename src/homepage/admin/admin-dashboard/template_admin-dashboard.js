@@ -10,125 +10,73 @@ import LoanerManagement from './template_admin-loaner-management';
 
 import indexDB from '../../module/indexDB/indexDB';
 
-import {
-  checkIfAdminLoanDataExist,
-  useDefaultAdminLoanData,
-} from './template_admin-dashboard-loan-data-value';
-
-import {
-  adminLoginAndSignupSection,
-  adminProfileSection,
-} from './template_admin-dashboard-created-element';
+// import {
+//   checkIfAdminLoanDataExist,
+//   useDefaultAdminLoanData,
+// } from './template_admin-dashboard-loan-data-value';
 
 import Modal from '../../module/modal/modal';
+import registerLocalStorageCustomMethod from '../../module/localStorage/localStorage';
 
 const headerBottomSection = document.querySelector('.header_bottom-section');
 const contentSection = document.querySelector('.content-section');
-const navigationSection = document.querySelector('.navigation-section');
+const btnLogout = document.querySelector('.logout-button');
 const dialog = document.querySelector('dialog');
 const btnYes = dialog.querySelector('.btn-yes');
-const adminGreeting = document.querySelector('.greeting');
 const LoanerManagementTbody = document.querySelector('tbody');
 
-function selectLogoutButtonInAdminProfileSection() {
-  const btnLogout = adminProfileSection.querySelector('.logout-button');
-  new Modal({ btnShowModal: btnLogout, dialog });
-}
+const html = document.querySelector('html');
 
-function insertAdminProfileSection() {
-  removeNavigationSectionChild('.adminLoginSection');
-  appendNavigationSectionChild(adminProfileSection);
-}
+registerLocalStorageCustomMethod();
 
-function adminIsLogin() {
-  insertAdminProfileSection();
-  getAdminUsernameFromDatabase();
-  checkIfAdminLoanDataExist();
-}
+const logoutAdmin = () => {};
 
-function adminIsNotLogin() {
-  insertAdminLoginAndSignup();
-  setGreetingTextContent('You are not logged in');
-  useDefaultAdminLoanData();
-}
+const errorGettingData = () => {
+  console.log('Error while getting data');
+};
 
-function removeNavigationSectionChild(navigationToSectionRemove) {
-  const section = navigationSection.querySelector(navigationToSectionRemove);
+const insertAdminDataToDashboardPage = () => {
+  alert('Admin data gotten');
+};
 
-  if (!section) return;
-
-  section.remove();
-}
-
-function appendNavigationSectionChild(section) {
-  navigationSection.append(section);
-}
-
-function insertAdminLoginAndSignup() {
-  removeNavigationSectionChild('.adminProfileSection');
-  appendNavigationSectionChild(adminLoginAndSignupSection);
-}
-
-function setGreetingTextContent(greetingTextContent) {
-  adminGreeting.textContent = greetingTextContent;
-}
-
-function returnData(data) {
-  if (data === undefined) {
-    setGreetingTextContent('You do not have a data');
-    return;
-  }
-
-  setGreetingTextContent(data.username);
-}
-
-function getAdminUsernameFromDatabase() {
+const getRecentAdminData = ({ id, returnData }) => {
   indexDB.interact(
     {
-      storeName: 'admin-data',
-      keyPathValue: 'admin',
+      storeName: 'loan-applicant-list',
       getMethod: 'get',
+      keyPathValue: id,
       returnData,
+      undefinedState: errorGettingData,
     },
     'getData',
   );
-}
+};
 
-function logoutAdmin() {
-  indexDB.interact(
-    {
-      storeName: 'admin-data',
-      keyPathValue: 'admin',
-      getMethod: 'get',
-      newValue: { isAdminLogin: false },
-      keys: ['isAdminLogin'],
+const makeAdminDashboardDisplayBlock = () => {
+  html.style.display = 'block';
+};
 
-      trueState: checkIfAdminIsLogin,
-      undefinedState: errorWhileDeletingKey,
-    },
-    'modifyData',
-  );
-}
+const navigateToLoginPage = () => {
+  window.location.href = './admin-login.html';
+};
 
-function errorWhileDeletingKey() {
-  console.log('did not delete nothing');
-}
+const getRecentAdminID = () => {
+  const data = localStorage.getData({ key: 'recent-admin' });
+  return data.id;
+};
 
-checkIfAdminIsLogin();
-selectLogoutButtonInAdminProfileSection();
+checkIfAdminRecentlyLogin();
 
-function checkIfAdminIsLogin() {
-  indexDB.interact(
-    {
-      storeName: 'admin-data',
-      keyPathValue: 'admin',
-      getMethod: 'get',
-      key: 'isAdminLogin',
-      trueState: adminIsLogin,
-      undefinedState: adminIsNotLogin,
-    },
-    'checkStateOfData',
-  );
+function checkIfAdminRecentlyLogin() {
+  const id = getRecentAdminID();
+
+  if (!id) {
+    navigateToLoginPage();
+    return;
+  }
+
+  makeAdminDashboardDisplayBlock();
+  getRecentAdminData({ id, returnData: insertAdminDataToDashboardPage });
 }
 
 btnYes.addEventListener('click', logoutAdmin);
@@ -136,3 +84,4 @@ btnYes.addEventListener('click', logoutAdmin);
 new Navigation({ btnSection: headerBottomSection, contentSection, activeIndex: 0 });
 
 new LoanerManagement({ tbody: LoanerManagementTbody });
+new Modal({ btnShowModal: btnLogout, dialog });

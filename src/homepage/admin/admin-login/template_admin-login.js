@@ -20,92 +20,64 @@ const btnLogin = form.querySelector('.btn-login');
 const dialog = document.querySelector('dialog');
 const loginStatus = dialog.querySelector('.login-status');
 
-form.addEventListener('input', handleFieldValidationLogic);
-btnLogin.addEventListener('click', checkIfAllFieldFillIsValid);
-window.addEventListener('pageshow', resetForm);
+const modal = new Modal({ dialog });
 
-function resetForm() {
-  form.reset();
-}
-
-function checkIfAllFieldFillIsValid() {
-  new FieldValidationUtility({
-    messages,
-    inputs,
-    runWhenAllFieldFillIsValid: checkIfLoginDetailsMatch,
-  });
-}
-
-function checkIfLoginDetailsMatch() {
-  indexDB.interact(
-    {
-      storeName: 'admin-data',
-      keyPathValue: 'admin',
-      username,
-      password,
-      getMethod: 'getAll',
-      trueState: checkIfAdminIsAlreadyLogin,
-      undefinedState: setIncorrectLoginStatus,
-    },
-    'checkIfLoginDetailsMatch',
-  );
-}
-
-function checkIfAdminIsAlreadyLogin() {
-  indexDB.interact(
-    {
-      storeName: 'admin-data',
-      keyPathValue: 'admin',
-      getMethod: 'get',
-      key: 'isAdminLogin',
-      trueState: setAdminAlreadyLoginStatus,
-      undefinedState: loginAdmin,
-    },
-    'checkStateOfData',
-  );
-}
-
-function loginAdmin() {
-  indexDB.interact(
-    {
-      storeName: 'admin-data',
-      keyPathValue: 'admin',
-      getMethod: 'get',
-      newValue: { isAdminLogin: true },
-      keys: ['isAdminLogin'],
-
-      trueState: navigateToAdminDashboard,
-      undefinedState: failModifyingAdminData,
-    },
-    'modifyData',
-  );
-}
-
-function showLoginStatusModal() {
-  const modal = new Modal({ dialog });
+const showLoginStatusModal = () => {
   modal.showModal();
-}
+};
 
-function setLoginStatusTextContent(textContent) {
-  loginStatus.textContent = textContent;
-  showLoginStatusModal();
-}
+const error = () => {
+  console.log('Error');
+};
 
-function setIncorrectLoginStatus() {
-  setLoginStatusTextContent('Incorrect username or password');
-}
-
-function setAdminAlreadyLoginStatus() {
-  setLoginStatusTextContent('Admin Already Exist');
-}
-
-function navigateToAdminDashboard() {
-  setLoginStatusTextContent('Logging in...');
+const navigateToDashboardPage = () => {
   setTimeout(() => {
     window.location.href = './admin-dashboard.html';
   }, 2000);
-}
+};
 
-function failModifyingAdminData() {
-  console.log('indexedDB was not able to modify isAdminLogin state');
-}
+const setLoginStatusTextContent = (textContent) => {
+  loginStatus.textContent = textContent;
+  showLoginStatusModal();
+};
+
+const setRecentAdminIDInLocalStorage = () => {
+  localStorage.setData({ key: 'recent-admin', data: { id: 1 } });
+};
+
+const processNavigatingToDashboard = () => {
+  setRecentAdminIDInLocalStorage();
+  setLoginStatusTextContent('Logging in...');
+  navigateToDashboardPage();
+};
+
+const checkIfAllFieldFillIsValid = () => {
+  new FieldValidationUtility({
+    messages,
+    inputs,
+    runWhenAllFieldFillIsValid: checkIfLoginDataIsCorrect,
+  });
+};
+
+const checkIfLoginDataIsCorrect = () => {
+  indexDB.interact(
+    {
+      storeName: 'admin',
+      keyPathValue: 1,
+      username,
+      password,
+      getMethod: 'getAll',
+      trueState: processNavigatingToDashboard,
+      undefinedState: error,
+    },
+    'checkIfLoginDetailsMatch',
+  );
+};
+
+const resetForm = () => {
+  form.reset();
+};
+
+form.addEventListener('input', handleFieldValidationLogic);
+btnLogin.addEventListener('click', checkIfAllFieldFillIsValid);
+window.addEventListener('pageshow', resetForm);
