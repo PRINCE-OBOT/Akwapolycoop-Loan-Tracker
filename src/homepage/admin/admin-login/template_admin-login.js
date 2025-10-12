@@ -58,7 +58,6 @@ const checkIfLoginDataIsCorrect = () => {
   indexDB.interact(
     {
       storeName: 'admin',
-      keyPathValue: 1,
       username,
       password,
       getMethod: 'getAll',
@@ -77,17 +76,19 @@ const adminLoginDataStore = () => {
   console.log('Admin data stored');
 };
 
-const storeAdminLoginData = () => {
-  const adminLoginData = {
+const storeAdminSignUpData = () => {
+  const data = {
     id: 1,
-    username: 'admin',
-    password: 123456,
+    signUpData: {
+      username: 'admin',
+      password: '123456',
+    },
   };
 
   indexDB.interact(
     {
       storeName: 'admin',
-      data: adminLoginData,
+      data,
       trueState: adminLoginDataStore,
       undefinedState: error,
     },
@@ -95,17 +96,17 @@ const storeAdminLoginData = () => {
   );
 };
 
-const checkIfAdminLoginDataExist = (data) => {
-  if (!data) storeAdminLoginData();
+const checkIfAdminSignUpDataExist = (data) => {
+  if (!data) storeAdminSignUpData();
 };
 
-(function getAdminLoginDataFromIndexedBD() {
+(function getAdminDataFromIndexedBD() {
   indexDB.interact(
     {
       storeName: 'admin',
       keyPathValue: 1,
       getMethod: 'get',
-      returnData: checkIfAdminLoginDataExist,
+      returnData: checkIfAdminSignUpDataExist,
       undefinedState: error,
     },
     'getData',
