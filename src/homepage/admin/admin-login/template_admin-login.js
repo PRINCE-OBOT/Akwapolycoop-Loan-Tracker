@@ -56,6 +56,10 @@ const setLoginStatusTextContent = (textContent) => {
   showLoginStatusModal();
 };
 
+const displayIncorrectUsernameOrPassword = () => {
+  setLoginStatusTextContent('Incorrect Username or Password');
+};
+
 const processNavigatingToDashboard = () => {
   setLoginStatusTextContent('Logging in...');
   setLoanApplicantIDInLocalStorage();
@@ -70,7 +74,7 @@ const checkIfLoginDataIsCorrect = () => {
       password,
       getMethod: 'getAll',
       trueState: processNavigatingToDashboard,
-      undefinedState: error,
+      undefinedState: displayIncorrectUsernameOrPassword,
     },
     'checkIfLoginDetailsMatch',
   );
