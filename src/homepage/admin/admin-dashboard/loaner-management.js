@@ -1,6 +1,5 @@
 import { compareAsc, parse } from 'date-fns';
 import indexDB from '../../module/indexDB/indexDB';
-import eventBus from '../../module/event-bus/event';
 
 const loanerManagement = (function createLoanerManagementContent() {
   const div = document.createElement('div');
@@ -147,6 +146,7 @@ const getLoanApplicant = () => {
   );
 };
 
-eventBus.addEventListener('get-data-in-indexedDB', getLoanApplicant);
+const loanerManagementGetDataInDBBus = new EventTarget();
+loanerManagementGetDataInDBBus.addEventListener('get-data-in-indexedDB', getLoanApplicant);
 
-export { loanerManagement, getLoanApplicant };
+export { loanerManagement, getLoanApplicant, loanerManagementGetDataInDBBus };

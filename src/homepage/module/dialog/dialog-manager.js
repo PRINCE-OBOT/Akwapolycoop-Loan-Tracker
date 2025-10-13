@@ -1,93 +1,66 @@
-import eventBus from '../event-bus/eventBus';
+// import eventBus from "../event-bus/event";
 
-const createOptionsForm = () => {
-  const formWithOption = document.createElement('form');
-  formWithOption.setAttribute('method', 'dialog');
-  formWithOption.className = 'dialog-logout-section';
+// const createStatusForm = () => {
+//   const formForStatus = document.createElement('form');
+//   const status = document.createElement('h4');
+//   status.className = 'status';
+//   formForStatus.appendChild(status);
+//   return { formForStatus, status };
+// };
 
-  formWithOption.innerHTML = `
-    <h4>Are you sure you want to log out</h4>
-    <button class="btn-cancel">Cancel</button>
-    <button class="btn-yes">Yes</button>
-  `;
+// const DialogManager = () => {
+//   const dialog = document.createElement('dialog');
+//   document.body.append(dialog);
 
-  registerClickEventToBtnYes(formWithOption);
+//   const formWithOptions = createOptionsForm();
+//   const { formForStatus, status } = createStatusForm();
 
-  return formWithOption;
-};
+//   const FormState = {
+//     formWithOptions: () => dialog.append(formWithOptions),
+//     formForStatus: () => dialog.append(formForStatus),
+//     statusText: (detail) => {
+//       status.textContent = detail.text;
+//       FormState.formForStatus();
+//     },
+//   };
 
-const registerClickEventToBtnYes = (formWithOption) => {
-  const logoutEvent = new CustomEvent('logout');
-  const btnYes = formWithOption.querySelector('.btn-yes');
+//   // set content inside the dialog
+//   const bindAddContentToDialogEvent = () =>
+//     eventBus.addEventListener('add-content-to-dialog', appendFormToDialog);
 
-  const dispatchLogoutEvent = () => {
-    eventBus.dispatchEvent(logoutEvent);
-  };
+//   const appendFormToDialog = (e) => {
+//     const detail = e.detail;
 
-  btnYes.addEventListener('click', dispatchLogoutEvent);
-};
+//     dialog.innerHTML = '';
+//     dialog.setAttribute('closedby', detail.closedByValue);
 
-const createStatusForm = () => {
-  const formForStatus = document.createElement('form');
-  const status = document.createElement('h4');
-  status.className = 'status';
-  formForStatus.appendChild(status);
-  return { formForStatus, status };
-};
+//     FormState[detail.formState](detail);
+//   };
 
-const DialogManager = () => {
-  const dialog = document.createElement('dialog');
-  document.body.append(dialog);
+//   // handle dialog display
+//   const bindShowModalEvent = () => eventBus.addEventListener('show-modal', showModal);
 
-  const formWithOptions = createOptionsForm();
-  const { formForStatus, status } = createStatusForm();
+//   const showModal = () => {
+//     dialog.showModal();
+//   };
 
-  const FormState = {
-    formWithOptions: () => dialog.append(formWithOptions),
-    formForStatus: () => dialog.append(formForStatus),
-    statusText: (detail) => {
-      status.textContent = detail.text;
-      FormState.formForStatus();
-    },
-  };
+//   return { bindAddContentToDialogEvent, bindShowModalEvent };
+// };
 
-  // set content inside the dialog
-  const bindAddContentToDialogEvent = () =>
-    eventBus.addEventListener('add-content-to-dialog', appendFormToDialog);
+// const formForStatusEvent = new CustomEvent('add-content-to-dialog', {
+//   detail: {
+//     formState: 'formForStatus',
+//     closedByValue: 'any',
+//   },
+// });
 
-  const appendFormToDialog = (e) => {
-    const detail = e.detail;
+// const formWithOptionsEvent = new CustomEvent('add-content-to-dialog', {
+//   detail: {
+//     formState: 'formWithOptions',
+//     closedByValue: 'closerequest',
+//   },
+// });
 
-    dialog.innerHTML = '';
-    dialog.setAttribute('closedby', detail.closedByValue);
+// const showModalEvent = new CustomEvent('show-modal');
 
-    FormState[detail.formState](detail);
-  };
-
-  // handle dialog display
-  const bindShowModalEvent = () => eventBus.addEventListener('show-modal', showModal);
-
-  const showModal = () => {
-    dialog.showModal();
-  };
-
-  return { bindAddContentToDialogEvent, bindShowModalEvent };
-};
-
-const formForStatusEvent = new CustomEvent('add-content-to-dialog', {
-  detail: {
-    formState: 'formForStatus',
-    closedByValue: 'any',
-  },
-});
-
-const formWithOptionsEvent = new CustomEvent('add-content-to-dialog', {
-  detail: {
-    formState: 'formWithOptions',
-    closedByValue: 'closerequest',
-  },
-});
-
-const showModalEvent = new CustomEvent('show-modal');
-
-export { formForStatusEvent, formWithOptionsEvent, showModalEvent, DialogManager };
+// export { formForStatusEvent, formWithOptionsEvent, showModalEvent, DialogManager };
