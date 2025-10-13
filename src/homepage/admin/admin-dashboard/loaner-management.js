@@ -90,7 +90,43 @@ const getTbody = () => {
 (function addEventToTbody() {
   const tbody = getTbody();
   tbody.addEventListener('click', handleOptionContent);
+  tbody.addEventListener('click', setActiveTrValueToActionManager);
 })();
+
+const getIDFromTr = (tr) => {
+  const id = tr.getAttribute('data-id');
+  return id;
+};
+
+const getLoanIDFromTr = (tr) => {
+  const loanID = tr.getAttribute('data-loan-ID');
+  return loanID;
+};
+
+const getAttributeFromTr = (e) => {
+  const tr = e.target.closest('tr');
+  const id = getIDFromTr(tr);
+  const loanID = getLoanIDFromTr(tr);
+
+  return { id, loanID };
+};
+
+const actionManager = {};
+
+function setActiveTrValueToActionManager(e) {
+  const action = e.target.dataset.action;
+
+  if (!action) return;
+
+  actionManager.action = action;
+
+  const { id, loanID } = getAttributeFromTr(e);
+
+  actionManager.actionID;
+  actionManager.id = id;
+  actionManager.loanID = loanID;
+  console.log(actionManager);
+}
 
 const showApproveOption = () => {
   eventBus.dispatchEvent(dialogEvent.approve);
@@ -146,8 +182,8 @@ function insertTakeLoanDataToTable(takeLoanList) {
        <td>${date}</td>
        <td>${time}</td>
        <td><img src="${eyeViewImg}" alt="eye view"/>View</td>
-       <td><button data-option-key="approveOption" class="btn-approve-loan">Approve</button></td>
-       <td><button data-option-key="declineOption" class="btn-decline-loan">Decline</button></td>
+       <td><button data-option-key="approveOption" data-action="approve" class="btn-approve-loan">Approve</button></td>
+       <td><button data-option-key="declineOption" data-action="decline" class="btn-decline-loan">Decline</button></td>
       `;
     setAttributeToTr({ tr, loanID: data.loanID });
     appendTrToTbody(tr);

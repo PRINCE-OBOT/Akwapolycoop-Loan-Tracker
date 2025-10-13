@@ -21,14 +21,9 @@ const appendFormOptionToDialog = () => {
   dialog.append(formOption);
 };
 
-const setAttributeToDialog = (action) => {
-  dialog.setAttribute('data-action', action);
-};
-
 const setQuestionText = (detail) => {
   question.textContent = `Are you sure you want to ${detail.text}`;
   appendFormOptionToDialog();
-  setAttributeToDialog(detail.action);
 };
 
 const appendFormStatusToDialog = () => {
@@ -67,13 +62,12 @@ const contentEvent = {
         text,
       },
     }),
-  option: ({ text, action = 'logout' }) =>
+  option: ({ text }) =>
     new CustomEvent('dialog-manager', {
       detail: {
         contentKey: 'question',
-        closedByValue: 'any',
+        closedByValue: 'closerequest',
         text,
-        action,
       },
     }),
 };
@@ -83,8 +77,8 @@ const dialogEvent = {
   signUp: contentEvent.status({ text: 'Signing in...', closedByValue: 'closerequest' }),
   fail: contentEvent.status({ text: 'Incorrect Username or Password' }),
   logout: contentEvent.option({ text: 'logout?' }),
-  approve: contentEvent.option({ text: 'approve the loan?', action: 'approve' }),
-  decline: contentEvent.option({ text: 'decline the loan?', action: 'decline' }),
+  approve: contentEvent.option({ text: 'approve the loan?' }),
+  decline: contentEvent.option({ text: 'decline the loan?' }),
 };
 
 eventBus.addEventListener('dialog-manager', DialogManager);
