@@ -43,7 +43,7 @@ const events = {
 const showAdminDashboard = () => {
   eventBus.dispatchEvent(events.adminDashboard);
 };
-// showAdminDashboard();
+
 const getDataInIndexedDB = new CustomEvent('get-data-in-indexedDB');
 
 const showLoanerManagement = () => {

@@ -84,7 +84,6 @@ const appendH4ToForm = (form) => {
 
 const appendBtnYesToForm = (form) => {
   form.append(btnYes);
-  console.log(form);
   return form;
 };
 

@@ -162,7 +162,6 @@ const getRecentLoanApplicantData = ({ id, returnData }) => {
     navigateToLoginPage();
     return;
   }
-
   // `insertLoanApplicantDataToDashboardPage` is the callback function to run when
   // the recentLoanApplicantData is retrieve from indexedDB
   makeBorrowerDashboardDisplayBlock();

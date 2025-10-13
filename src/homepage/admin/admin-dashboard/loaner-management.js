@@ -1,6 +1,8 @@
 import { compareAsc, parse } from 'date-fns';
 import indexDB from '../../module/indexDB/indexDB';
 import eyeViewImg from '../../assets/images/eye-view.svg';
+import dialogEvent from '../../module/dialog/dialog-manager';
+import eventBus from '../../module/event-bus/event';
 
 const loanerManagement = (function createLoanerManagementContent() {
   const div = document.createElement('div');
@@ -85,9 +87,39 @@ const getTbody = () => {
   return tbody;
 };
 
+(function addEventToTbody() {
+  const tbody = getTbody();
+  tbody.addEventListener('click', handleOptionContent);
+})();
+
+const showApproveOption = () => {
+  eventBus.dispatchEvent(dialogEvent.optionApprove);
+};
+
+const showDeclineOption = () => {
+  eventBus.dispatchEvent(dialogEvent.optionDecline);
+};
+
+const OptionHandler = {
+  approveOption: showApproveOption,
+  declineOption: showDeclineOption,
+};
+
+function handleOptionContent(e) {
+  const optionKey = e.target.dataset.optionKey;
+
+  if (!optionKey) return;
+
+  OptionHandler[optionKey]();
+}
+
 const appendTrToTbody = (tr) => {
   const tbody = getTbody();
   tbody.append(tr);
+};
+
+const setAttributeToTr = ({ tr, value }) => {
+  tr.setAttribute('data-loan-id', value);
 };
 
 function insertTakeLoanDataToTable(takeLoanList) {
@@ -106,10 +138,10 @@ function insertTakeLoanDataToTable(takeLoanList) {
        <td>${date}</td>
        <td>${time}</td>
        <td><img src="${eyeViewImg}" alt="eye view"/>View</td>
-       <td><button class="btn-approve-loan">Approve</button></td>
-       <td><button class="btn-decline-loan">Decline</button></td>
+       <td><button data-option-key="approveOption" class="btn-approve-loan">Approve</button></td>
+       <td><button data-option-key="declineOption" class="btn-decline-loan">Decline</button></td>
       `;
-
+    setAttributeToTr({ tr, value: data.loanID });
     appendTrToTbody(tr);
   });
 }
