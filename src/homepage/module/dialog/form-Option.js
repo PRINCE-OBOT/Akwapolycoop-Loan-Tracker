@@ -104,4 +104,4 @@ const processForm = pipe(
 
 const formOption = processForm(document);
 
-export default { formOption, question };
+export { formOption, question };
