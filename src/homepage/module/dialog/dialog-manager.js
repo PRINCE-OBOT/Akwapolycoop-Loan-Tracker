@@ -49,31 +49,29 @@ function DialogManager(e) {
 }
 
 const contentEvent = {
-  status: (text) =>
+  status: ({ text, closedByValue = 'any' }) =>
     new CustomEvent('dialog-manager', {
       detail: {
         contentKey: 'h4Text',
-        closedByValue: 'any',
+        closedByValue,
         text,
+      },
+    }),
+  option: () =>
+    new CustomEvent('dialog-manager', {
+      detail: {
+        contentKey: 'formOption',
+        closedByValue: 'any',
       },
     }),
 };
 
 const dialogEvent = {
-  progress: contentEvent.status('Logging in...'),
-  fail: contentEvent.status('Incorrect Username or Password'),
+  progress: contentEvent.status({ text: 'Logging in...', closedByValue: 'closerequest' }),
+  fail: contentEvent.status({ text: 'Incorrect Username or Password' }),
+  option: contentEvent.option(),
 };
 
 eventBus.addEventListener('dialog-manager', DialogManager);
 
 export default dialogEvent;
-// const formWithOptionsEvent = new CustomEvent('add-content-to-dialog', {
-//   detail: {
-//     formState: 'formWithOptions',
-//     closedByValue: 'closerequest',
-//   },
-// });
-
-// const showModalEvent = new CustomEvent('show-modal');
-
-// export { formForStatusEvent, formWithOptionsEvent, showModalEvent, DialogManager };

@@ -16,25 +16,19 @@ import bindSubmitLoanButton from './take-loan-submission';
 
 import indexDB from '../../module/indexDB/indexDB';
 
-import Modal from '../../module/modal/modal';
 import eventBus from '../../module/event-bus/event';
 import { getRecentLoanApplicant } from './myLoan';
+import dialogEvent from '../../module/dialog/dialog-manager';
 
 const leftSideBar = document.querySelector('.left-side-bar');
 const contentHolder = document.querySelector('.content-holder');
+const logoutButton = document.querySelector('.logout-button');
 
 const html = document.querySelector('html');
-
-const btnLogout = document.querySelector('.logout-button');
-
-const dialog = document.querySelector('dialog');
-const btnYes = dialog.querySelector('.btn-yes');
 
 const loanApplicantForm = document.createElement('li');
 loanApplicantForm.textContent = 'Loan Application Form';
 loanApplicantForm.setAttribute('data-content-key', 'loan-applicant-form');
-
-new Modal({ btnShowModal: btnLogout, dialog });
 
 // Running the following function allow the following action to work:
 // - Use custom method such `getData` and `setData` in localStorage
@@ -176,4 +170,10 @@ const getRecentLoanApplicantData = ({ id, returnData }) => {
 })();
 
 leftSideBar.addEventListener('click', setContentInDashboardHolder);
-btnYes.addEventListener('click', logoutBorrower);
+
+eventBus.addEventListener('logout', logoutBorrower);
+
+const showLogoutOption = () => {
+  eventBus.dispatchEvent(dialogEvent.option);
+};
+logoutButton.addEventListener('click', showLogoutOption);
