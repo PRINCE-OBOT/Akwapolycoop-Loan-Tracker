@@ -15,6 +15,7 @@ import Modal from '../../module/modal/modal';
 import registerLocalStorageCustomMethod from '../../module/localStorage/localStorage';
 import appendContent from '../../module/content-holder/content-holder';
 import eventBus from '../../module/event-bus/event';
+import { getLoanApplicant } from './loaner-management';
 
 const headerBottomSection = document.querySelector('.header_bottom-section');
 const contentHolder = document.querySelector('.content-holder');
@@ -49,9 +50,12 @@ const showAdminDashboard = () => {
   eventBus.dispatchEvent(events.adminDashboard);
 };
 // showAdminDashboard();
+const getDataInIndexedDB = new CustomEvent('get-data-in-indexedDB');
 
 const showLoanerManagement = () => {
   eventBus.dispatchEvent(events.loanerManagement);
+  eventBus.dispatchEvent(getDataInIndexedDB);
+  eventBus.removeEventListener('get-data-in-indexedDB', getLoanApplicant);
 };
 showLoanerManagement();
 

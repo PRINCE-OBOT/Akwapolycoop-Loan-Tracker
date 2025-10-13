@@ -5,8 +5,6 @@ import registerLocalStorageCustomMethod from '../../module/localStorage/localSto
 
 registerLocalStorageCustomMethod();
 
-eventBus.addEventListener('get-data-in-indexedDB', getRecentLoanApplicantListOfTakenLoan);
-
 const myLoan = (function createTableHeading() {
   const table = document.createElement('table');
 
@@ -35,21 +33,6 @@ const myLoan = (function createTableHeading() {
   return table;
 })();
 
-function getRecentLoanApplicantListOfTakenLoan() {
-  const data = localStorage.getData({ key: 'recent-loan-applicant' });
-
-  indexDB.interact(
-    {
-      storeName: 'loan-applicant-list',
-      keyPathValue: data?.id,
-      getMethod: 'get',
-      returnData: insertLoanApplicantDataToTable,
-      undefineState: errorWhileGettingData,
-    },
-    'getData',
-  );
-}
-
 const getDate = (dateAndTime) => {
   const date = dateAndTime.slice(0, dateAndTime.lastIndexOf(','));
   return date;
@@ -65,17 +48,30 @@ const getSerialNumber = (index) => {
   return serialNumber;
 };
 
-function insertLoanApplicantDataToTable(loanApplicantData) {
+const getTbody = () => {
   const tbody = myLoan.querySelector('tbody');
+  return tbody;
+};
 
-  if (!loanApplicantData.takeLoan) {
-    alert('You have not taken a loan');
-    return;
-  }
+const checkIfLoanApplicantDataTakeLoanExist = (loanApplicantData) => {
+  !loanApplicantData.takeLoan
+    ? alert('You have not taken a loan')
+    : insertLoanApplicantDataToTr(loanApplicantData);
+};
 
+const createTableTr = () => {
+  const tr = document.createElement('tr');
+  return tr;
+};
+
+const appendTrToTbody = (tr) => {
+  const tbody = getTbody();
+  tbody.append(tr);
+};
+
+function insertLoanApplicantDataToTr(loanApplicantData) {
   loanApplicantData.takeLoan.forEach((data, index) => {
-    const tr = document.createElement('tr');
-
+    const tr = createTableTr();
     const serialNumber = getSerialNumber(index);
     const date = getDate(data.dateAndTime);
     const time = getTime(data.dateAndTime);
@@ -90,7 +86,7 @@ function insertLoanApplicantDataToTable(loanApplicantData) {
        <td>${time}</td>
       `;
 
-    tbody.append(tr);
+    appendTrToTbody(tr);
   });
 }
 
@@ -98,4 +94,26 @@ function errorWhileGettingData() {
   console.log('Error while getting data');
 }
 
-export { myLoan, getRecentLoanApplicantListOfTakenLoan };
+const getRecentLoanApplicantIDInLocalStorage = () => {
+  const data = localStorage.getData({ key: 'recent-loan-applicant' });
+  return data?.id;
+};
+
+const getRecentLoanApplicant = () => {
+  const id = getRecentLoanApplicantIDInLocalStorage();
+
+  indexDB.interact(
+    {
+      storeName: 'loan-applicant-list',
+      keyPathValue: id,
+      getMethod: 'get',
+      returnData: checkIfLoanApplicantDataTakeLoanExist,
+      undefineState: errorWhileGettingData,
+    },
+    'getData',
+  );
+};
+
+eventBus.addEventListener('get-data-in-indexedDB', getRecentLoanApplicant);
+
+export { myLoan, getRecentLoanApplicant };

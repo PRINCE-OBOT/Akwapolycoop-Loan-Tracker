@@ -18,7 +18,7 @@ import indexDB from '../../module/indexDB/indexDB';
 
 import Modal from '../../module/modal/modal';
 import eventBus from '../../module/event-bus/event';
-import { getRecentLoanApplicantListOfTakenLoan } from './myLoan';
+import { getRecentLoanApplicant } from './myLoan';
 
 const leftSideBar = document.querySelector('.left-side-bar');
 const contentHolder = document.querySelector('.content-holder');
@@ -98,8 +98,6 @@ const events = {
   }),
 };
 
-const insertTakeLoanDataToMyLoanEvent = new CustomEvent('get-data-in-indexedDB');
-
 const showLoanApplicantForm = () => {
   eventBus.dispatchEvent(events.loanApplicantForm);
 };
@@ -109,10 +107,12 @@ const showTakeLoan = () => {
   getRecentLoanApplicantData({ id, returnData: checkIfLoanApplicantFormDataExist });
 };
 
+const getDataInIndexedDB = new CustomEvent('get-data-in-indexedDB');
+
 const showMyLoan = () => {
   eventBus.dispatchEvent(events.myLoan);
-  eventBus.dispatchEvent(insertTakeLoanDataToMyLoanEvent);
-  eventBus.removeEventListener('get-data-in-indexedDB', getRecentLoanApplicantListOfTakenLoan);
+  eventBus.dispatchEvent(getDataInIndexedDB);
+  eventBus.removeEventListener('get-data-in-indexedDB', getRecentLoanApplicant);
 };
 
 const contentHandler = {

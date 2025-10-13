@@ -1,5 +1,6 @@
 import { compareAsc, parse } from 'date-fns';
 import indexDB from '../../module/indexDB/indexDB';
+import eventBus from '../../module/event-bus/event';
 
 const loanerManagement = (function createLoanerManagementContent() {
   const div = document.createElement('div');
@@ -74,12 +75,24 @@ const getSerialNumber = (index) => {
   return serialNumber;
 };
 
-function insertTakeLoanDataToTable(takeLoanList) {
+const createTableTr = () => {
+  const tr = document.createElement('tr');
+  return tr;
+};
+
+const getTbody = () => {
   const tbody = loanerManagement.querySelector('tbody');
+  return tbody;
+};
 
+const appendTrToTbody = (tr) => {
+  const tbody = getTbody();
+  tbody.append(tr);
+};
+
+function insertTakeLoanDataToTable(takeLoanList) {
   takeLoanList.forEach((data, index) => {
-    const tr = document.createElement('tr');
-
+    const tr = createTableTr();
     const serialNumber = getSerialNumber(index);
     const date = getDate(data.dateAndTime);
     const time = getTime(data.dateAndTime);
@@ -95,7 +108,7 @@ function insertTakeLoanDataToTable(takeLoanList) {
        <td>@</td>
       `;
 
-    tbody.append(tr);
+    appendTrToTbody(tr);
   });
 }
 
@@ -133,6 +146,7 @@ const getLoanApplicant = () => {
     'getData',
   );
 };
-getLoanApplicant();
+
+eventBus.addEventListener('get-data-in-indexedDB', getLoanApplicant);
 
 export { loanerManagement, getLoanApplicant };
