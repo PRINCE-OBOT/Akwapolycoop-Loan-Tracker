@@ -66,7 +66,8 @@ const contentEvent = {
 };
 
 const dialogEvent = {
-  progress: contentEvent.status({ text: 'Logging in...', closedByValue: 'closerequest' }),
+  progressLogin: contentEvent.status({ text: 'Logging in...', closedByValue: 'closerequest' }),
+  progressSignUp: contentEvent.status({ text: 'Signing in...', closedByValue: 'closerequest' }),
   fail: contentEvent.status({ text: 'Incorrect Username or Password' }),
   option: contentEvent.option(),
 };

@@ -1,5 +1,6 @@
 import { compareAsc, parse } from 'date-fns';
 import indexDB from '../../module/indexDB/indexDB';
+import eyeViewImg from '../../assets/images/eye-view.svg';
 
 const loanerManagement = (function createLoanerManagementContent() {
   const div = document.createElement('div');
@@ -41,7 +42,7 @@ const loanerManagement = (function createLoanerManagementContent() {
                     <th>Status</th>
                     <th>Date</th>
                     <th>Time</th>
-                    <th>Actions</th>
+                    <th colspan="3">Actions</th>
                   </tr>
                 </thead>
 
@@ -104,7 +105,9 @@ function insertTakeLoanDataToTable(takeLoanList) {
        <td>${data.status}</td>
        <td>${date}</td>
        <td>${time}</td>
-       <td>@</td>
+       <td><img src="${eyeViewImg}" alt="eye view"/>View</td>
+       <td><button class="btn-approve-loan">Approve</button></td>
+       <td><button class="btn-decline-loan">Decline</button></td>
       `;
 
     appendTrToTbody(tr);

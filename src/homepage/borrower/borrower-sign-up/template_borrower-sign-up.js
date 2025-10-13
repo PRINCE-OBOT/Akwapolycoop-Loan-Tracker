@@ -12,7 +12,8 @@ import handleFieldValidationLogic from '../../module/form-validation/field-valid
 
 import indexDB from '../../module/indexDB/indexDB';
 
-import Modal from '../../module/modal/modal';
+import dialogEvent from '../../module/dialog/dialog-manager';
+import eventBus from '../../module/event-bus/event';
 
 const form = document.querySelector('.borrower-sign-up-form');
 const messages = form.querySelectorAll('output.show-message');
@@ -25,9 +26,6 @@ const passwordMessage = form.querySelector('#password-message');
 const confirmPassword = form.querySelector('#confirm-password');
 const confirmPasswordMessage = form.querySelector('#confirm-password-message');
 const btnSignUp = form.querySelector('.btn-sign-up');
-
-const dialog = document.querySelector('dialog');
-const displaySignUpStatus = dialog.querySelector('.display_borrower-sign-up-status');
 
 registerLocalStorageCustomMethod();
 
@@ -45,20 +43,14 @@ function storeLoanApplicantIDInLocalStorage(id) {
   processNavigatingToDashboard();
 }
 
-const modal = new Modal({ dialog });
-const displaySignUpStatusModal = () => {
-  modal.showModal();
-};
-
 function navigateToDashboardPage() {
   setTimeout(() => {
     window.location.href = './borrower-dashboard.html';
   }, 2000);
 }
 
-const setBorrowerSignUpStatus = (textContent) => {
-  displaySignUpStatus.textContent = textContent;
-  displaySignUpStatusModal();
+const setBorrowerSignUpStatus = () => {
+  eventBus.dispatchEvent(dialogEvent.progressSignUp);
 };
 
 const loanApplicantDataNotStore = () => {
