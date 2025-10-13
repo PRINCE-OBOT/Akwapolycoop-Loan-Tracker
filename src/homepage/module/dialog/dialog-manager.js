@@ -32,7 +32,6 @@ const setH4Text = (detail) => {
 
 const dialogContentHandler = {
   formOption: appendFormOption,
-  formStatus: appendFormStatus,
   h4Text: setH4Text,
 };
 

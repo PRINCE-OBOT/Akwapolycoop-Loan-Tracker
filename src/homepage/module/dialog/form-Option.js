@@ -35,7 +35,7 @@ const processForm = pipe(
 const formOption = processForm(document);
 
 // process btnYes for logout
-const selectBtnYesFromProcessForm = (form) => {
+const selectBtnYesFromFormOption = (form) => {
   const btnYes = form.querySelector('.btn-yes');
   return btnYes;
 };
@@ -44,12 +44,13 @@ const addEventToBtnYes = (btnYes) => {
   btnYes.addEventListener('click', dispatchLogoutEvent);
 };
 
+const logoutEvent = new CustomEvent('logout');
+
 function dispatchLogoutEvent() {
-  const logoutEvent = new CustomEvent('logout');
   eventBus.dispatchEvent(logoutEvent);
 }
 
-const processBtnYes = pipe(selectBtnYesFromProcessForm, addEventToBtnYes);
+const processBtnYes = pipe(selectBtnYesFromFormOption, addEventToBtnYes);
 
 processBtnYes(formOption);
 
