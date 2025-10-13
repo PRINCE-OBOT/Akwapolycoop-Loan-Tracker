@@ -118,8 +118,16 @@ const appendTrToTbody = (tr) => {
   tbody.append(tr);
 };
 
-const setAttributeToTr = ({ tr, value }) => {
-  tr.setAttribute('data-loan-id', value);
+const extractIdFromLoanID = (loanID) => {
+  const id = loanID.slice(loanID.indexOf('N') + 1, loanID.indexOf('-'));
+  return id;
+};
+
+const setAttributeToTr = ({ tr, loanID }) => {
+  const id = extractIdFromLoanID(loanID);
+
+  tr.setAttribute('data-loan-id', loanID);
+  tr.setAttribute('data-id', id);
 };
 
 function insertTakeLoanDataToTable(takeLoanList) {
@@ -141,7 +149,7 @@ function insertTakeLoanDataToTable(takeLoanList) {
        <td><button data-option-key="approveOption" class="btn-approve-loan">Approve</button></td>
        <td><button data-option-key="declineOption" class="btn-decline-loan">Decline</button></td>
       `;
-    setAttributeToTr({ tr, value: data.loanID });
+    setAttributeToTr({ tr, loanID: data.loanID });
     appendTrToTbody(tr);
   });
 }
