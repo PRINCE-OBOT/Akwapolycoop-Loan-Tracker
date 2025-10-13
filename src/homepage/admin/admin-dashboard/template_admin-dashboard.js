@@ -6,11 +6,6 @@ import '../../assets/style-border-button.css';
 
 import indexDB from '../../module/indexDB/indexDB';
 
-// import {
-//   checkIfAdminLoanDataExist,
-//   useDefaultAdminLoanData,
-// } from './template_admin-dashboard-loan-data-value';
-
 import Modal from '../../module/modal/modal';
 import registerLocalStorageCustomMethod from '../../module/localStorage/localStorage';
 import appendContent from '../../module/content-holder/content-holder';
@@ -22,7 +17,6 @@ const contentHolder = document.querySelector('.content-holder');
 const btnLogout = document.querySelector('.logout-button');
 const dialog = document.querySelector('dialog');
 const btnYes = dialog.querySelector('.btn-yes');
-// const LoanerManagementTbody = document.querySelector('tbody');
 
 const html = document.querySelector('html');
 
@@ -123,5 +117,4 @@ const getRecentAdminID = () => {
 btnYes.addEventListener('click', logoutAdmin);
 headerBottomSection.addEventListener('click', setContentInDashboardHolder);
 
-// new LoanerManagement({ tbody: LoanerManagementTbody });
 new Modal({ btnShowModal: btnLogout, dialog });

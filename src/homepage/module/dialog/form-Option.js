@@ -52,5 +52,5 @@ function dispatchLogoutEvent() {
 const processBtnYes = pipe(selectBtnYesFromProcessForm, addEventToBtnYes);
 
 processBtnYes(formOption);
-
+console.log(window);
 export default formOption;

@@ -1,50 +1,54 @@
-// import eventBus from "../event-bus/event";
+import pipe from '../composition/pipe';
+import eventBus from '../event-bus/event';
+import formOption from './form-Option';
+import { formStatus, h4 } from './form-Status';
 
-// const DialogManager = () => {
-//   const dialog = document.createElement('dialog');
-//   document.body.append(dialog);
+const createDialogElement = (document) => {
+  const dialog = document.createElement('dialog');
+  return dialog;
+};
 
-//   const formWithOptions = createOptionsForm();
-//   const { formForStatus, status } = createStatusForm();
+const appendDialogToBody = (dialog) => {
+  document.body.append(dialog);
+  return dialog;
+};
 
-//   const FormState = {
-//     formWithOptions: () => dialog.append(formWithOptions),
-//     formForStatus: () => dialog.append(formForStatus),
-//     statusText: (detail) => {
-//       status.textContent = detail.text;
-//       FormState.formForStatus();
-//     },
-//   };
+const processDialog = pipe(createDialogElement, appendDialogToBody);
 
-//   // set content inside the dialog
-//   const bindAddContentToDialogEvent = () =>
-//     eventBus.addEventListener('add-content-to-dialog', appendFormToDialog);
+const dialog = processDialog(document);
 
-//   const appendFormToDialog = (e) => {
-//     const detail = e.detail;
+const appendFormOption = () => {
+  dialog.append(formOption);
+};
 
-//     dialog.innerHTML = '';
-//     dialog.setAttribute('closedby', detail.closedByValue);
+const appendFormStatus = () => {
+  dialog.append(formStatus);
+};
 
-//     FormState[detail.formState](detail);
-//   };
+const setH4Text = (detail) => {
+  h4.textContent = detail.text;
+  appendFormStatus();
+};
 
-//   // handle dialog display
-//   const bindShowModalEvent = () => eventBus.addEventListener('show-modal', showModal);
+const dialogContentHandler = {
+  formOption: appendFormOption,
+  formStatus: appendFormStatus,
+  h4Text: setH4Text,
+};
 
-//   const showModal = () => {
-//     dialog.showModal();
-//   };
+function DialogManager(e) {
+  const detail = e.detail;
 
-//   return { bindAddContentToDialogEvent, bindShowModalEvent };
-// };
+  dialog.innerHTML = '';
 
-// const formForStatusEvent = new CustomEvent('add-content-to-dialog', {
-//   detail: {
-//     formState: 'formForStatus',
-//     closedByValue: 'any',
-//   },
-// });
+  dialog.setAttribute('closedby', detail.closedByValue);
+
+  dialogContentHandler[detail.dialogContentHandlerKey](detail);
+
+  dialog.showModal();
+}
+
+eventBus.addEventListener('add-content-to-dialog', DialogManager);
 
 // const formWithOptionsEvent = new CustomEvent('add-content-to-dialog', {
 //   detail: {

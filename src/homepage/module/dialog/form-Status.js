@@ -11,20 +11,26 @@ const createH4Element = (document) => {
 };
 
 const addClassToH4Element = (h4) => {
-  h4.classList.add('');
+  h4.classList.add('status');
   return h4;
 };
-
-const h4 = processH4(document);
 
 const appendH4ElementToForm = (form) => {
   form.appendChild(h4);
   return form;
 };
-const processH4 = pipe(createH4Element, addClassToH4Element);
 
+const processH4 = pipe(createH4Element, addClassToH4Element);
 const processForm = pipe(createFormElement, appendH4ElementToForm);
 
+const h4 = processH4(document);
 const formStatus = processForm(document);
+
+// const formForStatusEvent = new CustomEvent('add-content-to-dialog', {
+//   detail: {
+//     formState: 'formForStatus',
+//     closedByValue: 'any',
+//   },
+// });
 
 export { formStatus, h4 };
