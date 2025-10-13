@@ -9,7 +9,8 @@ import handleFieldValidationLogic from '../../module/form-validation/field-valid
 import FieldValidationUtility from '../../module/form-validation/field-utility';
 
 import indexDB from '../../module/indexDB/indexDB';
-import Modal from '../../module/modal/modal';
+import eventBus from '../../module/event-bus/event';
+import dialogEvent from '../../module/dialog/dialog-manager';
 
 const form = document.querySelector('.borrower-login-form');
 const username = form.querySelector('#username');
@@ -18,21 +19,7 @@ const inputs = form.querySelectorAll('input');
 const messages = form.querySelectorAll('output.show-message');
 const btnLogin = form.querySelector('.btn-login');
 
-const dialog = document.querySelector('dialog');
-const loginStatus = dialog.querySelector('.login-status');
-
-const modal = new Modal({ dialog });
-
 registerLocalStorageCustomMethod();
-
-const showLoginStatusModal = () => {
-  modal.showModal();
-};
-
-const setLoginStatusTextContent = (textContent) => {
-  loginStatus.textContent = textContent;
-  showLoginStatusModal();
-};
 
 const navigateToDashboardPage = () => {
   setTimeout(() => {
@@ -45,12 +32,12 @@ const setLoanApplicantIDInLocalStorage = (id) => {
 };
 
 const displayIncorrectUsernameOrPassword = () => {
-  setLoginStatusTextContent('Incorrect Username or Password');
+  eventBus.dispatchEvent(dialogEvent.fail);
 };
 
 const processNavigatingToDashboard = (id) => {
   setLoanApplicantIDInLocalStorage(id);
-  setLoginStatusTextContent('Logging in...');
+  eventBus.dispatchEvent(dialogEvent.progress);
   navigateToDashboardPage();
 };
 

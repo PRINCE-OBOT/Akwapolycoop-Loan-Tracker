@@ -26,11 +26,4 @@ const processForm = pipe(createFormElement, appendH4ElementToForm);
 const h4 = processH4(document);
 const formStatus = processForm(document);
 
-// const formForStatusEvent = new CustomEvent('add-content-to-dialog', {
-//   detail: {
-//     formState: 'formForStatus',
-//     closedByValue: 'any',
-//   },
-// });
-
 export { formStatus, h4 };
