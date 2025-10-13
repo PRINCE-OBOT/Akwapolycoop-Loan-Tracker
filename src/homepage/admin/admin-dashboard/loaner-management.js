@@ -93,11 +93,11 @@ const getTbody = () => {
 })();
 
 const showApproveOption = () => {
-  eventBus.dispatchEvent(dialogEvent.optionApprove);
+  eventBus.dispatchEvent(dialogEvent.approve);
 };
 
 const showDeclineOption = () => {
-  eventBus.dispatchEvent(dialogEvent.optionDecline);
+  eventBus.dispatchEvent(dialogEvent.decline);
 };
 
 const OptionHandler = {

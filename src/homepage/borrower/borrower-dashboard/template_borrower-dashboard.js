@@ -173,6 +173,6 @@ leftSideBar.addEventListener('click', setContentInDashboardHolder);
 eventBus.addEventListener('logout', logoutBorrower);
 
 const showLogoutOption = () => {
-  eventBus.dispatchEvent(dialogEvent.optionLogout);
+  eventBus.dispatchEvent(dialogEvent.logout);
 };
 logoutButton.addEventListener('click', showLogoutOption);

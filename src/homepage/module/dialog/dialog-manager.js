@@ -17,27 +17,27 @@ const processDialog = pipe(createDialogElement, appendDialogToBody);
 
 const dialog = processDialog(document);
 
-const appendFormOption = () => {
+const appendFormOptionToDialog = () => {
   dialog.append(formOption);
 };
 
 const setQuestionText = (detail) => {
   question.textContent = `Are you sure you want to ${detail.text}`;
-  appendFormOption();
+  appendFormOptionToDialog();
 };
 
-const appendFormStatus = () => {
+const appendFormStatusToDialog = () => {
   dialog.append(formStatus);
 };
 
-const setStatus = (detail) => {
+const setStatusText = (detail) => {
   h4.textContent = detail.text;
-  appendFormStatus();
+  appendFormStatusToDialog();
 };
 
 const dialogContentHandler = {
   question: setQuestionText,
-  status: setStatus,
+  status: setStatusText,
 };
 
 function DialogManager(e) {
@@ -49,6 +49,7 @@ function DialogManager(e) {
 
   dialogContentHandler[detail.contentKey](detail);
 
+  // window.scrollTo({ top: 0 , behavior: 'smooth' });
   dialog.showModal();
 }
 
@@ -72,12 +73,12 @@ const contentEvent = {
 };
 
 const dialogEvent = {
-  progressLogin: contentEvent.status({ text: 'Logging in...', closedByValue: 'closerequest' }),
-  progressSignUp: contentEvent.status({ text: 'Signing in...', closedByValue: 'closerequest' }),
+  login: contentEvent.status({ text: 'Logging in...', closedByValue: 'closerequest' }),
+  signUp: contentEvent.status({ text: 'Signing in...', closedByValue: 'closerequest' }),
   fail: contentEvent.status({ text: 'Incorrect Username or Password' }),
-  optionLogout: contentEvent.option({ text: 'logout?' }),
-  optionApprove: contentEvent.option({ text: 'approve the loan?' }),
-  optionDecline: contentEvent.option({ text: 'decline the loan?' }),
+  logout: contentEvent.option({ text: 'logout?' }),
+  approve: contentEvent.option({ text: 'approve the loan?' }),
+  decline: contentEvent.option({ text: 'decline the loan?' }),
 };
 
 eventBus.addEventListener('dialog-manager', DialogManager);

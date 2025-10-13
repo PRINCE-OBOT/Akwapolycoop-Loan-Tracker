@@ -50,7 +50,7 @@ function navigateToDashboardPage() {
 }
 
 const setBorrowerSignUpStatus = () => {
-  eventBus.dispatchEvent(dialogEvent.progressSignUp);
+  eventBus.dispatchEvent(dialogEvent.signUp);
 };
 
 const loanApplicantDataNotStore = () => {

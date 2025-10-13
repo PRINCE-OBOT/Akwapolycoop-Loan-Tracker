@@ -37,7 +37,7 @@ const displayIncorrectUsernameOrPassword = () => {
 
 const processNavigatingToDashboard = (id) => {
   setLoanApplicantIDInLocalStorage(id);
-  eventBus.dispatchEvent(dialogEvent.progressLogin);
+  eventBus.dispatchEvent(dialogEvent.login);
   navigateToDashboardPage();
 };
 
