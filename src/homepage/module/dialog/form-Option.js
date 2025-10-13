@@ -1,5 +1,5 @@
-import pipe from '../composition/pipe';
 import eventBus from '../event-bus/event';
+import pipe from '../composition/pipe';
 
 const createFormElement = (document) => {
   const form = document.createElement('form');
@@ -32,7 +32,7 @@ const processForm = pipe(
   addMoreElementToFormElement,
 );
 
-const processedForm = processForm(document);
+const formOption = processForm(document);
 
 // process btnYes for logout
 const selectBtnYesFromProcessForm = (form) => {
@@ -51,6 +51,6 @@ function dispatchLogoutEvent() {
 
 const processBtnYes = pipe(selectBtnYesFromProcessForm, addEventToBtnYes);
 
-processBtnYes(processedForm);
+processBtnYes(formOption);
 
-export default processedForm;
+export default formOption;

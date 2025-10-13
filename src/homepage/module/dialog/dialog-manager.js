@@ -1,13 +1,5 @@
 // import eventBus from "../event-bus/event";
 
-// const createStatusForm = () => {
-//   const formForStatus = document.createElement('form');
-//   const status = document.createElement('h4');
-//   status.className = 'status';
-//   formForStatus.appendChild(status);
-//   return { formForStatus, status };
-// };
-
 // const DialogManager = () => {
 //   const dialog = document.createElement('dialog');
 //   document.body.append(dialog);

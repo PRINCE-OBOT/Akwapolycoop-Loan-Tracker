@@ -16,7 +16,6 @@ import registerLocalStorageCustomMethod from '../../module/localStorage/localSto
 import appendContent from '../../module/content-holder/content-holder';
 import eventBus from '../../module/event-bus/event';
 import { getLoanApplicant, loanerManagementGetDataInDBBus } from './loaner-management';
-import processedForm from '../../module/dialog/formWithOption';
 
 const headerBottomSection = document.querySelector('.header_bottom-section');
 const contentHolder = document.querySelector('.content-holder');
@@ -126,5 +125,3 @@ headerBottomSection.addEventListener('click', setContentInDashboardHolder);
 
 // new LoanerManagement({ tbody: LoanerManagementTbody });
 new Modal({ btnShowModal: btnLogout, dialog });
-
-document.body.append(processedForm);
