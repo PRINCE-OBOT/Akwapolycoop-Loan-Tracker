@@ -1,6 +1,7 @@
+import './loan-applicant-profile.css';
 import pipe from '../../module/composition/pipe';
 import eventBus from '../../module/event-bus/event';
-import './loan-applicant-profile.css';
+import indexDB from '../../module/indexDB/indexDB';
 
 const createDiv = (document) => {
   const div = document.createElement('div');
@@ -202,8 +203,8 @@ const getActionDataFromLocalStorage = () => {
   return data;
 };
 
-const insertLoanApplicantDataToProfile = () => {
-  alert('Inserted');
+const insertLoanApplicantDataToProfile = (data) => {
+  console.log(data);
 };
 
 const errorGettingData = () => {
@@ -213,7 +214,7 @@ const errorGettingData = () => {
 function getLoanApplicantData() {
   const { id } = getActionDataFromLocalStorage();
 
-  indexedDB.interact(
+  indexDB.interact(
     {
       storeName: 'loan-applicant-list',
       getMethod: 'get',

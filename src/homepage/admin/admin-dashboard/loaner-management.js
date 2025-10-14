@@ -176,8 +176,10 @@ function handleActionStorage(e) {
   processActionStoring(e);
 }
 
-const showProfile = () => {
-  eventBus.dispatchEvent(dialogEvent.profile);
+const viewProfileEvent = new CustomEvent('view-profile');
+
+const getLoanApplicantData = () => {
+  eventBus.dispatchEvent(viewProfileEvent);
 };
 
 const showApproveOption = () => {
@@ -191,7 +193,7 @@ const showDeclineOption = () => {
 const OptionHandler = {
   approveOption: showApproveOption,
   declineOption: showDeclineOption,
-  profile: showProfile,
+  profile: getLoanApplicantData,
 };
 
 function handleOptionContent(e) {
