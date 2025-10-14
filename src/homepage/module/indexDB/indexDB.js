@@ -106,9 +106,16 @@ const indexDB = {
         return;
       }
 
-      keys.forEach((key) => {
-        data[key] = newValue[key];
-      });
+      const getMethodAction = {
+        get: () =>
+          keys.forEach((key) => {
+            data[key] = newValue[key];
+          }),
+        getAll: () => '',
+      };
+
+      getMethodAction[getMethod]();
+
       indexDB.storeData({ storeName, data, trueState, undefinedState }, db);
     }
 

@@ -125,7 +125,6 @@ function setActiveTrValueToActionManager(e) {
   actionManager.actionID;
   actionManager.id = id;
   actionManager.loanID = loanID;
-  console.log(actionManager);
 }
 
 const showApproveOption = () => {
@@ -182,8 +181,8 @@ function insertTakeLoanDataToTable(takeLoanList) {
        <td>${date}</td>
        <td>${time}</td>
        <td><img src="${eyeViewImg}" alt="eye view"/>View</td>
-       <td><button data-option-key="approveOption" data-action="approve" class="btn-approve-loan">Approve</button></td>
-       <td><button data-option-key="declineOption" data-action="decline" class="btn-decline-loan">Decline</button></td>
+       <td><button data-option-key="approveOption" data-indexdb-key="take-loan" class="btn-approve-loan">Approve</button></td>
+       <td><button data-option-key="declineOption" data-indexdb-key="take-loan" class="btn-decline-loan">Decline</button></td>
       `;
     setAttributeToTr({ tr, loanID: data.loanID });
     appendTrToTbody(tr);
