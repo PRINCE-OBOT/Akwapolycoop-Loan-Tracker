@@ -19,6 +19,7 @@ import indexDB from '../../module/indexDB/indexDB';
 import eventBus from '../../module/event-bus/event';
 import { getRecentLoanApplicant } from './myLoan';
 import dialogEvent from '../../module/dialog/dialog-manager';
+import pipe from '../../module/composition/pipe';
 
 const leftSideBar = document.querySelector('.left-side-bar');
 const contentHolder = document.querySelector('.content-holder');
@@ -172,7 +173,20 @@ leftSideBar.addEventListener('click', setContentInDashboardHolder);
 
 eventBus.addEventListener('logout', logoutBorrower);
 
+const getAction = (obj) => {
+  obj.key = 'action';
+  obj.data = { action: 'logout' };
+  return obj;
+};
+
+const storeActionToLocalStorage = (data) => {
+  localStorage.setData(data);
+};
+
+const processStoring = pipe(getAction, storeActionToLocalStorage);
+
 const showLogoutOption = () => {
+  processStoring({});
   eventBus.dispatchEvent(dialogEvent.logout);
 };
 logoutButton.addEventListener('click', showLogoutOption);

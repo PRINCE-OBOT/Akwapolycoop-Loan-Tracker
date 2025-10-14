@@ -52,7 +52,7 @@ const addTextContentToBtnCancel = (button) => {
 };
 
 const addEventToBtnYes = (button) => {
-  button.addEventListener('click', getActionToPerformFromLocalStorage);
+  button.addEventListener('click', getActionFromLocalStorage);
   return button;
 };
 
@@ -73,15 +73,15 @@ const Actions = {
   modifyData: dispatchModifyIndexdbEvent,
 };
 
-function getActionToPerformFromLocalStorage() {
+// get action like `modifyData` in localStorage
+// if logout - logout user
+// if pending or approve - modify data
+// if view - get loan applicant data and modify data
+function getActionFromLocalStorage() {
   const data = localStorage.getData({ key: 'action' });
 
   Actions[data.action]();
 }
-// get action like modify in localStorage
-// if logout - logout user
-// if pending or approve - modify data
-// if view - get loan applicant data and modify data
 
 const processBtnCancel = pipe(
   createButtonElement,

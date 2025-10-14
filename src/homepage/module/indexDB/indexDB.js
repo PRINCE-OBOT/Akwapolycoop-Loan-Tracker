@@ -97,7 +97,17 @@ const indexDB = {
   },
 
   modifyData(
-    { storeName, keys, keyPathValue, newValue, getMethod, trueState, undefinedState },
+    {
+      storeName,
+      targetKey,
+      changeKey,
+      keyPathValue,
+      newValue,
+      loanID,
+      getMethod,
+      trueState,
+      undefinedState,
+    },
     db,
   ) {
     function returnData(data) {
@@ -106,15 +116,16 @@ const indexDB = {
         return;
       }
 
-      const getMethodAction = {
-        get: () =>
-          keys.forEach((key) => {
-            data[key] = newValue[key];
-          }),
-        getAll: () => '',
-      };
-
-      getMethodAction[getMethod]();
+      if (!targetKey) {
+        changeKey.forEach((key) => {
+          data[key] = newValue[key];
+        });
+      } else {
+        targetKey.forEach((key, index) => {
+          const result = data[key].find((obj) => obj.loanID === loanID);
+          result[changeKey[index]] = newValue[changeKey[index]];
+        });
+      }
 
       indexDB.storeData({ storeName, data, trueState, undefinedState }, db);
     }
