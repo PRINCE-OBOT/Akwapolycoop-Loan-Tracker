@@ -176,6 +176,10 @@ function handleActionStorage(e) {
   processActionStoring(e);
 }
 
+const showProfile = () => {
+  eventBus.dispatchEvent(dialogEvent.profile);
+};
+
 const showApproveOption = () => {
   eventBus.dispatchEvent(dialogEvent.approve);
 };
@@ -187,6 +191,7 @@ const showDeclineOption = () => {
 const OptionHandler = {
   approveOption: showApproveOption,
   declineOption: showDeclineOption,
+  profile: showProfile,
 };
 
 function handleOptionContent(e) {
@@ -229,7 +234,7 @@ function insertTakeLoanDataToTable(takeLoanList) {
        <td>${data.status}</td>
        <td>${date}</td>
        <td>${time}</td>
-       <td data-target-key="loanApplicantForm"><img src="${eyeViewImg}" class="eye-view" alt="eye view"/>View</td>
+       <td data-option-key="profile" data-target-key="loanApplicantForm"><img src="${eyeViewImg}" class="eye-view" alt="eye view"/>View</td>
        <td><button data-option-key="approveOption" data-target-key="takeLoan" data-status="Approve" class="btn-approve-loan">Approve</button></td>
        <td><button data-option-key="declineOption" data-target-key="takeLoan" data-status="Decline" class="btn-decline-loan">Decline</button></td>
       `;
