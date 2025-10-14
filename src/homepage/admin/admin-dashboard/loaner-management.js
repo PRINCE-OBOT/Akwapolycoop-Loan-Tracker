@@ -4,6 +4,9 @@ import eyeViewImg from '../../assets/images/eye-view.svg';
 import dialogEvent from '../../module/dialog/dialog-manager';
 import eventBus from '../../module/event-bus/event';
 import pipe from '../../module/composition/pipe';
+import bindModifyIndexdbEvent from './loaner-management-modify';
+
+bindModifyIndexdbEvent();
 
 const loanerManagement = (function createLoanerManagementContent() {
   const div = document.createElement('div');
@@ -104,9 +107,13 @@ const getLoanIDFromTr = (tr) => {
   return loanID;
 };
 
-const getAttributeFromButton = (e) => {
-  const status = e.target.getAttribute('data-status');
-  return { status };
+const getAttributeFromTarget = (e) => {
+  const target = e.target;
+
+  const status = target.getAttribute('data-status');
+  const targetKey = target.getAttribute('data-target-key');
+
+  return { status, targetKey };
 };
 
 const getAttributeFromTr = (e) => {
@@ -119,12 +126,19 @@ const getAttributeFromTr = (e) => {
 
 const getAction = (e) => {
   const { id, loanID } = getAttributeFromTr(e);
-  const { status } = getAttributeFromButton(e);
+  const { status, targetKey } = getAttributeFromTarget(e);
 
   const obj = {};
 
   obj.key = 'action';
-  obj.data = { action: 'modifyData', id, loanID, status };
+  obj.data = {
+    action: 'modifyData',
+    id,
+    loanID,
+    status,
+    targetKey: [targetKey],
+    changeKey: ['status'],
+  };
 
   return obj;
 };
@@ -197,8 +211,8 @@ function insertTakeLoanDataToTable(takeLoanList) {
        <td>${date}</td>
        <td>${time}</td>
        <td><img src="${eyeViewImg}" alt="eye view"/>View</td>
-       <td><button data-option-key="approveOption" data-target-key="take-loan" data-status="approve" class="btn-approve-loan">Approve</button></td>
-       <td><button data-option-key="declineOption" data-target-key="take-loan" data-status="decline" class="btn-decline-loan">Decline</button></td>
+       <td><button data-option-key="approveOption" data-target-key="takeLoan" data-status="approve" class="btn-approve-loan">Approve</button></td>
+       <td><button data-option-key="declineOption" data-target-key="takeLoan" data-status="decline" class="btn-decline-loan">Decline</button></td>
       `;
     setAttributeToTr({ tr, loanID: data.loanID });
     appendTrToTbody(tr);

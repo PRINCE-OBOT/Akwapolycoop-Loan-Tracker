@@ -17,8 +17,9 @@ const modifyLoanApplicantData = () => {
 
   indexDB.interact(
     {
-      storeName: 'loan-applicant',
-      keyPathValue: id,
+      storeName: 'loan-applicant-list',
+      keyPathValue: +id,
+      getMethod: 'get',
       newValue: { status },
       loanID,
       targetKey,

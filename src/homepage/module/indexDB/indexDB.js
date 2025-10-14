@@ -116,6 +116,7 @@ const indexDB = {
         return;
       }
 
+      console.log(changeKey);
       if (!targetKey) {
         changeKey.forEach((key) => {
           data[key] = newValue[key];
