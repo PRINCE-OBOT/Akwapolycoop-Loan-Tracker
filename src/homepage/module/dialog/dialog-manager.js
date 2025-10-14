@@ -2,6 +2,7 @@ import pipe from '../composition/pipe';
 import eventBus from '../event-bus/event';
 import { formOption, question } from './form-Option';
 import { formStatus, h4 } from './form-Status';
+import loanApplicantProfile from '../../borrower/loan-applicant-profile/loan-applicant-profile';
 
 const createDialogElement = (document) => {
   const dialog = document.createElement('dialog');
@@ -16,6 +17,10 @@ const appendDialogToBody = (dialog) => {
 const processDialog = pipe(createDialogElement, appendDialogToBody);
 
 const dialog = processDialog(document);
+
+const appendLoanApplicantProfileToDialog = () => {
+  dialog.append(loanApplicantProfile);
+};
 
 const appendFormOptionToDialog = () => {
   dialog.append(formOption);
@@ -38,6 +43,7 @@ const setStatusText = (detail) => {
 const dialogContentHandler = {
   question: setQuestionText,
   status: setStatusText,
+  profile: appendLoanApplicantProfileToDialog,
 };
 
 function DialogManager(e) {
@@ -70,16 +76,24 @@ const contentEvent = {
         text,
       },
     }),
+  profile: () =>
+    new CustomEvent('dialog-manager', {
+      detail: {
+        contentKey: 'profile',
+        closedByValue: 'any',
+      },
+    }),
 };
 
 const dialogEvent = {
   login: contentEvent.status({ text: 'Logging in...', closedByValue: 'closerequest' }),
+  fail: contentEvent.status({ text: 'Incorrect Username or Password' }),
   signUp: contentEvent.status({ text: 'Signing in...', closedByValue: 'closerequest' }),
   signUpFail: contentEvent.status({ text: 'Account Already Exist', closedByValue: 'any' }),
-  fail: contentEvent.status({ text: 'Incorrect Username or Password' }),
   logout: contentEvent.option({ text: 'logout?' }),
   approve: contentEvent.option({ text: 'approve the loan?' }),
   decline: contentEvent.option({ text: 'decline the loan?' }),
+  profile: contentEvent.profile(),
 };
 
 eventBus.addEventListener('dialog-manager', DialogManager);

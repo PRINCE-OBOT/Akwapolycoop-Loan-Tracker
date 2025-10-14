@@ -257,4 +257,5 @@ const getLoanApplicant = () => {
 const loanerManagementGetDataInDBBus = new EventTarget();
 loanerManagementGetDataInDBBus.addEventListener('get-data-in-indexedDB', getLoanApplicant);
 
+eventBus.dispatchEvent(dialogEvent.profile);
 export { loanerManagement, getLoanApplicant, loanerManagementGetDataInDBBus };
