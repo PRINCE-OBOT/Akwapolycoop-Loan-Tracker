@@ -10,7 +10,7 @@ import FieldValidationUtility from '../../module/form-validation/field-utility';
 import indexDB from '../../module/indexDB/indexDB';
 import registerLocalStorageCustomMethod from '../../module/localStorage/localStorage';
 import eventBus from '../../module/event-bus/event';
-import dialogEvent from '../../module/dialog/dialog-manager';
+import { dialogEvent } from '../../module/dialog/dialog-manager';
 
 const form = document.querySelector('.admin-login-form');
 const username = form.querySelector('#username');

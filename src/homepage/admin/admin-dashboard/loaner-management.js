@@ -1,7 +1,7 @@
 import { compareAsc, parse } from 'date-fns';
 import indexDB from '../../module/indexDB/indexDB';
 import eyeViewImg from '../../assets/images/eye-view.svg';
-import dialogEvent from '../../module/dialog/dialog-manager';
+import { dialogEvent } from '../../module/dialog/dialog-manager';
 import eventBus from '../../module/event-bus/event';
 import pipe from '../../module/composition/pipe';
 import bindModifyIndexdbEvent from './loaner-management-modify';
@@ -124,20 +124,34 @@ const getAttributeFromTr = (e) => {
   return { id, loanID };
 };
 
-const getAction = (e) => {
+const getViewProfileActionData = (e) => {
+  const { id } = getAttributeFromTr(e);
+
+  const obj = {
+    key: 'action',
+    data: {
+      id,
+      action: 'viewProfile',
+    },
+  };
+
+  return obj;
+};
+
+const getModifyActionData = (e) => {
   const { id, loanID } = getAttributeFromTr(e);
   const { status, targetKey } = getAttributeFromTarget(e);
 
-  const obj = {};
-
-  obj.key = 'action';
-  obj.data = {
-    action: 'modifyData',
-    id,
-    loanID,
-    status,
-    targetKey: [targetKey],
-    changeKey: ['status'],
+  const obj = {
+    key: 'action',
+    data: {
+      action: 'modifyData',
+      id,
+      loanID,
+      status,
+      targetKey: [targetKey],
+      changeKey: ['status'],
+    },
   };
 
   return obj;
@@ -147,14 +161,19 @@ const storeActionToLocalStorage = (obj) => {
   localStorage.setData(obj);
 };
 
+const TargetKeys = {
+  takeLoan: getModifyActionData,
+  loanApplicantForm: getViewProfileActionData,
+};
+
 function handleActionStorage(e) {
-  const targetKey = e.target.dataset.targetKey;
+  const key = e.target.dataset.targetKey;
 
-  if (!targetKey) return;
+  if (!key) return;
 
-  const processStoringAction = pipe(getAction, storeActionToLocalStorage);
+  const processActionStoring = pipe(TargetKeys[key], storeActionToLocalStorage);
 
-  processStoringAction(e);
+  processActionStoring(e);
 }
 
 const showApproveOption = () => {
@@ -210,7 +229,7 @@ function insertTakeLoanDataToTable(takeLoanList) {
        <td>${data.status}</td>
        <td>${date}</td>
        <td>${time}</td>
-       <td><img src="${eyeViewImg}" alt="eye view"/>View</td>
+       <td data-target-key="loanApplicantForm"><img src="${eyeViewImg}" class="eye-view" alt="eye view"/>View</td>
        <td><button data-option-key="approveOption" data-target-key="takeLoan" data-status="Approve" class="btn-approve-loan">Approve</button></td>
        <td><button data-option-key="declineOption" data-target-key="takeLoan" data-status="Decline" class="btn-decline-loan">Decline</button></td>
       `;
@@ -257,5 +276,5 @@ const getLoanApplicant = () => {
 const loanerManagementGetDataInDBBus = new EventTarget();
 loanerManagementGetDataInDBBus.addEventListener('get-data-in-indexedDB', getLoanApplicant);
 
-eventBus.dispatchEvent(dialogEvent.profile);
+// eventBus.dispatchEvent(dialogEvent.profile)
 export { loanerManagement, getLoanApplicant, loanerManagementGetDataInDBBus };

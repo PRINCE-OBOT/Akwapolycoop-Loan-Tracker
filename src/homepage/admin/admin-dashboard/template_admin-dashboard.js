@@ -4,9 +4,10 @@ import '../../assets/font.css';
 import '../../assets/common_general.css';
 import '../../assets/style-border-button.css';
 
+import { appendDialogToBody, dialogEvent } from '../../module/dialog/dialog-manager';
+
 import indexDB from '../../module/indexDB/indexDB';
 
-import Modal from '../../module/modal/modal';
 import registerLocalStorageCustomMethod from '../../module/localStorage/localStorage';
 import appendContent from '../../module/content-holder/content-holder';
 import eventBus from '../../module/event-bus/event';
@@ -15,16 +16,17 @@ import { getLoanApplicant, loanerManagementGetDataInDBBus } from './loaner-manag
 const headerBottomSection = document.querySelector('.header_bottom-section');
 const contentHolder = document.querySelector('.content-holder');
 const btnLogout = document.querySelector('.logout-button');
-const dialog = document.querySelector('dialog');
-const btnYes = dialog.querySelector('.btn-yes');
 
 const html = document.querySelector('html');
 
 registerLocalStorageCustomMethod();
 
+appendDialogToBody.prototype.body = document.body;
+appendDialogToBody();
+
 appendContent.prototype.holder = contentHolder;
 
-const logoutAdmin = () => {};
+// const logoutAdmin = () => {};
 
 const events = {
   adminDashboard: new CustomEvent('custom-change-content', {
@@ -114,7 +116,12 @@ const getRecentAdminID = () => {
   getRecentAdminData({ id, returnData: insertAdminDataToDashboardPage });
 })();
 
-btnYes.addEventListener('click', logoutAdmin);
 headerBottomSection.addEventListener('click', setContentInDashboardHolder);
 
-new Modal({ btnShowModal: btnLogout, dialog });
+const showLogoutOption = () => {
+  eventBus.dispatchEvent(dialogEvent.logout);
+};
+
+btnLogout.addEventListener('dialog-manager', showLogoutOption);
+
+// eventBus.dispatchEvent(dialogEvent.profile)

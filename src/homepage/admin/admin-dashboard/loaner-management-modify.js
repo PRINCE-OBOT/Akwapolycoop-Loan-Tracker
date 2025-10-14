@@ -4,9 +4,11 @@ import indexDB from '../../module/indexDB/indexDB';
 const updated = () => {
   alert('Updated');
 };
+
 const fail = () => {
   alert('fail');
 };
+
 const getActionDataFromLocalStorage = () => {
   const data = localStorage.getData({ key: 'action' });
   return data;

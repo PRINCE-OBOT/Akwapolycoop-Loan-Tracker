@@ -223,6 +223,9 @@ td {
 td {
   color: var(--transparent-black);
 }
+img.eye-view {
+  pointer-events: none;
+}
 .loan-list-section_actions {
   display: flex;
   align-items: center;

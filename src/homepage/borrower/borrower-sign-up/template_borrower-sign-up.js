@@ -12,7 +12,7 @@ import handleFieldValidationLogic from '../../module/form-validation/field-valid
 
 import indexDB from '../../module/indexDB/indexDB';
 
-import dialogEvent from '../../module/dialog/dialog-manager';
+import { dialogEvent } from '../../module/dialog/dialog-manager';
 import eventBus from '../../module/event-bus/event';
 
 const form = document.querySelector('.borrower-sign-up-form');

@@ -10,7 +10,7 @@ import FieldValidationUtility from '../../module/form-validation/field-utility';
 
 import indexDB from '../../module/indexDB/indexDB';
 import eventBus from '../../module/event-bus/event';
-import dialogEvent from '../../module/dialog/dialog-manager';
+import { dialogEvent } from '../../module/dialog/dialog-manager';
 
 const form = document.querySelector('.borrower-login-form');
 const username = form.querySelector('#username');

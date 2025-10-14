@@ -56,21 +56,28 @@ const addEventToBtnYes = (button) => {
   return button;
 };
 
-const modifyIndexdbEvent = new CustomEvent('modify-indexdb');
-
-const dispatchModifyIndexdbEvent = () => {
-  eventBus.dispatchEvent(modifyIndexdbEvent);
+const events = {
+  viewProfile: new CustomEvent('view-profile'),
+  modifyIndexdb: new CustomEvent('modify-indexdb'),
+  logout: new CustomEvent('logout'),
 };
 
-const logoutEvent = new CustomEvent('logout');
+const dispatchViewProfileEvent = () => {
+  eventBus.dispatchEvent(events.viewProfile);
+};
+
+const dispatchModifyDataEvent = () => {
+  eventBus.dispatchEvent(events.modifyIndexdb);
+};
 
 const dispatchLogoutEvent = () => {
-  eventBus.dispatchEvent(logoutEvent);
+  eventBus.dispatchEvent(events.logout);
 };
 
 const Actions = {
   logout: dispatchLogoutEvent,
-  modifyData: dispatchModifyIndexdbEvent,
+  modifyData: dispatchModifyDataEvent,
+  viewProfile: dispatchViewProfileEvent,
 };
 
 // get action like `modifyData` in localStorage

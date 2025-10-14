@@ -1,22 +1,15 @@
-import pipe from '../composition/pipe';
 import eventBus from '../event-bus/event';
 import { formOption, question } from './form-Option';
 import { formStatus, h4 } from './form-Status';
 import loanApplicantProfile from '../../borrower/loan-applicant-profile/loan-applicant-profile';
 
-const createDialogElement = (document) => {
-  const dialog = document.createElement('dialog');
-  return dialog;
-};
+const dialog = (function createDialogElement() {
+  return document.createElement('dialog');
+})();
 
-const appendDialogToBody = (dialog) => {
-  document.body.append(dialog);
-  return dialog;
-};
-
-const processDialog = pipe(createDialogElement, appendDialogToBody);
-
-const dialog = processDialog(document);
+function appendDialogToBody() {
+  appendDialogToBody.prototype.body.append(dialog);
+}
 
 const appendLoanApplicantProfileToDialog = () => {
   dialog.append(loanApplicantProfile);
@@ -98,4 +91,4 @@ const dialogEvent = {
 
 eventBus.addEventListener('dialog-manager', DialogManager);
 
-export default dialogEvent;
+export { appendDialogToBody, dialogEvent };
