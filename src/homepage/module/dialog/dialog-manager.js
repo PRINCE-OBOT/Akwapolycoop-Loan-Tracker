@@ -75,6 +75,7 @@ const contentEvent = {
 const dialogEvent = {
   login: contentEvent.status({ text: 'Logging in...', closedByValue: 'closerequest' }),
   signUp: contentEvent.status({ text: 'Signing in...', closedByValue: 'closerequest' }),
+  signUpFail: contentEvent.status({ text: 'Account Already Exist', closedByValue: 'any' }),
   fail: contentEvent.status({ text: 'Incorrect Username or Password' }),
   logout: contentEvent.option({ text: 'logout?' }),
   approve: contentEvent.option({ text: 'approve the loan?' }),

@@ -211,8 +211,8 @@ function insertTakeLoanDataToTable(takeLoanList) {
        <td>${date}</td>
        <td>${time}</td>
        <td><img src="${eyeViewImg}" alt="eye view"/>View</td>
-       <td><button data-option-key="approveOption" data-target-key="takeLoan" data-status="approve" class="btn-approve-loan">Approve</button></td>
-       <td><button data-option-key="declineOption" data-target-key="takeLoan" data-status="decline" class="btn-decline-loan">Decline</button></td>
+       <td><button data-option-key="approveOption" data-target-key="takeLoan" data-status="Approve" class="btn-approve-loan">Approve</button></td>
+       <td><button data-option-key="declineOption" data-target-key="takeLoan" data-status="Decline" class="btn-decline-loan">Decline</button></td>
       `;
     setAttributeToTr({ tr, loanID: data.loanID });
     appendTrToTbody(tr);

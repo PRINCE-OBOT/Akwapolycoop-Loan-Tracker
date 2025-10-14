@@ -98,7 +98,7 @@ const storeDataToLoanApplicantList = () => {
 };
 
 const accountAlreadyExist = () => {
-  setBorrowerSignUpStatus('Account already exist');
+  eventBus.dispatchEvent(dialogEvent.signUpFail);
 };
 
 const checkIfUserExistInLoanApplicantList = () => {
