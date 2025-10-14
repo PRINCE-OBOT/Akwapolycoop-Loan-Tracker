@@ -18,7 +18,7 @@ import indexDB from '../../module/indexDB/indexDB';
 
 import eventBus from '../../module/event-bus/event';
 import { getRecentLoanApplicant } from './myLoan';
-import { dialogEvent } from '../../module/dialog/dialog-manager';
+import { appendDialogToBody, dialogEvent } from '../../module/dialog/dialog-manager';
 import pipe from '../../module/composition/pipe';
 
 const leftSideBar = document.querySelector('.left-side-bar');
@@ -41,6 +41,8 @@ bindSubmitLoanButton();
 // - Check whether all field to be submitted is valid
 bindAllFieldValidEvent();
 
+appendDialogToBody.prototype.body = document.body;
+appendDialogToBody();
 appendContent.prototype.holder = contentHolder;
 
 const dispatchTakeLoanEvent = () => {
