@@ -3,6 +3,7 @@ import indexDB from '../../module/indexDB/indexDB';
 import eyeViewImg from '../../assets/images/eye-view.svg';
 import dialogEvent from '../../module/dialog/dialog-manager';
 import eventBus from '../../module/event-bus/event';
+import pipe from '../../module/composition/pipe';
 
 const loanerManagement = (function createLoanerManagementContent() {
   const div = document.createElement('div');
@@ -90,36 +91,56 @@ const getTbody = () => {
 (function addEventToTbody() {
   const tbody = getTbody();
   tbody.addEventListener('click', handleOptionContent);
-  tbody.addEventListener('click', storeActionToLocalStorage);
+  tbody.addEventListener('click', handleActionStorage);
 })();
 
-// const getIDFromTr = (tr) => {
-//   const id = tr.getAttribute('data-id');
-//   return id;
-// };
+const getIDFromTr = (tr) => {
+  const id = tr.getAttribute('data-id');
+  return id;
+};
 
-// const getLoanIDFromTr = (tr) => {
-//   const loanID = tr.getAttribute('data-loan-ID');
-//   return loanID;
-// };
+const getLoanIDFromTr = (tr) => {
+  const loanID = tr.getAttribute('data-loan-ID');
+  return loanID;
+};
 
-// const getAttributeFromTr = (e) => {
-//   const tr = e.target.closest('tr');
-//   const id = getIDFromTr(tr);
-//   const loanID = getLoanIDFromTr(tr);
+const getAttributeFromButton = (e) => {
+  const status = e.target.getAttribute('data-status');
+  return { status };
+};
 
-//   return { id, loanID };
-// };
+const getAttributeFromTr = (e) => {
+  const tr = e.target.closest('tr');
+  const id = getIDFromTr(tr);
+  const loanID = getLoanIDFromTr(tr);
 
-function storeActionToLocalStorage() {
-  // const data = {}
-  // localStorage.setData({key: 'action', data});
-  // if (!action) return;
-  // actionManager.action = action;
-  // const { id, loanID } = getAttributeFromTr(e);
-  // actionManager.actionID;
-  // actionManager.id = id;
-  // actionManager.loanID = loanID;
+  return { id, loanID };
+};
+
+const getAction = (e) => {
+  const { id, loanID } = getAttributeFromTr(e);
+  const { status } = getAttributeFromButton(e);
+
+  const obj = {};
+
+  obj.key = 'action';
+  obj.data = { action: 'modifyData', id, loanID, status };
+
+  return obj;
+};
+
+const storeActionToLocalStorage = (obj) => {
+  localStorage.setData(obj);
+};
+
+function handleActionStorage(e) {
+  const targetKey = e.target.dataset.targetKey;
+
+  if (!targetKey) return;
+
+  const processStoringAction = pipe(getAction, storeActionToLocalStorage);
+
+  processStoringAction(e);
 }
 
 const showApproveOption = () => {
@@ -176,8 +197,8 @@ function insertTakeLoanDataToTable(takeLoanList) {
        <td>${date}</td>
        <td>${time}</td>
        <td><img src="${eyeViewImg}" alt="eye view"/>View</td>
-       <td><button data-option-key="approveOption" data-indexdb-key="take-loan" data-status="approve" class="btn-approve-loan">Approve</button></td>
-       <td><button data-option-key="declineOption" data-indexdb-key="take-loan" data-status="decline" class="btn-decline-loan">Decline</button></td>
+       <td><button data-option-key="approveOption" data-target-key="take-loan" data-status="approve" class="btn-approve-loan">Approve</button></td>
+       <td><button data-option-key="declineOption" data-target-key="take-loan" data-status="decline" class="btn-decline-loan">Decline</button></td>
       `;
     setAttributeToTr({ tr, loanID: data.loanID });
     appendTrToTbody(tr);
