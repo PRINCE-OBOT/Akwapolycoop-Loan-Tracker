@@ -23,5 +23,6 @@ module.exports = {
     "func-names": "off",
     "no-proto": "off",
     ". eslint": "off",
+    "import/no-cycle": "off"
   },
 };

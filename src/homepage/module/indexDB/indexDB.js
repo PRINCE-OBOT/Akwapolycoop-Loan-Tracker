@@ -193,7 +193,9 @@ function modifyDataHandler({ data, firstKey, secondKey, loanID, newValue }) {
     },
 
     Object: () => {
-      data[firstKey][secondKey] = newValue[secondKey];
+      firstKey.forEach((key, index) => {
+        data[key][secondKey[index]] = newValue[index][secondKey[index]];
+      });
     },
 
     Array: () => {
@@ -203,7 +205,8 @@ function modifyDataHandler({ data, firstKey, secondKey, loanID, newValue }) {
       });
     },
   };
-  const firstKeyType = Object.prototype.toString.call(data[firstKey]).slice(8, -1);
+
+  const firstKeyType = Object.prototype.toString.call(data[firstKey[0]]).slice(8, -1);
 
   DBKeyHandler[firstKeyType]();
 }

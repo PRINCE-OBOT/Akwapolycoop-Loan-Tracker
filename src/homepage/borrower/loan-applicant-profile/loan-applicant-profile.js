@@ -2,7 +2,7 @@ import './loan-applicant-profile.css';
 import pipe from '../../module/composition/pipe';
 import eventBus from '../../module/event-bus/event';
 import indexDB from '../../module/indexDB/indexDB';
-// import { dialogEvent } from '../../module/dialog/dialog-manager';
+import { dialogEvent } from '../../module/dialog/dialog-manager';
 // import { dialogEvent } from '../../module/dialog/dialog-manager';
 
 const createDiv = (document) => {
@@ -176,10 +176,17 @@ const addTextContentToDiv = (div) => {
     
     <!-- Footer -->
     <div class="footer">
+        
         <div>
-            <h4>Status</h4><span class="status">Under Review</span>
+            <h3 class="status-title">Status:</h3>
+            <span class="status"></span>
         </div>
-        <p class="footer-date">Generated on <span id="genDate"></span></p>
+        
+        <div>
+            <button data-db-first-key="loanApplicantFormData" data-option-key="approveOption" data-status="Approve">Approve:</button>
+            <button data-db-first-key="loanApplicantFormData" data-option-key="declineOption" data-status="Decline">Decline:</button>
+        </div>
+
     </div>
     `;
   return div;
@@ -189,13 +196,82 @@ const buildLoanApplicantProfile = pipe(createDiv, addClassToDiv, addTextContentT
 
 const loanApplicantProfile = buildLoanApplicantProfile(document);
 
+const footer = loanApplicantProfile.querySelector('.footer');
+
+const getAttributeFromTarget = (e) => {
+  const target = e.target;
+
+  const status = target.getAttribute('data-status');
+  const firstKey = target.getAttribute('data-db-first-key');
+
+  return { status, firstKey };
+};
+
+const getActionIDFromLocalStorage = () => {
+  const data = localStorage.getData({ key: 'action' });
+  return data?.id;
+};
+
+const getModifyActionData = (e) => {
+  const { status, firstKey } = getAttributeFromTarget(e);
+  const id = getActionIDFromLocalStorage();
+
+  const obj = {
+    key: 'action',
+    data: {
+      action: 'modifyData',
+      id,
+      value: [{ status }],
+      firstKey: [firstKey],
+      secondKey: ['status'],
+    },
+  };
+
+  return obj;
+};
+
+const storeActionToLocalStorage = (obj) => {
+  localStorage.setData(obj);
+};
+
+function handleActionStorage(e) {
+  const key = e.target.dataset.dbFirstKey;
+
+  if (!key) return;
+
+  const processActionStoring = pipe(getModifyActionData, storeActionToLocalStorage);
+
+  processActionStoring(e);
+}
+
+const showApproveOption = () => {
+  eventBus.dispatchEvent(dialogEvent.approve);
+};
+
+const showDeclineOption = () => {
+  eventBus.dispatchEvent(dialogEvent.decline);
+};
+
+const OptionHandler = {
+  approveOption: showApproveOption,
+  declineOption: showDeclineOption,
+};
+
+function handleOptionContent(e) {
+  const optionKey = e.target.dataset.optionKey;
+
+  if (!optionKey) return;
+
+  OptionHandler[optionKey]();
+}
+
 const getActionDataFromLocalStorage = () => {
   const data = localStorage.getData({ key: 'action' });
   return data;
 };
 
 const dispatchEventProfileEvent = () => {
-  //   eventBus.dispatchEvent(dialogEvent.profile);
+  eventBus.dispatchEvent(dialogEvent.profile);
 };
 
 const applicationDate = loanApplicantProfile.querySelector('#application-date');
@@ -265,5 +341,9 @@ function getLoanApplicantData() {
 }
 
 eventBus.addEventListener('profile', getLoanApplicantData);
+
+footer.addEventListener('click', handleActionStorage);
+
+footer.addEventListener('click', handleOptionContent);
 
 export default loanApplicantProfile;

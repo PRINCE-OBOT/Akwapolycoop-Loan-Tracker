@@ -168,7 +168,7 @@ const DBKeyHandler = {
 
 const viewProfileEvent = new CustomEvent('profile');
 
-const dispatchProfileEvent = () => {
+const dispatchGetLoanApplicantData = () => {
   eventBus.dispatchEvent(viewProfileEvent);
 };
 
@@ -181,7 +181,7 @@ function handleActionStorage(e) {
 
   processActionStoring(e);
 
-  if (key === 'loanApplicantForm') dispatchProfileEvent();
+  if (key === 'loanApplicantForm') dispatchGetLoanApplicantData();
 }
 
 const showApproveOption = () => {

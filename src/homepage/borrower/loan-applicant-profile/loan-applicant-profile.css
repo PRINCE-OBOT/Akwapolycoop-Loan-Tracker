@@ -163,7 +163,9 @@
   flex-wrap: wrap;
   gap: 1rem;
 }
-
+.status-title {
+  color: var(--ink);
+}
 .status-badge {
   display: inline-block;
   padding: 0.5rem 1rem;

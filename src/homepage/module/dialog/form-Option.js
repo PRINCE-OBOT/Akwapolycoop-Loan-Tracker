@@ -87,7 +87,7 @@ const Actions = {
 function getActionFromLocalStorage() {
   const data = localStorage.getData({ key: 'action' });
 
-  Actions[data.action]();
+  Actions[data?.action]();
 }
 
 const processBtnCancel = pipe(
