@@ -3,6 +3,7 @@ import pipe from '../../module/composition/pipe';
 import eventBus from '../../module/event-bus/event';
 import indexDB from '../../module/indexDB/indexDB';
 // import { dialogEvent } from '../../module/dialog/dialog-manager';
+// import { dialogEvent } from '../../module/dialog/dialog-manager';
 
 const createDiv = (document) => {
   const div = document.createElement('div');
@@ -176,7 +177,7 @@ const addTextContentToDiv = (div) => {
     <!-- Footer -->
     <div class="footer">
         <div>
-            <span class="status-badge">Under Review</span>
+            <h4>Status</h4><span class="status">Under Review</span>
         </div>
         <p class="footer-date">Generated on <span id="genDate"></span></p>
     </div>
@@ -188,59 +189,18 @@ const buildLoanApplicantProfile = pipe(createDiv, addClassToDiv, addTextContentT
 
 const loanApplicantProfile = buildLoanApplicantProfile(document);
 
-const applicationDate = loanApplicantProfile.querySelector('#application-date');
-const passport = loanApplicantProfile.querySelector('.passport');
-const firstName = loanApplicantProfile.querySelector('.first-name');
-const lastName = loanApplicantProfile.querySelector('.last-name');
-const email = loanApplicantProfile.querySelector('.email');
-const phoneNumber = loanApplicantProfile.querySelector('.phone-number');
-const dateOfBirth = loanApplicantProfile.querySelector('.date-of-birth');
-const residentAddress = loanApplicantProfile.querySelector('.resident-address');
-const bankName = loanApplicantProfile.querySelector('.bank-name');
-const accountNumber = loanApplicantProfile.querySelector('.account-number');
-const accountName = loanApplicantProfile.querySelector('.account-name');
-// const state = loanApplicantProfile.querySelector('.state')
-
-const guarantorFirstName = loanApplicantProfile.querySelector('.guarantor-first-name');
-const guarantorLastName = loanApplicantProfile.querySelector('.guarantor-last-name');
-const guarantorPhoneNumber = loanApplicantProfile.querySelector('.guarantor-phone-number');
-const guarantorResidentAddress = loanApplicantProfile.querySelector('.guarantor-resident-address');
-
 const getActionDataFromLocalStorage = () => {
   const data = localStorage.getData({ key: 'action' });
+  console.log(data);
   return data;
-};
-
-const insertLoanApplicantDataToProfile = (data) => {
-  const loanApplicantFormData = data.loanApplicantFormData;
-  const signUpData = data.signUpData;
-
-  applicationDate.textContent = loanApplicantFormData.date;
-  passport.src = loanApplicantFormData.passport;
-
-  firstName.textContent = signUpData.firstName;
-  lastName.textContent = signUpData.lastName;
-  email.textContent = signUpData.email;
-  phoneNumber.textContent = loanApplicantFormData['phone-number'];
-  dateOfBirth.textContent = loanApplicantFormData['date-of-birth'];
-  residentAddress.textContent = loanApplicantFormData['resident-address'];
-  accountNumber.textContent = loanApplicantFormData['account-number'];
-  accountName.textContent = loanApplicantFormData['account-name'];
-  // add state and local government area later
-  //   state.textContent = loanApplicantFormData.state
-
-  guarantorFirstName.textContent = loanApplicantFormData['guarantor-first-name'];
-  guarantorLastName.textContent = loanApplicantFormData['guarantor-last-name'];
-  guarantorPhoneNumber.textContent = loanApplicantFormData['guarantor-phone-number'];
-  guarantorResidentAddress.textContent = loanApplicantFormData['guarantor-resident-address'];
-
-  bankName.textContent = loanApplicantFormData['bank-name'];
-
-  //   eventBus.dispatchEvent(dialogEvent.profile);
 };
 
 const errorGettingData = () => {
   console.log('Error getting data');
+};
+
+const dispatchEventProfileEvent = () => {
+  //   eventBus.dispatchEvent(dialogEvent.profile(data));
 };
 
 function getLoanApplicantData() {
@@ -251,13 +211,13 @@ function getLoanApplicantData() {
       storeName: 'loan-applicant-list',
       getMethod: 'get',
       keyPathValue: +id,
-      returnData: insertLoanApplicantDataToProfile,
+      returnData: dispatchEventProfileEvent,
       undefineState: errorGettingData,
     },
     'getData',
   );
 }
 
-eventBus.addEventListener('view-profile', getLoanApplicantData);
+eventBus.addEventListener('profile', getLoanApplicantData);
 
 export default loanApplicantProfile;

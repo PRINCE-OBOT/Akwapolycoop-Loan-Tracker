@@ -82,7 +82,7 @@ export default class FieldValidationUtility {
   }) {
     let message;
     let validityState;
-
+    // console.log(field)
     if (!field.validity.valid && !isFieldValid) {
       message = msg;
       validityState = 'invalid';

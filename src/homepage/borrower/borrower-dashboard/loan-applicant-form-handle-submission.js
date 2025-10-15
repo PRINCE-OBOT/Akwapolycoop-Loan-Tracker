@@ -84,6 +84,7 @@ function formatTodayDate() {
 
 function insertMoreFormFieldValues(data) {
   data.loanApplicantFormData.date = formatTodayDate();
+  data.loanApplicantFormData.status = 'Pending';
 
   function setValue(element) {
     data.loanApplicantFormData[element.id] = element.value;

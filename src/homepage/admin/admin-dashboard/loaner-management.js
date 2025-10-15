@@ -166,6 +166,12 @@ const DBKeyHandler = {
   loanApplicantForm: getViewProfileActionData,
 };
 
+const viewProfileEvent = new CustomEvent('profile');
+
+const dispatchProfileEvent = () => {
+  eventBus.dispatchEvent(viewProfileEvent);
+};
+
 function handleActionStorage(e) {
   const key = e.target.dataset.dbFirstKey;
 
@@ -174,13 +180,9 @@ function handleActionStorage(e) {
   const processActionStoring = pipe(DBKeyHandler[key], storeActionToLocalStorage);
 
   processActionStoring(e);
+
+  if (key === 'loanApplicantForm') dispatchProfileEvent();
 }
-
-const viewProfileEvent = new CustomEvent('view-profile');
-
-const getLoanApplicantData = () => {
-  eventBus.dispatchEvent(viewProfileEvent);
-};
 
 const showApproveOption = () => {
   eventBus.dispatchEvent(dialogEvent.approve);
@@ -193,7 +195,6 @@ const showDeclineOption = () => {
 const OptionHandler = {
   approveOption: showApproveOption,
   declineOption: showDeclineOption,
-  profile: getLoanApplicantData,
 };
 
 function handleOptionContent(e) {
@@ -236,7 +237,7 @@ function insertTakeLoanDataToTable(takeLoanList) {
        <td>${data.status}</td>
        <td>${date}</td>
        <td>${time}</td>
-       <td data-option-key="profile" data-db-first-key="loanApplicantForm"><img src="${eyeViewImg}" class="eye-view" alt="eye view"/>View</td>
+       <td data-db-first-key="loanApplicantForm"><img src="${eyeViewImg}" class="eye-view" alt="eye view"/>View</td>
        <td><button data-option-key="approveOption" data-db-first-key="takeLoan" data-status="Approve" class="btn-approve-loan">Approve</button></td>
        <td><button data-option-key="declineOption" data-db-first-key="takeLoan" data-status="Decline" class="btn-decline-loan">Decline</button></td>
       `;
