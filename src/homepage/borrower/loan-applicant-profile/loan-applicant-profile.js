@@ -191,17 +191,63 @@ const loanApplicantProfile = buildLoanApplicantProfile(document);
 
 const getActionDataFromLocalStorage = () => {
   const data = localStorage.getData({ key: 'action' });
-  console.log(data);
   return data;
 };
+
+const dispatchEventProfileEvent = () => {
+  //   eventBus.dispatchEvent(dialogEvent.profile);
+};
+
+const applicationDate = loanApplicantProfile.querySelector('#application-date');
+const passport = loanApplicantProfile.querySelector('.passport');
+const firstName = loanApplicantProfile.querySelector('.first-name');
+const lastName = loanApplicantProfile.querySelector('.last-name');
+const email = loanApplicantProfile.querySelector('.email');
+const phoneNumber = loanApplicantProfile.querySelector('.phone-number');
+const dateOfBirth = loanApplicantProfile.querySelector('.date-of-birth');
+const residentAddress = loanApplicantProfile.querySelector('.resident-address');
+const bankName = loanApplicantProfile.querySelector('.bank-name');
+const accountNumber = loanApplicantProfile.querySelector('.account-number');
+const accountName = loanApplicantProfile.querySelector('.account-name');
+const status = loanApplicantProfile.querySelector('.status');
+// const state = loanApplicantProfile.querySelector('.state')
+
+const guarantorFirstName = loanApplicantProfile.querySelector('.guarantor-first-name');
+const guarantorLastName = loanApplicantProfile.querySelector('.guarantor-last-name');
+const guarantorPhoneNumber = loanApplicantProfile.querySelector('.guarantor-phone-number');
+const guarantorResidentAddress = loanApplicantProfile.querySelector('.guarantor-resident-address');
 
 const errorGettingData = () => {
   console.log('Error getting data');
 };
 
-const dispatchEventProfileEvent = () => {
-  //   eventBus.dispatchEvent(dialogEvent.profile(data));
-};
+function insertLoanApplicantDataToProfile(data) {
+  const loanApplicantFormData = data.loanApplicantFormData;
+  const signUpData = data.signUpData;
+
+  applicationDate.textContent = loanApplicantFormData.date;
+  passport.src = loanApplicantFormData.passport;
+
+  firstName.textContent = signUpData.firstName;
+  lastName.textContent = signUpData.lastName;
+  email.textContent = signUpData.email;
+  phoneNumber.textContent = loanApplicantFormData['phone-number'];
+  dateOfBirth.textContent = loanApplicantFormData['date-of-birth'];
+  residentAddress.textContent = loanApplicantFormData['resident-address'];
+  accountNumber.textContent = loanApplicantFormData['account-number'];
+  accountName.textContent = loanApplicantFormData['account-name'];
+  bankName.textContent = loanApplicantFormData['bank-name'];
+  status.textContent = loanApplicantFormData.status;
+  // add state and local government area later
+  //   state.textContent = loanApplicantFormData.state
+
+  guarantorFirstName.textContent = loanApplicantFormData['guarantor-first-name'];
+  guarantorLastName.textContent = loanApplicantFormData['guarantor-last-name'];
+  guarantorPhoneNumber.textContent = loanApplicantFormData['guarantor-phone-number'];
+  guarantorResidentAddress.textContent = loanApplicantFormData['guarantor-resident-address'];
+
+  dispatchEventProfileEvent();
+}
 
 function getLoanApplicantData() {
   const { id } = getActionDataFromLocalStorage();
@@ -211,7 +257,7 @@ function getLoanApplicantData() {
       storeName: 'loan-applicant-list',
       getMethod: 'get',
       keyPathValue: +id,
-      returnData: dispatchEventProfileEvent,
+      returnData: insertLoanApplicantDataToProfile,
       undefineState: errorGettingData,
     },
     'getData',
