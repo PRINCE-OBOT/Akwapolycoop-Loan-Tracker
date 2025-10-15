@@ -123,5 +123,3 @@ const showLogoutOption = () => {
 };
 
 btnLogout.addEventListener('dialog-manager', showLogoutOption);
-
-// eventBus.dispatchEvent(dialogEvent.profile)
