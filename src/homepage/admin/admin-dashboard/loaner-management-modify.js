@@ -15,17 +15,17 @@ const getActionDataFromLocalStorage = () => {
 };
 
 const modifyLoanApplicantData = () => {
-  const { id, status, targetKey, changeKey, loanID } = getActionDataFromLocalStorage();
+  const { id, value, firstKey, secondKey, loanID } = getActionDataFromLocalStorage();
 
   indexDB.interact(
     {
       storeName: 'loan-applicant-list',
       keyPathValue: +id,
       getMethod: 'get',
-      newValue: { status },
+      newValue: value,
       loanID,
-      targetKey,
-      changeKey,
+      firstKey,
+      secondKey,
       trueState: updated,
       undefinedState: fail,
     },

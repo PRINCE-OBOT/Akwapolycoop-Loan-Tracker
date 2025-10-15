@@ -99,10 +99,10 @@ const indexDB = {
   modifyData(
     {
       storeName,
-      targetKey,
-      changeKey,
       keyPathValue,
       newValue,
+      firstKey,
+      secondKey,
       loanID,
       getMethod,
       trueState,
@@ -116,17 +116,7 @@ const indexDB = {
         return;
       }
 
-      console.log(changeKey);
-      if (!targetKey) {
-        changeKey.forEach((key) => {
-          data[key] = newValue[key];
-        });
-      } else {
-        targetKey.forEach((key, index) => {
-          const result = data[key].find((obj) => obj.loanID === loanID);
-          result[changeKey[index]] = newValue[changeKey[index]];
-        });
-      }
+      modifyDataHandler({ data, firstKey, secondKey, loanID, newValue });
 
       indexDB.storeData({ storeName, data, trueState, undefinedState }, db);
     }
@@ -195,4 +185,27 @@ const indexDB = {
     };
   },
 };
+
+function modifyDataHandler({ data, firstKey, secondKey, loanID, newValue }) {
+  const DBKeyHandler = {
+    String: () => {
+      data[firstKey] = newValue[firstKey];
+    },
+
+    Object: () => {
+      data[firstKey][secondKey] = newValue[secondKey];
+    },
+
+    Array: () => {
+      firstKey.forEach((key, index) => {
+        const result = data[key].find((obj) => obj.loanID === loanID);
+        result[secondKey[index]] = newValue[index][secondKey[index]];
+      });
+    },
+  };
+  const firstKeyType = Object.prototype.toString.call(data[firstKey]).slice(8, -1);
+
+  DBKeyHandler[firstKeyType]();
+}
+
 export default indexDB;

@@ -111,9 +111,9 @@ const getAttributeFromTarget = (e) => {
   const target = e.target;
 
   const status = target.getAttribute('data-status');
-  const targetKey = target.getAttribute('data-target-key');
+  const firstKey = target.getAttribute('data-db-first-key');
 
-  return { status, targetKey };
+  return { status, firstKey };
 };
 
 const getAttributeFromTr = (e) => {
@@ -140,7 +140,7 @@ const getViewProfileActionData = (e) => {
 
 const getModifyActionData = (e) => {
   const { id, loanID } = getAttributeFromTr(e);
-  const { status, targetKey } = getAttributeFromTarget(e);
+  const { status, firstKey } = getAttributeFromTarget(e);
 
   const obj = {
     key: 'action',
@@ -148,9 +148,9 @@ const getModifyActionData = (e) => {
       action: 'modifyData',
       id,
       loanID,
-      status,
-      targetKey: [targetKey],
-      changeKey: ['status'],
+      value: [{ status }],
+      firstKey: [firstKey],
+      secondKey: ['status'],
     },
   };
 
@@ -161,17 +161,17 @@ const storeActionToLocalStorage = (obj) => {
   localStorage.setData(obj);
 };
 
-const TargetKeys = {
+const DBKeyHandler = {
   takeLoan: getModifyActionData,
   loanApplicantForm: getViewProfileActionData,
 };
 
 function handleActionStorage(e) {
-  const key = e.target.dataset.targetKey;
+  const key = e.target.dataset.dbFirstKey;
 
   if (!key) return;
 
-  const processActionStoring = pipe(TargetKeys[key], storeActionToLocalStorage);
+  const processActionStoring = pipe(DBKeyHandler[key], storeActionToLocalStorage);
 
   processActionStoring(e);
 }
@@ -236,9 +236,9 @@ function insertTakeLoanDataToTable(takeLoanList) {
        <td>${data.status}</td>
        <td>${date}</td>
        <td>${time}</td>
-       <td data-option-key="profile" data-target-key="loanApplicantForm"><img src="${eyeViewImg}" class="eye-view" alt="eye view"/>View</td>
-       <td><button data-option-key="approveOption" data-target-key="takeLoan" data-status="Approve" class="btn-approve-loan">Approve</button></td>
-       <td><button data-option-key="declineOption" data-target-key="takeLoan" data-status="Decline" class="btn-decline-loan">Decline</button></td>
+       <td data-option-key="profile" data-db-first-key="loanApplicantForm"><img src="${eyeViewImg}" class="eye-view" alt="eye view"/>View</td>
+       <td><button data-option-key="approveOption" data-db-first-key="takeLoan" data-status="Approve" class="btn-approve-loan">Approve</button></td>
+       <td><button data-option-key="declineOption" data-db-first-key="takeLoan" data-status="Decline" class="btn-decline-loan">Decline</button></td>
       `;
     setAttributeToTr({ tr, loanID: data.loanID });
     appendTrToTbody(tr);
