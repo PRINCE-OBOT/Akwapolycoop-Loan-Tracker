@@ -14,10 +14,13 @@ const getDifferenceInDays = (currentObject) => {
 class MathUtility {
   static calculateOutstandingBalance(approveAndIncompleteLoan) {
     const outstandingBalance = approveAndIncompleteLoan.reduce((accumulator, currentObject) => {
+      // Calculate the percentage base on the loan taken date
+      // Multiply the da
+
       const currentPercentageValue =
         +currentObject['desired-amount'] * (getDifferenceInDays(currentObject) * PERCENTAGE);
 
-      accumulator = currentPercentageValue + +currentObject['desired-amount'];
+      accumulator = accumulator + currentPercentageValue + +currentObject['desired-amount'];
 
       return accumulator;
     }, 0);
