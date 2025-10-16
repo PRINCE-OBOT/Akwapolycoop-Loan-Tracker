@@ -14,8 +14,9 @@ const getDifferenceInDays = (currentObject) => {
 class MathUtility {
   static calculateOutstandingBalance(approveAndIncompleteLoan) {
     const outstandingBalance = approveAndIncompleteLoan.reduce((accumulator, currentObject) => {
-      // Calculate the percentage base on the loan taken date
-      // Multiply the da
+      // 1. Get the percentage of the `desired-amount`
+      // 2. Add the derive percentage value to the `desired-amount`,
+      // 3. The final result get preserve, will be added after the next `takeLoan` finishes no. 2
 
       const currentPercentageValue =
         +currentObject['desired-amount'] * (getDifferenceInDays(currentObject) * PERCENTAGE);
