@@ -25,6 +25,7 @@ import MathUtility from '../../module/business-logic/mathUtility';
 const leftSideBar = document.querySelector('.left-side-bar');
 const contentHolder = document.querySelector('.content-holder');
 const logoutButton = document.querySelector('.logout-button');
+const outstandingBalance = document.querySelector('.outstanding-balance');
 
 const html = document.querySelector('html');
 
@@ -45,6 +46,9 @@ bindAllFieldValidEvent();
 appendDialogToBody.prototype.body = document.body;
 appendDialogToBody();
 appendContent.prototype.holder = contentHolder;
+
+MathUtility.prototype.outstandingBalance = outstandingBalance;
+MathUtility.outstandingBalance();
 
 const dispatchTakeLoanEvent = () => {
   eventBus.dispatchEvent(events.takeLoan);
@@ -193,9 +197,3 @@ const showLogoutOption = () => {
   eventBus.dispatchEvent(dialogEvent.logout);
 };
 logoutButton.addEventListener('click', showLogoutOption);
-
-const outstandingBalance = document.querySelector('.outstanding-balance');
-
-MathUtility.prototype.outstandingBalance = outstandingBalance;
-
-MathUtility.outstandingBalance();

@@ -1,9 +1,7 @@
 import eventBus from '../../module/event-bus/event';
 import indexDB from '../../module/indexDB/indexDB';
 
-const updated = () => {
-  alert('Updated');
-};
+const updated = () => {};
 
 const fail = () => {
   alert('fail');

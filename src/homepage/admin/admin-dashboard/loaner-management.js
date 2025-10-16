@@ -3,7 +3,6 @@ import indexDB from '../../module/indexDB/indexDB';
 import eyeViewImg from '../../assets/images/eye-view.svg';
 import { dialogEvent } from '../../module/dialog/dialog-manager';
 import eventBus from '../../module/event-bus/event';
-import pipe from '../../module/composition/pipe';
 import bindModifyIndexdbEvent from './loaner-management-modify';
 
 bindModifyIndexdbEvent();
@@ -111,9 +110,8 @@ const getAttributeFromTarget = (e) => {
   const target = e.target;
 
   const status = target.getAttribute('data-status');
-  const firstKey = target.getAttribute('data-db-first-key');
 
-  return { status, firstKey };
+  return { status };
 };
 
 const getAttributeFromTr = (e) => {
@@ -138,9 +136,12 @@ const getViewProfileActionData = (e) => {
   return obj;
 };
 
-const getModifyActionData = (e) => {
-  const { id, loanID } = getAttributeFromTr(e);
-  const { status, firstKey } = getAttributeFromTarget(e);
+const storeActionToLocalStorage = (obj) => {
+  localStorage.setData(obj);
+};
+
+const getModifyActionData = ({ amount, id, loanID, e }) => {
+  const { status } = getAttributeFromTarget(e);
 
   const obj = {
     key: 'action',
@@ -148,21 +149,40 @@ const getModifyActionData = (e) => {
       action: 'modifyData',
       id,
       loanID,
-      value: [{ status }],
-      firstKey: [firstKey],
-      secondKey: ['status'],
+      value: [{ status }, { outstandingBalance: +amount }, { actionDate: new Date() }],
+      firstKey: ['takeLoan', 'takeLoan', 'takeLoan'],
+      secondKey: ['status', 'outstandingBalance', 'actionDate'],
     },
   };
 
-  return obj;
+  storeActionToLocalStorage(obj);
 };
 
-const storeActionToLocalStorage = (obj) => {
-  localStorage.setData(obj);
-};
+function getRecentLoanApplicantData(e) {
+  const { id, loanID } = getAttributeFromTr(e);
+
+  const getTakeLoanAmount = (data) => {
+    const result = data.takeLoan.find((obj) => obj.loanID === loanID);
+    const amount = result['desired-amount'];
+
+    getModifyActionData({ amount, id, loanID, e });
+  };
+
+  indexDB.interact(
+    {
+      storeName: 'loan-applicant-list',
+      getMethod: 'get',
+      keyPathValue: +id,
+      returnData: getTakeLoanAmount,
+      undefinedState: errorWhileGettingData,
+    },
+    'getData',
+  );
+  getModifyActionData;
+}
 
 const DBKeyHandler = {
-  takeLoan: getModifyActionData,
+  takeLoan: getRecentLoanApplicantData,
   loanApplicantForm: getViewProfileActionData,
 };
 
@@ -177,9 +197,7 @@ function handleActionStorage(e) {
 
   if (!key) return;
 
-  const processActionStoring = pipe(DBKeyHandler[key], storeActionToLocalStorage);
-
-  processActionStoring(e);
+  DBKeyHandler[key](e);
 
   if (key === 'loanApplicantForm') dispatchGetLoanApplicantData();
 }
