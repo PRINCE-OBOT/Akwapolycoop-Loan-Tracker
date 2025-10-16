@@ -1,4 +1,4 @@
-import { differenceInDays } from 'date-fns';
+import { addDays, differenceInDays } from 'date-fns';
 import indexDB from '../indexDB/indexDB';
 
 const PERCENTAGE = 0.3333 / 100;
@@ -6,9 +6,13 @@ const PERCENTAGE = 0.3333 / 100;
 
 const getDifferenceInDays = (currentObject) => {
   const actionDate = currentObject.actionDate;
-  const todayDate = new Date();
+  // const todayDate = new Date();
 
-  return differenceInDays(actionDate, todayDate);
+  const futureDay = addDays(new Date(), 4);
+
+  // console.log(differenceInDays(futureDay, actionDate));
+
+  return differenceInDays(futureDay, actionDate);
 };
 
 class MathUtility {
@@ -21,7 +25,9 @@ class MathUtility {
       const currentPercentageValue =
         +currentObject['desired-amount'] * (getDifferenceInDays(currentObject) * PERCENTAGE);
 
-      accumulator = accumulator + currentPercentageValue + +currentObject['desired-amount'];
+      const result = accumulator + currentPercentageValue + +currentObject['desired-amount'];
+
+      accumulator = Math.round(result * 100) / 100;
 
       return accumulator;
     }, 0);
