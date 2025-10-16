@@ -57,13 +57,8 @@ const addEventToBtnYes = (button) => {
 };
 
 const events = {
-  viewProfile: new CustomEvent('view-profile'),
   modifyIndexdb: new CustomEvent('modify-indexdb'),
   logout: new CustomEvent('logout'),
-};
-
-const dispatchViewProfileEvent = () => {
-  eventBus.dispatchEvent(events.viewProfile);
 };
 
 const dispatchModifyDataEvent = () => {
@@ -77,7 +72,6 @@ const dispatchLogoutEvent = () => {
 const Actions = {
   logout: dispatchLogoutEvent,
   modifyData: dispatchModifyDataEvent,
-  viewProfile: dispatchViewProfileEvent,
 };
 
 // get action like `modifyData` in localStorage

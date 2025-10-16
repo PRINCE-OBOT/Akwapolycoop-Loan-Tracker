@@ -20,6 +20,7 @@ import eventBus from '../../module/event-bus/event';
 import { getRecentLoanApplicant } from './myLoan';
 import { appendDialogToBody, dialogEvent } from '../../module/dialog/dialog-manager';
 import pipe from '../../module/composition/pipe';
+import MathUtility from '../../module/business-logic/mathUtility';
 
 const leftSideBar = document.querySelector('.left-side-bar');
 const contentHolder = document.querySelector('.content-holder');
@@ -192,3 +193,9 @@ const showLogoutOption = () => {
   eventBus.dispatchEvent(dialogEvent.logout);
 };
 logoutButton.addEventListener('click', showLogoutOption);
+
+const outstandingBalance = document.querySelector('.outstanding-balance');
+
+MathUtility.prototype.outstandingBalance = outstandingBalance;
+
+MathUtility.outstandingBalance();
