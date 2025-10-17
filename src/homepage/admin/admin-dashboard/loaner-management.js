@@ -122,22 +122,22 @@ const getAttributeFromTr = (e) => {
   return { id, loanID };
 };
 
+const storeActionToLocalStorage = (obj) => {
+  localStorage.setData(obj);
+};
+
 const getViewProfileActionData = (e) => {
   const { id } = getAttributeFromTr(e);
 
   const obj = {
     key: 'action',
     data: {
-      id,
+      id: +id,
       action: 'viewProfile',
     },
   };
 
-  return obj;
-};
-
-const storeActionToLocalStorage = (obj) => {
-  localStorage.setData(obj);
+  storeActionToLocalStorage(obj);
 };
 
 const getModifyActionData = ({ amount, id, loanID, e }) => {
@@ -178,7 +178,7 @@ function getRecentLoanApplicantData(e) {
     },
     'getData',
   );
-  getModifyActionData;
+  // getModifyActionData;
 }
 
 const DBKeyHandler = {

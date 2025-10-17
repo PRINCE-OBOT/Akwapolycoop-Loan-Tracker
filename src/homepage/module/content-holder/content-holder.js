@@ -5,6 +5,7 @@ import takeLoan from '../../borrower/borrower-dashboard/take-loan';
 import { myLoan } from '../../borrower/borrower-dashboard/myLoan';
 import adminDashboardContent from '../../admin/admin-dashboard/admin-dashboard-content';
 import { loanerManagement } from '../../admin/admin-dashboard/loaner-management';
+import loanApplicantDeposit from '../../borrower/borrower-dashboard/loan-applicant-deposit/loan-applicant-deposit';
 
 const contents = {
   loanApplicantForm,
@@ -12,10 +13,12 @@ const contents = {
   myLoan,
   adminDashboardContent,
   loanerManagement,
+  loanApplicantDeposit,
 };
 
 function appendContent(e) {
   const detail = e.detail;
+  console.log(loanApplicantDeposit);
   const content = contents[detail.contentKey];
 
   appendContent.prototype.holder.innerHTML = '';

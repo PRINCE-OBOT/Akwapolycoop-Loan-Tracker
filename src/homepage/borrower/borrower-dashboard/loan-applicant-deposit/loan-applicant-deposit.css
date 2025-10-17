@@ -1,0 +1,229 @@
+.deposit-container {
+  width: 100%;
+  /* max-width: 600px; */
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  /* overflow: hidden; */
+}
+
+.header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 40px 30px;
+  color: white;
+  text-align: center;
+}
+
+.header h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.header p {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.form-content {
+  padding: 40px 30px;
+}
+
+.form-group {
+  margin-bottom: 30px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-group .label-hint {
+  font-size: 13px;
+  color: #666;
+  font-weight: 400;
+  margin-top: 4px;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.currency-symbol {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #667eea;
+  font-weight: 600;
+}
+
+.form-group input[type='number'] {
+  width: 100%;
+  padding: 14px 15px 14px 40px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.form-group input[type='number']:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.upload-area {
+  border: 2px dashed #e0e0e0;
+  border-radius: 12px;
+  padding: 40px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: #f8f9ff;
+  position: relative;
+}
+
+.upload-area:hover {
+  border-color: #667eea;
+  background: #f0f3ff;
+}
+
+.upload-area.active {
+  border-color: #667eea;
+  background: #f0f3ff;
+}
+
+.upload-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+  color: #667eea;
+}
+
+.upload-text h3 {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.upload-text p {
+  font-size: 13px;
+  color: #999;
+  margin-bottom: 12px;
+}
+
+.upload-text .file-formats {
+  font-size: 12px;
+  color: #bbb;
+  margin-top: 8px;
+}
+
+input[type='file'] {
+  position: absolute;
+  left: 0;
+  top: 0;
+  min-height: 100%;
+  min-width: 100%;
+  opacity: 0;
+}
+
+.file-preview-container {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f0f3ff;
+  border-radius: 10px;
+  align-items: center;
+  gap: 12px;
+}
+
+.file-preview-container.show {
+  display: flex;
+}
+
+.file-preview-icon {
+  font-size: 24px;
+  color: #667eea;
+}
+
+.file-preview-info {
+  flex: 1;
+  text-align: left;
+}
+
+.file-preview-info p {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.file-preview-info span {
+  font-size: 12px;
+  color: #999;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 40px;
+}
+
+.btn {
+  flex: 1;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.btn-submit {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.btn-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+}
+
+.btn-submit:active {
+  transform: translateY(0);
+}
+
+.btn-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-cancel {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.btn-cancel:hover {
+  background: #e0e0e0;
+}
+
+.info-box {
+  background: #e3f2fd;
+  border-left: 4px solid #667eea;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #1976d2;
+}
+
+.info-box strong {
+  display: block;
+  margin-bottom: 5px;
+}

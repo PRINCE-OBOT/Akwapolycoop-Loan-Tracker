@@ -21,6 +21,7 @@ import { getRecentLoanApplicant } from './myLoan';
 import { appendDialogToBody, dialogEvent } from '../../module/dialog/dialog-manager';
 import pipe from '../../module/composition/pipe';
 import MathUtility from '../../module/business-logic/mathUtility';
+import bindDepositDocumentUploadEvent from './loan-applicant-deposit/loan-applicant-deposit-handle-submission';
 
 const leftSideBar = document.querySelector('.left-side-bar');
 const contentHolder = document.querySelector('.content-holder');
@@ -42,6 +43,8 @@ bindSubmitApplicationButton();
 bindSubmitLoanButton();
 // - Check whether all field to be submitted is valid
 bindAllFieldValidEvent();
+
+bindDepositDocumentUploadEvent();
 
 appendDialogToBody.prototype.body = document.body;
 appendDialogToBody();
@@ -98,6 +101,12 @@ const events = {
       contentKey: 'myLoan',
     },
   }),
+
+  deposit: new CustomEvent('custom-change-content', {
+    detail: {
+      contentKey: 'loanApplicantDeposit',
+    },
+  }),
 };
 
 const showLoanApplicantForm = () => {
@@ -117,10 +126,15 @@ const showMyLoan = () => {
   eventBus.removeEventListener('get-data-in-indexedDB', getRecentLoanApplicant);
 };
 
+const showDeposit = () => {
+  eventBus.dispatchEvent(events.deposit);
+};
+
 const contentHandler = {
   'loan-applicant-form': showLoanApplicantForm,
   'take-loan': showTakeLoan,
   'my-loan': showMyLoan,
+  deposit: showDeposit,
 };
 
 function setContentInDashboardHolder(e) {

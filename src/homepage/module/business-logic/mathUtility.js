@@ -15,12 +15,17 @@ const getDifferenceInDays = (currentObject) => {
   return differenceInDays(futureDay, actionDate);
 };
 
+const getRecentLoanApplicantID = () => {
+  const data = localStorage.getData({ key: 'recent-loan-applicant' });
+  return data?.id;
+};
+
 class MathUtility {
   static calculateOutstandingBalance(approveAndIncompleteLoan) {
     const outstandingBalance = approveAndIncompleteLoan.reduce((accumulator, currentObject) => {
       // 1. Get the percentage of the `desired-amount`
       // 2. Add the derive percentage value to the `desired-amount`,
-      // 3. The final result get preserve, will be added after the next `takeLoan` finishes no. 2
+      // 3. The final result get preserve, and will be added after the next `takeLoan` finishes no. 2
 
       const currentPercentageValue =
         +currentObject['desired-amount'] * (getDifferenceInDays(currentObject) * PERCENTAGE);
@@ -56,19 +61,14 @@ class MathUtility {
         keyPathValue: id,
         getMethod: 'get',
         returnData: this.filterApproveAndIncompleteLoan.bind(this),
-        undefinedState: this.errorGettingData,
+        undefinedState: this.errorGettingData.bind(this),
       },
       'getData',
     );
   }
 
-  static getRecentLoanApplicantID() {
-    const data = localStorage.getData({ key: 'recent-loan-applicant' });
-    return data?.id;
-  }
-
   static outstandingBalance() {
-    const id = this.getRecentLoanApplicantID();
+    const id = getRecentLoanApplicantID();
     this.getRecentLoanApplicantDataFromIndexedDB(id);
   }
 }
