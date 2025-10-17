@@ -24,6 +24,7 @@ import MathUtility from '../../module/business-logic/mathUtility';
 import bindDepositDocumentUploadEvent from './loan-applicant-deposit/loan-applicant-deposit-handle-submission';
 
 const leftSideBar = document.querySelector('.left-side-bar');
+const bottomLeftSideBar = document.querySelector('.bottom-left-sidebar');
 const contentHolder = document.querySelector('.content-holder');
 const logoutButton = document.querySelector('.logout-button');
 const outstandingBalance = document.querySelector('.outstanding-balance');
@@ -151,7 +152,7 @@ const logoutBorrower = () => {
 };
 
 const prependLoanApplicationFormBeforeSideBar = () => {
-  leftSideBar.prepend(loanApplicantForm);
+  bottomLeftSideBar.prepend(loanApplicantForm);
 };
 
 const prependWhenLoanApplicantDataDoesNotExist = (data) => {

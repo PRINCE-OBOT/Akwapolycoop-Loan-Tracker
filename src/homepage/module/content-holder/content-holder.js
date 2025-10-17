@@ -18,7 +18,7 @@ const contents = {
 
 function appendContent(e) {
   const detail = e.detail;
-  console.log(loanApplicantDeposit);
+
   const content = contents[detail.contentKey];
 
   appendContent.prototype.holder.innerHTML = '';
