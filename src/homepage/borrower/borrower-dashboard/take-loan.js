@@ -16,7 +16,7 @@ const takeLoan = (function () {
                     type="number"
                     id="desired-amount"
                     placeholder="e.g 50000"
-                    min="4000"
+                    min="1000"
                     data-set-field-validation-value="setDesiredAmountValidationValue"
                     required
                   />

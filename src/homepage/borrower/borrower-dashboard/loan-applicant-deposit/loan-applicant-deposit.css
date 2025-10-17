@@ -1,10 +1,7 @@
 .deposit-container {
-  width: 100%;
-  /* max-width: 600px; */
   background: white;
   border-radius: 20px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  /* overflow: hidden; */
 }
 
 .header {
@@ -65,21 +62,13 @@
 .form-group input[type='number'] {
   width: 100%;
   padding: 14px 15px 14px 40px;
-  border: 2px solid #e0e0e0;
   border-radius: 10px;
   font-size: 16px;
   transition: all 0.3s ease;
   font-family: inherit;
 }
 
-.form-group input[type='number']:focus {
-  outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
 .upload-area {
-  border: 2px dashed #e0e0e0;
   border-radius: 12px;
   padding: 40px 20px;
   text-align: center;
@@ -144,28 +133,10 @@ input[type='file'] {
 .file-preview-container.show {
   display: flex;
 }
-
-.file-preview-icon {
-  font-size: 24px;
-  color: #667eea;
+.file-preview {
+  min-width: 100%;
+  border-radius: 10px;
 }
-
-.file-preview-info {
-  flex: 1;
-  text-align: left;
-}
-
-.file-preview-info p {
-  font-size: 14px;
-  color: #333;
-  margin-bottom: 4px;
-}
-
-.file-preview-info span {
-  font-size: 12px;
-  color: #999;
-}
-
 .form-actions {
   display: flex;
   gap: 12px;

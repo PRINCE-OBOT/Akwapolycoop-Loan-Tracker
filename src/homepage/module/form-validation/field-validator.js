@@ -109,7 +109,7 @@ const validation = {
   },
 
   setDesiredAmountValidationValue({ field }) {
-    this.isFieldValid = +field.value >= 4000;
+    this.isFieldValid = +field.value >= 100;
     this.fieldErrorMessage = 'Not within range';
   },
 

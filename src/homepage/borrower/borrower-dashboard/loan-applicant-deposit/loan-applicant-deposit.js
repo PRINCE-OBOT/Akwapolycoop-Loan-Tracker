@@ -1,4 +1,6 @@
 import './loan-applicant-deposit.css';
+import '../../../assets/form-logic.css';
+
 import handleFieldValidationLogic from '../../../module/form-validation/field-validator';
 
 const loanApplicantDeposit = (function () {
@@ -28,11 +30,14 @@ const loanApplicantDeposit = (function () {
                         <input 
                             type="number" 
                             id="depositAmount" 
-                            placeholder="0.00" 
-                            step="0.01" 
+                            placeholder="5000" 
+                            step="0.01"
+                            min="100"
+                            data-set-field-validation-value="setDesiredAmountValidationValue" 
                             min="0"
                             required
                         >
+                        <output id="deposit-amount-message" class="show-message"></output>
                     </div>
                 </div>
 
@@ -50,9 +55,12 @@ const loanApplicantDeposit = (function () {
                         </div>
                         <input 
                             type="file" 
-                            id="fileInput" 
+                            id="proof-of-payment" 
+                            data-set-field-validation-value="setPassportValidationValue"
                             accept=".png,.jpg,.jpeg,.pdf"
+                            required
                         >
+                        <output id="proof-of-payment-message" class="show-message"></output>
                     </div>
                     <div class="file-preview-container" >
                         <img class="file-preview"  src="" />
@@ -61,7 +69,7 @@ const loanApplicantDeposit = (function () {
                 </div>
 
                 <div class="form-actions">
-                    <button type="button" class="btn btn-cancel">Cancel</button>
+                    <!-- <button type="button" class="btn btn-cancel">Cancel</button> -->
                     <button type="button" class="btn btn-submit">Submit Deposit</button>
                 </div>
             </form>
