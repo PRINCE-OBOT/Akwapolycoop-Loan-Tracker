@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import MathUtility from '../../../module/business-logic/mathUtility';
 import eventBus from '../../../module/event-bus/event';
 import indexDB from '../../../module/indexDB/indexDB';
@@ -14,13 +15,19 @@ const depositAmount = loanApplicantDeposit.querySelector('#depositAmount');
 // const depositForm = loanApplicantDeposit.querySelector('depositForm');
 
 function previewProofOfPayment() {
-  const reader = extractProofOfPaymentFromFile();
-  displayProofOfPayment(reader);
+  const isUpload = extractProofOfPaymentFromFile();
+
+  if (!isUpload.paymentProof) return;
+
+  displayProofOfPayment({ reader: isUpload.paymentProof });
 }
 
 function storeProofOfPaymentURLFormat(data) {
-  const reader = extractProofOfPaymentFromFile();
-  storeProofOfPaymentToIndexedDB(reader, data);
+  const isUpload = extractProofOfPaymentFromFile();
+
+  if (!isUpload.paymentProof) return;
+
+  storeProofOfPaymentToIndexedDB({ reader: isUpload.paymentProof, data });
 }
 
 function extractProofOfPaymentFromFile() {
@@ -29,7 +36,7 @@ function extractProofOfPaymentFromFile() {
   filePreview.src = '';
   fileName.textContent = '';
 
-  if (!files) return;
+  if (files.length === 0) return { paymentProof: false };
 
   const proofOfPayment = files[0];
   fileName.textContent = files[0].name;
@@ -38,22 +45,60 @@ function extractProofOfPaymentFromFile() {
 
   reader.readAsDataURL(proofOfPayment);
 
-  return reader;
+  return { paymentProof: reader };
 }
 
-function displayProofOfPayment(reader) {
+function displayProofOfPayment({ reader }) {
   reader.onload = (e) => {
     const target = e.target;
     filePreview.src = target.result;
   };
 }
 
-function storeProofOfPaymentToIndexedDB(reader, data) {
+function storeProofOfPaymentToIndexedDB({ reader, data }) {
   reader.onload = (e) => {
-    data.deposit = [];
+    if (!data.deposit) data.deposit = [];
 
     data.deposit.push({ proofOfPayment: e.target.result });
+
+    insertMoreFormFieldValues(data);
   };
+}
+
+function formatDateToISOFormat() {
+  return format(new Date(), 'EEEE dd, MMMM, yyyy, hh:mm:ss a');
+}
+
+function insertMoreFormFieldValues(data) {
+  const depositLength = data.deposit.length - 1;
+
+  const deposit = data.deposit[depositLength];
+
+  deposit.dateAndTime = formatDateToISOFormat();
+  deposit.status = 'Pending';
+  deposit.depositAmount = depositAmount.value;
+
+  storeDataLoanApplicantList(data);
+}
+
+const loanApplicantDataNotStore = () => {
+  console.log('Deposit data not stored');
+};
+
+function displayDepositSubmissionStatus() {
+  alert('Your deposit has been submitted. Under Review');
+}
+
+function storeDataLoanApplicantList(data) {
+  indexDB.interact(
+    {
+      storeName: 'loan-applicant-list',
+      data,
+      trueState: displayDepositSubmissionStatus,
+      undefinedState: loanApplicantDataNotStore,
+    },
+    'storeData',
+  );
 }
 
 const submitDepositFormEvent = new CustomEvent('all-field-valid', {

@@ -46,7 +46,7 @@ function insertMoreFormFieldValues(data) {
 
   const takeLoanData = {
     outstandingBalance: 0,
-    status: 'pending',
+    status: 'Pending',
     paidStatus: 'Incomplete',
     loanID: `LOAN${data?.id}-00${loanApplicantTakeLoanLength}`,
     dateAndTime: formatDateToISOFormat(),
