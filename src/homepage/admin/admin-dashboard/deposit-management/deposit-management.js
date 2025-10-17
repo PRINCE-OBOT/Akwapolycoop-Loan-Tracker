@@ -73,8 +73,90 @@ function handleOptionContent(e) {
 (function addEventToTbody() {
   const tbody = getTbody();
   tbody.addEventListener('click', handleOptionContent);
-  //   tbody.addEventListener('click', handleActionStorage);
+  tbody.addEventListener('click', handleActionStorage);
 })();
+
+const getAttributeFromTarget = (e) => {
+  const target = e.target;
+
+  const status = target.getAttribute('data-status');
+
+  return { status };
+};
+
+const provideModifyActionData = ({ id, e }) => {
+  const { status } = getAttributeFromTarget(e);
+
+  const obj = {
+    key: 'action',
+    data: {
+      action: 'modifyData',
+      id,
+      value: [{ status }, { actionDate: new Date() }],
+      firstKey: ['deposit', 'deposit'],
+      secondKey: ['status', 'actionDate'],
+    },
+  };
+
+  storeActionToLocalStorage(obj);
+};
+
+function getClickTrLoanApplicantData(e) {
+  const { id } = getAttributeFromTr(e);
+
+  provideModifyActionData({ id, e });
+}
+
+const getIDFromTr = (tr) => {
+  const id = tr.getAttribute('data-id');
+  return id;
+};
+
+const getAttributeFromTr = (e) => {
+  const tr = e.target.closest('tr');
+  const id = getIDFromTr(tr);
+
+  return { id };
+};
+
+const getViewProfileActionData = (e) => {
+  const { id } = getAttributeFromTr(e);
+
+  const obj = {
+    key: 'action',
+    data: {
+      id: +id,
+      action: 'viewProfile',
+    },
+  };
+
+  storeActionToLocalStorage(obj);
+};
+
+const storeActionToLocalStorage = (obj) => {
+  localStorage.setData(obj);
+};
+
+const DBKeyHandler = {
+  deposit: getClickTrLoanApplicantData,
+  loanApplicantForm: getViewProfileActionData,
+};
+
+function handleActionStorage(e) {
+  const key = e.target.dataset.dbFirstKey;
+
+  if (!key) return;
+
+  DBKeyHandler[key](e);
+
+  if (key === 'loanApplicantForm') dispatchGetLoanApplicantData();
+}
+
+const viewProfileEvent = new CustomEvent('profile');
+
+const dispatchGetLoanApplicantData = () => {
+  eventBus.dispatchEvent(viewProfileEvent);
+};
 
 const errorWhileGettingData = () => {
   console.log('Error while getting data');
@@ -109,7 +191,7 @@ const appendTrToTbody = (tr) => {
   tbody.append(tr);
 };
 
-function insertTakeLoanDataToTable(depositList, id) {
+function insertTakeLoanDataToTable(depositList) {
   depositList.forEach((data, index) => {
     const tr = createTableTr();
     const serialNumber = getSerialNumber(index);
@@ -123,16 +205,16 @@ function insertTakeLoanDataToTable(depositList, id) {
        <td>${date}</td>
        <td>${time}</td>
        <td><img src="${eyeViewImg}" class="eye-view" alt="eye view"/>Proof of Payment</td>
-       <td data-db-first-key="deposit"><img src="${eyeViewImg}" class="eye-view" alt="eye view"/>View Profile</td>
+       <td data-db-first-key="loanApplicantForm"><img src="${eyeViewImg}" class="eye-view" alt="eye view"/>View Profile</td>
        <td><button data-option-key="depositApproveOption" data-db-first-key="deposit" data-status="Approve" class="btn-approve-loan">Approve</button></td>
        <td><button data-option-key="depositDeclineOption" data-db-first-key="deposit" data-status="Decline" class="btn-decline-loan">Decline</button></td>
       `;
-    setAttributeToTr({ tr, id });
+    setAttributeToTr({ tr, id: data.id });
     appendTrToTbody(tr);
   });
 }
 
-const sortTakenLoan = (depositList, id) => {
+const sortTakenLoan = (depositList) => {
   const format = 'EEEE dd, MMMM, yyyy, hh:mm:ss a';
 
   depositList.sort((prev, next) => {
@@ -141,19 +223,23 @@ const sortTakenLoan = (depositList, id) => {
     return compareAsc(nextDataAndTime, prevDateAndTime);
   });
 
-  insertTakeLoanDataToTable(depositList, id);
+  insertTakeLoanDataToTable(depositList);
 };
 
 const getDeposit = (loanApplicantListData) => {
-  const id = loanApplicantListData.id;
   const depositList = [];
 
   loanApplicantListData.forEach((data) => {
     if (!data.deposit) return;
-    data.deposit.forEach((deposit) => depositList.push(deposit));
-  });
 
-  sortTakenLoan(depositList, id);
+    const id = data.id;
+
+    data.deposit.forEach((deposit) => {
+      deposit.id = id;
+      depositList.push(deposit);
+    });
+  });
+  sortTakenLoan(depositList);
 };
 
 const getLoanApplicant = () => {
@@ -172,36 +258,3 @@ const depositManagementGetDataInDBBus = new EventTarget();
 depositManagementGetDataInDBBus.addEventListener('get-data-in-indexedDB', getLoanApplicant);
 
 export { depositManagement, depositManagementGetDataInDBBus };
-
-//             data.forEach(deposit => {
-//                 const statusClass = status-${deposit.status};
-//                 const statusText = deposit.status.charAt(0).toUpperCase() + deposit.status.slice(1);
-
-//                 const row = document.createElement('tr');
-//                 row.innerHTML = `
-//                     <td class="serial-cell">${deposit.id}</td>
-//                     <td class="amount-cell">$${deposit.amount.toLocaleString()}</td>
-//                     <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-//                     <td class="date-cell">${deposit.date}</td>
-//                     <td class="time-cell">${deposit.time}</td>
-//                     <td>
-//                         <button class="btn-small btn-view" onclick="viewProof('${deposit.id}')">
-//                             👁 View
-//                         </button>
-//                     </td>
-//                     <td>
-//                         <button class="btn-small btn-info" onclick="viewDetails('${deposit.id}')">
-//                             ℹ Info
-//                         </button>
-//                     </td>
-//                     <td>
-//                         <div class="action-buttons">
-//                             <button class="btn-small btn-approve" onclick="quickApprove('${deposit.id}')">✓ Approve</button>
-//                             <button class="btn-small btn-decline" onclick="quickDecline('${deposit.id}')">✗ Decline</button>
-//                         </div>
-//                     </td>
-//                 `;
-//                 tbody.appendChild(row);
-//             });
-//         }
-// `

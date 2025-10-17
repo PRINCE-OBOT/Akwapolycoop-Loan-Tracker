@@ -84,8 +84,10 @@ const dialogEvent = {
   signUp: contentEvent.status({ text: 'Signing in...', closedByValue: 'closerequest' }),
   signUpFail: contentEvent.status({ text: 'Account Already Exist', closedByValue: 'any' }),
   logout: contentEvent.option({ text: 'logout?' }),
-  approve: contentEvent.option({ text: 'approve the loan?' }),
-  decline: contentEvent.option({ text: 'decline the loan?' }),
+  loanApprove: contentEvent.option({ text: 'approve the loan?' }),
+  loanDecline: contentEvent.option({ text: 'decline the loan?' }),
+  depositApprove: contentEvent.option({ text: 'approve the deposit?' }),
+  depositDecline: contentEvent.option({ text: 'decline the deposit?' }),
   profile: contentEvent.profile(),
 };
 

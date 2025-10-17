@@ -140,7 +140,7 @@ const getViewProfileActionData = (e) => {
   storeActionToLocalStorage(obj);
 };
 
-const getModifyActionData = ({ amount, id, loanID, e }) => {
+const provideModifyActionData = ({ amount, id, loanID, e }) => {
   const { status } = getAttributeFromTarget(e);
 
   const obj = {
@@ -158,14 +158,14 @@ const getModifyActionData = ({ amount, id, loanID, e }) => {
   storeActionToLocalStorage(obj);
 };
 
-function getRecentLoanApplicantData(e) {
+function getClickTrLoanApplicantData(e) {
   const { id, loanID } = getAttributeFromTr(e);
 
   const getTakeLoanAmount = (data) => {
     const result = data.takeLoan.find((obj) => obj.loanID === loanID);
     const amount = result['desired-amount'];
 
-    getModifyActionData({ amount, id, loanID, e });
+    provideModifyActionData({ amount, id, loanID, e });
   };
 
   indexDB.interact(
@@ -178,11 +178,10 @@ function getRecentLoanApplicantData(e) {
     },
     'getData',
   );
-  // getModifyActionData;
 }
 
 const DBKeyHandler = {
-  takeLoan: getRecentLoanApplicantData,
+  takeLoan: getClickTrLoanApplicantData,
   loanApplicantForm: getViewProfileActionData,
 };
 
@@ -203,11 +202,11 @@ function handleActionStorage(e) {
 }
 
 const showApproveOption = () => {
-  eventBus.dispatchEvent(dialogEvent.approve);
+  eventBus.dispatchEvent(dialogEvent.loanApprove);
 };
 
 const showDeclineOption = () => {
-  eventBus.dispatchEvent(dialogEvent.decline);
+  eventBus.dispatchEvent(dialogEvent.loanDecline);
 };
 
 const OptionHandler = {
