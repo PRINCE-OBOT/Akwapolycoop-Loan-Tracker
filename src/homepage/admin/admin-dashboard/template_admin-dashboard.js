@@ -11,7 +11,7 @@ import indexDB from '../../module/indexDB/indexDB';
 import registerLocalStorageCustomMethod from '../../module/localStorage/localStorage';
 import appendContent from '../../module/content-holder/content-holder';
 import eventBus from '../../module/event-bus/event';
-import { getLoanApplicant, loanerManagementGetDataInDBBus } from './loaner-management';
+import { getLoanApplicant, loanerManagementGetDataInDBBus } from './loan-management';
 
 const headerBottomSection = document.querySelector('.header_bottom-section');
 const contentHolder = document.querySelector('.content-holder');
@@ -40,10 +40,20 @@ const events = {
       contentKey: 'loanerManagement',
     },
   }),
+
+  depositManagement: new CustomEvent('custom-change-content', {
+    detail: {
+      contentKey: 'depositManagement',
+    },
+  }),
 };
 
 const showAdminDashboard = () => {
   eventBus.dispatchEvent(events.adminDashboard);
+};
+
+const showDepositManagement = () => {
+  eventBus.dispatchEvent(events.depositManagement);
 };
 
 const getDataInIndexedDB = new CustomEvent('get-data-in-indexedDB');
@@ -57,7 +67,8 @@ showLoanerManagement();
 
 const contentHandler = {
   'admin-dashboard': showAdminDashboard,
-  'loaner-management': showLoanerManagement,
+  'loan-management': showLoanerManagement,
+  'deposit-management': showDepositManagement,
 };
 
 function setContentInDashboardHolder(e) {

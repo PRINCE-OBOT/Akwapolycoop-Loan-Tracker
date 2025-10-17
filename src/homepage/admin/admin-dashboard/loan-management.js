@@ -3,7 +3,7 @@ import indexDB from '../../module/indexDB/indexDB';
 import eyeViewImg from '../../assets/images/eye-view.svg';
 import { dialogEvent } from '../../module/dialog/dialog-manager';
 import eventBus from '../../module/event-bus/event';
-import bindModifyIndexdbEvent from './loaner-management-modify';
+import bindModifyIndexdbEvent from './loan-management-modify';
 
 bindModifyIndexdbEvent();
 
@@ -56,7 +56,7 @@ const loanerManagement = (function createLoanerManagementContent() {
             </div>
           `;
 
-  div.classList.add('loaner-management-content');
+  div.classList.add('loan-management-content');
 
   return div;
 })();

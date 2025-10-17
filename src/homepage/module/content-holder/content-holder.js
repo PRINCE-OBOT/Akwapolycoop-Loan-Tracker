@@ -4,16 +4,18 @@ import loanApplicantForm from '../../borrower/borrower-dashboard/loan-applicant-
 import takeLoan from '../../borrower/borrower-dashboard/take-loan';
 import { myLoan } from '../../borrower/borrower-dashboard/myLoan';
 import adminDashboardContent from '../../admin/admin-dashboard/admin-dashboard-content';
-import { loanerManagement } from '../../admin/admin-dashboard/loaner-management';
+import { loanerManagement } from '../../admin/admin-dashboard/loan-management';
 import loanApplicantDeposit from '../../borrower/borrower-dashboard/loan-applicant-deposit/loan-applicant-deposit';
+import { depositManagement } from '../../admin/admin-dashboard/deposit-management/deposit-management';
 
 const contents = {
   loanApplicantForm,
   takeLoan,
   myLoan,
+  loanApplicantDeposit,
   adminDashboardContent,
   loanerManagement,
-  loanApplicantDeposit,
+  depositManagement,
 };
 
 function appendContent(e) {

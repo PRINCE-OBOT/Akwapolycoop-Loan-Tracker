@@ -152,7 +152,7 @@ main {
 
 /* loaner management content styles */
 
-.loaner-management-content {
+.loan-management-content {
   flex-direction: column;
   gap: 15px;
   overflow: auto;
