@@ -270,7 +270,7 @@ const sortTakenLoan = (takeLoanList) => {
   takeLoanList.sort((prev, next) => {
     const prevDateAndTime = parse(prev.dateAndTime, format, new Date());
     const nextDataAndTime = parse(next.dateAndTime, format, new Date());
-    return compareAsc(prevDateAndTime, nextDataAndTime);
+    return compareAsc(nextDataAndTime, prevDateAndTime);
   });
 
   insertTakeLoanDataToTable(takeLoanList);
@@ -302,5 +302,4 @@ const getLoanApplicant = () => {
 const loanerManagementGetDataInDBBus = new EventTarget();
 loanerManagementGetDataInDBBus.addEventListener('get-data-in-indexedDB', getLoanApplicant);
 
-// eventBus.dispatchEvent(dialogEvent.profile)
 export { loanerManagement, getLoanApplicant, loanerManagementGetDataInDBBus };

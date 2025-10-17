@@ -225,6 +225,7 @@ td {
 }
 img.eye-view {
   pointer-events: none;
+  max-width: 20px;
 }
 .loan-list-section_actions {
   display: flex;

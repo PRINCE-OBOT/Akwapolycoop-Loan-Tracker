@@ -12,6 +12,7 @@ import registerLocalStorageCustomMethod from '../../module/localStorage/localSto
 import appendContent from '../../module/content-holder/content-holder';
 import eventBus from '../../module/event-bus/event';
 import { getLoanApplicant, loanerManagementGetDataInDBBus } from './loan-management';
+import { depositManagementGetDataInDBBus } from './deposit-management/deposit-management';
 
 const headerBottomSection = document.querySelector('.header_bottom-section');
 const contentHolder = document.querySelector('.content-holder');
@@ -52,18 +53,21 @@ const showAdminDashboard = () => {
   eventBus.dispatchEvent(events.adminDashboard);
 };
 
+const getDataInIndexedDB = new CustomEvent('get-data-in-indexedDB');
+
 const showDepositManagement = () => {
   eventBus.dispatchEvent(events.depositManagement);
+  depositManagementGetDataInDBBus.dispatchEvent(getDataInIndexedDB);
+  depositManagementGetDataInDBBus.removeEventListener('get-data-in-indexedDB', getLoanApplicant);
 };
-
-const getDataInIndexedDB = new CustomEvent('get-data-in-indexedDB');
+showDepositManagement();
 
 const showLoanerManagement = () => {
   eventBus.dispatchEvent(events.loanerManagement);
   loanerManagementGetDataInDBBus.dispatchEvent(getDataInIndexedDB);
   loanerManagementGetDataInDBBus.removeEventListener('get-data-in-indexedDB', getLoanApplicant);
 };
-showLoanerManagement();
+// showLoanerManagement();
 
 const contentHandler = {
   'admin-dashboard': showAdminDashboard,
