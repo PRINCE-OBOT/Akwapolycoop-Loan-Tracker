@@ -11,7 +11,7 @@ import indexDB from '../../module/indexDB/indexDB';
 import registerLocalStorageCustomMethod from '../../module/localStorage/localStorage';
 import appendContent from '../../module/content-holder/content-holder';
 import eventBus from '../../module/event-bus/event';
-import { getLoanApplicant, loanerManagementGetDataInDBBus } from './loan-management';
+import { loanerManagementGetDataInDBBus } from './loan-management';
 import { depositManagementGetDataInDBBus } from './deposit-management/deposit-management';
 
 const headerBottomSection = document.querySelector('.header_bottom-section');
@@ -58,14 +58,13 @@ const getDataInIndexedDB = new CustomEvent('get-data-in-indexedDB');
 const showDepositManagement = () => {
   eventBus.dispatchEvent(events.depositManagement);
   depositManagementGetDataInDBBus.dispatchEvent(getDataInIndexedDB);
-  depositManagementGetDataInDBBus.removeEventListener('get-data-in-indexedDB', getLoanApplicant);
 };
+
 showDepositManagement();
 
 const showLoanerManagement = () => {
   eventBus.dispatchEvent(events.loanerManagement);
   loanerManagementGetDataInDBBus.dispatchEvent(getDataInIndexedDB);
-  loanerManagementGetDataInDBBus.removeEventListener('get-data-in-indexedDB', getLoanApplicant);
 };
 // showLoanerManagement();
 
@@ -138,3 +137,5 @@ const showLogoutOption = () => {
 };
 
 btnLogout.addEventListener('dialog-manager', showLogoutOption);
+
+export default showLoanerManagement;

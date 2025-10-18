@@ -230,6 +230,9 @@ const appendTrToTbody = (tr) => {
 };
 
 function insertTakeLoanDataToTable(depositList) {
+  const tbody = getTbody();
+  tbody.innerHTML = '';
+
   depositList.forEach((data, index) => {
     const tr = createTableTr();
     const serialNumber = getSerialNumber(index);
@@ -280,7 +283,7 @@ const getDeposit = (loanApplicantListData) => {
   sortTakenLoan(depositList);
 };
 
-const getLoanApplicant = () => {
+const getLoanApplicantForDepositManagement = () => {
   indexDB.interact(
     {
       storeName: 'loan-applicant-list',
@@ -293,6 +296,9 @@ const getLoanApplicant = () => {
 };
 
 const depositManagementGetDataInDBBus = new EventTarget();
-depositManagementGetDataInDBBus.addEventListener('get-data-in-indexedDB', getLoanApplicant);
+depositManagementGetDataInDBBus.addEventListener(
+  'get-data-in-indexedDB',
+  getLoanApplicantForDepositManagement,
+);
 
 export { depositManagement, depositManagementGetDataInDBBus };

@@ -150,7 +150,7 @@ const provideModifyActionData = ({ amount, id, loanID, e }) => {
       id,
       loanID,
       value: [{ status }, { outstandingBalance: +amount }, { actionDate: new Date() }],
-      firstKey: ['takeLoan', 'takeLoan', 'takeLoan'],
+      firstKey: new Array(3).fill('takeLoan'),
       secondKey: ['status', 'outstandingBalance', 'actionDate'],
     },
   };
@@ -240,6 +240,9 @@ const setAttributeToTr = ({ tr, loanID }) => {
 };
 
 function insertTakeLoanDataToTable(takeLoanList) {
+  const tbody = getTbody();
+  tbody.innerHTML = '';
+
   takeLoanList.forEach((data, index) => {
     const tr = createTableTr();
     const serialNumber = getSerialNumber(index);
@@ -286,7 +289,7 @@ const getTakeLoan = (loanApplicantListData) => {
   sortTakenLoan(takeLoanList);
 };
 
-const getLoanApplicant = () => {
+const getLoanApplicantForLoanManagement = () => {
   indexDB.interact(
     {
       storeName: 'loan-applicant-list',
@@ -299,6 +302,9 @@ const getLoanApplicant = () => {
 };
 
 const loanerManagementGetDataInDBBus = new EventTarget();
-loanerManagementGetDataInDBBus.addEventListener('get-data-in-indexedDB', getLoanApplicant);
+loanerManagementGetDataInDBBus.addEventListener(
+  'get-data-in-indexedDB',
+  getLoanApplicantForLoanManagement,
+);
 
-export { loanerManagement, getLoanApplicant, loanerManagementGetDataInDBBus };
+export { loanerManagement, getLoanApplicantForLoanManagement, loanerManagementGetDataInDBBus };

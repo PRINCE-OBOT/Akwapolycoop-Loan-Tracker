@@ -1,7 +1,19 @@
 import eventBus from '../../module/event-bus/event';
 import indexDB from '../../module/indexDB/indexDB';
+import showLoanerManagement from './template_admin-dashboard';
 
-const updated = () => {};
+const updated = () => {
+  const { firstKey } = getActionDataFromLocalStorage();
+
+  const key = firstKey[0];
+
+  const contentHandler = {
+    takeLoan: 'admin-dashboard',
+    deposit: 'deposit-management',
+  };
+
+  showLoanerManagement({ e: { target: { dataset: contentHandler[key] } } });
+};
 
 const fail = () => {
   alert('fail');
