@@ -77,6 +77,7 @@ function insertMoreFormFieldValues(data) {
   deposit.dateAndTime = formatDateToISOFormat();
   deposit.status = 'Pending';
   deposit.depositAmount = depositAmount.value;
+  deposit.depositID = `DEP${data?.id}-00${depositLength}`;
 
   storeDataLoanApplicantList(data);
 }

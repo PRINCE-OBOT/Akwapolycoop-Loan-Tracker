@@ -3,7 +3,6 @@ import pipe from '../../module/composition/pipe';
 import eventBus from '../../module/event-bus/event';
 import indexDB from '../../module/indexDB/indexDB';
 import { dialogEvent } from '../../module/dialog/dialog-manager';
-// import { dialogEvent } from '../../module/dialog/dialog-manager';
 
 const createDiv = (document) => {
   const div = document.createElement('div');
@@ -245,11 +244,11 @@ function handleActionStorage(e) {
 }
 
 const showApproveOption = () => {
-  eventBus.dispatchEvent(dialogEvent.approve);
+  eventBus.dispatchEvent(dialogEvent.applicantApprove);
 };
 
 const showDeclineOption = () => {
-  eventBus.dispatchEvent(dialogEvent.decline);
+  eventBus.dispatchEvent(dialogEvent.applicantDecline);
 };
 
 const OptionHandler = {
@@ -270,7 +269,7 @@ const getActionDataFromLocalStorage = () => {
   return data;
 };
 
-const dispatchEventProfileEvent = () => {
+const dispatchProfileEvent = () => {
   eventBus.dispatchEvent(dialogEvent.profile);
 };
 
@@ -322,7 +321,7 @@ function insertLoanApplicantDataToProfile(data) {
   guarantorPhoneNumber.textContent = loanApplicantFormData['guarantor-phone-number'];
   guarantorResidentAddress.textContent = loanApplicantFormData['guarantor-resident-address'];
 
-  dispatchEventProfileEvent();
+  dispatchProfileEvent();
 }
 
 function getLoanApplicantData() {

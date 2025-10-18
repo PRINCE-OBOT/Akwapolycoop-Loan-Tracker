@@ -112,11 +112,17 @@ const getIDFromTr = (tr) => {
   return id;
 };
 
+const getDepositIDFromTr = (tr) => {
+  const depositID = tr.getAttribute('data-deposit-id');
+  return depositID;
+};
+
 const getAttributeFromTr = (e) => {
   const tr = e.target.closest('tr');
   const id = getIDFromTr(tr);
+  const depositID = getDepositIDFromTr(tr);
 
-  return { id };
+  return { id, depositID };
 };
 
 const getViewProfileActionData = (e) => {
@@ -133,6 +139,21 @@ const getViewProfileActionData = (e) => {
   storeActionToLocalStorage(obj);
 };
 
+const getProofOfPaymentActionData = (e) => {
+  const { id, depositID } = getAttributeFromTr(e);
+
+  const obj = {
+    key: 'action',
+    data: {
+      id: +id,
+      action: 'proof',
+      depositID,
+    },
+  };
+
+  storeActionToLocalStorage(obj);
+};
+
 const storeActionToLocalStorage = (obj) => {
   localStorage.setData(obj);
 };
@@ -140,6 +161,28 @@ const storeActionToLocalStorage = (obj) => {
 const DBKeyHandler = {
   deposit: getClickTrLoanApplicantData,
   loanApplicantForm: getViewProfileActionData,
+  proofOfPayment: getProofOfPaymentActionData,
+};
+
+const viewProfileEvent = new CustomEvent('profile');
+
+const dispatchGetLoanApplicantData = () => {
+  eventBus.dispatchEvent(viewProfileEvent);
+};
+
+const proofOfPaymentEvent = new CustomEvent('proof');
+
+const dispatchGetProofOfPaymentData = () => {
+  eventBus.dispatchEvent(proofOfPaymentEvent);
+};
+
+// views for displaying `loan applicant profile` and `proof of payment`
+// The functions get data stored in localStorage containing id referencing the `tr` click
+// which will be used to access indexedDB
+
+const Views = {
+  loanApplicantForm: dispatchGetLoanApplicantData,
+  proofOfPayment: dispatchGetProofOfPaymentData,
 };
 
 function handleActionStorage(e) {
@@ -149,14 +192,8 @@ function handleActionStorage(e) {
 
   DBKeyHandler[key](e);
 
-  if (key === 'loanApplicantForm') dispatchGetLoanApplicantData();
+  if (Views[key]) Views[key]();
 }
-
-const viewProfileEvent = new CustomEvent('profile');
-
-const dispatchGetLoanApplicantData = () => {
-  eventBus.dispatchEvent(viewProfileEvent);
-};
 
 const errorWhileGettingData = () => {
   console.log('Error while getting data');
@@ -182,8 +219,9 @@ const getTime = (dateAndTime) => {
   return time;
 };
 
-const setAttributeToTr = ({ tr, id }) => {
+const setAttributeToTr = ({ tr, id, depositID }) => {
   tr.setAttribute('data-id', id);
+  tr.setAttribute('data-deposit-id', depositID);
 };
 
 const appendTrToTbody = (tr) => {
@@ -204,12 +242,12 @@ function insertTakeLoanDataToTable(depositList) {
        <td>${data.status}</td>
        <td>${date}</td>
        <td>${time}</td>
-       <td><img src="${eyeViewImg}" class="eye-view" alt="eye view"/>Proof of Payment</td>
+       <td data-db-first-key="proofOfPayment"><img src="${eyeViewImg}" class="eye-view" alt="eye view"/>Proof of Payment</td>
        <td data-db-first-key="loanApplicantForm"><img src="${eyeViewImg}" class="eye-view" alt="eye view"/>View Profile</td>
        <td><button data-option-key="depositApproveOption" data-db-first-key="deposit" data-status="Approve" class="btn-approve-loan">Approve</button></td>
        <td><button data-option-key="depositDeclineOption" data-db-first-key="deposit" data-status="Decline" class="btn-decline-loan">Decline</button></td>
       `;
-    setAttributeToTr({ tr, id: data.id });
+    setAttributeToTr({ tr, id: data.id, depositID: data.depositID });
     appendTrToTbody(tr);
   });
 }
