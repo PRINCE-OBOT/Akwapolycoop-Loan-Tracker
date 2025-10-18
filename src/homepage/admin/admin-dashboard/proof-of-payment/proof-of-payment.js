@@ -5,6 +5,7 @@ import './proof-of-payment.css';
 
 const proofOfPayment = (function createProofOfPayment() {
   const form = document.createElement('form');
+  form.method = 'dialog';
 
   form.innerHTML = `
      <!-- Header -->
@@ -17,7 +18,8 @@ const proofOfPayment = (function createProofOfPayment() {
          <!-- Date of Payment -->
          <div class="info-section">
              <div class="info-label">Date of Payment</div>
-             <div class="info-value">October 15, 2025 at 10:30 AM</div>
+             <div class="date-of-payment"></div>
+             <div class="time-of-payment"><div>
          </div>
        <!-- Image Container -->
          <div class="image-container">
@@ -34,6 +36,8 @@ const proofOfPayment = (function createProofOfPayment() {
 const demo = () => {};
 
 const proofOfPaymentPreview = proofOfPayment.querySelector('.proof-of-payment-preview');
+const dateOfPayment = proofOfPayment.querySelector('.date-of-payment');
+const timeOfPayment = proofOfPayment.querySelector('.time-of-payment');
 
 const errorGettingData = () => {
   console.log('Error getting data');
@@ -44,6 +48,16 @@ const getActionDataFromLocalStorage = () => {
   return data;
 };
 
+const getDate = (dateAndTime) => {
+  const date = dateAndTime.slice(0, dateAndTime.lastIndexOf(','));
+  return date;
+};
+
+const getTime = (dateAndTime) => {
+  const time = dateAndTime.slice(dateAndTime.lastIndexOf(',') + 1);
+  return time;
+};
+
 const insertDepositProofOfPayment = (data) => {
   const { depositID } = getActionDataFromLocalStorage();
 
@@ -51,7 +65,12 @@ const insertDepositProofOfPayment = (data) => {
 
   const result = deposit.find((obj) => obj.depositID === depositID);
 
+  const date = getDate(result.dateAndTime);
+  const time = getTime(result.dateAndTime);
+
   proofOfPaymentPreview.src = result.proofOfPayment;
+  dateOfPayment.textContent = date;
+  timeOfPayment.textContent = time;
 
   dispatchProfileEvent();
 };
