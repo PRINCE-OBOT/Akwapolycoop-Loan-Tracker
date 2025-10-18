@@ -13,17 +13,14 @@ const proofOfPayment = (function createProofOfPayment() {
          <h1>Proof of Payment</h1>
          <button class="close-btn">✕</button>
      </div>
-   <!-- Body -->
+   
      <div class="proof-dialog-body">
-         <!-- Date of Payment -->
+     <img src="" alt="Proof of Payment" class="proof-of-payment-preview">
+         
          <div class="info-section">
              <div class="info-label">Date of Payment</div>
              <div class="date-of-payment"></div>
              <div class="time-of-payment"><div>
-         </div>
-       <!-- Image Container -->
-         <div class="image-container">
-             <img src="" alt="Proof of Payment" class="proof-of-payment-preview">
          </div>
      </div>
      `;
@@ -68,6 +65,7 @@ const insertDepositProofOfPayment = (data) => {
   const date = getDate(result.dateAndTime);
   const time = getTime(result.dateAndTime);
 
+  console.log(proofOfPaymentPreview, result.proofOfPayment);
   proofOfPaymentPreview.src = result.proofOfPayment;
   dateOfPayment.textContent = date;
   timeOfPayment.textContent = time;
