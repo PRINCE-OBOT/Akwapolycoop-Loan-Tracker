@@ -1,18 +1,23 @@
 import eventBus from '../../module/event-bus/event';
 import indexDB from '../../module/indexDB/indexDB';
-import showLoanerManagement from './template_admin-dashboard';
+
+const contentHandler = {
+  takeLoan: 'admin-dashboard',
+  deposit: 'deposit-management',
+};
 
 const updated = () => {
   const { firstKey } = getActionDataFromLocalStorage();
 
   const key = firstKey[0];
 
-  const contentHandler = {
-    takeLoan: 'admin-dashboard',
-    deposit: 'deposit-management',
-  };
+  const customContentEvent = new CustomEvent('custom-change-content', {
+    detail: {
+      contentKey: contentHandler[key],
+    },
+  });
 
-  showLoanerManagement({ e: { target: { dataset: contentHandler[key] } } });
+  eventBus.dispatchEvent(customContentEvent);
 };
 
 const fail = () => {

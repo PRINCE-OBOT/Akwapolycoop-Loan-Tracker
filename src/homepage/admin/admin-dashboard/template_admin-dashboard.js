@@ -11,8 +11,6 @@ import indexDB from '../../module/indexDB/indexDB';
 import registerLocalStorageCustomMethod from '../../module/localStorage/localStorage';
 import appendContent from '../../module/content-holder/content-holder';
 import eventBus from '../../module/event-bus/event';
-import { loanerManagementGetDataInDBBus } from './loan-management';
-import { depositManagementGetDataInDBBus } from './deposit-management/deposit-management';
 
 const headerBottomSection = document.querySelector('.header_bottom-section');
 const contentHolder = document.querySelector('.content-holder');
@@ -28,59 +26,6 @@ appendDialogToBody();
 appendContent.prototype.holder = contentHolder;
 
 // const logoutAdmin = () => {};
-
-const events = {
-  adminDashboard: new CustomEvent('custom-change-content', {
-    detail: {
-      contentKey: 'adminDashboardContent',
-    },
-  }),
-
-  loanerManagement: new CustomEvent('custom-change-content', {
-    detail: {
-      contentKey: 'loanerManagement',
-    },
-  }),
-
-  depositManagement: new CustomEvent('custom-change-content', {
-    detail: {
-      contentKey: 'depositManagement',
-    },
-  }),
-};
-
-const showAdminDashboard = () => {
-  eventBus.dispatchEvent(events.adminDashboard);
-};
-
-const getDataInIndexedDB = new CustomEvent('get-data-in-indexedDB');
-
-const showDepositManagement = () => {
-  eventBus.dispatchEvent(events.depositManagement);
-  depositManagementGetDataInDBBus.dispatchEvent(getDataInIndexedDB);
-};
-
-showDepositManagement();
-
-const showLoanerManagement = () => {
-  eventBus.dispatchEvent(events.loanerManagement);
-  loanerManagementGetDataInDBBus.dispatchEvent(getDataInIndexedDB);
-};
-// showLoanerManagement();
-
-const contentHandler = {
-  'admin-dashboard': showAdminDashboard,
-  'loan-management': showLoanerManagement,
-  'deposit-management': showDepositManagement,
-};
-
-function setContentInDashboardHolder(e) {
-  const contentKey = e.target.dataset.contentKey;
-
-  if (!contentKey) return;
-
-  contentHandler[contentKey]();
-}
 
 const errorGettingData = () => {
   console.log('Error while getting data');
@@ -130,12 +75,20 @@ const getRecentAdminID = () => {
   getRecentAdminData({ id, returnData: insertAdminDataToDashboardPage });
 })();
 
-headerBottomSection.addEventListener('click', setContentInDashboardHolder);
-
 const showLogoutOption = () => {
   eventBus.dispatchEvent(dialogEvent.logout);
 };
 
+function handleContentDisplay(e) {
+  const customContentEvent = new CustomEvent('custom-change-content', {
+    detail: {
+      contentKey: e.target.dataset.contentKey,
+    },
+  });
+
+  eventBus.dispatchEvent(customContentEvent);
+}
+
 btnLogout.addEventListener('dialog-manager', showLogoutOption);
 
-export default showLoanerManagement;
+headerBottomSection.addEventListener('click', handleContentDisplay);
