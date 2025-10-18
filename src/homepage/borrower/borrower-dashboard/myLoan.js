@@ -1,4 +1,3 @@
-import eventBus from '../../module/event-bus/event';
 import indexDB from '../../module/indexDB/indexDB';
 
 import registerLocalStorageCustomMethod from '../../module/localStorage/localStorage';
@@ -114,6 +113,7 @@ const getRecentLoanApplicant = () => {
   );
 };
 
-eventBus.addEventListener('get-data-in-indexedDB', getRecentLoanApplicant);
+const myLoanGetDataInDBBus = new EventTarget();
+myLoanGetDataInDBBus.addEventListener('get-data-in-indexedDB', getRecentLoanApplicant);
 
-export { myLoan, getRecentLoanApplicant };
+export { myLoan, myLoanGetDataInDBBus };

@@ -1,4 +1,4 @@
-import { dialogEvent } from '../../../module/dialog/dialog-manager';
+// import { dialogEvent } from '../../../module/dialog/dialog-manager';
 import eventBus from '../../../module/event-bus/event';
 import indexDB from '../../../module/indexDB/indexDB';
 import './proof-of-payment.css';
@@ -65,7 +65,6 @@ const insertDepositProofOfPayment = (data) => {
   const date = getDate(result.dateAndTime);
   const time = getTime(result.dateAndTime);
 
-  console.log(proofOfPaymentPreview, result.proofOfPayment);
   proofOfPaymentPreview.src = result.proofOfPayment;
   dateOfPayment.textContent = date;
   timeOfPayment.textContent = time;
@@ -74,7 +73,7 @@ const insertDepositProofOfPayment = (data) => {
 };
 
 const dispatchProfileEvent = () => {
-  eventBus.dispatchEvent(dialogEvent.proofOfPayment);
+  //   eventBus.dispatchEvent(dialogEvent.proofOfPayment);
 };
 
 function getLoanApplicantData() {

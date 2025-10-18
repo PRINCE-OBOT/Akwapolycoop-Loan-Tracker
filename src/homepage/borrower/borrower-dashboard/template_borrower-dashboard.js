@@ -17,7 +17,6 @@ import bindSubmitLoanButton from './take-loan-submission';
 import indexDB from '../../module/indexDB/indexDB';
 
 import eventBus from '../../module/event-bus/event';
-import { getRecentLoanApplicant } from './myLoan';
 import { appendDialogToBody, dialogEvent } from '../../module/dialog/dialog-manager';
 import pipe from '../../module/composition/pipe';
 import MathUtility from '../../module/business-logic/mathUtility';
@@ -54,16 +53,6 @@ appendContent.prototype.holder = contentHolder;
 MathUtility.prototype.outstandingBalance = outstandingBalance;
 MathUtility.outstandingBalance();
 
-const dispatchTakeLoanEvent = () => {
-  eventBus.dispatchEvent(events.takeLoan);
-};
-
-const checkIfLoanApplicantFormDataExist = (data) => {
-  data.loanApplicantFormData
-    ? dispatchTakeLoanEvent()
-    : alert('Loan Application Form Not Submitted');
-};
-
 const getRecentLoanApplicantID = () => {
   const data = localStorage.getData({ key: 'recent-loan-applicant' });
   return data?.id;
@@ -83,68 +72,6 @@ const navigateToLoginPage = () => {
 const errorGettingData = () => {
   console.log('Error getting data');
 };
-
-const events = {
-  loanApplicantForm: new CustomEvent('custom-change-content', {
-    detail: {
-      contentKey: 'loanApplicantForm',
-    },
-  }),
-
-  takeLoan: new CustomEvent('custom-change-content', {
-    detail: {
-      contentKey: 'takeLoan',
-    },
-  }),
-
-  myLoan: new CustomEvent('custom-change-content', {
-    detail: {
-      contentKey: 'myLoan',
-    },
-  }),
-
-  deposit: new CustomEvent('custom-change-content', {
-    detail: {
-      contentKey: 'loanApplicantDeposit',
-    },
-  }),
-};
-
-const showLoanApplicantForm = () => {
-  eventBus.dispatchEvent(events.loanApplicantForm);
-};
-
-const showTakeLoan = () => {
-  const id = getRecentLoanApplicantID();
-  getRecentLoanApplicantData({ id, returnData: checkIfLoanApplicantFormDataExist });
-};
-
-const getDataInIndexedDB = new CustomEvent('get-data-in-indexedDB');
-
-const showMyLoan = () => {
-  eventBus.dispatchEvent(events.myLoan);
-  eventBus.dispatchEvent(getDataInIndexedDB);
-  eventBus.removeEventListener('get-data-in-indexedDB', getRecentLoanApplicant);
-};
-
-const showDeposit = () => {
-  eventBus.dispatchEvent(events.deposit);
-};
-
-const contentHandler = {
-  'loan-applicant-form': showLoanApplicantForm,
-  'take-loan': showTakeLoan,
-  'my-loan': showMyLoan,
-  deposit: showDeposit,
-};
-
-function setContentInDashboardHolder(e) {
-  const contentKey = e.target.dataset.contentKey;
-
-  if (!contentKey) return;
-
-  contentHandler[contentKey]();
-}
 
 const logoutBorrower = () => {
   removeRecentLoanApplicantDataFromLocalStorage();
@@ -191,8 +118,6 @@ const getRecentLoanApplicantData = ({ id, returnData }) => {
   getRecentLoanApplicantData({ id, returnData: insertLoanApplicantDataToDashboardPage });
 })();
 
-leftSideBar.addEventListener('click', setContentInDashboardHolder);
-
 eventBus.addEventListener('logout', logoutBorrower);
 
 const getAction = (obj) => {
@@ -211,4 +136,16 @@ const showLogoutOption = () => {
   processStoring({});
   eventBus.dispatchEvent(dialogEvent.logout);
 };
+
+function handleContentDisplay(e) {
+  const customContentEvent = new CustomEvent('custom-change-content', {
+    detail: {
+      contentKey: e.target.dataset.contentKey,
+    },
+  });
+
+  eventBus.dispatchEvent(customContentEvent);
+}
 logoutButton.addEventListener('click', showLogoutOption);
+
+leftSideBar.addEventListener('click', handleContentDisplay);

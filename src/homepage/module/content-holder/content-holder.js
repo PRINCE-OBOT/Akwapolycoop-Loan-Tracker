@@ -2,7 +2,7 @@ import eventBus from '../event-bus/event';
 
 import loanApplicantForm from '../../borrower/borrower-dashboard/loan-applicant-form';
 import takeLoan from '../../borrower/borrower-dashboard/take-loan';
-import { myLoan } from '../../borrower/borrower-dashboard/myLoan';
+import { myLoan, myLoanGetDataInDBBus } from '../../borrower/borrower-dashboard/myLoan';
 import adminDashboardContent from '../../admin/admin-dashboard/admin-dashboard-content';
 import {
   loanerManagement,
@@ -19,13 +19,14 @@ const getDataInIndexedDB = new CustomEvent('get-data-in-indexedDB');
 const bus = {
   'deposit-management': depositManagementGetDataInDBBus,
   'loan-management': loanerManagementGetDataInDBBus,
+  'my-loan': myLoanGetDataInDBBus,
 };
 
 const contents = {
-  loanApplicantForm,
-  takeLoan,
-  myLoan,
-  loanApplicantDeposit,
+  'loan-applicant-form': loanApplicantForm,
+  'take-loan': takeLoan,
+  'my-loan': myLoan,
+  deposit: loanApplicantDeposit,
   'admin-dashboard': adminDashboardContent,
   'loan-management': loanerManagement,
   'deposit-management': depositManagement,
@@ -34,11 +35,13 @@ const contents = {
 function appendContent(e) {
   const detail = e.detail;
 
+  console.log(detail);
   const content = contents[detail.contentKey];
 
   if (!content) return;
 
   appendContent.prototype.holder.innerHTML = '';
+
   appendContent.prototype.holder.append(content);
 
   bus[detail.contentKey]?.dispatchEvent(getDataInIndexedDB);

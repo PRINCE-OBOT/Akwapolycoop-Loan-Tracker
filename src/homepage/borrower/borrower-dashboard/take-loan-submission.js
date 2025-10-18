@@ -12,15 +12,11 @@ const loanPurpose = form.querySelector('#loan-purpose');
 
 const btnSubmitLoan = form.querySelector('.btn-submit-loan');
 
-const submitLoanEvent = new CustomEvent('all-field-valid', {
-  detail: {
-    form,
-    functionToGetDataInIndexBD: getLoanApplicantDataIndexedDB,
-  },
-});
-
-const bindSubmitLoanButton = () =>
-  btnSubmitLoan.addEventListener('click', () => eventBus.dispatchEvent(submitLoanEvent));
+const checkIfLoanApplicantFormIsFill = (data) => {
+  data.loanApplicantFormData
+    ? insertMoreFormFieldValues(data)
+    : alert('Your loan application form has not been submitted');
+};
 
 function getLoanApplicantDataIndexedDB(data) {
   indexDB.interact(
@@ -28,7 +24,7 @@ function getLoanApplicantDataIndexedDB(data) {
       storeName: 'loan-applicant-list',
       keyPathValue: data?.id,
       getMethod: 'get',
-      returnData: insertMoreFormFieldValues,
+      returnData: checkIfLoanApplicantFormIsFill,
       undefinedState: errorGettingData,
     },
     'getData',
@@ -90,5 +86,15 @@ function loanApplicantDataNotStore() {
 function errorGettingData() {
   console.log('Error while getting data');
 }
+
+const submitLoanEvent = new CustomEvent('all-field-valid', {
+  detail: {
+    form,
+    functionToGetDataInIndexBD: getLoanApplicantDataIndexedDB,
+  },
+});
+
+const bindSubmitLoanButton = () =>
+  btnSubmitLoan.addEventListener('click', () => eventBus.dispatchEvent(submitLoanEvent));
 
 export default bindSubmitLoanButton;
