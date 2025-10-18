@@ -73,7 +73,7 @@ const insertDepositProofOfPayment = (data) => {
 };
 
 const dispatchProfileEvent = () => {
-  //   eventBus.dispatchEvent(dialogEvent.proofOfPayment);
+  // eventBus.dispatchEvent(dialogEvent.proofOfPayment);
 };
 
 function getLoanApplicantData() {

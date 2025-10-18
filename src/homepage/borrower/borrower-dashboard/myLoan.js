@@ -69,6 +69,9 @@ const appendTrToTbody = (tr) => {
 };
 
 function insertLoanApplicantDataToTr(loanApplicantData) {
+  const tbody = getTbody();
+  tbody.innerHTML = '';
+
   loanApplicantData.takeLoan.forEach((data, index) => {
     const tr = createTableTr();
     const serialNumber = getSerialNumber(index);

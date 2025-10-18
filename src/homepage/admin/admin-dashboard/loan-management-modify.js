@@ -2,7 +2,7 @@ import eventBus from '../../module/event-bus/event';
 import indexDB from '../../module/indexDB/indexDB';
 
 const contentHandler = {
-  takeLoan: 'admin-dashboard',
+  takeLoan: 'loan-management',
   deposit: 'deposit-management',
 };
 

@@ -24,7 +24,7 @@ appendDialogToBody.prototype.body = document.body;
 appendDialogToBody();
 
 appendContent.prototype.holder = contentHolder;
-
+appendContent({ detail: { contentKey: 'admin-dashboard' } });
 // const logoutAdmin = () => {};
 
 const errorGettingData = () => {
