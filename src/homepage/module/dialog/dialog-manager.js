@@ -2,6 +2,7 @@ import eventBus from '../event-bus/event';
 import { formOption, question } from './form-Option';
 import { formStatus, h4 } from './form-Status';
 import loanApplicantProfile from '../../borrower/loan-applicant-profile/loan-applicant-profile';
+import { proofOfPayment } from '../../admin/admin-dashboard/proof-of-payment/proof-of-payment';
 
 const dialog = (function createDialogElement() {
   return document.createElement('dialog');
@@ -13,6 +14,10 @@ function appendDialogToBody() {
 
 const appendLoanApplicantProfileToDialog = () => {
   dialog.append(loanApplicantProfile);
+};
+
+const appendProofOfPaymentToDialog = () => {
+  dialog.append(proofOfPayment);
 };
 
 const appendFormOptionToDialog = () => {
@@ -37,6 +42,7 @@ const dialogContentHandler = {
   question: setQuestionText,
   status: setStatusText,
   profile: appendLoanApplicantProfileToDialog,
+  proof: appendProofOfPaymentToDialog,
 };
 
 function DialogManager(e) {

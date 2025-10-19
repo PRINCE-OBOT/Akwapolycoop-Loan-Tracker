@@ -1,7 +1,7 @@
-// import { dialogEvent } from '../../../module/dialog/dialog-manager';
+import './proof-of-payment.css';
+
 import eventBus from '../../../module/event-bus/event';
 import indexDB from '../../../module/indexDB/indexDB';
-import './proof-of-payment.css';
 
 const proofOfPayment = (function createProofOfPayment() {
   const form = document.createElement('form');
@@ -72,8 +72,21 @@ const insertDepositProofOfPayment = (data) => {
   dispatchProfileEvent();
 };
 
+const proof = (text) =>
+  new CustomEvent('dialog-manager', {
+    detail: {
+      contentKey: 'proof',
+      closedByValue: 'any',
+      text,
+    },
+  });
+
+const proofEvent = {
+  proof: proof(),
+};
+
 const dispatchProfileEvent = () => {
-  // eventBus.dispatchEvent(dialogEvent.proofOfPayment);
+  eventBus.dispatchEvent(proofEvent.proof);
 };
 
 function getLoanApplicantData() {
