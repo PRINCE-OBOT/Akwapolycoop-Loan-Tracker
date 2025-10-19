@@ -1,7 +1,6 @@
 import { compareAsc, parse } from 'date-fns';
 import indexDB from '../../module/indexDB/indexDB';
 import eyeViewImg from '../../assets/images/eye-view.svg';
-import { dialogEvent } from '../../module/dialog/dialog-manager';
 import eventBus from '../../module/event-bus/event';
 import bindModifyIndexdbEvent from './loan-management-modify';
 
@@ -201,12 +200,26 @@ function handleActionStorage(e) {
   if (key === 'loanApplicantForm') dispatchGetLoanApplicantData();
 }
 
+const question = (text) =>
+  new CustomEvent('dialog-manager', {
+    detail: {
+      contentKey: 'question',
+      closedByValue: 'any',
+      text,
+    },
+  });
+
+const questionEvent = {
+  approve: question('approve the loan?'),
+  decline: question('decline the loan?'),
+};
+
 const showApproveOption = () => {
-  eventBus.dispatchEvent(dialogEvent.loanApprove);
+  eventBus.dispatchEvent(questionEvent.approve);
 };
 
 const showDeclineOption = () => {
-  eventBus.dispatchEvent(dialogEvent.loanDecline);
+  eventBus.dispatchEvent(questionEvent.decline);
 };
 
 const OptionHandler = {

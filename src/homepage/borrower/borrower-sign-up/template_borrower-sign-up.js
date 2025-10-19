@@ -12,7 +12,7 @@ import handleFieldValidationLogic from '../../module/form-validation/field-valid
 
 import indexDB from '../../module/indexDB/indexDB';
 
-import { appendDialogToBody, dialogEvent } from '../../module/dialog/dialog-manager';
+import appendDialogToBody from '../../module/dialog/dialog-manager';
 import eventBus from '../../module/event-bus/event';
 
 const form = document.querySelector('.borrower-sign-up-form');
@@ -51,8 +51,22 @@ function navigateToDashboardPage() {
   }, 2000);
 }
 
+const status = ({ text, closedByValue = 'any' }) =>
+  new CustomEvent('dialog-manager', {
+    detail: {
+      contentKey: 'status',
+      closedByValue,
+      text,
+    },
+  });
+
+const statusEvent = {
+  fail: status({ text: 'Account Already Exist', closedByValue: 'any' }),
+  signUp: status({ text: 'Signing in...', closedByValue: 'closerequest' }),
+};
+
 const setBorrowerSignUpStatus = () => {
-  eventBus.dispatchEvent(dialogEvent.signUp);
+  eventBus.dispatchEvent(statusEvent.signUp);
 };
 
 const loanApplicantDataNotStore = () => {
@@ -100,7 +114,7 @@ const storeDataToLoanApplicantList = () => {
 };
 
 const accountAlreadyExist = () => {
-  eventBus.dispatchEvent(dialogEvent.signUpFail);
+  eventBus.dispatchEvent(statusEvent.fail);
 };
 
 const checkIfUserExistInLoanApplicantList = () => {

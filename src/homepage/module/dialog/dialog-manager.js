@@ -2,7 +2,6 @@ import eventBus from '../event-bus/event';
 import { formOption, question } from './form-Option';
 import { formStatus, h4 } from './form-Status';
 import loanApplicantProfile from '../../borrower/loan-applicant-profile/loan-applicant-profile';
-import { proofOfPayment } from '../../admin/admin-dashboard/proof-of-payment/proof-of-payment';
 
 const dialog = (function createDialogElement() {
   return document.createElement('dialog');
@@ -14,10 +13,6 @@ function appendDialogToBody() {
 
 const appendLoanApplicantProfileToDialog = () => {
   dialog.append(loanApplicantProfile);
-};
-
-const appendProofOfPaymentToDialog = () => {
-  dialog.append(proofOfPayment);
 };
 
 const appendFormOptionToDialog = () => {
@@ -42,7 +37,6 @@ const dialogContentHandler = {
   question: setQuestionText,
   status: setStatusText,
   profile: appendLoanApplicantProfileToDialog,
-  proof: appendProofOfPaymentToDialog,
 };
 
 function DialogManager(e) {
@@ -58,55 +52,6 @@ function DialogManager(e) {
   dialog.showModal();
 }
 
-const contentEvent = {
-  status: ({ text, closedByValue = 'any' }) =>
-    new CustomEvent('dialog-manager', {
-      detail: {
-        contentKey: 'status',
-        closedByValue,
-        text,
-      },
-    }),
-  option: ({ text }) =>
-    new CustomEvent('dialog-manager', {
-      detail: {
-        contentKey: 'question',
-        closedByValue: 'any',
-        text,
-      },
-    }),
-  profile: () =>
-    new CustomEvent('dialog-manager', {
-      detail: {
-        contentKey: 'profile',
-        closedByValue: 'any',
-      },
-    }),
-  proof: () =>
-    new CustomEvent('dialog-manager', {
-      detail: {
-        contentKey: 'proof',
-        closedByValue: 'any',
-      },
-    }),
-};
-
-const dialogEvent = {
-  login: contentEvent.status({ text: 'Logging in...', closedByValue: 'closerequest' }),
-  fail: contentEvent.status({ text: 'Incorrect Username or Password' }),
-  signUp: contentEvent.status({ text: 'Signing in...', closedByValue: 'closerequest' }),
-  signUpFail: contentEvent.status({ text: 'Account Already Exist', closedByValue: 'any' }),
-  logout: contentEvent.option({ text: 'logout?' }),
-  loanApprove: contentEvent.option({ text: 'approve the loan?' }),
-  loanDecline: contentEvent.option({ text: 'decline the loan?' }),
-  applicantApprove: contentEvent.option({ text: 'approve the Applicant Form?' }),
-  applicantDecline: contentEvent.option({ text: 'decline the Applicant Form?' }),
-  depositApprove: contentEvent.option({ text: 'approve the deposit?' }),
-  depositDecline: contentEvent.option({ text: 'decline the deposit?' }),
-  profile: contentEvent.profile(),
-  proofOfPayment: contentEvent.proof(),
-};
-
 eventBus.addEventListener('dialog-manager', DialogManager);
 
-export { appendDialogToBody, dialogEvent };
+export default appendDialogToBody;

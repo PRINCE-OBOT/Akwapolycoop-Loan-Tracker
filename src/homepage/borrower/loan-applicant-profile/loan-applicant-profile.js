@@ -2,7 +2,6 @@ import './loan-applicant-profile.css';
 import pipe from '../../module/composition/pipe';
 import eventBus from '../../module/event-bus/event';
 import indexDB from '../../module/indexDB/indexDB';
-import { dialogEvent } from '../../module/dialog/dialog-manager';
 
 const createDiv = (document) => {
   const div = document.createElement('div');
@@ -243,12 +242,26 @@ function handleActionStorage(e) {
   processActionStoring(e);
 }
 
+const question = (text) =>
+  new CustomEvent('dialog-manager', {
+    detail: {
+      contentKey: 'question',
+      closedByValue: 'any',
+      text,
+    },
+  });
+
+const questionEvent = {
+  approve: question('approve the Applicant Form?'),
+  decline: question('decline the Applicant Form?'),
+};
+
 const showApproveOption = () => {
-  eventBus.dispatchEvent(dialogEvent.applicantApprove);
+  eventBus.dispatchEvent(questionEvent.approve);
 };
 
 const showDeclineOption = () => {
-  eventBus.dispatchEvent(dialogEvent.applicantDecline);
+  eventBus.dispatchEvent(questionEvent.decline);
 };
 
 const OptionHandler = {
@@ -269,8 +282,20 @@ const getActionDataFromLocalStorage = () => {
   return data;
 };
 
+const profile = () =>
+  new CustomEvent('dialog-manager', {
+    detail: {
+      contentKey: 'profile',
+      closedByValue: 'any',
+    },
+  });
+
+const profileEvent = {
+  profile: profile(),
+};
+
 const dispatchProfileEvent = () => {
-  eventBus.dispatchEvent(dialogEvent.profile);
+  eventBus.dispatchEvent(profileEvent.profile);
 };
 
 const applicationDate = loanApplicantProfile.querySelector('#application-date');

@@ -10,7 +10,7 @@ import FieldValidationUtility from '../../module/form-validation/field-utility';
 import indexDB from '../../module/indexDB/indexDB';
 import registerLocalStorageCustomMethod from '../../module/localStorage/localStorage';
 import eventBus from '../../module/event-bus/event';
-import { appendDialogToBody, dialogEvent } from '../../module/dialog/dialog-manager';
+import appendDialogToBody from '../../module/dialog/dialog-manager';
 
 const form = document.querySelector('.admin-login-form');
 const username = form.querySelector('#username');
@@ -45,12 +45,26 @@ const setLoanApplicantIDInLocalStorage = () => {
   localStorage.setData({ key: 'recent-admin', data: { id: 1 } });
 };
 
+const status = ({ text, closedByValue = 'any' }) =>
+  new CustomEvent('dialog-manager', {
+    detail: {
+      contentKey: 'status',
+      closedByValue,
+      text,
+    },
+  });
+
+const statusEvent = {
+  login: status({ text: 'Logging in...', closedByValue: 'closerequest' }),
+  fail: status({ text: 'Incorrect Username or Password' }),
+};
+
 const displayIncorrectUsernameOrPassword = () => {
-  eventBus.dispatchEvent(dialogEvent.fail);
+  eventBus.dispatchEvent(statusEvent.fail);
 };
 
 const processNavigatingToDashboard = () => {
-  eventBus.dispatchEvent(dialogEvent.login);
+  eventBus.dispatchEvent(statusEvent.login);
   setLoanApplicantIDInLocalStorage();
   navigateToDashboardPage();
 };

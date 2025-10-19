@@ -10,7 +10,7 @@ import FieldValidationUtility from '../../module/form-validation/field-utility';
 
 import indexDB from '../../module/indexDB/indexDB';
 import eventBus from '../../module/event-bus/event';
-import { appendDialogToBody, dialogEvent } from '../../module/dialog/dialog-manager';
+import appendDialogToBody from '../../module/dialog/dialog-manager';
 
 const form = document.querySelector('.borrower-login-form');
 const username = form.querySelector('#username');
@@ -34,13 +34,27 @@ const setLoanApplicantIDInLocalStorage = (id) => {
   localStorage.setData({ key: 'recent-loan-applicant', data: { id } });
 };
 
+const status = ({ text, closedByValue = 'any' }) =>
+  new CustomEvent('dialog-manager', {
+    detail: {
+      contentKey: 'status',
+      closedByValue,
+      text,
+    },
+  });
+
+const statusEvent = {
+  login: status({ text: 'Logging in...', closedByValue: 'closerequest' }),
+  fail: status({ text: 'Incorrect Username or Password' }),
+};
+
 const displayIncorrectUsernameOrPassword = () => {
-  eventBus.dispatchEvent(dialogEvent.fail);
+  eventBus.dispatchEvent(statusEvent.fail);
 };
 
 const processNavigatingToDashboard = (id) => {
   setLoanApplicantIDInLocalStorage(id);
-  eventBus.dispatchEvent(dialogEvent.login);
+  eventBus.dispatchEvent(statusEvent.login);
   navigateToDashboardPage();
 };
 

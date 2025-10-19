@@ -17,7 +17,7 @@ import bindSubmitLoanButton from './take-loan-submission';
 import indexDB from '../../module/indexDB/indexDB';
 
 import eventBus from '../../module/event-bus/event';
-import { appendDialogToBody, dialogEvent } from '../../module/dialog/dialog-manager';
+import appendDialogToBody from '../../module/dialog/dialog-manager';
 import pipe from '../../module/composition/pipe';
 import MathUtility from '../../module/business-logic/mathUtility';
 import bindDepositDocumentUploadEvent from './loan-applicant-deposit/loan-applicant-deposit-handle-submission';
@@ -132,9 +132,22 @@ const storeActionToLocalStorage = (data) => {
 
 const processStoring = pipe(getAction, storeActionToLocalStorage);
 
+const question = (text) =>
+  new CustomEvent('dialog-manager', {
+    detail: {
+      contentKey: 'question',
+      closedByValue: 'any',
+      text,
+    },
+  });
+
+const questionEvent = {
+  logout: question({ text: 'logout?' }),
+};
+
 const showLogoutOption = () => {
   processStoring({});
-  eventBus.dispatchEvent(dialogEvent.logout);
+  eventBus.dispatchEvent(questionEvent.logout);
 };
 
 function handleContentDisplay(e) {

@@ -2,7 +2,6 @@ import { compareAsc, parse } from 'date-fns';
 
 import eyeViewImg from '../../../assets/images/eye-view.svg';
 
-import { dialogEvent } from '../../../module/dialog/dialog-manager';
 import eventBus from '../../../module/event-bus/event';
 import indexDB from '../../../module/indexDB/indexDB';
 import './deposit-management.css';
@@ -49,12 +48,26 @@ const getTbody = () => {
   return tbody;
 };
 
+const question = (text) =>
+  new CustomEvent('dialog-manager', {
+    detail: {
+      contentKey: 'question',
+      closedByValue: 'any',
+      text,
+    },
+  });
+
+const questionEvent = {
+  approve: question('approve the deposit?'),
+  decline: question('decline the deposit?'),
+};
+
 const showDepositApproveOption = () => {
-  eventBus.dispatchEvent(dialogEvent.depositApprove);
+  eventBus.dispatchEvent(questionEvent.approve);
 };
 
 const showDepositDeclineOption = () => {
-  eventBus.dispatchEvent(dialogEvent.depositDecline);
+  eventBus.dispatchEvent(questionEvent.decline);
 };
 
 const OptionHandler = {

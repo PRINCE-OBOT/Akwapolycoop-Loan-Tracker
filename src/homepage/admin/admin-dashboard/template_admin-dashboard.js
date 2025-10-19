@@ -4,7 +4,7 @@ import '../../assets/font.css';
 import '../../assets/common_general.css';
 import '../../assets/style-border-button.css';
 
-import { appendDialogToBody, dialogEvent } from '../../module/dialog/dialog-manager';
+import appendDialogToBody from '../../module/dialog/dialog-manager';
 
 import indexDB from '../../module/indexDB/indexDB';
 
@@ -76,7 +76,7 @@ const getRecentAdminID = () => {
 })();
 
 const showLogoutOption = () => {
-  eventBus.dispatchEvent(dialogEvent.logout);
+  // eventBus.dispatchEvent(dialogEvent.logout);
 };
 
 function handleContentDisplay(e) {
