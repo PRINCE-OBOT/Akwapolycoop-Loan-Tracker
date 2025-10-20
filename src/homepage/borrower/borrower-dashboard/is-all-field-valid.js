@@ -17,14 +17,8 @@ function checkIfAllFieldFillIsValid(e) {
   new FieldValidationUtility({
     messages,
     inputs,
-    runWhenAllFieldFillIsValid: getLoanApplicantIdInLocalStorage,
+    runWhenAllFieldFillIsValid: functionToGetDataInIndexBD,
   });
-}
-
-function getLoanApplicantIdInLocalStorage() {
-  const data = localStorage.getData({ key: 'recent-loan-applicant' });
-
-  functionToGetDataInIndexBD(data);
 }
 
 export default bindAllFieldValidEvent;

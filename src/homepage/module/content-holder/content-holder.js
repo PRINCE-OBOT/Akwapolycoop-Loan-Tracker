@@ -35,7 +35,6 @@ const contents = {
 function appendContent(e) {
   const detail = e.detail;
 
-  console.log(detail);
   const content = contents[detail.contentKey];
 
   if (!content) return;

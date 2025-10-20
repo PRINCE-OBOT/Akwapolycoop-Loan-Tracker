@@ -9,6 +9,7 @@ import handleFieldValidationLogic from '../../../module/form-validation/field-va
 
 const loanApplicantDeposit = (function () {
   const form = document.createElement('form');
+  form.novalidate;
 
   form.innerHTML = `
     <div class="deposit-container">
@@ -74,7 +75,7 @@ const loanApplicantDeposit = (function () {
 
                 <div class="form-actions">
                     <!-- <button type="button" class="btn btn-cancel">Cancel</button> -->
-                    <button type="button" class="btn btn-submit">Submit Deposit</button>
+                    <button class="btn btn-submit">Submit Deposit</button>
                 </div>
             </form>
         </div>
@@ -187,7 +188,7 @@ function storeDataLoanApplicantList(data) {
 const submitDepositFormEvent = new CustomEvent('all-field-valid', {
   detail: {
     form: loanApplicantDeposit,
-    functionToGetDataInIndexBD: checkIfDepositAmountIsWithinRange,
+    functionToGetDataInIndexBD: handleDepositDirection,
   },
 });
 
@@ -195,7 +196,8 @@ const errorGettingData = () => {
   console.log('Error getting data');
 };
 
-const getLoanApplicantDataFromIndexedDB = (data) => {
+const getLoanApplicantDataFromIndexedDB = () => {
+  const data = localStorage.getData({ key: 'recent-loan-applicant' });
   const id = data?.id;
 
   indexDB.interact(
@@ -210,18 +212,65 @@ const getLoanApplicantDataFromIndexedDB = (data) => {
   );
 };
 
-function checkIfDepositAmountIsWithinRange(data) {
+const Event = ({ text, closedByValue = 'any' }) =>
+  new CustomEvent('dialog-manager', {
+    detail: {
+      contentKey: 'status',
+      closedByValue,
+      text,
+    },
+  });
+
+const events = {
+  failDepositApprove: Event({
+    text: 'Approve deposit amount does no match Loan Applicant deposit amount',
+  }),
+  modifyIndexdb: new CustomEvent('modify-indexdb'),
+};
+
+function checkIfAdminDepositAmountIsWithinRange(data) {
+  const depositApproveAmount = data.value.find(
+    (element) => element.outstandingBalance,
+  ).outstandingBalance;
+
+  +depositAmount.value === depositApproveAmount
+    ? eventBus.dispatchEvent(events.modifyIndexdb)
+    : eventBus.dispatchEvent(events.failDepositApprove);
+}
+
+const Actions = {
+  deposit: checkIfDepositAmountIsWithinRange,
+  modifyData: checkIfAdminDepositAmountIsWithinRange,
+};
+
+// const getAct
+
+function getActionFromLocalStorage() {
+  const data = localStorage.getData({ key: 'action' });
+  return data;
+}
+
+function handleDepositDirection() {
+  const data = getActionFromLocalStorage();
+
+  Actions[data?.action](data);
+}
+
+// if action is deposit-management,
+function checkIfDepositAmountIsWithinRange() {
   const outstandingBalance = +MathUtility.prototype.outstandingBalance.textContent;
   const depositAmountValue = +depositAmount.value;
 
   depositAmountValue > outstandingBalance
     ? alert('You cannot deposit more than your outstanding balance')
-    : getLoanApplicantDataFromIndexedDB(data);
+    : getLoanApplicantDataFromIndexedDB();
 }
 
-const bindSubmitApplicationButton = () => {
+function bindSubmitApplicationButton(e) {
+  e.preventDefault();
+
   eventBus.dispatchEvent(submitDepositFormEvent);
-};
+}
 
 btnSubmitDeposit.addEventListener('click', bindSubmitApplicationButton);
 

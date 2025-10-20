@@ -12,6 +12,7 @@ import registerLocalStorageCustomMethod from '../../module/localStorage/localSto
 import appendContent from '../../module/content-holder/content-holder';
 import eventBus from '../../module/event-bus/event';
 import { bindDepositDocumentUploadEvent } from '../../borrower/borrower-dashboard/loan-applicant-deposit/loan-applicant-deposit';
+import bindAllFieldValidEvent from '../../borrower/borrower-dashboard/is-all-field-valid';
 
 const headerBottomSection = document.querySelector('.header_bottom-section');
 const contentHolder = document.querySelector('.content-holder');
@@ -22,6 +23,7 @@ const html = document.querySelector('html');
 registerLocalStorageCustomMethod();
 
 bindDepositDocumentUploadEvent();
+bindAllFieldValidEvent();
 
 appendDialogToBody.prototype.body = document.body;
 appendDialogToBody();

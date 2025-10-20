@@ -150,10 +150,27 @@ const showLogoutOption = () => {
   eventBus.dispatchEvent(questionEvent.logout);
 };
 
+function getDepositActionData() {
+  const obj = {
+    key: 'action',
+    data: {
+      action: 'deposit',
+    },
+  };
+
+  storeActionToLocalStorage(obj);
+}
+
 function handleContentDisplay(e) {
+  const contentKey = e.target.dataset.contentKey;
+
+  if (!contentKey) return;
+
+  if (contentKey === 'deposit') getDepositActionData();
+
   const customContentEvent = new CustomEvent('custom-change-content', {
     detail: {
-      contentKey: e.target.dataset.contentKey,
+      contentKey,
     },
   });
 
