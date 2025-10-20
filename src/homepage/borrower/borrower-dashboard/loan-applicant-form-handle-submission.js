@@ -47,13 +47,13 @@ const bindSubmitApplicationButton = () =>
     eventBus.dispatchEvent(submitLoanApplicationFormEvent),
   );
 
-function getLoanApplicantDataIndexedDB(data) {
-  const id = data?.id;
+function getLoanApplicantDataIndexedDB() {
+  const data = localStorage.getData({ key: 'recent-loan-applicant' });
 
   indexDB.interact(
     {
       storeName: 'loan-applicant-list',
-      keyPathValue: id,
+      keyPathValue: data?.id,
       getMethod: 'get',
       returnData: convertFileToDataURLFormat,
       undefinedState: errorGettingData,
@@ -127,15 +127,41 @@ function storeDataLoanApplicantList(data) {
     {
       storeName: 'loan-applicant-list',
       data,
-      trueState: displayFormSubmissionStatus,
+      trueState: handleFormSuccessStatus,
       undefinedState: loanApplicantDataNotStore,
     },
     'storeData',
   );
 }
 
-function displayFormSubmissionStatus() {
-  alert('You form has been submitted');
+const Event = ({ eventName, text = null, closedByValue = 'any', contentKey = null }) =>
+  new CustomEvent(eventName, {
+    detail: {
+      contentKey,
+      closedByValue,
+      text,
+    },
+  });
+
+const events = {
+  success: Event({
+    eventName: 'dialog-manager',
+    contentKey: 'status',
+    text: 'You form has been submitted. Under Review',
+  }),
+  removeLoanApplicantTab: Event({
+    eventName: 'remove-loan-applicant-tab',
+  }),
+  showTakeLoan: Event({
+    eventName: 'custom-change-content',
+    contentKey: 'take-loan',
+  }),
+};
+
+function handleFormSuccessStatus() {
+  eventBus.dispatchEvent(events.success);
+  eventBus.dispatchEvent(events.removeLoanApplicantTab);
+  eventBus.dispatchEvent(events.showTakeLoan);
 }
 
 function loanApplicantDataNotStore() {

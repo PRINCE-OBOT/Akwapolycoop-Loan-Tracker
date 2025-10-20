@@ -12,13 +12,28 @@ const loanPurpose = form.querySelector('#loan-purpose');
 
 const btnSubmitLoan = form.querySelector('.btn-submit-loan');
 
+const Event = ({ text, closedByValue = 'any' }) =>
+  new CustomEvent('dialog-manager', {
+    detail: {
+      contentKey: 'status',
+      closedByValue,
+      text,
+    },
+  });
+
+const events = {
+  failTakeLoan: Event({ text: 'Your loan application form has not been submitted' }),
+};
+
 const checkIfLoanApplicantFormIsFill = (data) => {
   data.loanApplicantFormData
     ? insertMoreFormFieldValues(data)
-    : alert('Your loan application form has not been submitted');
+    : eventBus.dispatchEvent(events.failTakeLoan);
 };
 
-function getLoanApplicantDataIndexedDB(data) {
+function getLoanApplicantDataIndexedDB() {
+  const data = localStorage.getData({ key: 'recent-loan-applicant' });
+
   indexDB.interact(
     {
       storeName: 'loan-applicant-list',

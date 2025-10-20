@@ -82,8 +82,12 @@ const prependLoanApplicationFormBeforeSideBar = () => {
   bottomLeftSideBar.prepend(loanApplicantForm);
 };
 
+function removeLoanApplicantTab() {
+  loanApplicantForm.remove();
+}
+
 const prependWhenLoanApplicantDataDoesNotExist = (data) => {
-  !data.loanApplicantFormData ? prependLoanApplicationFormBeforeSideBar() : null;
+  if (!data.loanApplicantFormData) prependLoanApplicationFormBeforeSideBar();
 };
 
 function insertLoanApplicantDataToDashboardPage(data) {
@@ -132,7 +136,7 @@ const storeActionToLocalStorage = (data) => {
 
 const processStoring = pipe(getAction, storeActionToLocalStorage);
 
-const question = (text) =>
+const question = ({ text }) =>
   new CustomEvent('dialog-manager', {
     detail: {
       contentKey: 'question',
@@ -179,3 +183,5 @@ function handleContentDisplay(e) {
 logoutButton.addEventListener('click', showLogoutOption);
 
 leftSideBar.addEventListener('click', handleContentDisplay);
+
+eventBus.addEventListener('remove-loan-applicant-tab', removeLoanApplicantTab);

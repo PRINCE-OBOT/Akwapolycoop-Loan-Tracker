@@ -1,3 +1,4 @@
+import eventBus from '../../module/event-bus/event';
 import indexDB from '../../module/indexDB/indexDB';
 
 import registerLocalStorageCustomMethod from '../../module/localStorage/localStorage';
@@ -52,9 +53,22 @@ const getTbody = () => {
   return tbody;
 };
 
+const Event = ({ text, closedByValue = 'any' }) =>
+  new CustomEvent('dialog-manager', {
+    detail: {
+      contentKey: 'status',
+      closedByValue,
+      text,
+    },
+  });
+
+const events = {
+  failMyLoan: Event({ text: 'You have not taken a loan' }),
+};
+
 const checkIfLoanApplicantDataTakeLoanExist = (loanApplicantData) => {
   !loanApplicantData.takeLoan
-    ? alert('You have not taken a loan')
+    ? eventBus.dispatchEvent(events.failMyLoan)
     : insertLoanApplicantDataToTr(loanApplicantData);
 };
 

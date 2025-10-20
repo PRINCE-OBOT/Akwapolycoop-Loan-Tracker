@@ -34,27 +34,27 @@ const setLoanApplicantIDInLocalStorage = (id) => {
   localStorage.setData({ key: 'recent-loan-applicant', data: { id } });
 };
 
-const status = ({ text, closedByValue = 'any' }) =>
+const Event = ({ text, closedByValue = 'any' }) =>
   new CustomEvent('dialog-manager', {
     detail: {
-      contentKey: 'status',
+      contentKey: 'Event',
       closedByValue,
       text,
     },
   });
 
-const statusEvent = {
-  login: status({ text: 'Logging in...', closedByValue: 'closerequest' }),
-  fail: status({ text: 'Incorrect Username or Password' }),
+const events = {
+  login: Event({ text: 'Logging in...', closedByValue: 'closerequest' }),
+  fail: Event({ text: 'Incorrect Username or Password' }),
 };
 
 const displayIncorrectUsernameOrPassword = () => {
-  eventBus.dispatchEvent(statusEvent.fail);
+  eventBus.dispatchEvent(events.fail);
 };
 
 const processNavigatingToDashboard = (id) => {
   setLoanApplicantIDInLocalStorage(id);
-  eventBus.dispatchEvent(statusEvent.login);
+  eventBus.dispatchEvent(events.login);
   navigateToDashboardPage();
 };
 
