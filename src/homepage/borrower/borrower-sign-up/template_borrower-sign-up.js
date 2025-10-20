@@ -114,6 +114,7 @@ const storeDataToLoanApplicantList = () => {
 };
 
 const accountAlreadyExist = () => {
+  resetForm();
   eventBus.dispatchEvent(statusEvent.fail);
 };
 

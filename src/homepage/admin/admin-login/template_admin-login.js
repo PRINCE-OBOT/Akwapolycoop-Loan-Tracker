@@ -60,6 +60,7 @@ const statusEvent = {
 };
 
 const displayIncorrectUsernameOrPassword = () => {
+  resetForm();
   eventBus.dispatchEvent(statusEvent.fail);
 };
 

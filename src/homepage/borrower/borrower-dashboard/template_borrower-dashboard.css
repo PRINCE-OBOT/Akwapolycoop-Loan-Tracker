@@ -15,6 +15,11 @@ form.loan-application-form {
   max-width: 1150px;
 }
 
+[data-content-key],
+.logout-button {
+  cursor: pointer;
+}
+
 legend {
   padding: 5px;
   letter-spacing: 2px;
