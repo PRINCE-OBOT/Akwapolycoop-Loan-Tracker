@@ -61,7 +61,8 @@ function DialogManager(e) {
   dialogContentHandler[detail.contentKey](detail);
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
-  dialog.showModal();
+
+  setTimeout(() => dialog.showModal(), 200);
 }
 
 eventBus.addEventListener('dialog-manager', DialogManager);
