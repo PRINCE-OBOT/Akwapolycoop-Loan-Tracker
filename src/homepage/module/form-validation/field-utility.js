@@ -19,7 +19,16 @@ export default class FieldValidationUtility {
     );
 
     if (isEveryMessageValid && isEveryInputValid) {
-      window.scrollTo(0, 0);
+      const form = this.inputs[0].closest('form');
+      form.reset();
+
+      this.inputs.forEach((input) => input.classList.remove('user-interact'));
+
+      this.messages.forEach((message) => {
+        message.classList.remove('valid');
+        message.textContent = '';
+      });
+
       this.runWhenAllFieldFillIsValid();
     } else {
       const invalidMessages = [...this.messages].filter(
@@ -82,7 +91,7 @@ export default class FieldValidationUtility {
   }) {
     let message;
     let validityState;
-    // console.log(field)
+
     if (!field.validity.valid && !isFieldValid) {
       message = msg;
       validityState = 'invalid';
