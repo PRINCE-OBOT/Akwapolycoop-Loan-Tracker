@@ -23,6 +23,9 @@ const Event = ({ text, closedByValue = 'any' }) =>
 
 const events = {
   failTakeLoan: Event({ text: 'Your loan application form has not been submitted' }),
+  takeLoanSuccess: Event({
+    text: 'You have successfully taken a loan. Under preview',
+  }),
 };
 
 const checkIfLoanApplicantFormIsFill = (data) => {
@@ -78,7 +81,12 @@ function insertMoreFormFieldValues(data) {
   storeDataLoanApplicantList(data);
 }
 
+function resetForm() {
+  takeLoan.reset();
+}
+
 function storeDataLoanApplicantList(data) {
+  resetForm();
   indexDB.interact(
     {
       storeName: 'loan-applicant-list',
@@ -91,7 +99,7 @@ function storeDataLoanApplicantList(data) {
 }
 
 function displayTakeLoanSubmissionStatus() {
-  alert('Your taken loan has been submitted, your request will be processed.');
+  eventBus.dispatchEvent(events.takeLoanSuccess);
 }
 
 function loanApplicantDataNotStore() {

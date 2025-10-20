@@ -173,7 +173,14 @@ function displayDepositSubmissionStatus() {
   alert('Your deposit has been submitted. Under Review');
 }
 
+function resetForm() {
+  filePreview.src = '';
+  fileName.textContent = 'Your Document Preview will display here.';
+  loanApplicantDeposit.reset();
+}
+
 function storeDataLoanApplicantList(data) {
+  resetForm();
   indexDB.interact(
     {
       storeName: 'loan-applicant-list',
@@ -225,6 +232,7 @@ const events = {
   failDepositApprove: Event({
     text: 'Approve deposit amount does no match Loan Applicant deposit amount',
   }),
+  failDeposit: Event({ text: 'You cannot deposit more than your outstanding balance' }),
   modifyIndexdb: new CustomEvent('modify-indexdb'),
 };
 
@@ -261,9 +269,12 @@ function checkIfDepositAmountIsWithinRange() {
   const outstandingBalance = +MathUtility.prototype.outstandingBalance.textContent;
   const depositAmountValue = +depositAmount.value;
 
-  depositAmountValue > outstandingBalance
-    ? alert('You cannot deposit more than your outstanding balance')
-    : getLoanApplicantDataFromIndexedDB();
+  depositAmountValue > outstandingBalance ? failDeposit() : getLoanApplicantDataFromIndexedDB();
+}
+
+function failDeposit() {
+  eventBus.dispatchEvent(events.failDeposit);
+  resetForm();
 }
 
 function bindSubmitApplicationButton(e) {

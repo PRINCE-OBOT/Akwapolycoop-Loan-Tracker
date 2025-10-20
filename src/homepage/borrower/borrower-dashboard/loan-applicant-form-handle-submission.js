@@ -62,12 +62,18 @@ function getLoanApplicantDataIndexedDB() {
   );
 }
 
+function resetForm() {
+  loanApplicantForm.reset();
+}
+
 function convertFileToDataURLFormat(data) {
   const selectedPassport = passport.files[0];
 
   const reader = new FileReader();
 
   reader.readAsDataURL(selectedPassport);
+
+  resetForm();
 
   reader.onload = (e) => {
     data.loanApplicantFormData = {};
@@ -127,7 +133,7 @@ function storeDataLoanApplicantList(data) {
     {
       storeName: 'loan-applicant-list',
       data,
-      trueState: handleFormSuccessStatus,
+      trueState: displayFormSubmissionStatus,
       undefinedState: loanApplicantDataNotStore,
     },
     'storeData',
@@ -158,7 +164,7 @@ const events = {
   }),
 };
 
-function handleFormSuccessStatus() {
+function displayFormSubmissionStatus() {
   eventBus.dispatchEvent(events.success);
   eventBus.dispatchEvent(events.removeLoanApplicantTab);
   eventBus.dispatchEvent(events.showTakeLoan);

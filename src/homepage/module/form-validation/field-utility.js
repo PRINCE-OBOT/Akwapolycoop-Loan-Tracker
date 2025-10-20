@@ -19,9 +19,6 @@ export default class FieldValidationUtility {
     );
 
     if (isEveryMessageValid && isEveryInputValid) {
-      const form = this.inputs[0].closest('form');
-      form.reset();
-
       this.inputs.forEach((input) => input.classList.remove('user-interact'));
 
       this.messages.forEach((message) => {
