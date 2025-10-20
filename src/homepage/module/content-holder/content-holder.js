@@ -8,7 +8,7 @@ import {
   loanerManagement,
   loanerManagementGetDataInDBBus,
 } from '../../admin/admin-dashboard/loan-management';
-import loanApplicantDeposit from '../../borrower/borrower-dashboard/loan-applicant-deposit/loan-applicant-deposit';
+import { loanApplicantDeposit } from '../../borrower/borrower-dashboard/loan-applicant-deposit/loan-applicant-deposit';
 import {
   depositManagement,
   depositManagementGetDataInDBBus,

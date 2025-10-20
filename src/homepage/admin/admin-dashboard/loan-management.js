@@ -200,22 +200,23 @@ function handleActionStorage(e) {
   if (key === 'loanApplicantForm') dispatchGetLoanApplicantData();
 }
 
-const question = (text) =>
+const Event = ({ text = null, contentKey = 'question' }) =>
   new CustomEvent('dialog-manager', {
     detail: {
-      contentKey: 'question',
+      contentKey,
       closedByValue: 'any',
       text,
     },
   });
 
 const questionEvent = {
-  approve: question('approve the loan?'),
-  decline: question('decline the loan?'),
+  approve: Event({ text: 'approve the loan?' }),
+  decline: Event({ text: 'decline the loan?' }),
+  depositForm: Event({ contentKey: 'depositForm' }),
 };
 
-const showApproveOption = () => {
-  eventBus.dispatchEvent(questionEvent.approve);
+const showDepositForm = () => {
+  eventBus.dispatchEvent(questionEvent.depositForm);
 };
 
 const showDeclineOption = () => {
@@ -223,7 +224,7 @@ const showDeclineOption = () => {
 };
 
 const OptionHandler = {
-  approveOption: showApproveOption,
+  approveOption: showDepositForm,
   declineOption: showDeclineOption,
 };
 

@@ -3,6 +3,7 @@ import { formOption, question } from './form-Option';
 import { formStatus, h4 } from './form-Status';
 import loanApplicantProfile from '../../borrower/loan-applicant-profile/loan-applicant-profile';
 import { proofOfPayment } from '../../admin/admin-dashboard/proof-of-payment/proof-of-payment';
+import { loanApplicantDeposit } from '../../borrower/borrower-dashboard/loan-applicant-deposit/loan-applicant-deposit';
 
 const dialog = (function createDialogElement() {
   return document.createElement('dialog');
@@ -18,6 +19,10 @@ const appendLoanApplicantProfileToDialog = () => {
 
 const appendProofOfPaymentToDialog = () => {
   dialog.append(proofOfPayment);
+};
+
+const appendDepositFormToDialog = () => {
+  dialog.append(loanApplicantDeposit);
 };
 
 const appendFormOptionToDialog = () => {
@@ -43,6 +48,7 @@ const dialogContentHandler = {
   status: setStatusText,
   profile: appendLoanApplicantProfileToDialog,
   proof: appendProofOfPaymentToDialog,
+  depositForm: appendDepositFormToDialog,
 };
 
 function DialogManager(e) {

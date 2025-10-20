@@ -11,6 +11,7 @@ import indexDB from '../../module/indexDB/indexDB';
 import registerLocalStorageCustomMethod from '../../module/localStorage/localStorage';
 import appendContent from '../../module/content-holder/content-holder';
 import eventBus from '../../module/event-bus/event';
+import { bindDepositDocumentUploadEvent } from '../../borrower/borrower-dashboard/loan-applicant-deposit/loan-applicant-deposit';
 
 const headerBottomSection = document.querySelector('.header_bottom-section');
 const contentHolder = document.querySelector('.content-holder');
@@ -19,6 +20,8 @@ const btnLogout = document.querySelector('.logout-button');
 const html = document.querySelector('html');
 
 registerLocalStorageCustomMethod();
+
+bindDepositDocumentUploadEvent();
 
 appendDialogToBody.prototype.body = document.body;
 appendDialogToBody();

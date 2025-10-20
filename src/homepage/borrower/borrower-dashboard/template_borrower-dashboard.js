@@ -20,7 +20,7 @@ import eventBus from '../../module/event-bus/event';
 import appendDialogToBody from '../../module/dialog/dialog-manager';
 import pipe from '../../module/composition/pipe';
 import MathUtility from '../../module/business-logic/mathUtility';
-import bindDepositDocumentUploadEvent from './loan-applicant-deposit/loan-applicant-deposit-handle-submission';
+import { bindDepositDocumentUploadEvent } from './loan-applicant-deposit/loan-applicant-deposit';
 
 const leftSideBar = document.querySelector('.left-side-bar');
 const bottomLeftSideBar = document.querySelector('.bottom-left-sidebar');
