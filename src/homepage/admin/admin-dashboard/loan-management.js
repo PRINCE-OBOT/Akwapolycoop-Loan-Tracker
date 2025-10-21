@@ -148,9 +148,9 @@ const provideModifyActionData = ({ amount, id, loanID, e }) => {
       action: 'modifyData',
       id,
       loanID,
-      value: [{ status }, { outstandingBalance: +amount }],
-      firstKey: new Array(2).fill('takeLoan'),
-      secondKey: ['status', 'outstandingBalance'],
+      value: [{ status }, { outstandingBalance: +amount }, { actionDate: new Date() }],
+      firstKey: new Array(3).fill('takeLoan'),
+      secondKey: ['status', 'outstandingBalance', 'actionDate'],
     },
   };
 
@@ -219,9 +219,9 @@ const showDepositForm = () => {
   eventBus.dispatchEvent(questionEvent.depositForm);
 };
 
-const showDeclineOption = () => {
+function showDeclineOption() {
   eventBus.dispatchEvent(questionEvent.decline);
-};
+}
 
 const OptionHandler = {
   approveOption: showDepositForm,

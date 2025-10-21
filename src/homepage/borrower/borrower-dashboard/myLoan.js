@@ -2,6 +2,7 @@ import { format } from 'date-fns';
 import eventBus from '../../module/event-bus/event';
 import indexDB from '../../module/indexDB/indexDB';
 import eyeViewImg from '../../assets/images/eye-view.svg';
+import declineImg from '../../assets/images/delined-loan.svg';
 
 import registerLocalStorageCustomMethod from '../../module/localStorage/localStorage';
 import { proofOfPayment } from '../../admin/admin-dashboard/proof-of-payment/proof-of-payment';
@@ -50,10 +51,10 @@ const getTbody = () => {
   return tbody;
 };
 
-const Event = ({ text, closedByValue = 'any' }) =>
+const Event = ({ text = null, closedByValue = 'any', contentKey = 'status' }) =>
   new CustomEvent('dialog-manager', {
     detail: {
-      contentKey: 'status',
+      contentKey,
       closedByValue,
       text,
     },
@@ -61,6 +62,11 @@ const Event = ({ text, closedByValue = 'any' }) =>
 
 const events = {
   failMyLoan: Event({ text: 'You have not taken a loan' }),
+  proof: Event({ contentKey: 'proof' }),
+  underReviewProofOfPayment: Event({
+    text: 'Your Loan is under review',
+    contentKey: 'status',
+  }),
 };
 
 const checkIfLoanApplicantDataTakeLoanExist = (loanApplicantData) => {
@@ -152,25 +158,17 @@ const getTime = (actionDate) => {
   return time;
 };
 
-const proof = (text) =>
-  new CustomEvent('dialog-manager', {
-    detail: {
-      contentKey: 'proof',
-      closedByValue: 'any',
-      text,
-    },
-  });
-
-const proofEvent = {
-  proof: proof(),
-};
-
 const dispatchProofOfPaymentEvent = () => {
-  eventBus.dispatchEvent(proofEvent.proof);
+  eventBus.dispatchEvent(events.proof);
 };
 
 function insertDataToProofOfPayment(result) {
-  proofOfPaymentPreview.src = result.adminProofOfPayment;
+  if (!result.actionDate) {
+    eventBus.dispatchEvent(events.underReviewProofOfPayment);
+    return;
+  }
+
+  proofOfPaymentPreview.src = result.adminProofOfPayment ? result.adminProofOfPayment : declineImg;
 
   const date = getDate(result.actionDate);
   const time = getTime(result.actionDate);

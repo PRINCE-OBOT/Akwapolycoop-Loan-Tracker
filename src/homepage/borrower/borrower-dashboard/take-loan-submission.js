@@ -22,15 +22,20 @@ const Event = ({ text, closedByValue = 'any' }) =>
 
 const events = {
   failTakeLoan: Event({ text: 'Your loan application form has not been submitted' }),
+  unApproveTakeLoan: Event({ text: 'Your loan application form has not been Approve' }),
   takeLoanSuccess: Event({
-    text: 'You have successfully taken a loan. Under preview',
+    text: 'You have successfully taken a loan. Under Review',
   }),
 };
 
 const checkIfLoanApplicantFormIsFill = (data) => {
-  data.loanApplicantFormData
-    ? insertMoreFormFieldValues(data)
-    : eventBus.dispatchEvent(events.failTakeLoan);
+  if (data.loanApplicantFormData) {
+    data.loanApplicantFormData.status === 'Approve'
+      ? insertMoreFormFieldValues(data)
+      : eventBus.dispatchEvent(events.unApproveTakeLoan);
+  } else {
+    eventBus.dispatchEvent(events.failTakeLoan);
+  }
 };
 
 function getLoanApplicantDataIndexedDB() {

@@ -154,9 +154,6 @@ const events = {
     contentKey: 'status',
     text: 'You form has been submitted. Under Review',
   }),
-  removeLoanApplicantTab: Event({
-    eventName: 'remove-loan-applicant-tab',
-  }),
   showTakeLoan: Event({
     eventName: 'custom-change-content',
     contentKey: 'take-loan',
@@ -165,8 +162,6 @@ const events = {
 
 function displayFormSubmissionStatus() {
   eventBus.dispatchEvent(events.success);
-  eventBus.dispatchEvent(events.removeLoanApplicantTab);
-  // eventBus.dispatchEvent(events.showTakeLoan);
 }
 
 function loanApplicantDataNotStore() {

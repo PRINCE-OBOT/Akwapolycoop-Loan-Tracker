@@ -237,9 +237,8 @@ const storeActionToLocalStorage = (obj) => {
 };
 
 function addMoreActionToTakeLoan(data) {
-  data.firstKey.push('takeLoan', 'takeLoan');
-  data.secondKey.push('adminProofOfPayment', 'actionDate');
-  data.value.push({ actionDate: new Date() });
+  data.firstKey.push('takeLoan');
+  data.secondKey.push('adminProofOfPayment');
 
   const obj = {
     key: 'action',

@@ -82,13 +82,11 @@ const prependLoanApplicationFormBeforeSideBar = () => {
   bottomLeftSideBar.prepend(loanApplicantForm);
 };
 
-function removeLoanApplicantTab() {
-  loanApplicantForm.remove();
-}
-
 const prependWhenLoanApplicantDataDoesNotExist = (data) => {
   if (data.loanApplicantFormData) {
     if (data.loanApplicantFormData.status !== 'Approve') prependLoanApplicationFormBeforeSideBar();
+  } else {
+    prependLoanApplicationFormBeforeSideBar();
   }
 };
 
@@ -185,5 +183,3 @@ function handleContentDisplay(e) {
 logoutButton.addEventListener('click', showLogoutOption);
 
 leftSideBar.addEventListener('click', handleContentDisplay);
-
-eventBus.addEventListener('remove-loan-applicant-tab', removeLoanApplicantTab);
