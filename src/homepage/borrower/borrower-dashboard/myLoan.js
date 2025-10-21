@@ -94,7 +94,7 @@ function insertLoanApplicantDataToTr(loanApplicantData) {
   const tbody = getTbody();
   tbody.innerHTML = '';
 
-  loanApplicantData.takeLoan.forEach((data, index) => {
+  loanApplicantData.takeLoan.reverse().forEach((data, index) => {
     const tr = createTableTr();
     const serialNumber = getSerialNumber(index);
     const date = getDate(data.dateAndTime);

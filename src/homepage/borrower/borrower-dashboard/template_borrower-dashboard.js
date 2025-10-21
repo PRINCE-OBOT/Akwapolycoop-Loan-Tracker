@@ -50,8 +50,9 @@ appendDialogToBody.prototype.body = document.body;
 appendDialogToBody();
 appendContent.prototype.holder = contentHolder;
 
-MathUtility.prototype.outstandingBalance = outstandingBalance;
-MathUtility.outstandingBalance();
+function setOutStandingBalance(outstandingBalanceValue) {
+  outstandingBalance.textContent = outstandingBalanceValue;
+}
 
 const getRecentLoanApplicantID = () => {
   const data = localStorage.getData({ key: 'recent-loan-applicant' });
@@ -109,6 +110,10 @@ const getRecentLoanApplicantData = ({ id, returnData }) => {
   );
 };
 
+function getOutstandingBalance(id) {
+  MathUtility.outstandingBalance(id, setOutStandingBalance);
+}
+
 (function checkIfThereIsRecentLoanApplicant() {
   const id = getRecentLoanApplicantID();
 
@@ -116,9 +121,10 @@ const getRecentLoanApplicantData = ({ id, returnData }) => {
     navigateToLoginPage();
     return;
   }
+  makeBorrowerDashboardDisplayBlock();
+  getOutstandingBalance(id);
   // `insertLoanApplicantDataToDashboardPage` is the callback function to run when
   // the recentLoanApplicantData is retrieve from indexedDB
-  makeBorrowerDashboardDisplayBlock();
   getRecentLoanApplicantData({ id, returnData: insertLoanApplicantDataToDashboardPage });
 })();
 

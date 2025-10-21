@@ -19,7 +19,7 @@ const proofOfPayment = (function createProofOfPayment() {
      <img src="" alt="Proof of Payment" class="proof-of-payment-preview">
          
          <div class="info-section">
-             <div class="info-label">Date of Payment</div>
+             <div class="info-label">Date/Time</div>
              <div class="date-of-payment"></div>
              <div class="time-of-payment"><div>
          </div>
