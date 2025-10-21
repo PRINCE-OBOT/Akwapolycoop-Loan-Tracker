@@ -149,7 +149,7 @@ const provideModifyActionData = ({ amount, id, loanID, e }) => {
       id,
       loanID,
       value: [{ status }, { outstandingBalance: +amount }],
-      firstKey: new Array(4).fill('takeLoan'),
+      firstKey: new Array(2).fill('takeLoan'),
       secondKey: ['status', 'outstandingBalance'],
     },
   };
@@ -272,12 +272,22 @@ function insertTakeLoanDataToTable(takeLoanList) {
        <td>${date}</td>
        <td>${time}</td>
        <td data-db-first-key="loanApplicantForm"><img src="${eyeViewImg}" class="eye-view" alt="eye view"/>View</td>
-       <td><button data-option-key="approveOption" data-db-first-key="takeLoan" data-status="Approve" class="btn-approve-loan">Approve</button></td>
-       <td><button data-option-key="declineOption" data-db-first-key="takeLoan" data-status="Decline" class="btn-decline-loan">Decline</button></td>
+       
       `;
+    checkStatus({ tr, status: data.status });
     setAttributeToTr({ tr, loanID: data.loanID });
     appendTrToTbody(tr);
   });
+}
+
+const optionKeySection = (function createOptionKey() {
+  return `
+  <td><button data-option-key="approveOption" data-db-first-key="takeLoan" data-status="Approve" class="btn-approve-loan">Approve</button></td>
+  <td><button data-option-key="declineOption" data-db-first-key="takeLoan" data-status="Decline" class="btn-decline-loan">Decline</button></td>`;
+})();
+
+function checkStatus({ tr, status }) {
+  if (status === 'Pending') tr.innerHTML += optionKeySection;
 }
 
 const sortTakenLoan = (takeLoanList) => {
