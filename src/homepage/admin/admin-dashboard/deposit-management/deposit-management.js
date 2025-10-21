@@ -242,7 +242,7 @@ const appendTrToTbody = (tr) => {
   tbody.append(tr);
 };
 
-function insertTakeLoanDataToTable(depositList) {
+function insertDepositDataToTable(depositList) {
   const tbody = getTbody();
   tbody.innerHTML = '';
 
@@ -260,18 +260,27 @@ function insertTakeLoanDataToTable(depositList) {
        <td>${time}</td>
        <td data-db-first-key="proofOfPayment"><img src="${eyeViewImg}" class="eye-view" alt="eye view"/>Proof of Payment</td>
        <td data-db-first-key="loanApplicantForm"><img src="${eyeViewImg}" class="eye-view" alt="eye view"/>View Profile</td>
-       <td><button data-option-key="depositApproveOption" data-db-first-key="deposit" data-status="Approve" class="btn-approve-loan">Approve</button></td>
-       <td><button data-option-key="depositDeclineOption" data-db-first-key="deposit" data-status="Decline" class="btn-decline-loan">Decline</button></td>
       `;
+    checkStatus({ tr, status: data.status });
     setAttributeToTr({ tr, id: data.id, depositID: data.depositID });
     appendTrToTbody(tr);
   });
 }
 
+const optionKeySection = (function createOptionKey() {
+  return `
+  <td><button data-option-key="depositApproveOption" data-db-first-key="deposit" data-status="Approve" class="btn-approve-loan">Approve</button></td>
+  <td><button data-option-key="depositDeclineOption" data-db-first-key="deposit" data-status="Decline" class="btn-decline-loan">Decline</button></td>`;
+})();
+
+function checkStatus({ tr, status }) {
+  if (status === 'Pending') tr.innerHTML += optionKeySection;
+}
+
 const sortTakenLoan = (depositList) => {
   depositList.sort((prev, next) => compareAsc(next.dateAndTime, prev.dateAndTime));
 
-  insertTakeLoanDataToTable(depositList);
+  insertDepositDataToTable(depositList);
 };
 
 const getDeposit = (loanApplicantListData) => {
