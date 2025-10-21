@@ -74,8 +74,8 @@ const loanApplicantDeposit = (function () {
                 </div>
 
                 <div class="form-actions">
-                    <!-- <button type="button" class="btn btn-cancel">Cancel</button> -->
-                    <button class="btn btn-submit">Submit Deposit</button>
+                    <!-- <button  class="btn btn-cancel">Cancel</button> -->
+                    <button type="button" class="btn btn-submit">Submit Deposit</button>
                 </div>
             </form>
         </div>
@@ -234,16 +234,55 @@ const events = {
   }),
   failDeposit: Event({ text: 'You cannot deposit more than your outstanding balance' }),
   modifyIndexdb: new CustomEvent('modify-indexdb'),
+  manualCloseDialog: new CustomEvent('manual-close-dialog'),
 };
+
+const storeActionToLocalStorage = (obj) => {
+  localStorage.setData(obj);
+};
+
+function addMoreActionToTakeLoan(action) {
+  action.firstKey.push('takeLoan');
+  action.secondKey.push('adminProofOfPayment');
+
+  const obj = {
+    key: 'action',
+    data: action,
+  };
+
+  storeActionToLocalStorage(obj);
+
+  resetForm();
+  eventBus.dispatchEvent(events.modifyIndexdb);
+  eventBus.dispatchEvent(events.manualCloseDialog);
+}
+
+function convertFileToDataURLFormat() {
+  const selectedProofOfPayment = fileInput.files[0];
+
+  const reader = new FileReader();
+
+  reader.readAsDataURL(selectedProofOfPayment);
+
+  reader.onload = (e) => {
+    const action = getActionFromLocalStorage();
+
+    action.value.push({ adminProofOfPayment: e.target.result });
+
+    addMoreActionToTakeLoan(action);
+  };
+}
 
 function checkIfAdminDepositAmountIsWithinRange(data) {
   const depositApproveAmount = data.value.find(
     (element) => element.outstandingBalance,
   ).outstandingBalance;
 
-  +depositAmount.value === depositApproveAmount
-    ? eventBus.dispatchEvent(events.modifyIndexdb)
-    : eventBus.dispatchEvent(events.failDepositApprove);
+  if (+depositAmount.value === depositApproveAmount) {
+    convertFileToDataURLFormat();
+  } else {
+    eventBus.dispatchEvent(events.failDepositApprove);
+  }
 }
 
 const Actions = {
@@ -277,9 +316,7 @@ function failDeposit() {
   resetForm();
 }
 
-function bindSubmitApplicationButton(e) {
-  e.preventDefault();
-
+function bindSubmitApplicationButton() {
   eventBus.dispatchEvent(submitDepositFormEvent);
 }
 

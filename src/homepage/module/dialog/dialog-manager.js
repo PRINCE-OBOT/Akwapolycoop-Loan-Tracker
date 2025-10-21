@@ -60,9 +60,14 @@ function DialogManager(e) {
 
   dialogContentHandler[detail.contentKey](detail);
 
-  setTimeout(() => dialog.showModal(), 500);
+  dialog.showModal();
+}
+
+function closeDialog() {
+  dialog.close();
 }
 
 eventBus.addEventListener('dialog-manager', DialogManager);
+eventBus.addEventListener('manual-close-dialog', closeDialog);
 
 export default appendDialogToBody;
