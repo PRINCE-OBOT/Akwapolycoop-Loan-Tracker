@@ -180,13 +180,9 @@ const addTextContentToDiv = (div) => {
             <span class="status"></span>
         </div>
         
-        <div>
-            <button data-db-first-key="loanApplicantFormData" data-option-key="approveOption" data-status="Approve">Approve:</button>
-            <button data-db-first-key="loanApplicantFormData" data-option-key="declineOption" data-status="Decline">Decline:</button>
+        
         </div>
-
-    </div>
-    `;
+        `;
   return div;
 };
 
@@ -195,6 +191,20 @@ const buildLoanApplicantProfile = pipe(createDiv, addClassToDiv, addTextContentT
 const loanApplicantProfile = buildLoanApplicantProfile(document);
 
 const footer = loanApplicantProfile.querySelector('.footer');
+
+const addOptionElementToDiv = (div) => {
+  div.innerHTML = `
+    <div class="option-key-section">
+        <button data-db-first-key="loanApplicantFormData" data-option-key="approveOption" data-status="Approve">Approve:</button>
+        <button data-db-first-key="loanApplicantFormData" data-option-key="declineOption" data-status="Decline">Decline:</button>
+    </div>
+    `;
+  return div;
+};
+
+const processOptionKeySection = pipe(createDiv, addOptionElementToDiv);
+
+const optionKeySection = processOptionKeySection(document);
 
 const getAttributeFromTarget = (e) => {
   const target = e.target;
@@ -321,6 +331,11 @@ const errorGettingData = () => {
   console.log('Error getting data');
 };
 
+function checkStatusOfProfile(loanApplicantFormData) {
+  optionKeySection.remove();
+  if (loanApplicantFormData.status === 'Pending') footer.append(optionKeySection);
+}
+
 function insertLoanApplicantDataToProfile(data) {
   const loanApplicantFormData = data.loanApplicantFormData;
   const signUpData = data.signUpData;
@@ -346,6 +361,7 @@ function insertLoanApplicantDataToProfile(data) {
   guarantorPhoneNumber.textContent = loanApplicantFormData['guarantor-phone-number'];
   guarantorResidentAddress.textContent = loanApplicantFormData['guarantor-resident-address'];
 
+  checkStatusOfProfile(loanApplicantFormData);
   dispatchProfileEvent();
 }
 
@@ -366,8 +382,8 @@ function getLoanApplicantData() {
 
 eventBus.addEventListener('profile', getLoanApplicantData);
 
-footer.addEventListener('click', handleActionStorage);
+optionKeySection.addEventListener('click', handleActionStorage);
 
-footer.addEventListener('click', handleOptionContent);
+optionKeySection.addEventListener('click', handleOptionContent);
 
 export default loanApplicantProfile;

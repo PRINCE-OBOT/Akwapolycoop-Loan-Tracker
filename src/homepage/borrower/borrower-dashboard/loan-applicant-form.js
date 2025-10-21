@@ -263,6 +263,7 @@ const loanApplicantForm = (function () {
                     Select Gender
                     <span class="required-asterisk">*</span>
                   </label>
+                  
                   <select
                     name="guarantor-gender"
                     id="guarantor-gender"
@@ -276,10 +277,12 @@ const loanApplicantForm = (function () {
                 </div>
     
                 <div class="guarantor-phone-number">
+                  
                   <label for="guarantor-phone-number">
                     Phone Number
                     <span class="required-asterisk">*</span>
                   </label>
+                  
                   <input
                     type="tel"
                     id="guarantor-phone-number"
@@ -307,10 +310,12 @@ const loanApplicantForm = (function () {
                 </div>
     
                 <div class="guarantor-resident-address">
+                  
                   <label for="guarantor-resident-address">
                     Resident Address
                     <span class="required-asterisk">*</span>
                   </label>
+                  
                   <textarea
                     name=""
                     placeholder="e.g Plot 45 Circular Road, Opp. Clan Avenue, Ikot Ekpene, Akwa Ibom State"
@@ -320,6 +325,7 @@ const loanApplicantForm = (function () {
                     data-set-field-validation-value="setAddressValidationValue"
                     required
                   ></textarea>
+
                   <output id="guarantor-resident-address-message" class="show-message"></output>
                 </div>
               </fieldset>
