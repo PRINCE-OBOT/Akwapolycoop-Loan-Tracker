@@ -97,7 +97,7 @@ function insertLoanApplicantDataToDashboardPage(data) {
   prependWhenLoanApplicantDataDoesNotExist(data);
 }
 
-const getRecentLoanApplicantData = ({ id, returnData }) => {
+function getRecentLoanApplicantData({ id, returnData }) {
   indexDB.interact(
     {
       storeName: 'loan-applicant-list',
@@ -108,7 +108,7 @@ const getRecentLoanApplicantData = ({ id, returnData }) => {
     },
     'getData',
   );
-};
+}
 
 function getOutstandingBalance(id) {
   MathUtility.outstandingBalance(id, setOutStandingBalance);
@@ -161,10 +161,13 @@ const showLogoutOption = () => {
 };
 
 function getDepositActionData() {
+  const id = getRecentLoanApplicantID();
+
   const obj = {
     key: 'action',
     data: {
       action: 'deposit',
+      id,
     },
   };
 

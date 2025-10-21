@@ -281,11 +281,9 @@ function checkIfAdminDepositAmountIsWithinRange(data) {
 }
 
 const Actions = {
-  deposit: checkIfDepositAmountIsWithinRange,
+  deposit: getOutstandingBalance,
   modifyData: checkIfAdminDepositAmountIsWithinRange,
 };
-
-// const getAct
 
 function getActionFromLocalStorage() {
   const data = localStorage.getData({ key: 'action' });
@@ -298,12 +296,16 @@ function handleDepositDirection() {
   Actions[data?.action](data);
 }
 
-// if action is deposit-management,
-function checkIfDepositAmountIsWithinRange() {
-  const outstandingBalance = +MathUtility.prototype.outstandingBalance.textContent;
+function getOutstandingBalance(data) {
+  MathUtility.outstandingBalance(data?.id, checkIfDepositAmountIsWithinRange);
+}
+
+function checkIfDepositAmountIsWithinRange(outstandingBalanceValue) {
   const depositAmountValue = +depositAmount.value;
 
-  depositAmountValue > outstandingBalance ? failDeposit() : getLoanApplicantDataFromIndexedDB();
+  depositAmountValue > outstandingBalanceValue
+    ? failDeposit()
+    : getLoanApplicantDataFromIndexedDB();
 }
 
 function failDeposit() {
@@ -311,11 +313,11 @@ function failDeposit() {
   resetForm();
 }
 
-function bindSubmitApplicationButton() {
+function dispatchDepositFormEvent() {
   eventBus.dispatchEvent(submitDepositFormEvent);
 }
 
-btnSubmitDeposit.addEventListener('click', bindSubmitApplicationButton);
+btnSubmitDeposit.addEventListener('click', dispatchDepositFormEvent);
 
 const bindDepositDocumentUploadEvent = () => {
   fileInput.addEventListener('change', previewProofOfPayment);
