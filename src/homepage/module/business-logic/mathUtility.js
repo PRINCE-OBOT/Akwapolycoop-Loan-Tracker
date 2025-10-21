@@ -2,7 +2,7 @@ import { addDays, differenceInDays } from 'date-fns';
 import indexDB from '../indexDB/indexDB';
 
 const PERCENTAGE = 0.3333 / 100;
-// So calculating for 30 days would be 0.3333 * 30 =  9.999 ~ 0
+// Calculating for 30 days would be 0.3333 * 30 =  9.999 ~ 0
 
 const getDifferenceInDays = (currentObject) => {
   const actionDate = currentObject.actionDate;

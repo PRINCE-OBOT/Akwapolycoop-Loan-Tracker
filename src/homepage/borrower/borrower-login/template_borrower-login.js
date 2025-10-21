@@ -37,7 +37,7 @@ const setLoanApplicantIDInLocalStorage = (id) => {
 const Event = ({ text, closedByValue = 'any' }) =>
   new CustomEvent('dialog-manager', {
     detail: {
-      contentKey: 'Event',
+      contentKey: 'status',
       closedByValue,
       text,
     },

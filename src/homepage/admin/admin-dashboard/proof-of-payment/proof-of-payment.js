@@ -1,5 +1,6 @@
 import './proof-of-payment.css';
 
+import { format } from 'date-fns';
 import eventBus from '../../../module/event-bus/event';
 import indexDB from '../../../module/indexDB/indexDB';
 
@@ -46,12 +47,12 @@ const getActionDataFromLocalStorage = () => {
 };
 
 const getDate = (dateAndTime) => {
-  const date = dateAndTime.slice(0, dateAndTime.lastIndexOf(','));
+  const date = format(dateAndTime, 'yyyy-MM-dd');
   return date;
 };
 
 const getTime = (dateAndTime) => {
-  const time = dateAndTime.slice(dateAndTime.lastIndexOf(',') + 1);
+  const time = format(dateAndTime, 'HH:mm:ss');
   return time;
 };
 
@@ -69,7 +70,7 @@ const insertDepositProofOfPayment = (data) => {
   dateOfPayment.textContent = date;
   timeOfPayment.textContent = time;
 
-  dispatchProfileEvent();
+  dispatchProofOfPaymentEvent();
 };
 
 const proof = (text) =>
@@ -85,7 +86,7 @@ const proofEvent = {
   proof: proof(),
 };
 
-const dispatchProfileEvent = () => {
+const dispatchProofOfPaymentEvent = () => {
   eventBus.dispatchEvent(proofEvent.proof);
 };
 

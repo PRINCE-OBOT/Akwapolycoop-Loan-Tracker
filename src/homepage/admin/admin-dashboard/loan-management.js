@@ -1,4 +1,4 @@
-import { compareAsc, parse } from 'date-fns';
+import { compareAsc, format } from 'date-fns';
 import indexDB from '../../module/indexDB/indexDB';
 import eyeViewImg from '../../assets/images/eye-view.svg';
 import eventBus from '../../module/event-bus/event';
@@ -65,12 +65,12 @@ function errorWhileGettingData() {
 }
 
 const getDate = (dateAndTime) => {
-  const date = dateAndTime.slice(0, dateAndTime.lastIndexOf(','));
+  const date = format(dateAndTime, 'yyyy-MM-dd');
   return date;
 };
 
 const getTime = (dateAndTime) => {
-  const time = dateAndTime.slice(dateAndTime.lastIndexOf(',') + 1);
+  const time = format(dateAndTime, 'HH:mm:ss');
   return time;
 };
 
@@ -148,9 +148,9 @@ const provideModifyActionData = ({ amount, id, loanID, e }) => {
       action: 'modifyData',
       id,
       loanID,
-      value: [{ status }, { outstandingBalance: +amount }, { actionDate: new Date() }],
-      firstKey: new Array(3).fill('takeLoan'),
-      secondKey: ['status', 'outstandingBalance', 'actionDate'],
+      value: [{ status }, { outstandingBalance: +amount }],
+      firstKey: new Array(4).fill('takeLoan'),
+      secondKey: ['status', 'outstandingBalance'],
     },
   };
 
@@ -281,13 +281,7 @@ function insertTakeLoanDataToTable(takeLoanList) {
 }
 
 const sortTakenLoan = (takeLoanList) => {
-  const format = 'EEEE dd, MMMM, yyyy, hh:mm:ss a';
-
-  takeLoanList.sort((prev, next) => {
-    const prevDateAndTime = parse(prev.dateAndTime, format, new Date());
-    const nextDataAndTime = parse(next.dateAndTime, format, new Date());
-    return compareAsc(nextDataAndTime, prevDateAndTime);
-  });
+  takeLoanList.sort((prev, next) => compareAsc(next.dateAndTime, prev.dateAndTime));
 
   insertTakeLoanDataToTable(takeLoanList);
 };

@@ -1,6 +1,5 @@
 import './loan-applicant-deposit.css';
 import '../../../assets/form-logic.css';
-import { format } from 'date-fns';
 import MathUtility from '../../../module/business-logic/mathUtility';
 import eventBus from '../../../module/event-bus/event';
 import indexDB from '../../../module/indexDB/indexDB';
@@ -148,16 +147,12 @@ function storeProofOfPaymentToIndexedDB({ reader, data }) {
   };
 }
 
-function formatDateToISOFormat() {
-  return format(new Date(), 'EEEE dd, MMMM, yyyy, hh:mm:ss a');
-}
-
 function insertMoreFormFieldValues(data) {
   const depositLength = data.deposit.length - 1;
 
   const deposit = data.deposit[depositLength];
 
-  deposit.dateAndTime = formatDateToISOFormat();
+  deposit.dateAndTime = new Date();
   deposit.status = 'Pending';
   deposit.depositAmount = depositAmount.value;
   deposit.depositID = `DEP${data?.id}-00${depositLength}`;
@@ -241,13 +236,13 @@ const storeActionToLocalStorage = (obj) => {
   localStorage.setData(obj);
 };
 
-function addMoreActionToTakeLoan(action) {
-  action.firstKey.push('takeLoan');
-  action.secondKey.push('adminProofOfPayment');
+function addMoreActionToTakeLoan(data) {
+  data.secondKey.push('adminProofOfPayment', 'actionDate');
+  data.value.push({ actionDate: new Date() });
 
   const obj = {
     key: 'action',
-    data: action,
+    data,
   };
 
   storeActionToLocalStorage(obj);
@@ -265,11 +260,11 @@ function convertFileToDataURLFormat() {
   reader.readAsDataURL(selectedProofOfPayment);
 
   reader.onload = (e) => {
-    const action = getActionFromLocalStorage();
+    const data = getActionFromLocalStorage();
 
-    action.value.push({ adminProofOfPayment: e.target.result });
+    data.value.push({ adminProofOfPayment: e.target.result });
 
-    addMoreActionToTakeLoan(action);
+    addMoreActionToTakeLoan(data);
   };
 }
 

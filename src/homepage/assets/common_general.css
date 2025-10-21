@@ -172,3 +172,7 @@ dialog h4 {
   color: var(--white);
   border: none;
 }
+img.eye-view {
+  pointer-events: none;
+  max-width: 20px;
+}

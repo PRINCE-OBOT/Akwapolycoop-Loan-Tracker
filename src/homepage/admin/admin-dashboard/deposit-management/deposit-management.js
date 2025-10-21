@@ -1,4 +1,4 @@
-import { compareAsc, parse } from 'date-fns';
+import { compareAsc, format } from 'date-fns';
 
 import eyeViewImg from '../../../assets/images/eye-view.svg';
 
@@ -223,12 +223,12 @@ const getSerialNumber = (index) => {
 };
 
 const getDate = (dateAndTime) => {
-  const date = dateAndTime.slice(0, dateAndTime.lastIndexOf(','));
+  const date = format(dateAndTime, 'yyyy-MM-dd');
   return date;
 };
 
 const getTime = (dateAndTime) => {
-  const time = dateAndTime.slice(dateAndTime.lastIndexOf(',') + 1);
+  const time = format(dateAndTime, 'HH:mm:ss');
   return time;
 };
 
@@ -269,13 +269,7 @@ function insertTakeLoanDataToTable(depositList) {
 }
 
 const sortTakenLoan = (depositList) => {
-  const format = 'EEEE dd, MMMM, yyyy, hh:mm:ss a';
-
-  depositList.sort((prev, next) => {
-    const prevDateAndTime = parse(prev.dateAndTime, format, new Date());
-    const nextDataAndTime = parse(next.dateAndTime, format, new Date());
-    return compareAsc(nextDataAndTime, prevDateAndTime);
-  });
+  depositList.sort((prev, next) => compareAsc(next.dateAndTime, prev.dateAndTime));
 
   insertTakeLoanDataToTable(depositList);
 };

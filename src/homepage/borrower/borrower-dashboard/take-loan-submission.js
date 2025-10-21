@@ -1,4 +1,3 @@
-import { format } from 'date-fns';
 import eventBus from '../../module/event-bus/event';
 import indexDB from '../../module/indexDB/indexDB';
 
@@ -49,10 +48,6 @@ function getLoanApplicantDataIndexedDB() {
   );
 }
 
-function formatDateToISOFormat() {
-  return format(new Date(), 'EEEE dd, MMMM, yyyy, hh:mm:ss a');
-}
-
 function insertMoreFormFieldValues(data) {
   if (!data.takeLoan) data.takeLoan = [];
 
@@ -63,7 +58,7 @@ function insertMoreFormFieldValues(data) {
     status: 'Pending',
     paidStatus: 'Incomplete',
     loanID: `LOAN${data?.id}-00${loanApplicantTakeLoanLength}`,
-    dateAndTime: formatDateToISOFormat(),
+    dateAndTime: new Date(),
   };
 
   function setValue(element) {
