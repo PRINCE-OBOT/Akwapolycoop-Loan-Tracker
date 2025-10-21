@@ -87,7 +87,9 @@ function removeLoanApplicantTab() {
 }
 
 const prependWhenLoanApplicantDataDoesNotExist = (data) => {
-  if (!data.loanApplicantFormData) prependLoanApplicationFormBeforeSideBar();
+  if (data.loanApplicantFormData) {
+    if (data.loanApplicantFormData.status !== 'Approve') prependLoanApplicationFormBeforeSideBar();
+  }
 };
 
 function insertLoanApplicantDataToDashboardPage(data) {

@@ -11,12 +11,15 @@ function checkIfAllFieldFillIsValid(e) {
   const form = detail.form;
   functionToGetDataInIndexBD = detail.functionToGetDataInIndexBD;
 
-  const messages = form.querySelectorAll('output.show-message');
+  const textarea = form.querySelectorAll('textarea');
   const inputs = form.querySelectorAll('input');
+
+  const inputElements = [...textarea, ...inputs];
+  const messages = form.querySelectorAll('output.show-message');
 
   new FieldValidationUtility({
     messages,
-    inputs,
+    inputs: inputElements,
     runWhenAllFieldFillIsValid: functionToGetDataInIndexBD,
   });
 }

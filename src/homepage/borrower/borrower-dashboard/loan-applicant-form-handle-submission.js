@@ -166,7 +166,7 @@ const events = {
 function displayFormSubmissionStatus() {
   eventBus.dispatchEvent(events.success);
   eventBus.dispatchEvent(events.removeLoanApplicantTab);
-  eventBus.dispatchEvent(events.showTakeLoan);
+  // eventBus.dispatchEvent(events.showTakeLoan);
 }
 
 function loanApplicantDataNotStore() {
