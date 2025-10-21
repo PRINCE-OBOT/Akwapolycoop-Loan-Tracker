@@ -73,8 +73,6 @@ function convertFileToDataURLFormat(data) {
 
   reader.readAsDataURL(selectedPassport);
 
-  resetForm();
-
   reader.onload = (e) => {
     data.loanApplicantFormData = {};
     data.loanApplicantFormData.passport = e.target.result;
@@ -129,6 +127,7 @@ function insertMoreFormFieldValues(data) {
 }
 
 function storeDataLoanApplicantList(data) {
+  resetForm();
   indexDB.interact(
     {
       storeName: 'loan-applicant-list',
