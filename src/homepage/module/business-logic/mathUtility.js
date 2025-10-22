@@ -1,32 +1,26 @@
 import { addDays, differenceInDays } from 'date-fns';
 import indexDB from '../indexDB/indexDB';
 
-const PERCENTAGE = 0.3333 / 100;
-// So calculating for 30 days would be 0.3333 * 30 =  9.999 ~ 0
+const PERCENTAGE = 0.5 / 100;
+//  0.3333/100 * amount(30000) =  99.999 per day accumulated
 
-const getDifferenceInDays = (actionDate) => {
-  const futureDay = addDays(new Date(), 4);
+const getDifferenceInDays = (actionDate) =>
+  // const futureDay = addDays(new Date(), 4);
 
-  // console.log(differenceInDays(futureDay, actionDate));
-
-  return differenceInDays(futureDay, actionDate);
-};
-
+  // differenceInDays(new Date(), actionDate);
+  differenceInDays(addDays(new Date(), 4), actionDate);
 class MathUtility {
   static outstandingBalance(id, callback) {
     const calculateOutstandingBalance = (approveAndIncompleteLoan) => {
       const outstandingBalance = approveAndIncompleteLoan.reduce((accumulator, currentObject) => {
-        // 1. Get the percentage of the `desired-amount`
-        // 2. Add the derive percentage value to the `desired-amount`,
-        // 3. The final result get preserve, and will be added after the next `takeLoan` finishes no. 2
-
-        const currentPercentageValue =
+        const interest =
           currentObject.outstandingBalance *
-          (getDifferenceInDays(currentObject.actionDate) * PERCENTAGE);
+          PERCENTAGE *
+          getDifferenceInDays(currentObject.actionDate);
 
-        const result = accumulator + currentPercentageValue + currentObject.outstandingBalance;
+        const repayment = interest + currentObject.outstandingBalance;
 
-        accumulator = Math.round(result * 100) / 100;
+        accumulator += Math.round(repayment * 100) / 100;
 
         return accumulator;
       }, 0);
@@ -67,21 +61,21 @@ class MathUtility {
           continue;
 
         // Percentage base on accumulated days
-        const currentPercentageValue =
+        const interest =
           data.takeLoan[i].outstandingBalance *
-          getDifferenceInDays(data.takeLoan[i].actionDate) *
-          PERCENTAGE;
+          PERCENTAGE *
+          getDifferenceInDays(data.takeLoan[i].actionDate);
 
-        const percentageAndOutstandingBalance =
-          currentPercentageValue + data.takeLoan[i].outstandingBalance;
+        const repayment = interest + data.takeLoan[i].outstandingBalance;
 
-        const balance = depositAmount - percentageAndOutstandingBalance;
+        const balance = depositAmount - Math.round(repayment * 100) / 100;
 
         if (balance >= 0) {
           data.takeLoan[i].paidStatus = 'Completed';
           data.takeLoan[i].outstandingBalance = 0;
         } else {
-          data.takeLoan[i].outstandingBalance = Math.abs(balance);
+          const newOutstandingBalance = Math.abs(balance) - interest;
+          data.takeLoan[i].outstandingBalance = newOutstandingBalance;
           break;
         }
 
