@@ -31,7 +31,7 @@ const loanApplicantManagement = (function createLoanApplicantManagementContent()
               <table>
                 <caption>
                   <h4 class="loan-list-heading">
-                    Applicant
+                    Applicant(s)
                     (<span class="number-of-applicant"></span>)
                   </h4>
                   <p class="sub-heading">A comprehensive list of all loan applicant</p>

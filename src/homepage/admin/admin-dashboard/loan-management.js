@@ -31,8 +31,8 @@ const loanerManagement = (function createLoanerManagementContent() {
               <table>
                 <caption>
                   <h4 class="loan-list-heading">
-                    All Loans
-                    <span class="number-in-list">18</span>
+                    Loan(s)
+                    (<span class="number-of-loan"></span>)
                   </h4>
                   <p class="sub-heading">A comprehensive list of all taken loan</p>
                 </caption>
@@ -59,6 +59,12 @@ const loanerManagement = (function createLoanerManagementContent() {
 
   return div;
 })();
+
+const numberOfLoans = loanerManagement.querySelector('.number-of-loan');
+
+function setNumberOfLoanValue(value) {
+  numberOfLoans.textContent = value;
+}
 
 function errorWhileGettingData() {
   console.log('Error while getting data');
@@ -304,6 +310,7 @@ const getTakeLoan = (loanApplicantListData) => {
     data.takeLoan.forEach((takeLoan) => takeLoanList.push(takeLoan));
   });
 
+  setNumberOfLoanValue(takeLoanList.length);
   sortTakenLoan(takeLoanList);
 };
 
