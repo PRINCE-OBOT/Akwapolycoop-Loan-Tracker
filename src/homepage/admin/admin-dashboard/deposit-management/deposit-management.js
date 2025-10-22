@@ -30,8 +30,8 @@ const depositManagement = (function createDepositManagementContent() {
               <table>
                 <caption>
                   <h4 class="loan-list-heading">
-                    All Loans
-                    <span class="number-in-list">18</span>
+                    Deposit(s)
+                    (<span class="number-of-deposit"></span>)
                   </h4>
                   <p class="sub-heading">A comprehensive list of all loan applicant</p>
                 </caption>
@@ -57,6 +57,12 @@ const depositManagement = (function createDepositManagementContent() {
 
   return div;
 })();
+
+const numberOfDeposit = depositManagement.querySelector('.number-of-deposit');
+
+function setNumberOfDepositValue(value) {
+  numberOfDeposit.textContent = value;
+}
 
 const getTbody = () => {
   const tbody = depositManagement.querySelector('tbody');
@@ -326,6 +332,8 @@ const getDeposit = (loanApplicantListData) => {
       depositList.push(deposit);
     });
   });
+
+  setNumberOfDepositValue(depositList.length);
   sortTakenLoan(depositList);
 };
 
