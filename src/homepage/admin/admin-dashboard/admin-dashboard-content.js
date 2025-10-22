@@ -19,10 +19,9 @@ const adminDashboardContent = (function createAdminDashboardContent() {
                     administrators and borrowers to ensure clarity and efficiency.
                   </p>
                 </div>
-
-                <a class="dashboard-borrower-link" href="./borrower-dashboard.html">
-                  Dashboard Borrower
-                </a>
+                <p>
+                  Trusted.
+                </p>
               </div>
 
               <div class="dashboard-borrower-section-right-side">

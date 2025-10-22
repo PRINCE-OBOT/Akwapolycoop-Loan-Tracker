@@ -6,7 +6,7 @@ import bindModifyIndexdbEvent from './loan-management-modify';
 
 bindModifyIndexdbEvent();
 
-const loanerManagement = (function createLoanerManagementContent() {
+const loanApplicantManagement = (function createLoanApplicantManagementContent() {
   const div = document.createElement('div');
 
   div.innerHTML = `
@@ -34,19 +34,15 @@ const loanerManagement = (function createLoanerManagementContent() {
                     All Loans
                     <span class="number-in-list">18</span>
                   </h4>
-                  <p class="sub-heading">A comprehensive list of all taken loan</p>
+                  <p class="sub-heading">A comprehensive list of all loan applicant</p>
                 </caption>
 
                 <thead>
                   <tr>
                     <th>S/N</th>
-                    <th>Loan ID</th>
-                    <th>Amount (N)</th>
-                    <th>Tenor (Days)</th>
                     <th>Status</th>
                     <th>Date</th>
                     <th>Time</th>
-                    <th colspan="3">Actions</th>
                   </tr>
                 </thead>
 
@@ -55,7 +51,7 @@ const loanerManagement = (function createLoanerManagementContent() {
             </div>
           `;
 
-  div.classList.add('loan-management-content');
+  div.classList.add('loan-applicant-management-content');
 
   return div;
 })();
@@ -85,7 +81,7 @@ const createTableTr = () => {
 };
 
 const getTbody = () => {
-  const tbody = loanerManagement.querySelector('tbody');
+  const tbody = loanApplicantManagement.querySelector('tbody');
   return tbody;
 };
 
@@ -319,10 +315,14 @@ const getLoanApplicantForLoanManagement = () => {
   );
 };
 
-const loanerManagementGetDataInDBBus = new EventTarget();
-loanerManagementGetDataInDBBus.addEventListener(
+const loanApplicantManagementGetDataInDBBus = new EventTarget();
+loanApplicantManagementGetDataInDBBus.addEventListener(
   'get-data-in-indexedDB',
   getLoanApplicantForLoanManagement,
 );
 
-export { loanerManagement, getLoanApplicantForLoanManagement, loanerManagementGetDataInDBBus };
+export {
+  loanApplicantManagement,
+  getLoanApplicantForLoanManagement,
+  loanApplicantManagementGetDataInDBBus,
+};

@@ -1,4 +1,4 @@
-// import MathUtility from '../../module/business-logic/mathUtility';
+import MathUtility from '../../module/business-logic/mathUtility';
 import eventBus from '../../module/event-bus/event';
 import indexDB from '../../module/indexDB/indexDB';
 
@@ -9,8 +9,8 @@ const contentHandler = {
 };
 
 const updated = () => {
-  // const { firstKey, id, depositAmount } = getActionDataFromLocalStorage();
-  const { firstKey } = getActionDataFromLocalStorage();
+  const { firstKey, id, depositAmount } = getActionDataFromLocalStorage();
+  // const { firstKey } = getActionDataFromLocalStorage();
 
   const key = firstKey[0];
 
@@ -20,9 +20,9 @@ const updated = () => {
     },
   });
 
-  eventBus.dispatchEvent(customContentEvent);
+  if (key === 'deposit') MathUtility.depositApprove({ id: +id, depositAmount: +depositAmount });
 
-  // if (key === 'deposit') MathUtility.depositApprove({ id, depositAmount: +depositAmount });
+  eventBus.dispatchEvent(customContentEvent);
 };
 
 const fail = () => {
