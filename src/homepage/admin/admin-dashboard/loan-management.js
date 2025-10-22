@@ -321,7 +321,7 @@ const getLoanApplicantForLoanManagement = () => {
 
 const loanerManagementGetDataInDBBus = new EventTarget();
 loanerManagementGetDataInDBBus.addEventListener(
-  'get-data-in-indexedDB',
+  'render-content',
   getLoanApplicantForLoanManagement,
 );
 

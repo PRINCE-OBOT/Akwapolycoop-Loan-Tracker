@@ -343,7 +343,7 @@ const getLoanApplicantForDepositManagement = () => {
 
 const depositManagementGetDataInDBBus = new EventTarget();
 depositManagementGetDataInDBBus.addEventListener(
-  'get-data-in-indexedDB',
+  'render-content',
   getLoanApplicantForDepositManagement,
 );
 

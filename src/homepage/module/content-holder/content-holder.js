@@ -3,7 +3,10 @@ import eventBus from '../event-bus/event';
 import loanApplicantForm from '../../borrower/borrower-dashboard/loan-applicant-form';
 import takeLoan from '../../borrower/borrower-dashboard/take-loan';
 import { myLoan, myLoanGetDataInDBBus } from '../../borrower/borrower-dashboard/myLoan';
-import adminDashboardContent from '../../admin/admin-dashboard/admin-dashboard-content';
+import {
+  adminDashboardContent,
+  adminDashboardContentBBus,
+} from '../../admin/admin-dashboard/admin-dashboard-content';
 import {
   loanerManagement,
   loanerManagementGetDataInDBBus,
@@ -18,13 +21,14 @@ import {
   loanApplicantManagementGetDataInDBBus,
 } from '../../admin/admin-dashboard/loan-applicant-management';
 
-const getDataInIndexedDB = new CustomEvent('get-data-in-indexedDB');
+const getDataInIndexedDB = new CustomEvent('render-content');
 
 const bus = {
   'deposit-management': depositManagementGetDataInDBBus,
   'loan-management': loanerManagementGetDataInDBBus,
   'my-loan': myLoanGetDataInDBBus,
   'loan-applicant-management': loanApplicantManagementGetDataInDBBus,
+  'admin-dashboard': adminDashboardContentBBus,
 };
 
 const contents = {

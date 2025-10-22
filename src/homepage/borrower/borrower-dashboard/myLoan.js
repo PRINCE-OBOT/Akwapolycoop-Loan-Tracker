@@ -226,6 +226,6 @@ function handleViewDisplay(e) {
 })();
 
 const myLoanGetDataInDBBus = new EventTarget();
-myLoanGetDataInDBBus.addEventListener('get-data-in-indexedDB', getRecentLoanApplicant);
+myLoanGetDataInDBBus.addEventListener('render-content', getRecentLoanApplicant);
 
 export { myLoan, myLoanGetDataInDBBus };

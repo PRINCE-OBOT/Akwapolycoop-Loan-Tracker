@@ -106,11 +106,16 @@ function setPendingLoanValue(value) {
   pendingLoan.textContent = value;
 }
 
-MathUtility.overMetric({
-  totalTakenLoan: setTotalTakenLoanValue,
-  approveLoan: setApproveLoanValue,
-  declineLoan: setDeclineLoanValue,
-  pendingLoan: setPendingLoanValue,
-});
+function rerunOverMetric() {
+  MathUtility.overMetric({
+    totalTakenLoan: setTotalTakenLoanValue,
+    approveLoan: setApproveLoanValue,
+    declineLoan: setDeclineLoanValue,
+    pendingLoan: setPendingLoanValue,
+  });
+}
 
-export default adminDashboardContent;
+const adminDashboardContentBBus = new EventTarget();
+adminDashboardContentBBus.addEventListener('render-content', rerunOverMetric);
+
+export { adminDashboardContent, adminDashboardContentBBus };
