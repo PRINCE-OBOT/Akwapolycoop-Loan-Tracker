@@ -127,10 +127,10 @@ class MathUtility {
       pendingLoan(pendingLoanResult.length);
     };
 
-    const filterTakenLoan = (loanApplicantListData) => {
+    const filterTakenLoan = (loanApplicantData) => {
       const takeLoanList = [];
 
-      loanApplicantListData.forEach((data) => {
+      loanApplicantData.forEach((data) => {
         if (!data.takeLoan) return;
         data.takeLoan.forEach((takeLoan) => takeLoanList.push(takeLoan));
       });
