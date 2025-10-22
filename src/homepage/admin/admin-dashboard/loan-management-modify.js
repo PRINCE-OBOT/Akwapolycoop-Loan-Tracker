@@ -6,11 +6,11 @@ import indexDB from '../../module/indexDB/indexDB';
 const contentHandler = {
   takeLoan: 'loan-management',
   deposit: 'deposit-management',
+  loanApplicantFormData: 'loan-applicant-management',
 };
 
 const updated = () => {
   const { firstKey, id, depositAmount } = getActionDataFromLocalStorage();
-  // const { firstKey } = getActionDataFromLocalStorage();
 
   const key = firstKey[0];
 

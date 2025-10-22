@@ -325,4 +325,4 @@ loanerManagementGetDataInDBBus.addEventListener(
   getLoanApplicantForLoanManagement,
 );
 
-export { loanerManagement, getLoanApplicantForLoanManagement, loanerManagementGetDataInDBBus };
+export { loanerManagement, loanerManagementGetDataInDBBus };

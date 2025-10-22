@@ -28,22 +28,22 @@ const events = {
   }),
 };
 
-// const checkIfLoanApplicantFormIsFill = (data) => {
-//   if (data.loanApplicantFormData) {
-//     data.loanApplicantFormData.status === 'Approve'
-//       ? insertMoreFormFieldValues(data)
-//       : eventBus.dispatchEvent(events.unApproveTakeLoan);
-//   } else {
-//     eventBus.dispatchEvent(events.failTakeLoan);
-//   }
-// };
 const checkIfLoanApplicantFormIsFill = (data) => {
   if (data.loanApplicantFormData) {
-    insertMoreFormFieldValues(data);
+    data.loanApplicantFormData.status === 'Approve'
+      ? insertMoreFormFieldValues(data)
+      : eventBus.dispatchEvent(events.unApproveTakeLoan);
   } else {
     eventBus.dispatchEvent(events.failTakeLoan);
   }
 };
+// const checkIfLoanApplicantFormIsFill = (data) => {
+//   if (data.loanApplicantFormData) {
+//     insertMoreFormFieldValues(data);
+//   } else {
+//     eventBus.dispatchEvent(events.failTakeLoan);
+//   }
+// };
 
 function getLoanApplicantDataIndexedDB() {
   const data = localStorage.getData({ key: 'recent-loan-applicant' });

@@ -4,39 +4,54 @@ import eyeViewImg from '../../../assets/images/eye-view.svg';
 
 import eventBus from '../../../module/event-bus/event';
 import indexDB from '../../../module/indexDB/indexDB';
-import './deposit-management.css';
 
 const depositManagement = (function createDepositManagementContent() {
   const div = document.createElement('div');
 
   div.innerHTML = `
-      <div class="table-wrapper">
-      <div class="table-header">
-        <h2>All Deposits</h2>
-        <div class="search-box">
-          <input type="text" id="searchInput" placeholder="Search by serial number..." />
-        </div>
-      </div>
+            <h5>Oversee and manage all loan applications within the system.</h5>
 
-      <div class="table-content">
-        <table id="depositsTable">
-          <thead>
-            <tr>
-              <th>S/N</th>
-              <th>Amount Paid</th>
-              <th>Status</th>
-              <th>Date</th>
-              <th>Time</th>
-              <th>Proof</th>
-              <th>Details</th>
-              <th colspan="3">Actions</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </div>
-    `;
+            <div class="filter-section">
+              <h3>Filter Loans</h3>
+              <p>Find specific loans by it status</p>
+
+              <div class="search-section">
+                <input type="search" placeholder="Search borrower" />
+                <select name="borrower-search-status" id="">
+                  <option value="all-status">All Status</option>
+                  <option value="decline">Decline</option>
+                  <option value="approved">Approved</option>
+                  <option value="pending">Pending</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="loan-list-section">
+              <table>
+                <caption>
+                  <h4 class="loan-list-heading">
+                    All Loans
+                    <span class="number-in-list">18</span>
+                  </h4>
+                  <p class="sub-heading">A comprehensive list of all loan applicant</p>
+                </caption>
+
+                <thead>
+                  <tr>
+                  <th>S/N</th>
+                  <th>Amount Paid</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Proof</th>
+                    <th>Details</th>
+                    <th colspan="3">Actions</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            `;
 
   div.classList.add('deposit-container');
 
