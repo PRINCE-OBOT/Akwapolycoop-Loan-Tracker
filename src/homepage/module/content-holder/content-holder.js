@@ -13,7 +13,10 @@ import {
   depositManagement,
   depositManagementGetDataInDBBus,
 } from '../../admin/admin-dashboard/deposit-management/deposit-management';
-import { loanApplicantManagement } from '../../admin/admin-dashboard/loan-applicant-management';
+import {
+  loanApplicantManagement,
+  loanApplicantManagementGetDataInDBBus,
+} from '../../admin/admin-dashboard/loan-applicant-management';
 
 const getDataInIndexedDB = new CustomEvent('get-data-in-indexedDB');
 
@@ -21,6 +24,7 @@ const bus = {
   'deposit-management': depositManagementGetDataInDBBus,
   'loan-management': loanerManagementGetDataInDBBus,
   'my-loan': myLoanGetDataInDBBus,
+  'loan-applicant-management': loanApplicantManagementGetDataInDBBus,
 };
 
 const contents = {

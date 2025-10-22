@@ -43,6 +43,7 @@ const loanApplicantManagement = (function createLoanApplicantManagementContent()
                     <th>Status</th>
                     <th>Date</th>
                     <th>Time</th>
+                    <th>View</th>
                   </tr>
                 </thead>
 
@@ -87,7 +88,6 @@ const getTbody = () => {
 
 (function addEventToTbody() {
   const tbody = getTbody();
-  tbody.addEventListener('click', handleOptionContent);
   tbody.addEventListener('click', handleActionStorage);
 })();
 
@@ -96,25 +96,11 @@ const getIDFromTr = (tr) => {
   return id;
 };
 
-const getLoanIDFromTr = (tr) => {
-  const loanID = tr.getAttribute('data-loan-ID');
-  return loanID;
-};
-
-const getAttributeFromTarget = (e) => {
-  const target = e.target;
-
-  const status = target.getAttribute('data-status');
-
-  return { status };
-};
-
 const getAttributeFromTr = (e) => {
   const tr = e.target.closest('tr');
   const id = getIDFromTr(tr);
-  const loanID = getLoanIDFromTr(tr);
 
-  return { id, loanID };
+  return { id };
 };
 
 const storeActionToLocalStorage = (obj) => {
@@ -135,48 +121,7 @@ const getViewProfileActionData = (e) => {
   storeActionToLocalStorage(obj);
 };
 
-const provideModifyActionData = ({ amount, id, loanID, e }) => {
-  const { status } = getAttributeFromTarget(e);
-
-  const obj = {
-    key: 'action',
-    data: {
-      action: 'modifyData',
-      id,
-      loanID,
-      value: [{ status }, { outstandingBalance: +amount }, { actionDate: new Date() }],
-      firstKey: new Array(3).fill('takeLoan'),
-      secondKey: ['status', 'outstandingBalance', 'actionDate'],
-    },
-  };
-
-  storeActionToLocalStorage(obj);
-};
-
-function getClickTrLoanApplicantData(e) {
-  const { id, loanID } = getAttributeFromTr(e);
-
-  const getTakeLoanAmount = (data) => {
-    const result = data.takeLoan.find((obj) => obj.loanID === loanID);
-    const amount = result['desired-amount'];
-
-    provideModifyActionData({ amount, id, loanID, e });
-  };
-
-  indexDB.interact(
-    {
-      storeName: 'loan-applicant-list',
-      getMethod: 'get',
-      keyPathValue: +id,
-      returnData: getTakeLoanAmount,
-      undefinedState: errorWhileGettingData,
-    },
-    'getData',
-  );
-}
-
 const DBKeyHandler = {
-  takeLoan: getClickTrLoanApplicantData,
   loanApplicantForm: getViewProfileActionData,
 };
 
@@ -196,64 +141,20 @@ function handleActionStorage(e) {
   if (key === 'loanApplicantForm') dispatchGetLoanApplicantData();
 }
 
-const Event = ({ text = null, contentKey = 'question' }) =>
-  new CustomEvent('dialog-manager', {
-    detail: {
-      contentKey,
-      closedByValue: 'any',
-      text,
-    },
-  });
-
-const questionEvent = {
-  approve: Event({ text: 'approve the loan?' }),
-  decline: Event({ text: 'decline the loan?' }),
-  depositForm: Event({ contentKey: 'depositForm' }),
-};
-
-const showDepositForm = () => {
-  eventBus.dispatchEvent(questionEvent.depositForm);
-};
-
-function showDeclineOption() {
-  eventBus.dispatchEvent(questionEvent.decline);
-}
-
-const OptionHandler = {
-  approveOption: showDepositForm,
-  declineOption: showDeclineOption,
-};
-
-function handleOptionContent(e) {
-  const optionKey = e.target.dataset.optionKey;
-
-  if (!optionKey) return;
-
-  OptionHandler[optionKey]();
-}
-
 const appendTrToTbody = (tr) => {
   const tbody = getTbody();
   tbody.append(tr);
 };
 
-const extractIdFromLoanID = (loanID) => {
-  const id = loanID.slice(loanID.indexOf('N') + 1, loanID.indexOf('-'));
-  return id;
-};
-
-const setAttributeToTr = ({ tr, loanID }) => {
-  const id = extractIdFromLoanID(loanID);
-
-  tr.setAttribute('data-loan-id', loanID);
+const setAttributeToTr = ({ tr, id }) => {
   tr.setAttribute('data-id', id);
 };
 
-function insertTakeLoanDataToTable(takeLoanList) {
+function insertTakeLoanDataToTable(loanApplicantList) {
   const tbody = getTbody();
   tbody.innerHTML = '';
 
-  takeLoanList.forEach((data, index) => {
+  loanApplicantList.forEach((data, index) => {
     const tr = createTableTr();
     const serialNumber = getSerialNumber(index);
     const date = getDate(data.dateAndTime);
@@ -261,54 +162,42 @@ function insertTakeLoanDataToTable(takeLoanList) {
 
     tr.innerHTML = `
        <td>${serialNumber}</td>
-       <td>${data.loanID}</td>
-       <td>${data['desired-amount']}</td>
-       <td>${data.tenor}</td>
        <td>${data.status}</td>
        <td>${date}</td>
        <td>${time}</td>
        <td data-db-first-key="loanApplicantForm"><img src="${eyeViewImg}" class="eye-view" alt="eye view"/>View</td>
        
       `;
-    checkStatus({ tr, status: data.status });
-    setAttributeToTr({ tr, loanID: data.loanID });
+    setAttributeToTr({ tr, id: data.id });
     appendTrToTbody(tr);
   });
 }
 
-const optionKeySection = (function createOptionKey() {
-  return `
-  <td><button data-option-key="approveOption" data-db-first-key="takeLoan" data-status="Approve" class="btn-approve-loan">Approve</button></td>
-  <td><button data-option-key="declineOption" data-db-first-key="takeLoan" data-status="Decline" class="btn-decline-loan">Decline</button></td>`;
-})();
+const sortLoanApplicant = (loanApplicant) => {
+  loanApplicant.sort((prev, next) => compareAsc(next.dateAndTime, prev.dateAndTime));
 
-function checkStatus({ tr, status }) {
-  if (status === 'Pending') tr.innerHTML += optionKeySection;
-}
-
-const sortTakenLoan = (takeLoanList) => {
-  takeLoanList.sort((prev, next) => compareAsc(next.dateAndTime, prev.dateAndTime));
-
-  insertTakeLoanDataToTable(takeLoanList);
+  insertTakeLoanDataToTable(loanApplicant);
 };
 
-const getTakeLoan = (loanApplicantListData) => {
-  const takeLoanList = [];
+const getLoanApplicant = (loanApplicantListData) => {
+  const loanApplicantList = [];
 
   loanApplicantListData.forEach((data) => {
-    if (!data.takeLoan) return;
-    data.takeLoan.forEach((takeLoan) => takeLoanList.push(takeLoan));
+    if (!data.loanApplicantFormData) return;
+
+    data.loanApplicantFormData.id = data.id;
+    loanApplicantList.push(data.loanApplicantFormData);
   });
 
-  sortTakenLoan(takeLoanList);
+  sortLoanApplicant(loanApplicantList);
 };
 
-const getLoanApplicantForLoanManagement = () => {
+const getLoanApplicantManagementData = () => {
   indexDB.interact(
     {
       storeName: 'loan-applicant-list',
       getMethod: 'getAll',
-      returnData: getTakeLoan,
+      returnData: getLoanApplicant,
       undefineState: errorWhileGettingData,
     },
     'getData',
@@ -318,11 +207,7 @@ const getLoanApplicantForLoanManagement = () => {
 const loanApplicantManagementGetDataInDBBus = new EventTarget();
 loanApplicantManagementGetDataInDBBus.addEventListener(
   'get-data-in-indexedDB',
-  getLoanApplicantForLoanManagement,
+  getLoanApplicantManagementData,
 );
 
-export {
-  loanApplicantManagement,
-  getLoanApplicantForLoanManagement,
-  loanApplicantManagementGetDataInDBBus,
-};
+export { loanApplicantManagement, loanApplicantManagementGetDataInDBBus };

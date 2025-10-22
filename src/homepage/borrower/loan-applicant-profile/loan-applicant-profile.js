@@ -1,4 +1,5 @@
 import './loan-applicant-profile.css';
+import { format } from 'date-fns';
 import pipe from '../../module/composition/pipe';
 import eventBus from '../../module/event-bus/event';
 import indexDB from '../../module/indexDB/indexDB';
@@ -23,8 +24,9 @@ const addTextContentToDiv = (div) => {
                 <!-- <p class="header-id">Application ID: LA-2025-<span id="appId"></span></p> -->
             </div>
             <div class="date-box">
-                <p class="date-box-label">Application Date</p>
+                <p class="date-box-label">Application Date/Time</p>
                 <p class="date-box-value" id="application-date"></p>
+                <p class="date-box-value" id="application-time"></p>
             </div>
         </div>
     </div>
@@ -309,6 +311,7 @@ const dispatchProfileEvent = () => {
 };
 
 const applicationDate = loanApplicantProfile.querySelector('#application-date');
+const applicationTime = loanApplicantProfile.querySelector('#application-time');
 const passport = loanApplicantProfile.querySelector('.passport');
 const firstName = loanApplicantProfile.querySelector('.first-name');
 const lastName = loanApplicantProfile.querySelector('.last-name');
@@ -336,11 +339,25 @@ function checkStatusOfProfile(loanApplicantFormData) {
   if (loanApplicantFormData.status === 'Pending') footer.append(optionKeySection);
 }
 
+const getDate = (dateAndTime) => {
+  const date = format(dateAndTime, 'yyyy-MM-dd');
+  return date;
+};
+
+const getTime = (dateAndTime) => {
+  const time = format(dateAndTime, 'HH:mm:ss');
+  return time;
+};
+
 function insertLoanApplicantDataToProfile(data) {
   const loanApplicantFormData = data.loanApplicantFormData;
   const signUpData = data.signUpData;
 
-  applicationDate.textContent = loanApplicantFormData.date;
+  const date = getDate(loanApplicantFormData.dateAndTime);
+  const time = getTime(loanApplicantFormData.dateAndTime);
+
+  applicationDate.textContent = date;
+  applicationTime.textContent = time;
   passport.src = loanApplicantFormData.passport;
 
   firstName.textContent = signUpData.firstName;

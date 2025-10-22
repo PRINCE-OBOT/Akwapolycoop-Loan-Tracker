@@ -29,7 +29,7 @@ appendDialogToBody.prototype.body = document.body;
 appendDialogToBody();
 
 appendContent.prototype.holder = contentHolder;
-appendContent({ detail: { contentKey: 'admin-dashboard' } });
+appendContent({ detail: { contentKey: 'loan-applicant-management' } });
 // const logoutAdmin = () => {};
 
 const errorGettingData = () => {
