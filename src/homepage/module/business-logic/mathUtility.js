@@ -4,10 +4,7 @@ import indexDB from '../indexDB/indexDB';
 const PERCENTAGE = 0.3333 / 100;
 // So calculating for 30 days would be 0.3333 * 30 =  9.999 ~ 0
 
-const getDifferenceInDays = (currentObject) => {
-  const actionDate = currentObject.actionDate;
-  // const todayDate = new Date();
-
+const getDifferenceInDays = (actionDate) => {
   const futureDay = addDays(new Date(), 4);
 
   // console.log(differenceInDays(futureDay, actionDate));
@@ -24,9 +21,10 @@ class MathUtility {
         // 3. The final result get preserve, and will be added after the next `takeLoan` finishes no. 2
 
         const currentPercentageValue =
-          +currentObject['desired-amount'] * (getDifferenceInDays(currentObject) * PERCENTAGE);
+          currentObject.outstandingBalance *
+          (getDifferenceInDays(currentObject.actionDate) * PERCENTAGE);
 
-        const result = accumulator + currentPercentageValue + +currentObject['desired-amount'];
+        const result = accumulator + currentPercentageValue + currentObject.outstandingBalance;
 
         accumulator = Math.round(result * 100) / 100;
 
@@ -44,6 +42,65 @@ class MathUtility {
       );
 
       calculateOutstandingBalance(approveAndIncompleteLoan);
+    };
+
+    (function getRecentLoanApplicantDataFromIndexedDB() {
+      indexDB.interact(
+        {
+          storeName: 'loan-applicant-list',
+          keyPathValue: id,
+          getMethod: 'get',
+          returnData: filterApproveAndIncompleteLoan,
+          undefinedState: errorGettingData,
+        },
+        'getData',
+      );
+    })();
+  }
+
+  static depositApprove({ id, depositAmount }) {
+    const filterApproveAndIncompleteLoan = (data) => {
+      if (!data.takeLoan) return;
+
+      for (let i = 0; i < data.takeLoan.length; i++) {
+        if (data.takeLoan[i].status !== 'Approve' && data.takeLoan[i].paidStatus !== 'Incomplete')
+          continue;
+
+        // Percentage base on accumulated days
+        const currentPercentageValue =
+          data.takeLoan[i].outstandingBalance *
+          getDifferenceInDays(data.takeLoan[i].actionDate) *
+          PERCENTAGE;
+
+        const percentageAndOutstandingBalance =
+          currentPercentageValue + data.takeLoan[i].outstandingBalance;
+
+        const balance = depositAmount - percentageAndOutstandingBalance;
+
+        if (balance >= 0) {
+          data.takeLoan[i].paidStatus = 'Completed';
+          data.takeLoan[i].outstandingBalance = 0;
+        } else {
+          data.takeLoan[i].outstandingBalance = Math.abs(balance);
+          break;
+        }
+
+        depositAmount = balance;
+      }
+
+      const store = () => {
+        console.log('Successfully Updated deposit');
+      };
+
+      indexDB.interact(
+        {
+          storeName: 'loan-applicant-list',
+          data,
+          trueState: store,
+          undefinedState: errorGettingData,
+        },
+        'storeData',
+      );
     };
 
     (function getRecentLoanApplicantDataFromIndexedDB() {

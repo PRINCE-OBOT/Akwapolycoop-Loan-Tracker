@@ -1,12 +1,15 @@
+// import MathUtility from '../../module/business-logic/mathUtility';
 import eventBus from '../../module/event-bus/event';
 import indexDB from '../../module/indexDB/indexDB';
 
+// Dispatching the change custom-change-content refreshes `loan-management` and `deposit-management`
 const contentHandler = {
   takeLoan: 'loan-management',
   deposit: 'deposit-management',
 };
 
 const updated = () => {
+  // const { firstKey, id, depositAmount } = getActionDataFromLocalStorage();
   const { firstKey } = getActionDataFromLocalStorage();
 
   const key = firstKey[0];
@@ -18,6 +21,8 @@ const updated = () => {
   });
 
   eventBus.dispatchEvent(customContentEvent);
+
+  // if (key === 'deposit') MathUtility.depositApprove({ id, depositAmount: +depositAmount });
 };
 
 const fail = () => {

@@ -22,6 +22,7 @@ module.exports = {
     "no-underscore-dangle": "off",
     "func-names": "off",
     "no-proto": "off",
-    ". eslint": "off"
+    ". eslint": "off",
+    "no-continue": "off"
   },
 };

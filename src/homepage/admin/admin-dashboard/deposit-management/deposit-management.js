@@ -99,6 +99,7 @@ const getAttributeFromTarget = (e) => {
 
 const provideModifyActionData = ({ id, e }) => {
   const { status } = getAttributeFromTarget(e);
+  const { depositAmount } = getAttributeFromTr(e);
 
   const obj = {
     key: 'action',
@@ -108,6 +109,7 @@ const provideModifyActionData = ({ id, e }) => {
       value: [{ status }, { actionDate: new Date() }],
       firstKey: ['deposit', 'deposit'],
       secondKey: ['status', 'actionDate'],
+      depositAmount,
     },
   };
 
@@ -130,12 +132,18 @@ const getDepositIDFromTr = (tr) => {
   return depositID;
 };
 
+const getDepositAmountFromTr = (tr) => {
+  const depositAmount = tr.getAttribute('data-deposit-amount');
+  return depositAmount;
+};
+
 const getAttributeFromTr = (e) => {
   const tr = e.target.closest('tr');
   const id = getIDFromTr(tr);
   const depositID = getDepositIDFromTr(tr);
+  const depositAmount = getDepositAmountFromTr(tr);
 
-  return { id, depositID };
+  return { id, depositID, depositAmount };
 };
 
 const getViewProfileActionData = (e) => {
@@ -232,9 +240,11 @@ const getTime = (dateAndTime) => {
   return time;
 };
 
-const setAttributeToTr = ({ tr, id, depositID }) => {
+const setAttributeToTr = ({ tr, id, depositID, depositAmount }) => {
   tr.setAttribute('data-id', id);
   tr.setAttribute('data-deposit-id', depositID);
+  tr.setAttribute('data-deposit-id', depositID);
+  tr.setAttribute('data-deposit-amount', depositAmount);
 };
 
 const appendTrToTbody = (tr) => {
@@ -262,7 +272,12 @@ function insertDepositDataToTable(depositList) {
        <td data-db-first-key="loanApplicantForm"><img src="${eyeViewImg}" class="eye-view" alt="eye view"/>View Profile</td>
       `;
     checkStatus({ tr, status: data.status });
-    setAttributeToTr({ tr, id: data.id, depositID: data.depositID });
+    setAttributeToTr({
+      tr,
+      id: data.id,
+      depositID: data.depositID,
+      depositAmount: data.depositAmount,
+    });
     appendTrToTbody(tr);
   });
 }

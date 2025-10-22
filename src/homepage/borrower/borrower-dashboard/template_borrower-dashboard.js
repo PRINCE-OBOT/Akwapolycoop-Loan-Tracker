@@ -192,3 +192,5 @@ function handleContentDisplay(e) {
 logoutButton.addEventListener('click', showLogoutOption);
 
 leftSideBar.addEventListener('click', handleContentDisplay);
+
+// MathUtility.depositApprove({ id: 8, depositAmount: 20000 });
