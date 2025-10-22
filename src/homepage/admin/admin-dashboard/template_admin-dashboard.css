@@ -104,12 +104,7 @@ main {
   flex-direction: column;
   gap: 20px;
 }
-.dashboard-borrower-link {
-  padding: 10px;
-  background-color: var(--ink);
-  border-radius: 5px;
-  width: fit-content;
-}
+
 .dashboard-borrower-section-right-side img {
   height: 300px;
 }
@@ -148,87 +143,4 @@ main {
 
 [class$='title-section'] img {
   height: 50px;
-}
-
-/* loaner management content styles */
-
-.loan-management-content {
-  flex-direction: column;
-  gap: 15px;
-  overflow: auto;
-}
-.filter-section,
-.loan-list-section {
-  padding: 20px;
-}
-.filter-section {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  box-shadow: var(--box-shadow);
-  border-radius: 10px;
-}
-
-.search-section {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
-
-select[name='borrower-search-status'],
-input[type='search'] {
-  border: none;
-  box-shadow: var(--box-shadow);
-  border-radius: 5px;
-}
-input[type='search'] {
-  padding-left: 10px;
-  height: 40px;
-  flex: 1;
-  max-width: 300px;
-}
-
-select[name='borrower-search-status'] {
-  padding: 6px;
-}
-
-.loan-list-section {
-  box-shadow: var(--box-shadow);
-  /* overflow-y: auto; */
-}
-caption {
-  text-align: left;
-  padding-bottom: 20px;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 400px;
-  text-align: center;
-  box-shadow: var(--box-shadow);
-}
-
-tbody tr {
-  border-top: 0.5px solid var(--grey);
-  border-bottom: 0.5px solid var(--grey);
-}
-thead {
-  background-color: var(--secondary-accent-faint);
-}
-th,
-td {
-  padding: 15px;
-}
-td {
-  color: var(--transparent-black);
-}
-
-.loan-list-section_actions {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-.loan-list-section-icon {
-  height: 15px;
 }

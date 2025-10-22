@@ -9,7 +9,7 @@ const depositManagement = (function createDepositManagementContent() {
   const div = document.createElement('div');
 
   div.innerHTML = `
-            <h5>Oversee and manage all loan applications within the system.</h5>
+            <h5 class="brief-text">Oversee and manage all loan applications within the system.</h5>
 
             <div class="filter-section">
               <h3>Filter Loans</h3>

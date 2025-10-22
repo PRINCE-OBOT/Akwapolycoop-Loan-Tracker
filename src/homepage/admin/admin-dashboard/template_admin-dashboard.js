@@ -3,6 +3,7 @@ import '../../assets/reset.css';
 import '../../assets/font.css';
 import '../../assets/common_general.css';
 import '../../assets/style-border-button.css';
+import '../../assets/table.css';
 
 import appendDialogToBody from '../../module/dialog/dialog-manager';
 
