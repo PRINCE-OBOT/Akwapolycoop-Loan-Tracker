@@ -4,6 +4,7 @@ import revenueImg from '../../assets/images/revenue.svg';
 import pendingLoanImg from '../../assets/images/pending-loan.svg';
 import declineLoanImg from '../../assets/images/delined-loan.svg';
 import approveLoanImg from '../../assets/images/approve-loan.svg';
+import MathUtility from '../../module/business-logic/mathUtility';
 
 const adminDashboardContent = (function createAdminDashboardContent() {
   const div = document.createElement('div');
@@ -36,12 +37,13 @@ const adminDashboardContent = (function createAdminDashboardContent() {
                 <div class="total-applicant-loan-section">
                   <div class="total-loan-title-section">
                   <img src="${totalLoanApplicantImg}" alt="Total Loan Applicant">
-                    <h5>Total Loans Applicant</h5>
+                    <h5>Total Taken Loans</h5>
                   </div>
 
                   <h2 class="total-loan-value"></h2>
                 </div>
 
+                <!--
                 <div class="revenue-loan-section">
                   <div class="revenue-title-section">
                   <img src="${revenueImg}" alt="Revenue">
@@ -50,6 +52,7 @@ const adminDashboardContent = (function createAdminDashboardContent() {
 
                   <h2 class="revenue-value"></h2>
                 </div>
+                -->
 
                 <div class="approved-loan-section">
                   <div class="approved-loan-title-section">
@@ -84,5 +87,30 @@ const adminDashboardContent = (function createAdminDashboardContent() {
 
   return div;
 })();
+
+const totalTakenLoan = adminDashboardContent.querySelector('.total-loan-value');
+const approveLoan = adminDashboardContent.querySelector('.approved-loan-value');
+const pendingLoan = adminDashboardContent.querySelector('.pending-loan-value');
+const declineLoan = adminDashboardContent.querySelector('.decline-loan-value');
+
+function setTotalTakenLoanValue(value) {
+  totalTakenLoan.textContent = value;
+}
+function setApproveLoanValue(value) {
+  approveLoan.textContent = value;
+}
+function setDeclineLoanValue(value) {
+  declineLoan.textContent = value;
+}
+function setPendingLoanValue(value) {
+  pendingLoan.textContent = value;
+}
+
+MathUtility.overMetric({
+  totalTakenLoan: setTotalTakenLoanValue,
+  approveLoan: setApproveLoanValue,
+  declineLoan: setDeclineLoanValue,
+  pendingLoan: setPendingLoanValue,
+});
 
 export default adminDashboardContent;

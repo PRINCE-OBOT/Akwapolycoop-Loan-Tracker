@@ -16,7 +16,7 @@ const depositManagement = (function createDepositManagementContent() {
               <p>Find specific loans by it status</p>
 
               <div class="search-section">
-                <input type="search" placeholder="Search borrower" />
+                <input type="search" placeholder="Search Deposit" />
                 <select name="borrower-search-status" id="">
                   <option value="all-status">All Status</option>
                   <option value="decline">Decline</option>

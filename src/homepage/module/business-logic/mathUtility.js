@@ -110,6 +110,48 @@ class MathUtility {
       );
     })();
   }
+
+  static overMetric({ totalTakenLoan, approveLoan, declineLoan, pendingLoan }) {
+    const filterApproveLoan = (takeLoanList) => {
+      const approveLoanResult = takeLoanList.filter((loan) => loan.status === 'Approve');
+      approveLoan(approveLoanResult.length);
+    };
+
+    const filterDeclineLoan = (takeLoanList) => {
+      const declineLoanResult = takeLoanList.filter((loan) => loan.status === 'Decline');
+      declineLoan(declineLoanResult.length);
+    };
+
+    const filterPendingLoan = (takeLoanList) => {
+      const pendingLoanResult = takeLoanList.filter((loan) => loan.status === 'Pending');
+      pendingLoan(pendingLoanResult.length);
+    };
+
+    const filterTakenLoan = (loanApplicantListData) => {
+      const takeLoanList = [];
+
+      loanApplicantListData.forEach((data) => {
+        if (!data.takeLoan) return;
+        data.takeLoan.forEach((takeLoan) => takeLoanList.push(takeLoan));
+      });
+
+      totalTakenLoan(takeLoanList.length);
+
+      filterApproveLoan(takeLoanList);
+      filterDeclineLoan(takeLoanList);
+      filterPendingLoan(takeLoanList);
+    };
+
+    indexDB.interact(
+      {
+        storeName: 'loan-applicant-list',
+        getMethod: 'getAll',
+        returnData: filterTakenLoan,
+        undefinedState: errorGettingData,
+      },
+      'getData',
+    );
+  }
 }
 
 function errorGettingData() {
