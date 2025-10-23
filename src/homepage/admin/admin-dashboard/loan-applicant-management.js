@@ -18,8 +18,8 @@ const loanApplicantManagement = (function createLoanApplicantManagementContent()
 
               <div class="search-section">
                 <input type="search" placeholder="Search Applicant" />
-                <select name="borrower-search-status" id="">
-                  <option value="all-status">All Status</option>
+                <select name="search-status" class="search-status" id="">
+                  <option value=" ">All Status</option>
                   <option value="decline">Decline</option>
                   <option value="approved">Approved</option>
                   <option value="pending">Pending</option>
@@ -60,6 +60,7 @@ const loanApplicantManagement = (function createLoanApplicantManagementContent()
 })();
 
 const searchBar = loanApplicantManagement.querySelector('input[type=search]');
+const searchStatus = loanApplicantManagement.querySelector('.search-status');
 const numberOfApplicant = loanApplicantManagement.querySelector('.number-of-applicant');
 const tbody = loanApplicantManagement.querySelector('tbody');
 
@@ -162,7 +163,7 @@ function insertTakeLoanDataToTable(loanApplicantList) {
        <td>${serialNumber}</td>
        <td class="firstName">${data.firstName}</td>
        <td class="lastName">${data.lastName}</td>
-       <td>${data.status}</td>
+       <td class="status"}">${data.status}</td>
        <td>${date}</td>
        <td>${time}</td>
        <td data-db-first-key="loanApplicantForm"><img src="${eyeViewImg}" class="eye-view" alt="eye view"/>View</td>
@@ -216,17 +217,37 @@ function getFullName(tr) {
   return fullName.toLowerCase();
 }
 
-function filterLoanApplicantTr(e) {
+function getTrs() {
   const trs = tbody.querySelectorAll('tr');
+  return trs;
+}
+
+function filterLoanApplicantTr(e) {
+  const trs = getTrs();
   const searchBarValue = e.target.value.toLowerCase();
 
   trs.forEach((tr) => {
     const fullName = getFullName(tr);
-
     fullName.includes(searchBarValue) ? tr.classList.remove('hide') : tr.classList.add('hide');
   });
 }
 
+function getStatus(tr) {
+  const status = tr.querySelector('.status');
+  return `${status.textContent.toLowerCase()} `;
+}
+
+function filterLoanApplicantByStatus(e) {
+  const trs = getTrs();
+  const searchStatusValue = e.target.value.toLowerCase();
+
+  trs.forEach((tr) => {
+    const status = getStatus(tr);
+    status.includes(searchStatusValue) ? tr.classList.remove('hide') : tr.classList.add('hide');
+  });
+}
+
+searchStatus.addEventListener('change', filterLoanApplicantByStatus);
 searchBar.addEventListener('input', filterLoanApplicantTr);
 tbody.addEventListener('click', handleActionStorage);
 
