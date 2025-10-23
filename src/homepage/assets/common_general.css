@@ -176,3 +176,8 @@ img.eye-view {
   pointer-events: none;
   max-width: 20px;
 }
+/* Logic */
+
+.hide {
+  display: none;
+}

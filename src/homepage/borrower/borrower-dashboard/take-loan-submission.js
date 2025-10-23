@@ -30,9 +30,12 @@ const events = {
 
 const checkIfLoanApplicantFormIsFill = (data) => {
   if (data.loanApplicantFormData) {
-    data.loanApplicantFormData.status === 'Approve'
-      ? insertMoreFormFieldValues(data)
-      : eventBus.dispatchEvent(events.unApproveTakeLoan);
+    if (data.loanApplicantFormData.status === 'Approve') {
+      insertMoreFormFieldValues(data);
+    } else {
+      resetForm();
+      eventBus.dispatchEvent(events.unApproveTakeLoan);
+    }
   } else {
     eventBus.dispatchEvent(events.failTakeLoan);
   }

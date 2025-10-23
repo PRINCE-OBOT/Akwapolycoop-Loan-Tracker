@@ -40,6 +40,8 @@ const loanApplicantManagement = (function createLoanApplicantManagementContent()
                 <thead>
                   <tr>
                     <th>S/N</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
                     <th>Status</th>
                     <th>Date</th>
                     <th>Time</th>
@@ -57,7 +59,9 @@ const loanApplicantManagement = (function createLoanApplicantManagementContent()
   return div;
 })();
 
+const searchBar = loanApplicantManagement.querySelector('input[type=search]');
 const numberOfApplicant = loanApplicantManagement.querySelector('.number-of-applicant');
+const tbody = loanApplicantManagement.querySelector('tbody');
 
 function setNumberOfApplicantValue(value) {
   numberOfApplicant.textContent = value;
@@ -86,16 +90,6 @@ const createTableTr = () => {
   const tr = document.createElement('tr');
   return tr;
 };
-
-const getTbody = () => {
-  const tbody = loanApplicantManagement.querySelector('tbody');
-  return tbody;
-};
-
-(function addEventToTbody() {
-  const tbody = getTbody();
-  tbody.addEventListener('click', handleActionStorage);
-})();
 
 const getIDFromTr = (tr) => {
   const id = tr.getAttribute('data-id');
@@ -148,7 +142,6 @@ function handleActionStorage(e) {
 }
 
 const appendTrToTbody = (tr) => {
-  const tbody = getTbody();
   tbody.append(tr);
 };
 
@@ -157,7 +150,6 @@ const setAttributeToTr = ({ tr, id }) => {
 };
 
 function insertTakeLoanDataToTable(loanApplicantList) {
-  const tbody = getTbody();
   tbody.innerHTML = '';
 
   loanApplicantList.forEach((data, index) => {
@@ -168,6 +160,8 @@ function insertTakeLoanDataToTable(loanApplicantList) {
 
     tr.innerHTML = `
        <td>${serialNumber}</td>
+       <td class="firstName">${data.firstName}</td>
+       <td class="lastName">${data.lastName}</td>
        <td>${data.status}</td>
        <td>${date}</td>
        <td>${time}</td>
@@ -191,6 +185,8 @@ const getLoanApplicant = (loanApplicantListData) => {
   loanApplicantListData.forEach((data) => {
     if (!data.loanApplicantFormData) return;
 
+    data.loanApplicantFormData.firstName = data.signUpData.firstName;
+    data.loanApplicantFormData.lastName = data.signUpData.lastName;
     data.loanApplicantFormData.id = data.id;
     loanApplicantList.push(data.loanApplicantFormData);
   });
@@ -210,6 +206,29 @@ const getLoanApplicantManagementData = () => {
     'getData',
   );
 };
+
+function getFullName(tr) {
+  const firstName = tr.querySelector('.firstName');
+  const lastName = tr.querySelector('.lastName');
+
+  const fullName = `${firstName.textContent} ${lastName.textContent}`;
+
+  return fullName.toLowerCase();
+}
+
+function filterLoanApplicantTr(e) {
+  const trs = tbody.querySelectorAll('tr');
+  const searchBarValue = e.target.value.toLowerCase();
+
+  trs.forEach((tr) => {
+    const fullName = getFullName(tr);
+
+    fullName.includes(searchBarValue) ? tr.classList.remove('hide') : tr.classList.add('hide');
+  });
+}
+
+searchBar.addEventListener('input', filterLoanApplicantTr);
+tbody.addEventListener('click', handleActionStorage);
 
 const loanApplicantManagementGetDataInDBBus = new EventTarget();
 loanApplicantManagementGetDataInDBBus.addEventListener(

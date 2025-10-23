@@ -33,7 +33,7 @@ const depositManagement = (function createDepositManagementContent() {
                     Deposit(s)
                     (<span class="number-of-deposit"></span>)
                   </h4>
-                  <p class="sub-heading">A comprehensive list of all loan applicant</p>
+                  <p class="sub-heading">A comprehensive list of deposit</p>
                 </caption>
 
                 <thead>
