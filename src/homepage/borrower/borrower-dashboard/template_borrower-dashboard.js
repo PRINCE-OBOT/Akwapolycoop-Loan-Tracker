@@ -128,8 +128,6 @@ function getOutstandingBalance(id) {
   getRecentLoanApplicantData({ id, returnData: insertLoanApplicantDataToDashboardPage });
 })();
 
-eventBus.addEventListener('logout', logoutBorrower);
-
 const getAction = (obj) => {
   obj.key = 'action';
   obj.data = { action: 'logout' };
@@ -142,7 +140,7 @@ const storeActionToLocalStorage = (data) => {
 
 const processStoring = pipe(getAction, storeActionToLocalStorage);
 
-const question = ({ text }) =>
+const Event = ({ text }) =>
   new CustomEvent('dialog-manager', {
     detail: {
       contentKey: 'question',
@@ -151,18 +149,17 @@ const question = ({ text }) =>
     },
   });
 
-const questionEvent = {
-  logout: question({ text: 'logout?' }),
+const events = {
+  logout: Event({ text: 'logout?' }),
 };
 
 const showLogoutOption = () => {
   processStoring({});
-  eventBus.dispatchEvent(questionEvent.logout);
+  eventBus.dispatchEvent(events.logout);
 };
 
 function getDepositActionData() {
   const id = getRecentLoanApplicantID();
-
   const obj = {
     key: 'action',
     data: {
@@ -189,8 +186,9 @@ function handleContentDisplay(e) {
 
   eventBus.dispatchEvent(customContentEvent);
 }
+
+eventBus.addEventListener('logout', logoutBorrower);
+
 logoutButton.addEventListener('click', showLogoutOption);
 
 leftSideBar.addEventListener('click', handleContentDisplay);
-
-// MathUtility.depositApprove({ id: 9, depositAmount: 5000 });

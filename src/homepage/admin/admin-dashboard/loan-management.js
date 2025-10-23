@@ -17,7 +17,7 @@ const loanerManagement = (function createLoanerManagementContent() {
               <p>Find specific loans by it status</p>
 
               <div class="search-section">
-                <input type="search" placeholder="Search Loan by LoanID" />
+                <input type="search" placeholder="Search Loan by Loan ID" />
                 <select name="search-status" class="search-status" id="">
                   <option value=" ">All Status</option>
                   <option value="decline">Decline</option>

@@ -17,7 +17,7 @@ const loanApplicantManagement = (function createLoanApplicantManagementContent()
               <p>Find specific loans by it status</p>
 
               <div class="search-section">
-                <input type="search" placeholder="Search Applicant by name" />
+                <input type="search" placeholder="Search Applicant by Name" />
                 <select name="search-status" class="search-status" id="">
                   <option value=" ">All Status</option>
                   <option value="decline">Decline</option>

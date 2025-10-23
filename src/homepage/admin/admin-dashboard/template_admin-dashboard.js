@@ -14,6 +14,7 @@ import appendContent from '../../module/content-holder/content-holder';
 import eventBus from '../../module/event-bus/event';
 import { bindDepositDocumentUploadEvent } from '../../borrower/borrower-dashboard/loan-applicant-deposit/loan-applicant-deposit';
 import bindAllFieldValidEvent from '../../borrower/borrower-dashboard/is-all-field-valid';
+import pipe from '../../module/composition/pipe';
 
 const headerBottomSection = document.querySelector('.header_bottom-section');
 const contentHolder = document.querySelector('.content-holder');
@@ -81,8 +82,41 @@ const getRecentAdminID = () => {
   getRecentAdminData({ id, returnData: insertAdminDataToDashboardPage });
 })();
 
+const removeRecentAdminDataFromLocalStorage = () => localStorage.removeItem('recent-admin');
+
+const getAction = (obj) => {
+  obj.key = 'action';
+  obj.data = { action: 'logout' };
+  return obj;
+};
+
+const storeActionToLocalStorage = (data) => {
+  localStorage.setData(data);
+};
+
+const processStoring = pipe(getAction, storeActionToLocalStorage);
+
+const Event = ({ text }) =>
+  new CustomEvent('dialog-manager', {
+    detail: {
+      contentKey: 'question',
+      closedByValue: 'any',
+      text,
+    },
+  });
+
+const events = {
+  logout: Event({ text: 'logout?' }),
+};
+
 const showLogoutOption = () => {
-  // eventBus.dispatchEvent(dialogEvent.logout);
+  processStoring({});
+  eventBus.dispatchEvent(events.logout);
+};
+
+const logoutAdmin = () => {
+  removeRecentAdminDataFromLocalStorage();
+  navigateToLoginPage();
 };
 
 function handleContentDisplay(e) {
@@ -95,6 +129,8 @@ function handleContentDisplay(e) {
   eventBus.dispatchEvent(customContentEvent);
 }
 
-btnLogout.addEventListener('dialog-manager', showLogoutOption);
+eventBus.addEventListener('logout', logoutAdmin);
+
+btnLogout.addEventListener('click', showLogoutOption);
 
 headerBottomSection.addEventListener('click', handleContentDisplay);
