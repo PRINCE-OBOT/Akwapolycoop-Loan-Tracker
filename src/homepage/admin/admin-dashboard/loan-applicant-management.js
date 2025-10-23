@@ -17,11 +17,11 @@ const loanApplicantManagement = (function createLoanApplicantManagementContent()
               <p>Find specific loans by it status</p>
 
               <div class="search-section">
-                <input type="search" placeholder="Search Applicant" />
+                <input type="search" placeholder="Search Applicant by name" />
                 <select name="search-status" class="search-status" id="">
                   <option value=" ">All Status</option>
                   <option value="decline">Decline</option>
-                  <option value="approved">Approved</option>
+                  <option value="approve">Approve</option>
                   <option value="pending">Pending</option>
                 </select>
               </div>
@@ -222,7 +222,7 @@ function getTrs() {
   return trs;
 }
 
-function filterLoanApplicantTr(e) {
+function filterLoanApplicantByName(e) {
   const trs = getTrs();
   const searchBarValue = e.target.value.toLowerCase();
 
@@ -248,7 +248,7 @@ function filterLoanApplicantByStatus(e) {
 }
 
 searchStatus.addEventListener('change', filterLoanApplicantByStatus);
-searchBar.addEventListener('input', filterLoanApplicantTr);
+searchBar.addEventListener('input', filterLoanApplicantByName);
 tbody.addEventListener('click', handleActionStorage);
 
 const loanApplicantManagementGetDataInDBBus = new EventTarget();

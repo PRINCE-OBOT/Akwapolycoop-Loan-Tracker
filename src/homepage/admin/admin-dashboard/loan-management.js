@@ -17,11 +17,11 @@ const loanerManagement = (function createLoanerManagementContent() {
               <p>Find specific loans by it status</p>
 
               <div class="search-section">
-                <input type="search" placeholder="Search Loan" />
-                <select name="borrower-search-status" id="">
-                  <option value="all-status">All Status</option>
+                <input type="search" placeholder="Search Loan by LoanID" />
+                <select name="search-status" class="search-status" id="">
+                  <option value=" ">All Status</option>
                   <option value="decline">Decline</option>
-                  <option value="approved">Approved</option>
+                  <option value="approve">Approve</option>
                   <option value="pending">Pending</option>
                 </select>
               </div>
@@ -61,6 +61,9 @@ const loanerManagement = (function createLoanerManagementContent() {
 })();
 
 const numberOfLoans = loanerManagement.querySelector('.number-of-loan');
+const searchBar = loanerManagement.querySelector('input[type=search]');
+const searchStatus = loanerManagement.querySelector('.search-status');
+const tbody = loanerManagement.querySelector('tbody');
 
 function setNumberOfLoanValue(value) {
   numberOfLoans.textContent = value;
@@ -89,17 +92,6 @@ const createTableTr = () => {
   const tr = document.createElement('tr');
   return tr;
 };
-
-const getTbody = () => {
-  const tbody = loanerManagement.querySelector('tbody');
-  return tbody;
-};
-
-(function addEventToTbody() {
-  const tbody = getTbody();
-  tbody.addEventListener('click', handleOptionContent);
-  tbody.addEventListener('click', handleActionStorage);
-})();
 
 const getIDFromTr = (tr) => {
   const id = tr.getAttribute('data-id');
@@ -243,7 +235,6 @@ function handleOptionContent(e) {
 }
 
 const appendTrToTbody = (tr) => {
-  const tbody = getTbody();
   tbody.append(tr);
 };
 
@@ -260,7 +251,6 @@ const setAttributeToTr = ({ tr, loanID }) => {
 };
 
 function insertTakeLoanDataToTable(takeLoanList) {
-  const tbody = getTbody();
   tbody.innerHTML = '';
 
   takeLoanList.forEach((data, index) => {
@@ -271,10 +261,10 @@ function insertTakeLoanDataToTable(takeLoanList) {
 
     tr.innerHTML = `
        <td>${serialNumber}</td>
-       <td>${data.loanID}</td>
+       <td class="loanID">${data.loanID}</td>
        <td>${data['desired-amount']}</td>
        <td>${data.tenor}</td>
-       <td>${data.status}</td>
+       <td class="status">${data.status}</td>
        <td>${date}</td>
        <td>${time}</td>
        <td data-db-first-key="loanApplicantForm"><img src="${eyeViewImg}" class="eye-view" alt="eye view"/>View</td>
@@ -326,6 +316,45 @@ const getLoanApplicantForLoanManagement = () => {
   );
 };
 
+function getLoanID(tr) {
+  const loanID = tr.querySelector('.loanID');
+  return loanID.textContent.toLowerCase();
+}
+
+function getTrs() {
+  const trs = tbody.querySelectorAll('tr');
+  return trs;
+}
+
+function filterLoanApplicantByLoanID(e) {
+  const trs = getTrs();
+  const searchBarValue = e.target.value.toLowerCase();
+
+  trs.forEach((tr) => {
+    const loanID = getLoanID(tr);
+    loanID.includes(searchBarValue) ? tr.classList.remove('hide') : tr.classList.add('hide');
+  });
+}
+
+function getStatus(tr) {
+  const status = tr.querySelector('.status');
+  return `${status.textContent.toLowerCase()} `;
+}
+
+function filterLoanApplicantByStatus(e) {
+  const trs = getTrs();
+  const searchStatusValue = e.target.value.toLowerCase();
+
+  trs.forEach((tr) => {
+    const status = getStatus(tr);
+    status.includes(searchStatusValue) ? tr.classList.remove('hide') : tr.classList.add('hide');
+  });
+}
+
+searchStatus.addEventListener('change', filterLoanApplicantByStatus);
+searchBar.addEventListener('input', filterLoanApplicantByLoanID);
+tbody.addEventListener('click', handleOptionContent);
+tbody.addEventListener('click', handleActionStorage);
 const loanerManagementGetDataInDBBus = new EventTarget();
 loanerManagementGetDataInDBBus.addEventListener(
   'render-content',
