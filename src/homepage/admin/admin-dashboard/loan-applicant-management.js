@@ -61,8 +61,8 @@ const loanApplicantManagement = (function createLoanApplicantManagementContent()
 
 const searchBar = loanApplicantManagement.querySelector('input[type=search]');
 const searchStatus = loanApplicantManagement.querySelector('.search-status');
-const numberOfApplicant = loanApplicantManagement.querySelector('.number-of-applicant');
 const tbody = loanApplicantManagement.querySelector('tbody');
+const numberOfApplicant = loanApplicantManagement.querySelector('.number-of-applicant');
 
 function setNumberOfApplicantValue(value) {
   numberOfApplicant.textContent = value;

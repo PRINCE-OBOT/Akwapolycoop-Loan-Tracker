@@ -17,8 +17,8 @@ const depositManagement = (function createDepositManagementContent() {
 
               <div class="search-section">
                 <input type="search" placeholder="Search Deposit" />
-                <select name="borrower-search-status" id="">
-                  <option value="all-status">All Status</option>
+                <select name="search-status" class="search-status" id="">
+                  <option value=" ">All Status</option>
                   <option value="decline">Decline</option>
                   <option value="approved">Approved</option>
                   <option value="pending">Pending</option>
@@ -38,8 +38,9 @@ const depositManagement = (function createDepositManagementContent() {
 
                 <thead>
                   <tr>
-                  <th>S/N</th>
-                  <th>Amount Paid</th>
+                    <th>S/N</th>
+                    <th>Deposit ID</th>
+                    <th>Amount Paid</th>
                     <th>Status</th>
                     <th>Date</th>
                     <th>Time</th>
@@ -59,15 +60,13 @@ const depositManagement = (function createDepositManagementContent() {
 })();
 
 const numberOfDeposit = depositManagement.querySelector('.number-of-deposit');
+const searchBar = depositManagement.querySelector('input[type=search]');
+const searchStatus = depositManagement.querySelector('.search-status');
+const tbody = depositManagement.querySelector('tbody');
 
 function setNumberOfDepositValue(value) {
   numberOfDeposit.textContent = value;
 }
-
-const getTbody = () => {
-  const tbody = depositManagement.querySelector('tbody');
-  return tbody;
-};
 
 const question = (text) =>
   new CustomEvent('dialog-manager', {
@@ -104,11 +103,7 @@ function handleOptionContent(e) {
   OptionHandler[optionKey]();
 }
 
-(function addEventToTbody() {
-  const tbody = getTbody();
-  tbody.addEventListener('click', handleOptionContent);
-  tbody.addEventListener('click', handleActionStorage);
-})();
+(function addEventToTbody() {})();
 
 const getAttributeFromTarget = (e) => {
   const target = e.target;
@@ -269,12 +264,10 @@ const setAttributeToTr = ({ tr, id, depositID, depositAmount }) => {
 };
 
 const appendTrToTbody = (tr) => {
-  const tbody = getTbody();
   tbody.append(tr);
 };
 
 function insertDepositDataToTable(depositList) {
-  const tbody = getTbody();
   tbody.innerHTML = '';
 
   depositList.forEach((data, index) => {
@@ -285,8 +278,9 @@ function insertDepositDataToTable(depositList) {
 
     tr.innerHTML = `
        <td>${serialNumber}</td>
+       <td class="depositID">${data.depositID}</td>
        <td>${data.depositAmount}</td>
-       <td>${data.status}</td>
+       <td class="status">${data.status}</td>
        <td>${date}</td>
        <td>${time}</td>
        <td data-db-first-key="proofOfPayment"><img src="${eyeViewImg}" class="eye-view" alt="eye view"/>Proof of Payment</td>
@@ -349,6 +343,45 @@ const getLoanApplicantForDepositManagement = () => {
   );
 };
 
+function getDepositID(tr) {
+  const depositID = tr.querySelector('.depositID');
+  return depositID.textContent.toLowerCase();
+}
+
+function getTrs() {
+  const trs = tbody.querySelectorAll('tr');
+  return trs;
+}
+
+function filterLoanApplicantByDepositID(e) {
+  const trs = getTrs();
+  const searchBarValue = e.target.value.toLowerCase();
+
+  trs.forEach((tr) => {
+    const depositID = getDepositID(tr);
+    depositID.includes(searchBarValue) ? tr.classList.remove('hide') : tr.classList.add('hide');
+  });
+}
+
+function getStatus(tr) {
+  const status = tr.querySelector('.status');
+  return `${status.textContent.toLowerCase()} `;
+}
+
+function filterLoanApplicantByStatus(e) {
+  const trs = getTrs();
+  const searchStatusValue = e.target.value.toLowerCase();
+
+  trs.forEach((tr) => {
+    const status = getStatus(tr);
+    status.includes(searchStatusValue) ? tr.classList.remove('hide') : tr.classList.add('hide');
+  });
+}
+
+searchStatus.addEventListener('change', filterLoanApplicantByStatus);
+searchBar.addEventListener('input', filterLoanApplicantByDepositID);
+tbody.addEventListener('click', handleOptionContent);
+tbody.addEventListener('click', handleActionStorage);
 const depositManagementGetDataInDBBus = new EventTarget();
 depositManagementGetDataInDBBus.addEventListener(
   'render-content',
