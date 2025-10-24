@@ -59,14 +59,22 @@ const loanApplicantManagement = (function createLoanApplicantManagementContent()
   return div;
 })();
 
+// QuerySelector
 const searchBar = loanApplicantManagement.querySelector('input[type=search]');
 const searchStatus = loanApplicantManagement.querySelector('.search-status');
 const tbody = loanApplicantManagement.querySelector('tbody');
 const numberOfApplicant = loanApplicantManagement.querySelector('.number-of-applicant');
 
+function getTrs() {
+  const trs = tbody.querySelectorAll('tr');
+  return trs;
+}
+
 function setNumberOfApplicantValue(value) {
   numberOfApplicant.textContent = value;
 }
+
+// Inserting loan applicant data to table
 
 function errorWhileGettingData() {
   console.log('Error while getting data');
@@ -208,6 +216,7 @@ const getLoanApplicantManagementData = () => {
   );
 };
 
+// Filtering loan applicant table
 function getFullName(tr) {
   const firstName = tr.querySelector('.firstName');
   const lastName = tr.querySelector('.lastName');
@@ -215,11 +224,6 @@ function getFullName(tr) {
   const fullName = `${firstName.textContent} ${lastName.textContent}`;
 
   return fullName.toLowerCase();
-}
-
-function getTrs() {
-  const trs = tbody.querySelectorAll('tr');
-  return trs;
 }
 
 function filterLoanApplicantByName(e) {
@@ -247,6 +251,7 @@ function filterLoanApplicantByStatus(e) {
   });
 }
 
+// Eventlistener
 searchStatus.addEventListener('change', filterLoanApplicantByStatus);
 searchBar.addEventListener('input', filterLoanApplicantByName);
 tbody.addEventListener('click', handleActionStorage);

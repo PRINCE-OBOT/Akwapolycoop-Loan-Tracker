@@ -79,59 +79,6 @@ p {
   outline: 1.5px solid var(--dark-yellow);
   outline-offset: 2px;
 }
-dialog {
-  border: none;
-  padding: 0;
-  background-color: transparent;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-dialog::backdrop {
-  backdrop-filter: blur(8px);
-}
-dialog {
-  transition: 200ms;
-  transition-behavior: allow-discrete;
-}
-dialog > * {
-  transition: 150ms;
-  transform: scale(0);
-  background: var(--transparent-black);
-  width: 100%;
-  max-width: 310px;
-  height: max-content;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  border: none;
-  box-shadow: var(--box-shadow);
-  border-radius: 30px;
-  padding: 40px 30px;
-}
-dialog:open > * {
-  transform: scale(1);
-  transition: 300ms;
-}
-@starting-style {
-  dialog:open > * {
-    transform: scale(0);
-  }
-}
-button,
-a {
-  transition: 300ms;
-}
-:where(button, a):active {
-  transform: scale(0.8);
-}
-:where(button, a):hover {
-  opacity: 0.8;
-}
-form {
-  letter-spacing: 1.5px;
-}
 output {
   letter-spacing: 0.1px;
 }
@@ -150,18 +97,72 @@ input {
   opacity: 0.3;
 }
 
-dialog h4 {
+dialog {
+  transition: 200ms allow-discrete;
+  border: none;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  scale: 0;
+  background-color: transparent;
+}
+dialog:open {
+  scale: 1;
+  transition: 300ms;
+}
+dialog::backdrop {
+  backdrop-filter: blur(8px);
+}
+@starting-style {
+  dialog:open {
+    scale: 0;
+  }
+}
+button,
+a {
+  transition: 300ms;
+}
+:where(button, a):active {
+  transform: scale(0.8);
+}
+:where(button, a):hover {
+  opacity: 0.8;
+}
+form {
+  letter-spacing: 1.5px;
+}
+/* Form status - add animation for status form - specifically for login process and signing in*/
+
+/* form option style  */
+.form-status,
+.form-option {
+  background: var(--transparent-black);
+  border-radius: 30px;
+  padding: 40px 30px;
+}
+
+:where(.form-status, .form-option) h4 {
   color: var(--white);
   font-weight: 400;
   text-align: center;
 }
-.dialog-logout-section button {
+
+.form-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  box-shadow: var(--box-shadow);
+}
+
+.form-option button {
   min-width: 120px;
   border-radius: 5px;
   box-shadow: var(--box-shadow);
   padding: 5px;
   letter-spacing: 3px;
 }
+
 .btn-cancel {
   background-color: var(--ink);
   border: 1px solid var(--white);

@@ -13,7 +13,7 @@ const setAttributeToFormElement = (form) => {
 };
 
 const addClassToFormElement = (form) => {
-  form.classList.add('dialog-logout-section');
+  form.classList.add('form-option');
   return form;
 };
 

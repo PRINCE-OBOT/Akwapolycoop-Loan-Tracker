@@ -5,6 +5,11 @@ const createFormElement = (document) => {
   return form;
 };
 
+const addClassToFormElement = (form) => {
+  form.classList.add('form-status');
+  return form;
+};
+
 const createH4Element = (document) => {
   const h4 = document.createElement('h4');
   return h4;
@@ -21,7 +26,7 @@ const appendH4ElementToForm = (form) => {
 };
 
 const processH4 = pipe(createH4Element, addClassToH4Element);
-const processForm = pipe(createFormElement, appendH4ElementToForm);
+const processForm = pipe(createFormElement, addClassToFormElement, appendH4ElementToForm);
 
 const h4 = processH4(document);
 const formStatus = processForm(document);

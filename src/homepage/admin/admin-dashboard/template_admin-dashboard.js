@@ -32,7 +32,6 @@ appendDialogToBody();
 
 appendContent.prototype.holder = contentHolder;
 appendContent({ detail: { contentKey: 'loan-applicant-management' } });
-// const logoutAdmin = () => {};
 
 const errorGettingData = () => {
   console.log('Error while getting data');
