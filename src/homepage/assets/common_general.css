@@ -98,13 +98,16 @@ input {
 }
 
 dialog {
-  transition: 200ms allow-discrete;
+  transition: 100ms allow-discrete;
   border: none;
   left: 50%;
   top: 50%;
   translate: -50% -50%;
   scale: 0;
   background-color: transparent;
+}
+dialog::-webkit-scrollbar {
+  display: none;
 }
 dialog:open {
   scale: 1;

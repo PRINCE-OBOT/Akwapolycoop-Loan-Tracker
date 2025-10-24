@@ -10,7 +10,7 @@ const proofOfPayment = (function createProofOfPayment() {
 
   form.innerHTML = `
      <!-- Header -->
-     <div class="proof-dialog-header">
+     <div class="proof-payment-header">
          <h1>Proof of Payment</h1>
          <button class="close-btn">✕</button>
      </div>
