@@ -1,7 +1,6 @@
 .proof-of-payment {
   background-color: var(--white);
   border-radius: 10px;
-  /* padding: 20px; */
 }
 .proof-payment-header {
   display: flex;
@@ -9,11 +8,45 @@
   gap: 10px;
   border-radius: 10px 10px 0 0;
   padding: 10px 20px;
-  background: var(--primary-accent);
+  background: linear-gradient(135deg, var(--primary-accent) 0%, #764ba2 100%);
+  color: var(--secondary-accent);
 }
 .close-btn {
   background: none;
   border: none;
   color: var(--white);
   font-weight: 900;
+
+  &:focus {
+    outline: none;
+    scale: 0.7;
+  }
+}
+.proof-payment-body {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 40px;
+  padding-top: 20px;
+}
+
+.proof-of-payment-preview {
+  border-radius: 10px;
+  max-width: 300px;
+}
+.proof-payment-date-section {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 10x;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: var(--transparent-black);
+  & > * {
+    color: var(--white);
+  }
+}
+.info-label {
+  color: var(--grey);
 }

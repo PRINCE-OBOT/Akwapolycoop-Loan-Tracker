@@ -15,14 +15,17 @@ const proofOfPayment = (function createProofOfPayment() {
          <button class="close-btn">✕</button>
      </div>
    
-     <div class="proof-dialog-body">
-     <img src="" alt="Proof of Payment" class="proof-of-payment-preview">
-         
-         <div class="info-section">
-             <div class="info-label">Date/Time</div>
-             <div class="date-of-payment"></div>
-             <div class="time-of-payment"><div>
-         </div>
+     <div class="proof-payment-body">
+       <!--<div class="amount-deposit-body">
+           <p>Amount</p>
+           <p class="amount-deposit"></p>
+       </div> -->
+        <img src="" alt="Proof of Payment" class="proof-of-payment-preview">
+        <div class="proof-payment-date-section">
+            <div class="info-label">Date/Time</div>
+            <div class="date-of-payment"></div>
+            <div class="time-of-payment"><div>
+        </div>
      </div>
      `;
 

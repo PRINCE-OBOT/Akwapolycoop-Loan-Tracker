@@ -105,6 +105,10 @@ dialog {
   translate: -50% -50%;
   scale: 0;
   background-color: transparent;
+
+  &:focus {
+    outline: none;
+  }
 }
 dialog::-webkit-scrollbar {
   display: none;

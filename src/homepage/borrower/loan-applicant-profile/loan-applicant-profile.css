@@ -11,7 +11,7 @@
 }
 
 .header {
-  background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
+  background: linear-gradient(135deg, var(--ink) 0%, var(--primary-accent) 100%);
   color: white;
   padding: 2rem;
 }
@@ -54,6 +54,9 @@
 
 .content {
   padding: 2rem;
+}
+.profile-picture-box {
+  padding: 20px 0 0 20px;
 }
 .passport {
   width: var(--medium-dim);
