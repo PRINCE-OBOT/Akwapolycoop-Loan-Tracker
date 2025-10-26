@@ -103,7 +103,8 @@ const indexDB = {
       newValue,
       firstKey,
       secondKey,
-      loanID,
+      uniqueID,
+      uniqueIDKey,
       getMethod,
       trueState,
       undefinedState,
@@ -116,7 +117,7 @@ const indexDB = {
         return;
       }
 
-      modifyDataHandler({ data, firstKey, secondKey, loanID, newValue });
+      modifyDataHandler({ data, firstKey, secondKey, uniqueID, uniqueIDKey, newValue });
 
       indexDB.storeData({ storeName, data, trueState, undefinedState }, db);
     }
@@ -186,7 +187,7 @@ const indexDB = {
   },
 };
 
-function modifyDataHandler({ data, firstKey, secondKey, loanID, newValue }) {
+function modifyDataHandler({ data, firstKey, secondKey, uniqueID, uniqueIDKey, newValue }) {
   const DBKeyHandler = {
     String: () => {
       data[firstKey] = newValue[firstKey];
@@ -200,7 +201,7 @@ function modifyDataHandler({ data, firstKey, secondKey, loanID, newValue }) {
 
     Array: () => {
       firstKey.forEach((key, index) => {
-        const result = data[key].find((obj) => obj.loanID === loanID);
+        const result = data[key].find((obj) => obj[uniqueIDKey] === uniqueID);
         result[secondKey[index]] = newValue[index][secondKey[index]];
       });
     },

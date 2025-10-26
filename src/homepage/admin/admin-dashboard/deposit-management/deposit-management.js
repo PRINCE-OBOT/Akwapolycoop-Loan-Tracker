@@ -115,13 +115,14 @@ const getAttributeFromTarget = (e) => {
 
 const provideModifyActionData = ({ id, e }) => {
   const { status } = getAttributeFromTarget(e);
-  const { depositAmount } = getAttributeFromTr(e);
+  const { depositAmount, depositID } = getAttributeFromTr(e);
 
   const obj = {
     key: 'action',
     data: {
       action: 'modifyData',
       id,
+      depositID,
       value: [{ status }, { actionDate: new Date() }],
       firstKey: ['deposit', 'deposit'],
       secondKey: ['status', 'actionDate'],

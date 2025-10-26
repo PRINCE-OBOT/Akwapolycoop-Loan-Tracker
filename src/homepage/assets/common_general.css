@@ -186,16 +186,12 @@ form {
 }
 img.eye-view {
   pointer-events: none;
-  background-color: var(--dark-yellow);
+  background: linear-gradient(var(--secondary-accent), var(--transparent-white));
   border-radius: 20px;
-  scale: 1 0.6;
+  scale: 1 0.8;
   max-width: 20px;
 }
-/* Logic */
 
-.hide {
-  display: none;
-}
 [data-status='Approve'],
 [data-status='Decline'] {
   border: none;
@@ -209,4 +205,9 @@ img.eye-view {
 }
 [data-status='Decline'] {
   background-color: var(--warning);
+}
+/* Logic */
+
+.hide {
+  display: none;
 }

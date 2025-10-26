@@ -48,7 +48,7 @@ const addTextContentToDiv = (div) => {
                 <h2>Applicant Information</h2>
             </div>
     
-            <div class="grid applicant-information-section">
+            <div class="grid employment-status-section">
                 <div class="field">
                     <label>First Name</label>
                     <div class="field-value first-name">Chukwudi</div>
@@ -202,7 +202,7 @@ function addOptionElementToDiv(div) {
 
 function addEmploymentStatusElement(div) {
   div.innerHTML = `
-     <div class="field">
+     <div class="field employment-status-field">
         <label>Employment Status</label>
         <div class="field-value employ-employment-status"></div>
     </div>
@@ -226,7 +226,7 @@ function addEmploymentStatusElement(div) {
 
 function addUnEmploymentStatusElement(div) {
   div.innerHTML = `
-     <div class="field">
+     <div class="field employment-status-field">
         <label>Employment Status</label>
         <div class="field-value unemployed-employment-status"></div>
     </div>
@@ -246,9 +246,7 @@ const employmentStatusElement = buildEmploymentStatusElement(document);
 const unEmploymentStatusElement = buildUnEmploymentStatusElement(document);
 
 const footer = loanApplicantProfile.querySelector('.footer');
-const applicantInformationSection = loanApplicantProfile.querySelector(
-  '.applicant-information-section',
-);
+const employmentStatusSection = loanApplicantProfile.querySelector('.employment-status-section');
 
 const processOptionKeySection = pipe(createDiv, addOptionElementToDiv);
 
@@ -407,7 +405,7 @@ const getTime = (dateAndTime) => {
 
 function appendEmploymentStatusElement() {
   unEmploymentStatusElement.remove();
-  applicantInformationSection.insertAdjacentElement('afterend', employmentStatusElement);
+  employmentStatusSection.insertAdjacentElement('afterend', employmentStatusElement);
 }
 
 function addTextContentToUnemployedStatus(loanApplicantFormData) {
@@ -423,7 +421,7 @@ function addTextContentToEmployedStatus(loanApplicantFormData) {
 
 function appendUnemploymentStatusElement() {
   employmentStatusElement.remove();
-  applicantInformationSection.insertAdjacentElement('afterend', unEmploymentStatusElement);
+  employmentStatusSection.insertAdjacentElement('afterend', unEmploymentStatusElement);
 }
 
 function checkEmploymentStatus(loanApplicantFormData) {

@@ -35,7 +35,12 @@ const getActionDataFromLocalStorage = () => {
 };
 
 const modifyLoanApplicantData = () => {
-  const { id, value, firstKey, secondKey, loanID } = getActionDataFromLocalStorage();
+  const { id, value, firstKey, secondKey, loanID, depositID } = getActionDataFromLocalStorage();
+
+  const uniqueID = loanID || depositID;
+  const uniqueIDKey = loanID ? 'loanID' : 'depositID';
+
+  console.log(uniqueID, uniqueIDKey);
 
   indexDB.interact(
     {
@@ -43,7 +48,8 @@ const modifyLoanApplicantData = () => {
       keyPathValue: +id,
       getMethod: 'get',
       newValue: value,
-      loanID,
+      uniqueIDKey,
+      uniqueID,
       firstKey,
       secondKey,
       trueState: updated,

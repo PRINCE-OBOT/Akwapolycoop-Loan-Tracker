@@ -122,6 +122,10 @@
   gap: 1.5rem;
 }
 
+.employment-status-field {
+  padding-top: 20px;
+}
+
 .field {
   margin-bottom: 1rem;
 }
