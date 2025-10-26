@@ -207,18 +207,18 @@ const Event = ({ text = null, contentKey = 'question' }) =>
     },
   });
 
-const questionEvent = {
+const events = {
   approve: Event({ text: 'approve the loan?' }),
   decline: Event({ text: 'decline the loan?' }),
   depositForm: Event({ contentKey: 'depositForm' }),
 };
 
 const showDepositForm = () => {
-  eventBus.dispatchEvent(questionEvent.depositForm);
+  eventBus.dispatchEvent(events.depositForm);
 };
 
 function showDeclineOption() {
-  eventBus.dispatchEvent(questionEvent.decline);
+  eventBus.dispatchEvent(events.decline);
 }
 
 const OptionHandler = {

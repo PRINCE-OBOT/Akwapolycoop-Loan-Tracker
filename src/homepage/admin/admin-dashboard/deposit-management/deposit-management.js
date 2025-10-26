@@ -20,7 +20,7 @@ const depositManagement = (function createDepositManagementContent() {
                 <select name="search-status" class="search-status" id="">
                   <option value=" ">All Status</option>
                   <option value="decline">Decline</option>
-                  <option value="approved">Approved</option>
+                  <option value="approve">Approved</option>
                   <option value="pending">Pending</option>
                 </select>
               </div>

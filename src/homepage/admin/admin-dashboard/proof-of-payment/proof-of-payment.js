@@ -22,10 +22,14 @@ const proofOfPayment = (function createProofOfPayment() {
        </div> -->
         <img src="" alt="Proof of Payment" class="proof-of-payment-preview">
         <div class="proof-payment-date-section">
-            <div class="info-label">Date/Time</div>
-            <div class="date-of-payment"></div>
-            <div class="time-of-payment"><div>
-        </div>
+            <div class="field">
+                <label>Date</label>
+                <div class="field-value date-of-payment">+234 803 456 7890</div>
+            <div class="field">
+                <label>Time</label>
+                <div class="field-value time-of-payment">+234 803 456 7890</div>
+            </div>    
+        
      </div>
      `;
 

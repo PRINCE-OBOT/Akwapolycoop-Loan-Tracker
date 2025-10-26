@@ -23,30 +23,10 @@
   }
 }
 .proof-payment-body {
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  gap: 40px;
-  padding-top: 20px;
+  padding: 30px 20px 20px 20px;
 }
 
 .proof-of-payment-preview {
   border-radius: 10px;
-  max-width: 300px;
-}
-.proof-payment-date-section {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  gap: 10x;
-  padding: 10px;
-  border-radius: 10px;
-  background-color: var(--transparent-black);
-  & > * {
-    color: var(--white);
-  }
-}
-.info-label {
-  color: var(--grey);
+  width: min(400px, 100%);
 }
