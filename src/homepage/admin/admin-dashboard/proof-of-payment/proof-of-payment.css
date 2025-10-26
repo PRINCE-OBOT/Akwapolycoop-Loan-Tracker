@@ -30,3 +30,6 @@
   border-radius: 10px;
   width: min(400px, 100%);
 }
+.proof-payment-date-section {
+  padding-top: 50px;
+}
