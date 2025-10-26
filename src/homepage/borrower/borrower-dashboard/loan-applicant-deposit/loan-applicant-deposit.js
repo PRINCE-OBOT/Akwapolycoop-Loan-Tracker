@@ -80,6 +80,7 @@ const loanApplicantDeposit = (function () {
         </div>
     </div>
     `;
+  form.classList.add('deposit-form');
 
   form.addEventListener('input', handleFieldValidationLogic);
 
@@ -225,7 +226,7 @@ const Event = ({ text, closedByValue = 'any' }) =>
 
 const events = {
   failDepositApprove: Event({
-    text: 'Approve deposit amount does no match Loan Applicant deposit amount',
+    text: 'Approve deposit amount does not match Loan Applicant deposit amount',
   }),
   failDeposit: Event({ text: 'You cannot deposit more than your outstanding balance' }),
   modifyIndexdb: new CustomEvent('modify-indexdb'),
@@ -277,6 +278,7 @@ function checkIfAdminDepositAmountIsWithinRange(data) {
     convertFileToDataURLFormat();
   } else {
     eventBus.dispatchEvent(events.failDepositApprove);
+    resetForm();
   }
 }
 

@@ -180,11 +180,15 @@ form {
   color: var(--white);
   border: none;
 }
-[data-db-first-key='loanApplicantForm'] {
-  background: radial-gradient(var(--secondary-accent-faint), var(--white) 100%);
+[data-db-first-key='loanApplicantForm'],
+[data-db-first-key='proofOfPayment'] {
+  color: var(--dark-yellow);
 }
 img.eye-view {
   pointer-events: none;
+  background-color: var(--dark-yellow);
+  border-radius: 20px;
+  scale: 1 0.6;
   max-width: 20px;
 }
 /* Logic */
@@ -198,10 +202,10 @@ img.eye-view {
   padding: 8px;
   border-radius: 10px;
   box-shadow: var(--box-shadow);
-  color: var(--secondary-accent-faint);
+  color: var(--white);
 }
 [data-status='Approve'] {
-  background-color: var(--clr-valid);
+  background-color: var(--primary-accent);
 }
 [data-status='Decline'] {
   background-color: var(--warning);

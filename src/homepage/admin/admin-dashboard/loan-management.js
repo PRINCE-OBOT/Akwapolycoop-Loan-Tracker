@@ -267,7 +267,7 @@ function insertTakeLoanDataToTable(takeLoanList) {
        <td class="status">${data.status}</td>
        <td>${date}</td>
        <td>${time}</td>
-       <td data-db-first-key="loanApplicantForm"><img src="${eyeViewImg}" class="eye-view" alt="eye view"/>View</td>
+       <td data-db-first-key="loanApplicantForm"><img src="${eyeViewImg}" class="eye-view" alt="eye view"/>View Profile</td>
        
       `;
     checkStatus({ tr, status: data.status });

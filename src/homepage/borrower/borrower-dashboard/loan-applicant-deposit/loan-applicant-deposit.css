@@ -1,9 +1,10 @@
 .deposit-container {
   background: white;
-  border-radius: 5px;
+  border-radius: 20px;
 }
 
 .header {
+  border-radius: 20px 20px 0 0;
   background: linear-gradient(135deg, var(--primary-accent) 0%, #764ba2 100%);
   padding: 40px 30px;
   color: white;
@@ -20,7 +21,7 @@
   font-size: 14px;
   opacity: 0.9;
 }
-</div > .form-content {
+.form-content {
   padding: 40px 30px;
 }
 
@@ -53,7 +54,6 @@
   top: 50%;
   transform: translateY(-50%);
   font-size: 16px;
-  color: #667eea;
   font-weight: 600;
 }
 
@@ -154,7 +154,7 @@ input[type='file'] {
 }
 
 .btn-submit {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--primary-accent);
   color: white;
 }
 
@@ -183,13 +183,13 @@ input[type='file'] {
 }
 
 .info-box {
-  background: #e3f2fd;
-  border-left: 4px solid #667eea;
+  background: var(--transparent-black);
+  border-left: 4px solid var(--warning);
   padding: 15px;
   border-radius: 8px;
   margin-bottom: 20px;
   font-size: 14px;
-  color: #1976d2;
+  color: var(--white);
 }
 
 .info-box strong {

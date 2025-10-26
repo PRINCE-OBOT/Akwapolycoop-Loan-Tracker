@@ -174,7 +174,7 @@ function insertTakeLoanDataToTable(loanApplicantList) {
        <td class="status"}">${data.status}</td>
        <td>${date}</td>
        <td>${time}</td>
-       <td data-db-first-key="loanApplicantForm"><img src="${eyeViewImg}" class="eye-view" alt="eye view"/>View</td>
+       <td data-db-first-key="loanApplicantForm"><img src="${eyeViewImg}" class="eye-view" alt="eye view"/>View Profile</td>
        
       `;
     setAttributeToTr({ tr, id: data.id });
