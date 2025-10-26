@@ -170,6 +170,10 @@ const addTextContentToDiv = (div) => {
                     <label>Residential Address</label>
                     <div class="field-value guarantor-resident-address">12 Victoria Island Road, Victoria Island, Lagos State</div>
                 </div>
+                <div class="field full-width">
+                    <label>Gender</label>
+                    <div class="field-value guarantor-gender"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -181,8 +185,6 @@ const addTextContentToDiv = (div) => {
             <h3 class="status-title">Status:</h3>
             <span class="status"></span>
         </div>
-        
-        
         </div>
         `;
   return div;
@@ -191,8 +193,8 @@ const addTextContentToDiv = (div) => {
 function addOptionElementToDiv(div) {
   div.innerHTML = `
     <div class="option-key-section">
-        <button data-db-first-key="loanApplicantFormData" data-option-key="approveOption" data-status="Approve">Approve:</button>
-        <button data-db-first-key="loanApplicantFormData" data-option-key="declineOption" data-status="Decline">Decline:</button>
+        <button data-db-first-key="loanApplicantFormData" data-option-key="approveOption" data-status="Approve">Approve</button>
+        <button data-db-first-key="loanApplicantFormData" data-option-key="declineOption" data-status="Decline">Decline</button>
     </div>
     `;
   return div;
@@ -369,6 +371,7 @@ const guarantorFirstName = loanApplicantProfile.querySelector('.guarantor-first-
 const guarantorLastName = loanApplicantProfile.querySelector('.guarantor-last-name');
 const guarantorPhoneNumber = loanApplicantProfile.querySelector('.guarantor-phone-number');
 const guarantorResidentAddress = loanApplicantProfile.querySelector('.guarantor-resident-address');
+const guarantorGender = loanApplicantProfile.querySelector('.guarantor-gender');
 
 const employEmploymentStatus = employmentStatusElement.querySelector('.employ-employment-status');
 const businessName = employmentStatusElement.querySelector('.business-name');
@@ -454,13 +457,12 @@ function insertLoanApplicantDataToProfile(data) {
   accountName.textContent = loanApplicantFormData['account-name'];
   bankName.textContent = loanApplicantFormData['bank-name'];
   status.textContent = loanApplicantFormData.status;
-  // add state and local government area later
-  //   state.textContent = loanApplicantFormData.state
 
   guarantorFirstName.textContent = loanApplicantFormData['guarantor-first-name'];
   guarantorLastName.textContent = loanApplicantFormData['guarantor-last-name'];
   guarantorPhoneNumber.textContent = loanApplicantFormData['guarantor-phone-number'];
   guarantorResidentAddress.textContent = loanApplicantFormData['guarantor-resident-address'];
+  guarantorGender.textContent = loanApplicantFormData['guarantor-gender'];
 
   checkEmploymentStatus(loanApplicantFormData);
   checkStatusOfProfile(loanApplicantFormData);

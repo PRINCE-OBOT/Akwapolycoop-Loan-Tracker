@@ -180,6 +180,9 @@ form {
   color: var(--white);
   border: none;
 }
+[data-db-first-key='loanApplicantForm'] {
+  background: radial-gradient(var(--secondary-accent-faint), var(--white) 100%);
+}
 img.eye-view {
   pointer-events: none;
   max-width: 20px;
@@ -188,4 +191,18 @@ img.eye-view {
 
 .hide {
   display: none;
+}
+[data-status='Approve'],
+[data-status='Decline'] {
+  border: none;
+  padding: 8px;
+  border-radius: 10px;
+  box-shadow: var(--box-shadow);
+  color: var(--secondary-accent-faint);
+}
+[data-status='Approve'] {
+  background-color: var(--clr-valid);
+}
+[data-status='Decline'] {
+  background-color: var(--warning);
 }
