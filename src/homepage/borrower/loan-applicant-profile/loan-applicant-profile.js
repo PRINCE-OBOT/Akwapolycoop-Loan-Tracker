@@ -48,7 +48,7 @@ const addTextContentToDiv = (div) => {
                 <h2>Applicant Information</h2>
             </div>
     
-            <div class="grid">
+            <div class="grid applicant-information-section">
                 <div class="field">
                     <label>First Name</label>
                     <div class="field-value first-name">Chukwudi</div>
@@ -144,7 +144,7 @@ const addTextContentToDiv = (div) => {
                 <h2>Guarantor Information</h2>
             </div>
     
-            <div class="grid applicant-information-section">
+            <div class="grid">
                 <div class="field">
                     <label>First Name</label>
                     <div class="field-value guarantor-first-name">Adebayo</div>
@@ -219,6 +219,8 @@ function addEmploymentStatusElement(div) {
         <div class="field-value job-duration"></div>
     </div>`;
 
+  div.classList.add('grid');
+
   return div;
 }
 
@@ -229,6 +231,8 @@ function addUnEmploymentStatusElement(div) {
         <div class="field-value unemployed-employment-status"></div>
     </div>
     `;
+
+  div.classList.add('grid');
 
   return div;
 }
@@ -403,7 +407,7 @@ const getTime = (dateAndTime) => {
 
 function appendEmploymentStatusElement() {
   unEmploymentStatusElement.remove();
-  applicantInformationSection.append(employmentStatusElement);
+  applicantInformationSection.insertAdjacentElement('afterend', employmentStatusElement);
 }
 
 function addTextContentToUnemployedStatus(loanApplicantFormData) {
@@ -419,7 +423,7 @@ function addTextContentToEmployedStatus(loanApplicantFormData) {
 
 function appendUnemploymentStatusElement() {
   employmentStatusElement.remove();
-  applicantInformationSection.append(unEmploymentStatusElement);
+  applicantInformationSection.insertAdjacentElement('afterend', unEmploymentStatusElement);
 }
 
 function checkEmploymentStatus(loanApplicantFormData) {
