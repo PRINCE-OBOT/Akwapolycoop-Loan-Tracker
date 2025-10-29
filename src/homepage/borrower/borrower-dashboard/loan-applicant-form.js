@@ -17,6 +17,51 @@ const loanApplicantForm = (function () {
     
               <fieldset class="field-section personal-information">
                 <legend>Personal Information</legend>
+
+            <div class="first-name">
+              <label for="first-name">
+                First Name
+                <span class="required-asterisk">*</span>
+              </label>
+              <input
+                type="text"
+                id="first-name"
+                placeholder="James"
+                pattern="^[a-zA-Z]{1,}$"
+                required
+              />
+              <output id="first-name-message" class="show-message"></output>
+            </div>
+
+            <div class="last-name">
+              <label for="last-name">
+                Last Name
+                <span class="required-asterisk">*</span>
+              </label>
+              <input
+                type="text"
+                id="last-name"
+                placeholder="Town"
+                pattern="^[a-zA-Z]{1,}$"
+                required
+              />
+              <output id="last-name-message" class="show-message"></output>
+            </div>
+
+            <div class="email">
+              <label for="email">
+                Email
+                <span class="required-asterisk">*</span>
+              </label>
+              <input
+                type="email"
+                id="email"
+                placeholder="jamestown34@gmail.com"
+                pattern="^[a-zA-Z0-9.]{4,}@(gmail|yahoo|hotmail).com$"
+                required
+              />
+              <output id="email-message" class="show-message"></output>
+            </div>
     
                 <div class="gender">
                   <label for="gender">
