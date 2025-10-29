@@ -222,9 +222,22 @@ const getActionIDFromLocalStorage = () => {
   return data?.id;
 };
 
+function generateMembershipID(id) {
+  return `MEM${new Date().getFullYear()}0000${id}`;
+}
+
+function isStatusApprove(obj, status, membershipID) {
+  if (status === 'Approve') {
+    obj.data.firstKey.push('membershipApplicationForm');
+    obj.data.secondKey.push('membershipID');
+    obj.data.value.push({ membershipID });
+  }
+}
+
 const getModifyActionData = (e) => {
-  const { status, firstKey } = getAttributeFromTarget(e);
   const id = getActionIDFromLocalStorage();
+  const { status } = getAttributeFromTarget(e);
+  const membershipID = generateMembershipID(id);
 
   const obj = {
     key: 'action',
@@ -232,10 +245,12 @@ const getModifyActionData = (e) => {
       action: 'modifyData',
       id,
       value: [{ status }],
-      firstKey: [firstKey],
+      firstKey: ['membershipApplicationForm'],
       secondKey: ['status'],
     },
   };
+
+  isStatusApprove(obj, status, membershipID);
 
   return obj;
 };

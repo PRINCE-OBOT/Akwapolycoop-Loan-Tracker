@@ -40,8 +40,6 @@ const modifyLoanApplicantData = () => {
   const uniqueID = loanID || depositID;
   const uniqueIDKey = loanID ? 'loanID' : 'depositID';
 
-  console.log(uniqueID, uniqueIDKey);
-
   indexDB.interact(
     {
       storeName: 'loan-applicant-list',
