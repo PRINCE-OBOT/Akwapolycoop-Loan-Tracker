@@ -440,7 +440,6 @@ function checkEmploymentStatus(membershipApplicationForm) {
 
 function insertLoanApplicantDataToProfile(data) {
   const membershipApplicationForm = data.membershipApplicationForm;
-  const signUpData = data.signUpData;
 
   const date = getDate(membershipApplicationForm.dateAndTime);
   const time = getTime(membershipApplicationForm.dateAndTime);
@@ -449,9 +448,9 @@ function insertLoanApplicantDataToProfile(data) {
   applicationTime.textContent = time;
   passport.src = membershipApplicationForm.passport;
 
-  firstName.textContent = signUpData.firstName;
-  lastName.textContent = signUpData.lastName;
-  email.textContent = signUpData.email;
+  firstName.textContent = membershipApplicationForm['first-name'];
+  lastName.textContent = membershipApplicationForm['last-name'];
+  email.textContent = membershipApplicationForm.email;
   phoneNumber.textContent = membershipApplicationForm['phone-number'];
   dateOfBirth.textContent = membershipApplicationForm['date-of-birth'];
   residentAddress.textContent = membershipApplicationForm['resident-address'];

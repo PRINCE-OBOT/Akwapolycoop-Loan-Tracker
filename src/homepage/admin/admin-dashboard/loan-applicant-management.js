@@ -169,8 +169,8 @@ function insertTakeLoanDataToTable(loanApplicantList) {
 
     tr.innerHTML = `
        <td>${serialNumber}</td>
-       <td class="firstName">${data.firstName}</td>
-       <td class="lastName">${data.lastName}</td>
+       <td class="firstName">${data['first-name']}</td>
+       <td class="lastName">${data['last-name']}</td>
        <td class="status"}">${data.status}</td>
        <td>${date}</td>
        <td>${time}</td>
@@ -194,8 +194,6 @@ const getLoanApplicant = (loanApplicantListData) => {
   loanApplicantListData.forEach((data) => {
     if (!data.membershipApplicationForm) return;
 
-    data.membershipApplicationForm.firstName = data.signUpData.firstName;
-    data.membershipApplicationForm.lastName = data.signUpData.lastName;
     data.membershipApplicationForm.id = data.id;
     loanApplicantList.push(data.membershipApplicationForm);
   });

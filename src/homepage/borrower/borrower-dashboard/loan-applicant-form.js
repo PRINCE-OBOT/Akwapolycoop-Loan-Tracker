@@ -28,6 +28,7 @@ const loanApplicantForm = (function () {
                 id="first-name"
                 placeholder="James"
                 pattern="^[a-zA-Z]{1,}$"
+                data-set-field-validation-value="setNameValidationValue"
                 required
               />
               <output id="first-name-message" class="show-message"></output>
@@ -43,6 +44,7 @@ const loanApplicantForm = (function () {
                 id="last-name"
                 placeholder="Town"
                 pattern="^[a-zA-Z]{1,}$"
+                data-set-field-validation-value="setNameValidationValue"
                 required
               />
               <output id="last-name-message" class="show-message"></output>
@@ -57,6 +59,7 @@ const loanApplicantForm = (function () {
                 type="email"
                 id="email"
                 placeholder="jamestown34@gmail.com"
+                data-set-field-validation-value="setEmailValidationValue"
                 pattern="^[a-zA-Z0-9.]{4,}@(gmail|yahoo|hotmail).com$"
                 required
               />

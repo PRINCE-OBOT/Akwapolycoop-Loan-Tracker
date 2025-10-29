@@ -10,7 +10,9 @@ import {
 import eventBus from '../../module/event-bus/event';
 
 const form = loanApplicantForm;
-
+const firstName = form.querySelector('#first-name');
+const lastName = form.querySelector('#last-name');
+const email = form.querySelector('#email');
 const gender = form.querySelector('#gender');
 const phoneNumber = form.querySelector('#phone-number');
 const dateOfBirth = form.querySelector('#date-of-birth');
@@ -75,6 +77,9 @@ function insertMoreFormFieldValues(data) {
   }
 
   const listOfFormField = [
+    firstName,
+    lastName,
+    email,
     gender,
     guarantorGender,
     guarantorEmail,
