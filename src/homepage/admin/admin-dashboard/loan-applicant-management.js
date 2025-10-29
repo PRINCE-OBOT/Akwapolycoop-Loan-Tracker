@@ -192,12 +192,12 @@ const getLoanApplicant = (loanApplicantListData) => {
   const loanApplicantList = [];
 
   loanApplicantListData.forEach((data) => {
-    if (!data.loanApplicantFormData) return;
+    if (!data.membershipApplicationForm) return;
 
-    data.loanApplicantFormData.firstName = data.signUpData.firstName;
-    data.loanApplicantFormData.lastName = data.signUpData.lastName;
-    data.loanApplicantFormData.id = data.id;
-    loanApplicantList.push(data.loanApplicantFormData);
+    data.membershipApplicationForm.firstName = data.signUpData.firstName;
+    data.membershipApplicationForm.lastName = data.signUpData.lastName;
+    data.membershipApplicationForm.id = data.id;
+    loanApplicantList.push(data.membershipApplicationForm);
   });
 
   setNumberOfApplicantValue(loanApplicantList.length);

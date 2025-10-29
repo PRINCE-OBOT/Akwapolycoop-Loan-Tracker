@@ -193,8 +193,8 @@ const addTextContentToDiv = (div) => {
 function addOptionElementToDiv(div) {
   div.innerHTML = `
     <div class="option-key-section">
-        <button data-db-first-key="loanApplicantFormData" data-option-key="approveOption" data-status="Approve">Approve</button>
-        <button data-db-first-key="loanApplicantFormData" data-option-key="declineOption" data-status="Decline">Decline</button>
+        <button data-db-first-key="membershipApplicationForm" data-option-key="approveOption" data-status="Approve">Approve</button>
+        <button data-db-first-key="membershipApplicationForm" data-option-key="declineOption" data-status="Decline">Decline</button>
     </div>
     `;
   return div;
@@ -388,9 +388,9 @@ const errorGettingData = () => {
   console.log('Error getting data');
 };
 
-function checkStatusOfProfile(loanApplicantFormData) {
+function checkStatusOfProfile(membershipApplicationForm) {
   optionKeySection.remove();
-  if (loanApplicantFormData.status === 'Pending') footer.append(optionKeySection);
+  if (membershipApplicationForm.status === 'Pending') footer.append(optionKeySection);
 }
 
 const getDate = (dateAndTime) => {
@@ -408,15 +408,15 @@ function appendEmploymentStatusElement() {
   employmentStatusSection.insertAdjacentElement('afterend', employmentStatusElement);
 }
 
-function addTextContentToUnemployedStatus(loanApplicantFormData) {
-  unemployedEmploymentStatus.textContent = loanApplicantFormData['employment-status'];
+function addTextContentToUnemployedStatus(membershipApplicationForm) {
+  unemployedEmploymentStatus.textContent = membershipApplicationForm['employment-status'];
 }
 
-function addTextContentToEmployedStatus(loanApplicantFormData) {
-  employEmploymentStatus.textContent = loanApplicantFormData['employment-status'];
-  monthlyIncome.textContent = loanApplicantFormData['monthly-income'];
-  jobDuration.textContent = loanApplicantFormData['current-job-duration'];
-  businessName.textContent = loanApplicantFormData['business-name'];
+function addTextContentToEmployedStatus(membershipApplicationForm) {
+  employEmploymentStatus.textContent = membershipApplicationForm['employment-status'];
+  monthlyIncome.textContent = membershipApplicationForm['monthly-income'];
+  jobDuration.textContent = membershipApplicationForm['current-job-duration'];
+  businessName.textContent = membershipApplicationForm['business-name'];
 }
 
 function appendUnemploymentStatusElement() {
@@ -424,50 +424,50 @@ function appendUnemploymentStatusElement() {
   employmentStatusSection.insertAdjacentElement('afterend', unEmploymentStatusElement);
 }
 
-function checkEmploymentStatus(loanApplicantFormData) {
+function checkEmploymentStatus(membershipApplicationForm) {
   if (
-    loanApplicantFormData['employment-status'] === 'student' ||
-    loanApplicantFormData['employment-status'] === 'unemployed' ||
-    loanApplicantFormData['employment-status'] === 'retired'
+    membershipApplicationForm['employment-status'] === 'student' ||
+    membershipApplicationForm['employment-status'] === 'unemployed' ||
+    membershipApplicationForm['employment-status'] === 'retired'
   ) {
-    addTextContentToUnemployedStatus(loanApplicantFormData);
+    addTextContentToUnemployedStatus(membershipApplicationForm);
     appendUnemploymentStatusElement();
     return;
   }
-  addTextContentToEmployedStatus(loanApplicantFormData);
+  addTextContentToEmployedStatus(membershipApplicationForm);
   appendEmploymentStatusElement();
 }
 
 function insertLoanApplicantDataToProfile(data) {
-  const loanApplicantFormData = data.loanApplicantFormData;
+  const membershipApplicationForm = data.membershipApplicationForm;
   const signUpData = data.signUpData;
 
-  const date = getDate(loanApplicantFormData.dateAndTime);
-  const time = getTime(loanApplicantFormData.dateAndTime);
+  const date = getDate(membershipApplicationForm.dateAndTime);
+  const time = getTime(membershipApplicationForm.dateAndTime);
 
   applicationDate.textContent = date;
   applicationTime.textContent = time;
-  passport.src = loanApplicantFormData.passport;
+  passport.src = membershipApplicationForm.passport;
 
   firstName.textContent = signUpData.firstName;
   lastName.textContent = signUpData.lastName;
   email.textContent = signUpData.email;
-  phoneNumber.textContent = loanApplicantFormData['phone-number'];
-  dateOfBirth.textContent = loanApplicantFormData['date-of-birth'];
-  residentAddress.textContent = loanApplicantFormData['resident-address'];
-  accountNumber.textContent = loanApplicantFormData['account-number'];
-  accountName.textContent = loanApplicantFormData['account-name'];
-  bankName.textContent = loanApplicantFormData['bank-name'];
-  status.textContent = loanApplicantFormData.status;
+  phoneNumber.textContent = membershipApplicationForm['phone-number'];
+  dateOfBirth.textContent = membershipApplicationForm['date-of-birth'];
+  residentAddress.textContent = membershipApplicationForm['resident-address'];
+  accountNumber.textContent = membershipApplicationForm['account-number'];
+  accountName.textContent = membershipApplicationForm['account-name'];
+  bankName.textContent = membershipApplicationForm['bank-name'];
+  status.textContent = membershipApplicationForm.status;
 
-  guarantorFirstName.textContent = loanApplicantFormData['guarantor-first-name'];
-  guarantorLastName.textContent = loanApplicantFormData['guarantor-last-name'];
-  guarantorPhoneNumber.textContent = loanApplicantFormData['guarantor-phone-number'];
-  guarantorResidentAddress.textContent = loanApplicantFormData['guarantor-resident-address'];
-  guarantorGender.textContent = loanApplicantFormData['guarantor-gender'];
+  guarantorFirstName.textContent = membershipApplicationForm['guarantor-first-name'];
+  guarantorLastName.textContent = membershipApplicationForm['guarantor-last-name'];
+  guarantorPhoneNumber.textContent = membershipApplicationForm['guarantor-phone-number'];
+  guarantorResidentAddress.textContent = membershipApplicationForm['guarantor-resident-address'];
+  guarantorGender.textContent = membershipApplicationForm['guarantor-gender'];
 
-  checkEmploymentStatus(loanApplicantFormData);
-  checkStatusOfProfile(loanApplicantFormData);
+  checkEmploymentStatus(membershipApplicationForm);
+  checkStatusOfProfile(membershipApplicationForm);
   dispatchProfileEvent();
 }
 

@@ -75,8 +75,8 @@ const logoutBorrower = () => {
 };
 
 // const prependWhenLoanApplicantDataDoesNotExist = (data) => {
-//   if (data.loanApplicantFormData) {
-//     // if (data.loanApplicantFormData.status !== 'Approve') ;
+//   if (data.membershipApplicationForm) {
+//     // if (data.membershipApplicationForm.status !== 'Approve') ;
 //   }
 // };
 

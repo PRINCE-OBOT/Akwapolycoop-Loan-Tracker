@@ -6,7 +6,7 @@ import indexDB from '../../module/indexDB/indexDB';
 const contentHandler = {
   takeLoan: 'loan-management',
   deposit: 'deposit-management',
-  loanApplicantFormData: 'loan-applicant-management',
+  membershipApplicationForm: 'loan-applicant-management',
 };
 
 const updated = () => {

@@ -6,13 +6,12 @@ import '../../assets/common_general.css';
 import '../../assets/style-border-button.css';
 
 import loanApplicantForm from '../borrower-dashboard/loan-applicant-form';
+import bindAllFieldValidEvent from '../borrower-dashboard/is-all-field-valid';
+import bindSubmitApplicationButton from '../borrower-dashboard/loan-applicant-form-handle-submission';
 
 const joinUsHolder = document.querySelector('.join-us-content-holder');
 
+bindAllFieldValidEvent();
+bindSubmitApplicationButton();
+
 joinUsHolder.append(loanApplicantForm);
-
-function resetForm() {
-  loanApplicantForm.reset();
-}
-
-window.addEventListener('pageshow', resetForm);

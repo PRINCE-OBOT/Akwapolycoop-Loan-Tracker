@@ -29,8 +29,8 @@ const events = {
 };
 
 const checkIfLoanApplicantFormIsFill = (data) => {
-  if (data.loanApplicantFormData) {
-    if (data.loanApplicantFormData.status === 'Approve') {
+  if (data.membershipApplicationForm) {
+    if (data.membershipApplicationForm.status === 'Approve') {
       insertMoreFormFieldValues(data);
     } else {
       resetForm();
@@ -41,7 +41,7 @@ const checkIfLoanApplicantFormIsFill = (data) => {
   }
 };
 // const checkIfLoanApplicantFormIsFill = (data) => {
-//   if (data.loanApplicantFormData) {
+//   if (data.membershipApplicationForm) {
 //     insertMoreFormFieldValues(data);
 //   } else {
 //     eventBus.dispatchEvent(events.failTakeLoan);

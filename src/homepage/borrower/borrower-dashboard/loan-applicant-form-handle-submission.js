@@ -37,7 +37,7 @@ const btnSubmitApplication = form.querySelector('.btn-submit-application');
 const submitLoanApplicationFormEvent = new CustomEvent('all-field-valid', {
   detail: {
     form,
-    functionToGetDataInIndexBD: getLoanApplicantDataIndexedDB,
+    functionToGetDataInIndexBD: convertFileToDataURLFormat,
   },
 });
 
@@ -46,26 +46,12 @@ const bindSubmitApplicationButton = () =>
     eventBus.dispatchEvent(submitLoanApplicationFormEvent),
   );
 
-function getLoanApplicantDataIndexedDB() {
-  const data = localStorage.getData({ key: 'recent-loan-applicant' });
-
-  indexDB.interact(
-    {
-      storeName: 'loan-applicant-list',
-      keyPathValue: data?.id,
-      getMethod: 'get',
-      returnData: convertFileToDataURLFormat,
-      undefinedState: errorGettingData,
-    },
-    'getData',
-  );
-}
-
 function resetForm() {
   loanApplicantForm.reset();
 }
 
-function convertFileToDataURLFormat(data) {
+function convertFileToDataURLFormat() {
+  const data = {};
   const selectedPassport = passport.files[0];
 
   const reader = new FileReader();
@@ -73,19 +59,19 @@ function convertFileToDataURLFormat(data) {
   reader.readAsDataURL(selectedPassport);
 
   reader.onload = (e) => {
-    data.loanApplicantFormData = {};
-    data.loanApplicantFormData.passport = e.target.result;
+    data.membershipApplicationForm = {};
+    data.membershipApplicationForm.passport = e.target.result;
 
     insertMoreFormFieldValues(data);
   };
 }
 
 function insertMoreFormFieldValues(data) {
-  data.loanApplicantFormData.dateAndTime = new Date();
-  data.loanApplicantFormData.status = 'Pending';
+  data.membershipApplicationForm.dateAndTime = new Date();
+  data.membershipApplicationForm.status = 'Pending';
 
   function setValue(element) {
-    data.loanApplicantFormData[element.id] = element.value;
+    data.membershipApplicationForm[element.id] = element.value;
   }
 
   const listOfFormField = [
@@ -160,10 +146,6 @@ function displayFormSubmissionStatus() {
 
 function loanApplicantDataNotStore() {
   console.log('loan applicant data not stored');
-}
-
-function errorGettingData() {
-  console.log('Error while getting data');
 }
 
 export default bindSubmitApplicationButton;
