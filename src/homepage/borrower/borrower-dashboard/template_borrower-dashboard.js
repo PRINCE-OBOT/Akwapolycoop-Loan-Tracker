@@ -23,16 +23,11 @@ import MathUtility from '../../module/business-logic/mathUtility';
 import { bindDepositDocumentUploadEvent } from './loan-applicant-deposit/loan-applicant-deposit';
 
 const leftSideBar = document.querySelector('.left-side-bar');
-const bottomLeftSideBar = document.querySelector('.bottom-left-sidebar');
 const contentHolder = document.querySelector('.content-holder');
 const logoutButton = document.querySelector('.logout-button');
 const outstandingBalance = document.querySelector('.outstanding-balance');
 
 const html = document.querySelector('html');
-
-const loanApplicantForm = document.createElement('li');
-loanApplicantForm.textContent = 'Loan Application Form';
-loanApplicantForm.setAttribute('data-content-key', 'loan-applicant-form');
 
 // Running the following function allow the following action to work:
 // - Use custom method such `getData` and `setData` in localStorage
@@ -79,22 +74,14 @@ const logoutBorrower = () => {
   navigateToLoginPage();
 };
 
-const prependLoanApplicationFormBeforeSideBar = () => {
-  bottomLeftSideBar.prepend(loanApplicantForm);
-};
+// const prependWhenLoanApplicantDataDoesNotExist = (data) => {
+//   if (data.loanApplicantFormData) {
+//     // if (data.loanApplicantFormData.status !== 'Approve') ;
+//   }
+// };
 
-const prependWhenLoanApplicantDataDoesNotExist = (data) => {
-  if (data.loanApplicantFormData) {
-    if (data.loanApplicantFormData.status !== 'Approve') prependLoanApplicationFormBeforeSideBar();
-  } else {
-    prependLoanApplicationFormBeforeSideBar();
-  }
-};
-
-function insertLoanApplicantDataToDashboardPage(data) {
+function insertLoanApplicantDataToDashboardPage() {
   console.log('Loan applicant data gotten');
-
-  prependWhenLoanApplicantDataDoesNotExist(data);
 }
 
 function getRecentLoanApplicantData({ id, returnData }) {
