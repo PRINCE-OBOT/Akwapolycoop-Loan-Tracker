@@ -1,11 +1,6 @@
 import indexDB from '../../module/indexDB/indexDB';
 
 import loanApplicantForm from './loan-applicant-form';
-import {
-  businessNameContainer,
-  monthlyIncomeContainer,
-  currentJobDurationContainer,
-} from './employment-and-income-content';
 
 import eventBus from '../../module/event-bus/event';
 
@@ -19,10 +14,6 @@ const dateOfBirth = form.querySelector('#date-of-birth');
 const residentAddress = form.querySelector('#resident-address');
 const nin = form.querySelector('#nin');
 const passport = form.querySelector('#passport');
-const employmentStatus = form.querySelector('#employment-status');
-const businessName = businessNameContainer.querySelector('#business-name');
-const monthlyIncome = monthlyIncomeContainer.querySelector('#monthly-income');
-const currentJobDuration = currentJobDurationContainer.querySelector('#current-job-duration');
 const guarantorFirstName = form.querySelector('#guarantor-first-name');
 const guarantorLastName = form.querySelector('#guarantor-last-name');
 const guarantorEmail = form.querySelector('#guarantor-email');
@@ -95,14 +86,7 @@ function insertMoreFormFieldValues(data) {
     guarantorPhoneNumber,
     guarantorDateOfBirth,
     guarantorResidentAddress,
-    employmentStatus,
   ];
-
-  const selectedOption = employmentStatus.options[employmentStatus.selectedIndex];
-
-  if (selectedOption.dataset.switch === 'showElement') {
-    listOfFormField.unshift(businessName, monthlyIncome, currentJobDuration);
-  }
 
   listOfFormField.forEach((field) => {
     setValue(field);

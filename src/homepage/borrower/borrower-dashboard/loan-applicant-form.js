@@ -1,11 +1,4 @@
 import handleFieldValidationLogic from '../../module/form-validation/field-validator';
-import SelectSwitchDisplay from '../../module/switchDisplay/select-switch-display';
-
-import {
-  businessNameContainer,
-  monthlyIncomeContainer,
-  currentJobDurationContainer,
-} from './employment-and-income-content';
 
 const loanApplicantForm = (function () {
   const form = document.createElement('form');
@@ -130,42 +123,6 @@ const loanApplicantForm = (function () {
                 </div>
               </fieldset>
     
-              
-    
-              <fieldset class="field-section employment-and-income">
-                <legend>Employment & Income</legend>
-    
-                <div class="employment-status">
-                  <label for="employment-status">
-                    Employment Status
-                    <span class="required-asterisk">*</span>
-                  </label>
-                  <select
-                    id="employment-status"
-                    data-set-field-validation-value="setSelectElementValidationValue"
-                  >
-                    // data-switch showElement and hideElement are function name in switchDisplay to switch the display mode of business-name
-
-                    <option value="null" data-switch="hideElement">
-                      -- Select Employment Status --
-                    </option>
-                    <option value="employed (full-time)" data-switch="showElement">
-                      Employed (Full-Time)
-                    </option>
-                    <option value="employed (part-time)" data-switch="showElement">
-                      Employed (Part-Time)
-                    </option>
-                    <option value="self-employed" data-switch="showElement">Self-Employed</option>
-                    <option value="unemployed" data-switch="hideElement">Unemployed</option>
-                    <option value="student" data-switch="hideElement">Student</option>
-                    <option value="retired" data-switch="hideElement">Retired</option>
-                  </select>
-                  <output id="employment-status-message" class="show-message"></output>
-                </div>
-              </fieldset>
-
-
-
               <fieldset class="field-section">
                 <legend>Identity</legend>
     
@@ -386,15 +343,6 @@ const loanApplicantForm = (function () {
   return form;
 })();
 
-const employmentStatus = loanApplicantForm.querySelector('#employment-status');
-const employmentAndIncome = loanApplicantForm.querySelector('.employment-and-income');
-
 loanApplicantForm.addEventListener('input', handleFieldValidationLogic);
-
-new SelectSwitchDisplay({
-  select: employmentStatus,
-  inputs: [businessNameContainer, monthlyIncomeContainer, currentJobDurationContainer],
-  container: employmentAndIncome,
-});
 
 export default loanApplicantForm;

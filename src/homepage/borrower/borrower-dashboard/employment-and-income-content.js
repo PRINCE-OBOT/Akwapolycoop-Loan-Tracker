@@ -11,7 +11,6 @@ businessNameContainer.innerHTML = `
   type="text"
   id="business-name"
   placeholder="Company or Business Name"
-  pattern="^[a-zA-Z0-9_ ' -]{5,}$"
   data-set-field-validation-value="setBusinessNameValidationValue"
   required
 />

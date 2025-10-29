@@ -48,7 +48,7 @@ const addTextContentToDiv = (div) => {
                 <h2>Applicant Information</h2>
             </div>
     
-            <div class="grid employment-status-section">
+                <div class="grid">
                 <div class="field">
                     <label>First Name</label>
                     <div class="field-value first-name">Chukwudi</div>
@@ -200,57 +200,13 @@ function addOptionElementToDiv(div) {
   return div;
 }
 
-function addEmploymentStatusElement(div) {
-  div.innerHTML = `
-     <div class="field employment-status-field">
-        <label>Employment Status</label>
-        <div class="field-value employ-employment-status"></div>
-    </div>
-     <div class="field">
-        <label>Business Name</label>
-        <div class="field-value business-name"></div>
-    </div>
-    <div class="field">
-        <label>Monthly Income</label>
-        <div class="field-value monthly-income"></div>
-        </div>
-    <div class="field">
-        <label>Duration of Current Job</label>
-        <div class="field-value job-duration"></div>
-    </div>`;
-
-  div.classList.add('grid');
-
-  return div;
-}
-
-function addUnEmploymentStatusElement(div) {
-  div.innerHTML = `
-     <div class="field employment-status-field">
-        <label>Employment Status</label>
-        <div class="field-value unemployed-employment-status"></div>
-    </div>
-    `;
-
-  div.classList.add('grid');
-
-  return div;
-}
-
 const buildLoanApplicantProfile = pipe(createDiv, addClassToDiv, addTextContentToDiv);
-const buildEmploymentStatusElement = pipe(createDiv, addEmploymentStatusElement);
-const buildUnEmploymentStatusElement = pipe(createDiv, addUnEmploymentStatusElement);
-
-const loanApplicantProfile = buildLoanApplicantProfile(document);
-const employmentStatusElement = buildEmploymentStatusElement(document);
-const unEmploymentStatusElement = buildUnEmploymentStatusElement(document);
-
-const footer = loanApplicantProfile.querySelector('.footer');
-const employmentStatusSection = loanApplicantProfile.querySelector('.employment-status-section');
-
 const processOptionKeySection = pipe(createDiv, addOptionElementToDiv);
 
+const loanApplicantProfile = buildLoanApplicantProfile(document);
 const optionKeySection = processOptionKeySection(document);
+
+const footer = loanApplicantProfile.querySelector('.footer');
 
 const getAttributeFromTarget = (e) => {
   const target = e.target;
@@ -375,15 +331,6 @@ const guarantorPhoneNumber = loanApplicantProfile.querySelector('.guarantor-phon
 const guarantorResidentAddress = loanApplicantProfile.querySelector('.guarantor-resident-address');
 const guarantorGender = loanApplicantProfile.querySelector('.guarantor-gender');
 
-const employEmploymentStatus = employmentStatusElement.querySelector('.employ-employment-status');
-const businessName = employmentStatusElement.querySelector('.business-name');
-const monthlyIncome = employmentStatusElement.querySelector('.monthly-income');
-const jobDuration = employmentStatusElement.querySelector('.job-duration');
-
-const unemployedEmploymentStatus = unEmploymentStatusElement.querySelector(
-  '.unemployed-employment-status',
-);
-
 const errorGettingData = () => {
   console.log('Error getting data');
 };
@@ -402,41 +349,6 @@ const getTime = (dateAndTime) => {
   const time = format(dateAndTime, 'HH:mm:ss');
   return time;
 };
-
-function appendEmploymentStatusElement() {
-  unEmploymentStatusElement.remove();
-  employmentStatusSection.insertAdjacentElement('afterend', employmentStatusElement);
-}
-
-function addTextContentToUnemployedStatus(membershipApplicationForm) {
-  unemployedEmploymentStatus.textContent = membershipApplicationForm['employment-status'];
-}
-
-function addTextContentToEmployedStatus(membershipApplicationForm) {
-  employEmploymentStatus.textContent = membershipApplicationForm['employment-status'];
-  monthlyIncome.textContent = membershipApplicationForm['monthly-income'];
-  jobDuration.textContent = membershipApplicationForm['current-job-duration'];
-  businessName.textContent = membershipApplicationForm['business-name'];
-}
-
-function appendUnemploymentStatusElement() {
-  employmentStatusElement.remove();
-  employmentStatusSection.insertAdjacentElement('afterend', unEmploymentStatusElement);
-}
-
-function checkEmploymentStatus(membershipApplicationForm) {
-  if (
-    membershipApplicationForm['employment-status'] === 'student' ||
-    membershipApplicationForm['employment-status'] === 'unemployed' ||
-    membershipApplicationForm['employment-status'] === 'retired'
-  ) {
-    addTextContentToUnemployedStatus(membershipApplicationForm);
-    appendUnemploymentStatusElement();
-    return;
-  }
-  addTextContentToEmployedStatus(membershipApplicationForm);
-  appendEmploymentStatusElement();
-}
 
 function insertLoanApplicantDataToProfile(data) {
   const membershipApplicationForm = data.membershipApplicationForm;
@@ -465,7 +377,6 @@ function insertLoanApplicantDataToProfile(data) {
   guarantorResidentAddress.textContent = membershipApplicationForm['guarantor-resident-address'];
   guarantorGender.textContent = membershipApplicationForm['guarantor-gender'];
 
-  checkEmploymentStatus(membershipApplicationForm);
   checkStatusOfProfile(membershipApplicationForm);
   dispatchProfileEvent();
 }
