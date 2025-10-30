@@ -228,7 +228,7 @@ function generateMembershipID(id) {
 
 function isStatusApprove(obj, status, membershipID) {
   if (status === 'Approve') {
-    obj.data.firstKey.push('membershipApplicationForm');
+    obj.data.firstKey.push('membershipApplicationForm', 'membershipApplicationForm');
     obj.data.secondKey.push('membershipID');
     obj.data.value.push({ membershipID });
   }

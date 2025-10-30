@@ -162,27 +162,25 @@ const indexDB = {
 
 function modifyDataHandler({ data, firstKey, secondKey, uniqueID, uniqueIDKey, newValue }) {
   const DBKeyHandler = {
-    String: () => {
-      data[firstKey] = newValue[firstKey];
+    String: (key) => {
+      data[key] = newValue[key];
     },
 
-    Object: () => {
-      firstKey.forEach((key, index) => {
-        data[key][secondKey[index]] = newValue[index][secondKey[index]];
-      });
+    Object: (key, index) => {
+      data[key][secondKey[index]] = newValue[index][secondKey[index]];
     },
 
-    Array: () => {
-      firstKey.forEach((key, index) => {
-        const result = data[key].find((obj) => obj[uniqueIDKey] === uniqueID);
-        result[secondKey[index]] = newValue[index][secondKey[index]];
-      });
+    Array: (key, index) => {
+      const result = data[key].find((obj) => obj[uniqueIDKey] === uniqueID);
+      result[secondKey[index]] = newValue[index][secondKey[index]];
     },
   };
 
-  const firstKeyType = Object.prototype.toString.call(data[firstKey[0]]).slice(8, -1);
+  for (let i = 0; i < firstKey.length - 1; i++) {
+    const firstKeyType = Object.prototype.toString.call(data[firstKey[i]]).slice(8, -1);
 
-  DBKeyHandler[firstKeyType]();
+    DBKeyHandler[firstKeyType](firstKey[i], i);
+  }
 }
 
 export default indexDB;

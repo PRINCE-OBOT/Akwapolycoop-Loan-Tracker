@@ -65,9 +65,6 @@ textarea {
   box-shadow: var(--box-shadow);
   border: none;
 }
-::placeholder {
-  color: var(--grey);
-}
 
 input[type='file'] {
   padding: 0;
