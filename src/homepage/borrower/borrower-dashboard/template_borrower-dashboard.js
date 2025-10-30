@@ -21,6 +21,7 @@ import appendDialogToBody from '../../module/dialog/dialog-manager';
 import pipe from '../../module/composition/pipe';
 import MathUtility from '../../module/business-logic/mathUtility';
 import { bindDepositDocumentUploadEvent } from './loan-applicant-deposit/loan-applicant-deposit';
+import bindSubmitDepositPreference from './deposit-preference-form/deposit-preference-form-submission';
 
 const leftSideBar = document.querySelector('.left-side-bar');
 const contentHolder = document.querySelector('.content-holder');
@@ -33,9 +34,10 @@ const html = document.querySelector('html');
 // - Use custom method such `getData` and `setData` in localStorage
 registerLocalStorageCustomMethod();
 // - Click on element *specifically* in the sidebar to change content in the dashboard
-// - Click on `submit application` and `submit loan` button to submit the form
+// - Click on `submit application`, `submit deposit preference` and `submit loan` button to submit the form
 bindSubmitApplicationButton();
 bindSubmitLoanButton();
+bindSubmitDepositPreference();
 // - Check whether all field to be submitted is valid
 bindAllFieldValidEvent();
 
@@ -142,7 +144,7 @@ const Event = ({ text, contentKey = 'question', closedByValue = 'any' }) =>
 const events = {
   logout: Event({ text: 'logout?' }),
   displayPreferredDepForm: Event({
-    contentKey: 'preferredDepositForm',
+    contentKey: 'depositPreferenceForm',
     closedByValue: 'closerequest',
   }),
 };

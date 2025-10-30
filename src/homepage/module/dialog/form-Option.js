@@ -48,6 +48,7 @@ const addTextContentToBtnYes = (button) => {
 
 const addTextContentToBtnCancel = (button) => {
   button.textContent = 'Cancel';
+  button.type = 'button';
   return button;
 };
 
@@ -59,6 +60,18 @@ const addEventToBtnYes = (button) => {
 const events = {
   modifyIndexdb: new CustomEvent('modify-indexdb'),
   logout: new CustomEvent('logout'),
+  previousContentEvent: new CustomEvent('dialog-manager', {
+    detail: { contentKey: 'previousContent', contentKeyFallback: 'profile', closedByValue: 'any' },
+  }),
+  manualCloseDialog: new CustomEvent('manual-close-dialog'),
+};
+
+const addEventToBtnCancel = (button) => {
+  button.addEventListener('click', () => {
+    eventBus.dispatchEvent(events.manualCloseDialog);
+    eventBus.dispatchEvent(events.previousContentEvent);
+  });
+  return button;
 };
 
 const dispatchModifyDataEvent = () => {
@@ -87,6 +100,7 @@ function getActionFromLocalStorage() {
 const processBtnCancel = pipe(
   createButtonElement,
   addClassBtnCancelToButton,
+  addEventToBtnCancel,
   addTextContentToBtnCancel,
 );
 const processBtnYes = pipe(

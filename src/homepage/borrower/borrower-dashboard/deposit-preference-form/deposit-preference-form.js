@@ -1,8 +1,8 @@
-import './preffered-deposit.css';
+import './deposit-preference-form.css';
 
 import handleFieldValidationLogic from '../../../module/form-validation/field-validator';
 
-const preferredDepositForm = (function createPreferredDepositForm() {
+const depositPreferenceForm = (function createdepositPreferenceForm() {
   const div = document.createElement('div');
   div.classList.add('form-container');
 
@@ -18,22 +18,17 @@ const preferredDepositForm = (function createPreferredDepositForm() {
                 <label for="depositAmount">Preferred Monthly Deposit Amount *</label>
                 <div class="amount-input-group">
                     <span class="currency-symbol">N</span>
-                    <input type="number" id="depositAmount" name="depositAmount" min="0" step="0.01" data-set-field-validation-value="setPatternForEmptyField" required>
+                    <input type="number" id="deposit-preference" name="depositAmount" min="0" step="0.01" data-set-field-validation-value="setPatternForEmptyField" required>
                     <output id="preferred-deposit-message" class="show-message"></output>
                 </div>
             </div>
 
-            <button type="submit" class="submit-btn">Submit Preference</button>
-        </form>
-
-        <div class="success-message" id="successMessage">
-            ✓ Your preference has been submitted successfully!
-        </div>
-  `;
+            <button type="button" class="btn-submit-deposit-preference">Submit Preference</button>
+        </form>`;
 
   return div;
 })();
 
-preferredDepositForm.addEventListener('input', handleFieldValidationLogic);
+depositPreferenceForm.addEventListener('input', handleFieldValidationLogic);
 
-export default preferredDepositForm;
+export default depositPreferenceForm;
