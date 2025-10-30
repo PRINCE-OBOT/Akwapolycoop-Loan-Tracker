@@ -1,13 +1,14 @@
 import eventBus from '../../../module/event-bus/event';
 import depositPreferenceForm from './deposit-preference-form';
 
+const form = depositPreferenceForm.querySelector('form');
 const depositPreference = depositPreferenceForm.querySelector('#deposit-preference');
 const btnSubmitDepositPreference = depositPreferenceForm.querySelector(
   '.btn-submit-deposit-preference',
 );
 
 function resetForm() {
-  depositPreferenceForm.reset();
+  form.reset();
 }
 
 const getRecentLoanApplicantIDInLocalStorage = () => {
@@ -30,15 +31,42 @@ function getDepositPreferenceAction() {
   return obj;
 }
 
-function storeFormDataToDatabase() {
-  getDepositPreferenceAction();
+const storeActionToLocalStorage = (obj) => {
+  localStorage.setData(obj);
+};
+
+function handleActionStorage() {
+  const depositPreferenceAction = getDepositPreferenceAction();
+  storeActionToLocalStorage(depositPreferenceAction);
   resetForm();
+}
+
+const Event = ({ text }) =>
+  new CustomEvent('dialog-manager', {
+    detail: {
+      contentKey: 'question',
+      closedByValue: 'any',
+      text,
+    },
+  });
+
+const events = {
+  depositPreferenceQuestion: Event({ text: 'use the amount as your monthly deposit preference?' }),
+};
+
+function handleOptionContent() {
+  eventBus.dispatchEvent(events.depositPreferenceQuestion);
+}
+
+function processDepositPreferenceForStoring() {
+  handleActionStorage();
+  handleOptionContent();
 }
 
 const submitDepositPreferenceFormEvent = new CustomEvent('all-field-valid', {
   detail: {
     form: depositPreferenceForm,
-    functionToGetDataInIndexBD: storeFormDataToDatabase,
+    functionToGetDataInIndexBD: processDepositPreferenceForStoring,
   },
 });
 
