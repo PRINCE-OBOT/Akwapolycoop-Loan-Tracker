@@ -162,8 +162,8 @@ const indexDB = {
 
 function modifyDataHandler({ data, firstKey, secondKey, uniqueID, uniqueIDKey, newValue }) {
   const DBKeyHandler = {
-    String: (key) => {
-      data[key] = newValue[key];
+    String: (key, index) => {
+      data[key] = newValue[index][key];
     },
 
     Object: (key, index) => {
@@ -176,11 +176,13 @@ function modifyDataHandler({ data, firstKey, secondKey, uniqueID, uniqueIDKey, n
     },
   };
 
-  for (let i = 0; i < firstKey.length - 1; i++) {
-    const firstKeyType = Object.prototype.toString.call(data[firstKey[i]]).slice(8, -1);
+  firstKey.forEach((key, index) => {
+    const firstKeyType = Object.prototype.toString.call(data[key]).slice(8, -1);
 
-    DBKeyHandler[firstKeyType](firstKey[i], i);
-  }
+    firstKeyType === 'Undefined'
+      ? DBKeyHandler.String(key, index)
+      : DBKeyHandler[firstKeyType](key, index);
+  });
 }
 
 export default indexDB;

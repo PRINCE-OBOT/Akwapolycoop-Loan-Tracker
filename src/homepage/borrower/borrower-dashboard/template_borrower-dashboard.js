@@ -80,10 +80,6 @@ const logoutBorrower = () => {
 //   }
 // };
 
-function insertLoanApplicantDataToDashboardPage() {
-  console.log('Loan applicant data gotten');
-}
-
 function getRecentLoanApplicantData({ id, returnData }) {
   indexDB.interact(
     {
@@ -101,6 +97,12 @@ function getOutstandingBalance(id) {
   MathUtility.outstandingBalance(id, setOutStandingBalance);
 }
 
+function isMemberNew(data) {
+  if (data.isMemberNew) {
+    eventBus.dispatchEvent(events.displayPreferredDepForm);
+  }
+}
+
 (function checkIfThereIsRecentLoanApplicant() {
   const id = getRecentLoanApplicantID();
 
@@ -109,10 +111,11 @@ function getOutstandingBalance(id) {
     return;
   }
   makeBorrowerDashboardDisplayBlock();
+  // isMemberNew(id)
   getOutstandingBalance(id);
   // `insertLoanApplicantDataToDashboardPage` is the callback function to run when
   // the recentLoanApplicantData is retrieve from indexedDB
-  getRecentLoanApplicantData({ id, returnData: insertLoanApplicantDataToDashboardPage });
+  getRecentLoanApplicantData({ id, returnData: isMemberNew });
 })();
 
 const getAction = (obj) => {
@@ -127,17 +130,21 @@ const storeActionToLocalStorage = (data) => {
 
 const processStoring = pipe(getAction, storeActionToLocalStorage);
 
-const Event = ({ text }) =>
+const Event = ({ text, contentKey = 'question', closedByValue = 'any' }) =>
   new CustomEvent('dialog-manager', {
     detail: {
-      contentKey: 'question',
-      closedByValue: 'any',
+      contentKey,
+      closedByValue,
       text,
     },
   });
 
 const events = {
   logout: Event({ text: 'logout?' }),
+  displayPreferredDepForm: Event({
+    contentKey: 'preferredDepositForm',
+    closedByValue: 'closerequest',
+  }),
 };
 
 const showLogoutOption = () => {
