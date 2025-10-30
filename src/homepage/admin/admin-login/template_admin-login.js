@@ -70,17 +70,27 @@ const processNavigatingToDashboard = () => {
   navigateToDashboardPage();
 };
 
+function isAdminLoginCorrect(data) {
+  if (
+    data.signUpData?.password === password.value &&
+    data.signUpData?.username === username.value
+  ) {
+    processNavigatingToDashboard(data.id);
+  } else {
+    displayIncorrectUsernameOrPassword();
+  }
+}
+
 const checkIfLoginDataIsCorrect = () => {
   indexDB.interact(
     {
       storeName: 'admin',
-      username,
-      password,
-      getMethod: 'getAll',
-      trueState: processNavigatingToDashboard,
-      undefinedState: displayIncorrectUsernameOrPassword,
+      keyPathValue: 1,
+      getMethod: 'get',
+      returnData: isAdminLoginCorrect,
+      undefinedState: error,
     },
-    'checkIfLoginDetailsMatch',
+    'getData',
   );
 };
 
