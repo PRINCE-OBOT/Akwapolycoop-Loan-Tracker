@@ -48,33 +48,6 @@ const indexDB = {
     };
   },
 
-  checkIfLoginDetailsMatch(
-    { username, password, storeName, getMethod, keyPathValue, undefinedState, trueState },
-    db,
-  ) {
-    function returnData(data) {
-      for (let i = 0; i < data.length; i++) {
-        if (
-          data[i].signUpData.username === username.value &&
-          data[i].signUpData.password === password.value
-        ) {
-          trueState(data[i].id);
-          return;
-        }
-      }
-      undefinedState();
-    }
-    this.getData(
-      {
-        storeName,
-        getMethod,
-        keyPathValue,
-        returnData,
-      },
-      db,
-    );
-  },
-
   checkIfUserAlreadyHaveAccount(
     { storeName, getMethod, firstName, lastName, email, trueState, falseState },
     db,

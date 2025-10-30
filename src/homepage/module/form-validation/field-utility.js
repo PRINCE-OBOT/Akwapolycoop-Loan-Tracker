@@ -89,10 +89,7 @@ export default class FieldValidationUtility {
     let message;
     let validityState;
 
-    if (!field.validity.valid && !isFieldValid) {
-      message = msg;
-      validityState = 'invalid';
-    } else if (field.validity.valid && isFieldValid) {
+    if (field.validity.valid && isFieldValid) {
       message = '✓';
       validityState = 'valid';
     } else {
@@ -100,7 +97,7 @@ export default class FieldValidationUtility {
       validityState = 'invalid';
     }
 
-    message ? (fieldMessage.textContent = message) : fieldMessage.textContent;
+    if (message) fieldMessage.textContent = message;
 
     this.colorCustomMessage({
       msgToColor: fieldMessage,

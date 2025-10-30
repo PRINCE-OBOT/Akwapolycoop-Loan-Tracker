@@ -159,4 +159,5 @@ function handleFieldValidationLogic(e) {
 
   validation.validateField({ field, fieldMessage });
 }
+
 export default handleFieldValidationLogic;

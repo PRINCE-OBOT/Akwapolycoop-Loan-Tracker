@@ -25,53 +25,32 @@
 
           <a href="./borrower-sign-up.html" class="borrower-sign-up">
             <img src="../../assets/images/admin-sign-up_plain-color.svg" alt="" />
-            Borrower Sign up
+            Join Us
           </a>
         </div>
       </header>
 
       <main>
         <form class="borrower-login-form" action="" novalidate>
-          <h3 class="heading">Borrower Login</h3>
+          <h3 class="heading">Membership Login</h3>
           <img class="security-icon" src="../../assets/images/security.svg" alt="security-image" />
-          <div class="user-name">
-            <label for="username">username</label>
+          <div class="membership-ID">
+            <label for="membership-ID">Membership ID</label>
             <input
               type="text"
-              id="username"
-              placeholder="username"
-              pattern="^.{1,}$"
+              id="membership-ID"
+              placeholder="MEM202100008"
               data-set-field-validation-value="setEmptyFieldValidationValue"
               required
             />
-            <output id="username-message" class="show-message"></output>
-          </div>
-
-          <div class="password">
-            <label for="password">Password</label>
-            <input
-              type="text"
-              id="password"
-              placeholder="Password"
-              pattern="^.{1,}$"
-              data-set-field-validation-value="setEmptyFieldValidationValue"
-              required
-            />
-            <output id="password-message" class="show-message"></output>
+            <output id="membership-ID-message" class="show-message"></output>
           </div>
 
           <div class="btn-login-section">
             <button class="btn-login" type="button">Login</button>
-            <output class="display-login-progress"></output>
           </div>
         </form>
       </main>
-
-      <dialog closedby="any">
-        <form action="" class="dialog-login-section">
-          <h4 class="login-status"></h4>
-        </form>
-      </dialog>
     </div>
   </body>
 </html>

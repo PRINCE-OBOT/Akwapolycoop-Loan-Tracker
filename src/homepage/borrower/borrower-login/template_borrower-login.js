@@ -13,8 +13,7 @@ import eventBus from '../../module/event-bus/event';
 import appendDialogToBody from '../../module/dialog/dialog-manager';
 
 const form = document.querySelector('.borrower-login-form');
-const username = form.querySelector('#username');
-const password = form.querySelector('#password');
+const membershipID = form.querySelector('#membership-ID');
 const inputs = form.querySelectorAll('input');
 const messages = form.querySelectorAll('output.show-message');
 const btnLogin = form.querySelector('.btn-login');
@@ -45,10 +44,10 @@ const Event = ({ text, closedByValue = 'any' }) =>
 
 const events = {
   login: Event({ text: 'Logging in...', closedByValue: 'closerequest' }),
-  fail: Event({ text: 'Incorrect Username or Password' }),
+  fail: Event({ text: 'Incorrect Membership ID' }),
 };
 
-const displayIncorrectUsernameOrPassword = () => {
+const displayIncorrectMembershipID = () => {
   eventBus.dispatchEvent(events.fail);
 };
 
@@ -58,17 +57,34 @@ const processNavigatingToDashboard = (id) => {
   navigateToDashboardPage();
 };
 
+function resetForm() {
+  form.reset();
+}
+
+function isMembershipIDCorrect(data) {
+  for (let i = 0; i < data.length; i++) {
+    const memberAppForm = data[i].membershipApplicationForm;
+    if (memberAppForm) {
+      if (memberAppForm.membershipID === membershipID.value) {
+        processNavigatingToDashboard(data[i].id);
+        return;
+      }
+    }
+  }
+
+  displayIncorrectMembershipID();
+  resetForm();
+}
+
 const checkIfLoanApplicantDataIsCorrect = () => {
   indexDB.interact(
     {
       storeName: 'loan-applicant-list',
       getMethod: 'getAll',
-      username,
-      password,
-      trueState: processNavigatingToDashboard,
-      undefinedState: displayIncorrectUsernameOrPassword,
+      returnData: isMembershipIDCorrect,
+      undefinedState: displayIncorrectMembershipID,
     },
-    'checkIfLoginDetailsMatch',
+    'getData',
   );
 };
 
