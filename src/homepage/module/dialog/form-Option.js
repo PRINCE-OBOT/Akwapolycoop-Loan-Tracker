@@ -61,7 +61,7 @@ const events = {
   modifyIndexdb: new CustomEvent('modify-indexdb'),
   logout: new CustomEvent('logout'),
   previousContentEvent: new CustomEvent('dialog-manager', {
-    detail: { contentKey: 'previousContent', contentKeyFallback: 'profile', closedByValue: 'any' },
+    detail: { contentKey: 'previousContent', closedByValue: 'any' },
   }),
   manualCloseDialog: new CustomEvent('manual-close-dialog'),
 };

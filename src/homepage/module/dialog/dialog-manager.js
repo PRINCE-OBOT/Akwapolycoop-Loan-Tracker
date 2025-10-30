@@ -80,7 +80,7 @@ function DialogManager(e) {
   dialogContentHandler[detail.contentKey](detail);
 
   detail.contentKey === 'previousContent'
-    ? appendedContentList.push(detail.contentKeyFallback)
+    ? appendedContentList.push(appendedContentList[0])
     : appendedContentList.push(detail.contentKey);
 
   hasPreviousContentListExceeded();
