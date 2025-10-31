@@ -97,13 +97,6 @@ const validation = {
     this.fieldErrorMessage = 'Purpose of Loan not descriptive';
   },
 
-  setCurrentJobDurationValidationValue({ field }) {
-    this.isFieldValid = /^([1-9]+ (months?|years?|days?))( [1-9]+ (months?|years?|days?))*$/.test(
-      field.value,
-      (this.fieldErrorMessage = 'Not within range'),
-    );
-  },
-
   setEmptyFieldValidationValue({ field }) {
     this.isFieldValid = /.+/.test(field.value);
   },

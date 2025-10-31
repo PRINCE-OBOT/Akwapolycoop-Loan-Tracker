@@ -12,7 +12,7 @@ import bindAllFieldValidEvent from './is-all-field-valid';
 import appendContent from '../../module/content-holder/content-holder';
 
 import bindSubmitApplicationButton from './loan-applicant-form-handle-submission';
-import bindSubmitLoanButton from './take-loan-submission';
+import bindSubmitWithdrawalButton from './take-loan-submission';
 
 import indexDB from '../../module/indexDB/indexDB';
 
@@ -36,7 +36,7 @@ registerLocalStorageCustomMethod();
 // - Click on element *specifically* in the sidebar to change content in the dashboard
 // - Click on `submit application`, `submit deposit preference` and `Submit Withdrawal` button to submit the form
 bindSubmitApplicationButton();
-bindSubmitLoanButton();
+bindSubmitWithdrawalButton();
 bindSubmitDepositPreference();
 // - Check whether all field to be submitted is valid
 bindAllFieldValidEvent();

@@ -28,7 +28,7 @@ const loanPurpose = (function createLoanPurpose() {
   `;
 })();
 
-const btnSubmitLoan = form.querySelector('.btn-submit-withdrawal');
+const btnSubmitWithdrawal = form.querySelector('.btn-submit-withdrawal');
 
 const Event = ({ text, closedByValue = 'any' }) =>
   new CustomEvent('dialog-manager', {
@@ -139,14 +139,16 @@ function errorGettingData() {
   console.log('Error while getting data');
 }
 
-const submitLoanEvent = new CustomEvent('all-field-valid', {
+const submitWithdrawalEvent = new CustomEvent('all-field-valid', {
   detail: {
     form,
     functionToGetDataInIndexBD: getLoanApplicantDataIndexedDB,
   },
 });
 
-const bindSubmitLoanButton = () =>
-  btnSubmitLoan.addEventListener('click', () => eventBus.dispatchEvent(submitLoanEvent));
+const bindSubmitWithdrawalButton = () =>
+  btnSubmitWithdrawal.addEventListener('click', () =>
+    eventBus.dispatchEvent(submitWithdrawalEvent),
+  );
 
-export default bindSubmitLoanButton;
+export default bindSubmitWithdrawalButton;
