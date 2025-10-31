@@ -52,6 +52,17 @@ class MathUtility {
     })();
   }
 
+  static balance({ data, callback }) {
+    const deposit = data.deposit;
+
+    if (!deposit) return;
+
+    const activeDeposit = deposit.filter((item) => item.depositAmountDynamic !== 0);
+    const balance = activeDeposit.reduce((acc, current) => acc + current.depositAmountDynamic, 0);
+
+    callback(balance, data);
+  }
+
   static depositApprove({ id, depositAmount }) {
     const filterApproveAndIncompleteLoan = (data) => {
       if (!data.takeLoan) return;

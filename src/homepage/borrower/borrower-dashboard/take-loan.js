@@ -40,6 +40,8 @@ const takeLoan = (function () {
     </div>
   </fieldset>
 
+  <div class="withdrawal-message"></div>
+
   <div>
     <button class="btn-submit-withdrawal" type="button">Submit Withdrawal</button>
   </div>
