@@ -13,7 +13,7 @@ const withdrawalMsg = form.querySelector('.withdrawal-message');
 
 const btnTakeLoan = document.createElement('button');
 btnTakeLoan.type = 'button';
-btnTakeLoan.textContent = 'Take loan';
+btnTakeLoan.textContent = 'Toggle Take loan';
 
 const MINIMUM_MONTH_DEPOSIT = 4;
 
@@ -34,7 +34,7 @@ const loanPurpose = (function createLoanPurpose() {
       data-set-field-validation-value="setValidatePurposeOfLoan"
       required
     />
-    <output id="tenor-message" class="show-message"></output>
+    <output id="loan-purpose-message" class="show-message"></output>
   `;
   return div;
 })();
@@ -107,6 +107,8 @@ function setWithdrawalMsgText(balance, data) {
 
     return;
   }
+
+  resetForm();
   withdrawalMsg.textContent = `
   Your withdrawal amount has exceeded your balance. You will be taken a loan of ${takeLoanAmount}. 
   Click Take Loan to continue`;
@@ -117,11 +119,33 @@ function appendButtonToTakenLoan() {
   withdrawalMsg.after(btnTakeLoan);
 }
 
+function isOnlyWithdrawal(data) {
+  const result = addFieldValueToData(data);
+  storeDataLoanApplicantList(result);
+}
+
+function addFieldValueToData(data) {
+  if (!data.withdrawal) data.withdrawal = [];
+
+  const withdrawalLength = data.withdrawal.length;
+
+  const withdrawalFieldValue = {
+    dateAndTime: new Date(),
+    status: 'Pending',
+    withdrawalAmount: +withdrawalAmount.value,
+    withdrawalID: `WTD${data?.id}-00${withdrawalLength}`,
+  };
+
+  data.withdrawal.push(withdrawalFieldValue);
+
+  return data;
+}
+
 function isWithdrawalAmountGreaterThanBalance(balance, data) {
   if (+withdrawalAmount.value > balance) {
     setWithdrawalMsgText(balance, data);
   } else {
-    eventBus.dispatchEvent(events.withdrawalSuccess);
+    getRecentMemberData(isOnlyWithdrawal);
   }
 }
 
@@ -162,6 +186,20 @@ function getLoanApplicantDataIndexedDB() {
     'getData',
   );
 }
+function getRecentMemberData(callback) {
+  const data = localStorage.getData({ key: 'recent-loan-applicant' });
+
+  indexDB.interact(
+    {
+      storeName: 'loan-applicant-list',
+      keyPathValue: data?.id,
+      getMethod: 'get',
+      returnData: callback,
+      undefinedState: errorGettingData,
+    },
+    'getData',
+  );
+}
 
 // function insertMoreFormFieldValues(data) {
 //   if (!data.takeLoan) data.takeLoan = [];
@@ -195,18 +233,22 @@ function resetForm() {
   takeLoan.reset();
 }
 
-// function storeDataLoanApplicantList(data) {
-//   resetForm();
-//   indexDB.interact(
-//     {
-//       storeName: 'loan-applicant-list',
-//       data,
-//       trueState: displayTakeLoanSubmissionStatus,
-//       undefinedState: loanApplicantDataNotStore,
-//     },
-//     'storeData',
-//   );
-// }
+function withdrawalSuccessful() {
+  eventBus.dispatchEvent(events.withdrawalSuccess);
+}
+
+function storeDataLoanApplicantList(data) {
+  resetForm();
+  indexDB.interact(
+    {
+      storeName: 'loan-applicant-list',
+      data,
+      trueState: withdrawalSuccessful,
+      undefinedState: errorGettingData,
+    },
+    'storeData',
+  );
+}
 
 // function displayTakeLoanSubmissionStatus() {
 //   eventBus.dispatchEvent(events.takeLoanSuccess);
