@@ -6,25 +6,14 @@ import takeLoan from './take-loan';
 
 const form = takeLoan;
 
-const fieldset = form.querySelector('fieldset');
-const withdrawalAmount = form.querySelector('#withdrawal-amount');
-const withdrawalPin = form.querySelector('#withdraw-pin');
-const withdrawalMsg = form.querySelector('.withdrawal-message');
-
-const btnTakeLoan = document.createElement('button');
-btnTakeLoan.type = 'button';
-btnTakeLoan.textContent = 'Toggle Take loan';
-
-const MINIMUM_MONTH_DEPOSIT = 4;
-
-const loanPurpose = (function createLoanPurpose() {
+const loanPurposeSection = (function createLoanPurpose() {
   const div = document.createElement('div');
   div.classList.add('loan-purpose');
 
   div.innerHTML = `
-    <label for="loan-purpose">
-      Purpose of Loan
-      <span class="required-asterisk">*</span>
+  <label for="loan-purpose">
+  Purpose of Loan
+  <span class="required-asterisk">*</span>
     </label>
     <input
       type="text"
@@ -39,14 +28,14 @@ const loanPurpose = (function createLoanPurpose() {
   return div;
 })();
 
-const monthlyWithdrawalAmount = (function createMonthlyWithdrawalAmount() {
+const monthlyWithdrawalAmountSection = (function createMonthlyWithdrawalAmount() {
   const div = document.createElement('div');
   div.classList.add('monthly-withdrawal-amount');
 
   div.innerHTML = `
     <label for="monthly-withdrawal-amount">
-     Monthly Withdrawal Amount
-      <span class="required-asterisk">*</span>
+    Monthly Withdrawal Amount
+    <span class="required-asterisk">*</span>
     </label>
     <input
       type="number"
@@ -57,12 +46,26 @@ const monthlyWithdrawalAmount = (function createMonthlyWithdrawalAmount() {
       required
     />
     <output id="monthly-withdrawal-amount-message" class="show-message"></output>
-  `;
+    `;
 
   return div;
 })();
 
+const fieldset = form.querySelector('fieldset');
+const withdrawalAmount = form.querySelector('#withdrawal-amount');
+const withdrawalPin = form.querySelector('#withdraw-pin');
+const withdrawalMsg = form.querySelector('.withdrawal-message');
 const btnSubmitWithdrawal = form.querySelector('.btn-submit-withdrawal');
+const monthWithdrawalAmount = monthlyWithdrawalAmountSection.querySelector(
+  '#monthly-withdrawal-amount',
+);
+const loanPurpose = loanPurposeSection.querySelector('#loan-purpose');
+
+const btnTakeLoan = document.createElement('button');
+btnTakeLoan.type = 'button';
+btnTakeLoan.textContent = 'Toggle Take loan';
+
+const MINIMUM_MONTH_DEPOSIT = 4;
 
 const Event = ({ text, closedByValue = 'any' }) =>
   new CustomEvent('dialog-manager', {
@@ -88,11 +91,11 @@ const events = {
 let extraFieldState = false;
 function toggleFieldToTakeLoan() {
   if (!extraFieldState) {
-    fieldset.append(loanPurpose, monthlyWithdrawalAmount);
+    fieldset.append(loanPurposeSection, monthlyWithdrawalAmountSection);
     extraFieldState = true;
   } else {
-    loanPurpose.remove();
-    monthlyWithdrawalAmount.remove();
+    loanPurposeSection.remove();
+    monthlyWithdrawalAmountSection.remove();
     extraFieldState = false;
   }
 }
@@ -108,7 +111,10 @@ function setWithdrawalMsgText(balance, data) {
     return;
   }
 
-  resetForm();
+  if (extraFieldState) {
+    getRecentMemberData(isWithdrawalAndTakeLoan);
+  }
+
   withdrawalMsg.textContent = `
   Your withdrawal amount has exceeded your balance. You will be taken a loan of ${takeLoanAmount}. 
   Click Take Loan to continue`;
@@ -122,6 +128,39 @@ function appendButtonToTakenLoan() {
 function isOnlyWithdrawal(data) {
   const result = addFieldValueToData(data);
   storeDataLoanApplicantList(result);
+}
+
+function addTakeLoanFieldValue(data) {
+  if (!data.loan) data.loan = [];
+
+  const loanLength = data.loan.length;
+
+  const loanFieldValue = {
+    dateAndTime: new Date(),
+    status: 'Pending',
+    loanAmount: +withdrawalAmount.value - mainBalance,
+    loanID: `LOAN${data?.id}-00${loanLength}`,
+    loanPurpose: loanPurpose.value,
+    monthlyWithdrawalAmount: monthWithdrawalAmount.value,
+  };
+
+  data.loan.push(loanFieldValue);
+
+  storeDataLoanApplicantList(data);
+}
+
+let mainBalance = 0;
+
+function isWithdrawalAndTakeLoan(data) {
+  const result = addFieldValueToData(data);
+
+  const withdrawalLength = result.withdrawal.length - 1;
+
+  const withdrawal = data.withdrawal[withdrawalLength];
+
+  withdrawal.withdrawalAmount = mainBalance;
+
+  addTakeLoanFieldValue(result);
 }
 
 function addFieldValueToData(data) {
@@ -142,6 +181,7 @@ function addFieldValueToData(data) {
 }
 
 function isWithdrawalAmountGreaterThanBalance(balance, data) {
+  mainBalance = balance;
   if (+withdrawalAmount.value > balance) {
     setWithdrawalMsgText(balance, data);
   } else {
@@ -200,35 +240,6 @@ function getRecentMemberData(callback) {
     'getData',
   );
 }
-
-// function insertMoreFormFieldValues(data) {
-//   if (!data.takeLoan) data.takeLoan = [];
-
-//   const loanApplicantTakeLoanLength = data.takeLoan.length + 1;
-
-//   const takeLoanData = {
-//     outstandingBalance: 0,
-//     status: 'Pending',
-//     paidStatus: 'Incomplete',
-//     loanID: `LOAN${data?.id}-00${loanApplicantTakeLoanLength}`,
-//     dateAndTime: new Date(),
-//   };
-
-//   function setValue(element) {
-//     takeLoanData[element.id] = element.value;
-//   }
-
-//   const listOfFormField = [withdrawalAmount, loanPurpose];
-
-//   listOfFormField.forEach((field) => {
-//     setValue(field);
-//   });
-
-//   data.takeLoan.push(takeLoanData);
-
-//   storeDataLoanApplicantList(data);
-// }
-
 function resetForm() {
   takeLoan.reset();
 }
@@ -239,6 +250,7 @@ function withdrawalSuccessful() {
 
 function storeDataLoanApplicantList(data) {
   resetForm();
+
   indexDB.interact(
     {
       storeName: 'loan-applicant-list',
@@ -249,14 +261,6 @@ function storeDataLoanApplicantList(data) {
     'storeData',
   );
 }
-
-// function displayTakeLoanSubmissionStatus() {
-//   eventBus.dispatchEvent(events.takeLoanSuccess);
-// }
-
-// function loanApplicantDataNotStore() {
-//   console.log('loan applicant data not stored');
-// }
 
 function errorGettingData() {
   console.log('Error while getting data');
