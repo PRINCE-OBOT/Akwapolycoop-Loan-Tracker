@@ -13,20 +13,20 @@ const proofOfPaymentPreview = proofOfPayment.querySelector('.proof-of-payment-pr
 const dateOfPayment = proofOfPayment.querySelector('.date-of-payment');
 const timeOfPayment = proofOfPayment.querySelector('.time-of-payment');
 
-const myLoan = (function createTableHeading() {
+const myWithdrawal = (function createTableHeading() {
   const table = document.createElement('table');
 
   table.innerHTML = `
    <caption>
-     <h4 class="my-loan-table-heading">
-       My Loans
+     <h4 class="my-withdrawal-table-heading">
+       My Withdrawal
      </h4>
    </caption>
 
    <thead>
      <tr>
        <th>S/N</th>
-       <th>Loan ID</th>
+       <th>Withdrawal ID</th>
        <th>Amount</th>
        <th>Status</th>
        <th>Proof </th>
@@ -47,7 +47,7 @@ const getSerialNumber = (index) => {
 };
 
 const getTbody = () => {
-  const tbody = myLoan.querySelector('tbody');
+  const tbody = myWithdrawal.querySelector('tbody');
   return tbody;
 };
 
@@ -61,17 +61,17 @@ const Event = ({ text = null, closedByValue = 'any', contentKey = 'status' }) =>
   });
 
 const events = {
-  failMyLoan: Event({ text: 'You have not taken a loan' }),
+  failMyWithdrawal: Event({ text: 'You have not taken a withdrawal' }),
   proof: Event({ contentKey: 'proof' }),
   underReviewProofOfPayment: Event({
-    text: 'Your Loan is under review',
+    text: 'Your Withdrawal is under review',
     contentKey: 'status',
   }),
 };
 
-const checkIfLoanApplicantDataTakeLoanExist = (loanApplicantData) => {
-  !loanApplicantData.loan
-    ? eventBus.dispatchEvent(events.failMyLoan)
+const isWithdrawalExist = (loanApplicantData) => {
+  !loanApplicantData.withdrawal
+    ? eventBus.dispatchEvent(events.failMyWithdrawal)
     : insertLoanApplicantDataToTr(loanApplicantData);
 };
 
@@ -85,16 +85,16 @@ const appendTrToTbody = (tr) => {
   tbody.append(tr);
 };
 
-function setAttributeToTr({ tr, id, loanID }) {
+function setAttributeToTr({ tr, id, withdrawalID }) {
   tr.setAttribute('data-id', id);
-  tr.setAttribute('data-loan-ID', loanID);
+  tr.setAttribute('data-withdrawal-ID', withdrawalID);
 }
 
 function insertLoanApplicantDataToTr(loanApplicantData) {
   const tbody = getTbody();
   tbody.innerHTML = '';
 
-  loanApplicantData.loan.reverse().forEach((data, index) => {
+  loanApplicantData.withdrawal.reverse().forEach((data, index) => {
     const tr = createTableTr();
     const serialNumber = getSerialNumber(index);
     const date = getDate(data.dateAndTime);
@@ -102,8 +102,8 @@ function insertLoanApplicantDataToTr(loanApplicantData) {
 
     tr.innerHTML = `
        <td>${serialNumber}</td>
-       <td>${data.loanID}</td>
-       <td>${data.loanAmount}</td>
+       <td>${data.withdrawalID}</td>
+       <td>${data.withdrawalAmount}</td>
        <td>${data.status}</td>
        <td data-view="proofOfPayment">
        <img src="${eyeViewImg}" alt="view proof of payment" class="eye-view"/>
@@ -113,7 +113,7 @@ function insertLoanApplicantDataToTr(loanApplicantData) {
        <td>${time}</td>
       `;
 
-    setAttributeToTr({ tr, id: loanApplicantData.id, loanID: data.loanID });
+    setAttributeToTr({ tr, id: loanApplicantData.id, withdrawalID: data.withdrawalID });
     appendTrToTbody(tr);
   });
 }
@@ -135,7 +135,7 @@ const getRecentLoanApplicant = () => {
       storeName: 'loan-applicant-list',
       keyPathValue: id,
       getMethod: 'get',
-      returnData: checkIfLoanApplicantDataTakeLoanExist,
+      returnData: isWithdrawalExist,
       undefineState: errorWhileGettingData,
     },
     'getData',
@@ -143,8 +143,8 @@ const getRecentLoanApplicant = () => {
 };
 
 const getLoanIDFromTr = (tr) => {
-  const loanID = tr.getAttribute('data-loan-ID');
-  return loanID;
+  const withdrawalID = tr.getAttribute('data-withdrawal-ID');
+  return withdrawalID;
 };
 
 const getDate = (actionDate) => {
@@ -178,9 +178,9 @@ function insertDataToProofOfPayment(result) {
   dispatchProofOfPaymentEvent();
 }
 
-function getRecentLoanApplicantForProofOfPayment(loanID) {
+function getRecentLoanApplicantForProofOfPayment(withdrawalID) {
   const findLoanIDProofOfPayment = (data) => {
-    const result = data.loan.find((takenLoan) => takenLoan.loanID === loanID);
+    const result = data.withdrawal.find((takenLoan) => takenLoan.withdrawalID === withdrawalID);
 
     insertDataToProofOfPayment(result);
   };
@@ -202,9 +202,9 @@ function getRecentLoanApplicantForProofOfPayment(loanID) {
 function displayProofOfPayment(e) {
   const tr = e.target.closest('tr');
 
-  const loanID = getLoanIDFromTr(tr);
+  const withdrawalID = getLoanIDFromTr(tr);
 
-  getRecentLoanApplicantForProofOfPayment(loanID);
+  getRecentLoanApplicantForProofOfPayment(withdrawalID);
 }
 
 const viewHandler = {
@@ -224,7 +224,7 @@ function handleViewDisplay(e) {
   tbody.addEventListener('click', handleViewDisplay);
 })();
 
-const myLoanGetDataInDBBus = new EventTarget();
-myLoanGetDataInDBBus.addEventListener('render-content', getRecentLoanApplicant);
+const myWithdrawalGetDataInDBBus = new EventTarget();
+myWithdrawalGetDataInDBBus.addEventListener('render-content', getRecentLoanApplicant);
 
-export { myLoan, myLoanGetDataInDBBus };
+export { myWithdrawal, myWithdrawalGetDataInDBBus };

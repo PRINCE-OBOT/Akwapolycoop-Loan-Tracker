@@ -21,6 +21,14 @@ import {
   loanApplicantManagementGetDataInDBBus,
 } from '../../admin/admin-dashboard/loan-applicant-management';
 import { myDeposit, depositRenderContentDBBus } from '../../borrower/borrower-dashboard/myDeposit';
+import {
+  myWithdrawal,
+  myWithdrawalGetDataInDBBus,
+} from '../../borrower/borrower-dashboard/my-withdrawal';
+import {
+  withdrawalManagement,
+  withdrawalManagementGetDataInDBBus,
+} from '../../admin/admin-dashboard/withdrawal-management';
 
 const getDataInIndexedDB = new CustomEvent('render-content');
 
@@ -31,6 +39,8 @@ const bus = {
   'loan-applicant-management': loanApplicantManagementGetDataInDBBus,
   'my-deposit': depositRenderContentDBBus,
   'admin-dashboard': adminDashboardContentBBus,
+  'my-withdrawal': myWithdrawalGetDataInDBBus,
+  'withdrawal-management': withdrawalManagementGetDataInDBBus,
 };
 
 const contents = {
@@ -43,6 +53,8 @@ const contents = {
   'loan-management': loanerManagement,
   'deposit-management': depositManagement,
   'loan-applicant-management': loanApplicantManagement,
+  'my-withdrawal': myWithdrawal,
+  'withdrawal-management': withdrawalManagement,
 };
 
 function appendContent(e) {
