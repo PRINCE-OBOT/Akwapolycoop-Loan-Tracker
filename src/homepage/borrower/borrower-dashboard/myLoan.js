@@ -71,7 +71,7 @@ const events = {
 };
 
 const checkIfLoanApplicantDataTakeLoanExist = (loanApplicantData) => {
-  !loanApplicantData.takeLoan
+  !loanApplicantData.loan
     ? eventBus.dispatchEvent(events.failMyLoan)
     : insertLoanApplicantDataToTr(loanApplicantData);
 };
@@ -95,7 +95,7 @@ function insertLoanApplicantDataToTr(loanApplicantData) {
   const tbody = getTbody();
   tbody.innerHTML = '';
 
-  loanApplicantData.takeLoan.reverse().forEach((data, index) => {
+  loanApplicantData.loan.reverse().forEach((data, index) => {
     const tr = createTableTr();
     const serialNumber = getSerialNumber(index);
     const date = getDate(data.dateAndTime);
@@ -104,8 +104,7 @@ function insertLoanApplicantDataToTr(loanApplicantData) {
     tr.innerHTML = `
        <td>${serialNumber}</td>
        <td>${data.loanID}</td>
-       <td>${data['desired-amount']}</td>
-       <td>${data.tenor}</td>
+       <td>${data.loanAmount}</td>
        <td>${data.status}</td>
        <td data-view="proofOfPayment">
        <img src="${eyeViewImg}" alt="view proof of payment" class="eye-view"/>
@@ -182,7 +181,7 @@ function insertDataToProofOfPayment(result) {
 
 function getRecentLoanApplicantForProofOfPayment(loanID) {
   const findLoanIDProofOfPayment = (data) => {
-    const result = data.takeLoan.find((takenLoan) => takenLoan.loanID === loanID);
+    const result = data.loan.find((takenLoan) => takenLoan.loanID === loanID);
 
     insertDataToProofOfPayment(result);
   };
