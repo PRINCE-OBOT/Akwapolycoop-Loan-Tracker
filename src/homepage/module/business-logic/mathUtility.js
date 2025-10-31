@@ -57,40 +57,33 @@ class MathUtility {
 
     if (!deposit) return;
 
-    const activeDeposit = deposit.filter((item) => item.depositAmountDynamic !== 0);
+    const activeDeposit = deposit.filter(
+      (item) => item.depositAmountDynamic !== 0 && item.status !== 'Pending',
+    );
     const balance = activeDeposit.reduce((acc, current) => acc + current.depositAmountDynamic, 0);
 
     callback(balance, data);
   }
 
-  static depositApprove({ id, depositAmount }) {
-    const filterApproveAndIncompleteLoan = (data) => {
-      if (!data.takeLoan) return;
+  static withdrawalApprove({ id, withdrawalAmount }) {
+    const filterApproveAndUnpaidDeposit = (data) => {
+      if (!data.deposit) return;
 
-      for (let i = 0; i < data.takeLoan.length; i++) {
-        if (data.takeLoan[i].status !== 'Approve' && data.takeLoan[i].paidStatus !== 'Incomplete')
+      for (let i = 0; i < data.deposit.length; i++) {
+        if (data.deposit[i].status !== 'Approve' || data.deposit[i].depositAmountDynamic === 0)
           continue;
 
-        // Percentage base on accumulated days
-        const interest =
-          data.takeLoan[i].outstandingBalance *
-          PERCENTAGE *
-          getDifferenceInDays(data.takeLoan[i].actionDate);
-
-        const repayment = interest + data.takeLoan[i].outstandingBalance;
-
-        const balance = depositAmount - Math.round(repayment * 100) / 100;
+        const balance = withdrawalAmount - data.deposit[i].depositAmountDynamic;
 
         if (balance >= 0) {
-          data.takeLoan[i].paidStatus = 'Completed';
-          data.takeLoan[i].outstandingBalance = 0;
+          data.deposit[i].depositAmountDynamic = 0;
         } else {
-          const newOutstandingBalance = Math.abs(balance) - interest;
-          data.takeLoan[i].outstandingBalance = newOutstandingBalance;
+          const newDepositAmount = Math.abs(balance);
+          data.deposit[i].depositAmountDynamic = newDepositAmount;
           break;
         }
 
-        depositAmount = balance;
+        withdrawalAmount = balance;
       }
 
       const store = () => {
@@ -114,7 +107,7 @@ class MathUtility {
           storeName: 'loan-applicant-list',
           keyPathValue: id,
           getMethod: 'get',
-          returnData: filterApproveAndIncompleteLoan,
+          returnData: filterApproveAndUnpaidDeposit,
           undefinedState: errorGettingData,
         },
         'getData',

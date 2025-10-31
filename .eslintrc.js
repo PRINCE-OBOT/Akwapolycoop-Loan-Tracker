@@ -24,6 +24,7 @@ module.exports = {
     "no-proto": "off",
     ". eslint": "off",
     "no-continue": "off",
-    "no-restricted-globals": "off"
+    "no-restricted-globals": "off",
+    "no-nested-ternary": "off"
   },
 };

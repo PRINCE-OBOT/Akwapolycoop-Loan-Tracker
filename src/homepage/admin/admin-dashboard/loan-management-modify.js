@@ -1,4 +1,3 @@
-// import MathUtility from '../../module/business-logic/mathUtility';
 import MathUtility from '../../module/business-logic/mathUtility';
 import eventBus from '../../module/event-bus/event';
 import indexDB from '../../module/indexDB/indexDB';
@@ -8,10 +7,11 @@ const contentHandler = {
   takeLoan: 'loan-management',
   deposit: 'deposit-management',
   membershipApplicationForm: 'loan-applicant-management',
+  withdrawal: 'withdrawal-management',
 };
 
 const updated = () => {
-  const { firstKey, id, withdrawalAmount } = getActionDataFromLocalStorage();
+  const { firstKey, id, withdrawalAmount, value } = getActionDataFromLocalStorage();
   // const { firstKey } = getActionDataFromLocalStorage();
 
   const key = firstKey[0];
@@ -22,9 +22,13 @@ const updated = () => {
     },
   });
 
-  if (key === 'withdrawal') MathUtility.withdrawalApprove({ id, withdrawalAmount });
-
   eventBus.dispatchEvent(customContentEvent);
+
+  // run when withdrawal status is approve
+  const status = value.find((item) => item.status).status;
+
+  if (key === 'withdrawal' && status === 'Approve')
+    MathUtility.withdrawalApprove({ id, withdrawalAmount });
 };
 
 const fail = () => {
@@ -37,10 +41,11 @@ const getActionDataFromLocalStorage = () => {
 };
 
 const modifyLoanApplicantData = () => {
-  const { id, value, firstKey, secondKey, loanID, depositID } = getActionDataFromLocalStorage();
+  const { id, value, firstKey, secondKey, loanID, depositID, withdrawalID } =
+    getActionDataFromLocalStorage();
 
-  const uniqueID = loanID || depositID;
-  const uniqueIDKey = loanID ? 'loanID' : 'depositID';
+  const uniqueID = loanID || depositID || withdrawalID;
+  const uniqueIDKey = loanID ? 'loanID' : depositID ? 'depositID' : 'withdrawalID';
 
   indexDB.interact(
     {

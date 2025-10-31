@@ -357,6 +357,7 @@ searchStatus.addEventListener('change', filterLoanApplicantByStatus);
 searchBar.addEventListener('input', filterLoanApplicantByDepositID);
 tbody.addEventListener('click', handleOptionContent);
 tbody.addEventListener('click', handleActionStorage);
+
 const withdrawalManagementGetDataInDBBus = new EventTarget();
 withdrawalManagementGetDataInDBBus.addEventListener(
   'render-content',
