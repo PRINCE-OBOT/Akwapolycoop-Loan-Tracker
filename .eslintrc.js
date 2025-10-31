@@ -23,6 +23,7 @@ module.exports = {
     "func-names": "off",
     "no-proto": "off",
     ". eslint": "off",
-    "no-continue": "off"
+    "no-continue": "off",
+    "no-restricted-globals": "off"
   },
 };

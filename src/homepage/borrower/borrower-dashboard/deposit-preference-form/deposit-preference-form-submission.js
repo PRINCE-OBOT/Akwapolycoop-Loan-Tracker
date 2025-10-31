@@ -1,9 +1,19 @@
 import eventBus from '../../../module/event-bus/event';
-import depositPreferenceForm from './deposit-preference-form';
+import Password from '../../../module/form-validation/password-validator';
+import preferredDepositAmountForm from './deposit-preference-form';
 
-const form = depositPreferenceForm.querySelector('form');
-const depositPreference = depositPreferenceForm.querySelector('#deposit-preference');
-const btnSubmitDepositPreference = depositPreferenceForm.querySelector(
+const form = preferredDepositAmountForm.querySelector('form');
+const preferredDepositAmount = preferredDepositAmountForm.querySelector(
+  '#preferred-deposit-amount',
+);
+const withdrawalPin = preferredDepositAmountForm.querySelector('#withdrawal-pin');
+const withdrawalPinMsg = preferredDepositAmountForm.querySelector('#withdrawal-pin-message');
+const confirmWithdrawalPinMsg = preferredDepositAmountForm.querySelector(
+  '#confirm-withdrawal-pin-message',
+);
+const confirmWithdrawalPin = preferredDepositAmountForm.querySelector('#confirm-withdrawal-pin');
+
+const btnSubmitPreferredDepositAmount = preferredDepositAmountForm.querySelector(
   '.btn-submit-deposit-preference',
 );
 
@@ -16,7 +26,7 @@ const getRecentLoanApplicantIDInLocalStorage = () => {
   return data?.id;
 };
 
-function getDepositPreferenceAction() {
+function getPreferredDepositAmountAction() {
   const id = getRecentLoanApplicantIDInLocalStorage();
 
   const obj = {
@@ -24,8 +34,12 @@ function getDepositPreferenceAction() {
     data: {
       action: 'modifyData',
       id,
-      value: [{ depositPreference: +depositPreference.value }, { isMemberNew: false }],
-      firstKey: ['depositPreference', 'isMemberNew'],
+      value: [
+        { preferredDepositAmount: +preferredDepositAmount.value },
+        { withdrawalPin: withdrawalPin.value },
+        { isMemberNew: false },
+      ],
+      firstKey: ['preferredDepositAmount', 'withdrawalPin', 'isMemberNew'],
     },
   };
   return obj;
@@ -36,43 +50,51 @@ const storeActionToLocalStorage = (obj) => {
 };
 
 function handleActionStorage() {
-  const depositPreferenceAction = getDepositPreferenceAction();
-  storeActionToLocalStorage(depositPreferenceAction);
+  const preferredDepositAmountAction = getPreferredDepositAmountAction();
+  storeActionToLocalStorage(preferredDepositAmountAction);
   resetForm();
 }
 
-const Event = ({ text }) =>
+const Event = ({ text, contentKey = 'question' }) =>
   new CustomEvent('dialog-manager', {
     detail: {
-      contentKey: 'question',
+      contentKey,
       closedByValue: 'any',
       text,
     },
   });
 
 const events = {
-  depositPreferenceQuestion: Event({ text: 'use the amount as your monthly deposit preference?' }),
+  preferredDepositAmountQuestion: Event({
+    text: 'use the amount as your monthly deposit preference?',
+  }),
 };
 
 function handleOptionContent() {
-  eventBus.dispatchEvent(events.depositPreferenceQuestion);
+  eventBus.dispatchEvent(events.preferredDepositAmountQuestion);
 }
 
-function processDepositPreferenceForStoring() {
+function processPreferredDepositAmountForStoring() {
   handleActionStorage();
   handleOptionContent();
 }
 
-const submitDepositPreferenceFormEvent = new CustomEvent('all-field-valid', {
+const submitPreferredDepositAmountFormEvent = new CustomEvent('all-field-valid', {
   detail: {
-    form: depositPreferenceForm,
-    functionToGetDataInIndexBD: processDepositPreferenceForStoring,
+    form: preferredDepositAmountForm,
+    functionToGetDataInIndexBD: processPreferredDepositAmountForStoring,
   },
 });
 
-const bindSubmitDepositPreference = () =>
-  btnSubmitDepositPreference.addEventListener('click', () =>
-    eventBus.dispatchEvent(submitDepositPreferenceFormEvent),
+const bindSubmitPreferredDepositAmount = () =>
+  btnSubmitPreferredDepositAmount.addEventListener('click', () =>
+    eventBus.dispatchEvent(submitPreferredDepositAmountFormEvent),
   );
 
-export default bindSubmitDepositPreference;
+new Password({
+  password: withdrawalPin,
+  passwordMessage: withdrawalPinMsg,
+  confirmPassword: confirmWithdrawalPin,
+  confirmPasswordMessage: confirmWithdrawalPinMsg,
+});
+export default bindSubmitPreferredDepositAmount;

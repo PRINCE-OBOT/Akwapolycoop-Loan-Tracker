@@ -30,27 +30,34 @@ export default class Password {
     });
     if (passwordField.empty) return;
 
-    const lowercase = /[a-z]/.test(this.password.value);
-    const uppercase = /[A-Z]/.test(this.password.value);
-    const number = /[0-9]/.test(this.password.value);
-    const minLength = /.{7,}/.test(this.password.value);
+    // condition for password
+    // const lowercase = /[a-z]/.test(this.password.value);
+    // const uppercase = /[A-Z]/.test(this.password.value);
+    // const number = /[0-9]/.test(this.password.value);
+    // const minLength = /.{7,}/.test(this.password.value);
 
-    this.passwordMessage.value = 'Password should contain';
+    const exactlyFourDigit = /^.{4}$/.test(this.password.value);
 
-    if (!lowercase) {
-      this.passwordMessage.value += ', Lowercase';
-    }
-    if (!uppercase) {
-      this.passwordMessage.value += ', Uppercase';
-    }
-    if (!number) {
-      this.passwordMessage.value += ', Number';
-    }
-    if (!minLength) {
-      this.passwordMessage.value += ', Minimum of 7 characters';
-    }
+    if (!exactlyFourDigit) this.passwordMessage.value = 'Your pin must match four digit';
 
-    this.isPasswordValid = lowercase && uppercase && number && minLength;
+    // this.passwordMessage.value = 'Password should contain';
+
+    // if (!lowercase) {
+    //   this.passwordMessage.value += ', Lowercase';
+    // }
+    // if (!uppercase) {
+    //   this.passwordMessage.value += ', Uppercase';
+    // }
+    // if (!number) {
+    //   this.passwordMessage.value += ', Number';
+    // }
+    // if (!minLength) {
+    //   this.passwordMessage.value += ', Minimum of 7 characters';
+    // }
+
+    // this.isPasswordValid = lowercase && uppercase && number && minLength;
+
+    this.isPasswordValid = exactlyFourDigit;
 
     FieldValidationUtility.validateClientAndServerState({
       field: this.password,
@@ -81,7 +88,8 @@ export default class Password {
       isFieldValid: this.isPasswordValid,
       fieldMessage: this.confirmPasswordMessage,
       field2: this.confirmPassword,
-      msg: 'Your password is weak',
+      // msg: 'Your password is weak',
+      msg: 'Your pin does not match',
       isConfirmPassword: true,
     });
 
@@ -94,7 +102,8 @@ export default class Password {
       validityState = 'valid';
     } else if (this.password.value !== this.confirmPassword.value) {
       validityState = 'invalid';
-      this.confirmPasswordMessage.value = 'Password Mismatch';
+      // this.confirmPasswordMessage.value = 'Password Mismatch';
+      this.confirmPasswordMessage.value = 'Pin Mismatch';
     }
 
     FieldValidationUtility.colorCustomMessage({

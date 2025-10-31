@@ -23,20 +23,20 @@ const takeLoan = (function () {
       <output id="withdrawal-amount-message" class="show-message"></output>
     </div>
    
-    <div class="withdrawal-pin">
-      <label for="withdrawal-pin">
+    <div class="withdraw-pin">
+      <label for="withdraw-pin">
         Withdrawal Pin
         <span class="required-asterisk">*</span>
       </label>
       <input
         type="number"
-        id="withdrawal-pin"
+        id="withdraw-pin"
         placeholder="e.g 9182"
         pattern="^.{1,}$"
         data-set-field-validation-value="setPatternForEmptyField"
         required
       />
-      <output id="withdrawal-pin-message" class="show-message"></output>
+      <output id="withdraw-pin-message" class="show-message"></output>
     </div>
   </fieldset>
 

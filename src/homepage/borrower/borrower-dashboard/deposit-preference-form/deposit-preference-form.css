@@ -22,9 +22,9 @@
   color: #718096;
   font-size: 14px;
 }
-
-.form-group {
-  margin-bottom: 24px;
+.preferred-deposit-form > div {
+  position: relative;
+  margin-bottom: 15px;
 }
 
 label {

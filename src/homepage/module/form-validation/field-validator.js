@@ -82,6 +82,11 @@ const validation = {
     this.fieldErrorMessage = 'Incorrect Date of Birth';
   },
 
+  setPatternForSettingPin({ field }) {
+    this.isFieldValid = /^.{4}$/.test(field.value);
+    this.fieldErrorMessage = 'Pin must be 4 character';
+  },
+
   setMonthlyIncomeValidationValue({ field }) {
     this.isFieldValid = +field.value >= 20000;
     this.fieldErrorMessage = 'Not within range';
