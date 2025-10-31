@@ -55,20 +55,22 @@ const dialogContentHandler = {
   proof: appendProofOfPaymentToDialog,
   depositForm: appendDepositFormToDialog,
   depositPreferenceForm: appendDepositPreferenceFormToDialog,
-  previousContent: appendPreviousContent,
+  // previousContent: appendPreviousContent,
 };
 
-const appendedContentList = [];
+// const appendedContentList = [];
 
-function appendPreviousContent() {
-  dialogContentHandler[appendedContentList[0]]();
-}
+// function appendPreviousContent() {
+//   console.log(appendedContentList[0], appendedContentList);
+//   // if (console.log(appendedContentList[0], appendedContentList))
+//   dialogContentHandler[appendedContentList[0]]();
+// }
 
-function hasPreviousContentListExceeded() {
-  if (appendedContentList.length > 2) {
-    appendedContentList.shift();
-  }
-}
+// function hasPreviousContentListExceeded() {
+//   if (appendedContentList.length > 2) {
+//     appendedContentList.shift();
+//   }
+// }
 
 function DialogManager(e) {
   const detail = e.detail;
@@ -77,13 +79,16 @@ function DialogManager(e) {
 
   dialog.setAttribute('closedby', detail.closedByValue);
 
+  // detail.contentKey === 'previousContent'
+  //   ? appendedContentList.push(appendedContentList[0])
+  //   : appendedContentList.push(detail.contentKey);
+
+  // const isAllItemQuestion = appendedContentList[0] === 'question' && appendedContentList[1] === 'question'
+  // if(isAllItemQuestion) return
+
   dialogContentHandler[detail.contentKey](detail);
 
-  detail.contentKey === 'previousContent'
-    ? appendedContentList.push(appendedContentList[0])
-    : appendedContentList.push(detail.contentKey);
-
-  hasPreviousContentListExceeded();
+  // hasPreviousContentListExceeded();
 
   dialog.showModal();
 }

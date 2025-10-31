@@ -155,7 +155,8 @@ function insertMoreFormFieldValues(data) {
 
   deposit.dateAndTime = new Date();
   deposit.status = 'Pending';
-  deposit.depositAmount = depositAmount.value;
+  deposit.depositAmount = +depositAmount.value;
+  deposit.depositAmountDynamic = +depositAmount.value;
   deposit.depositID = `DEP${data?.id}-00${depositLength}`;
 
   storeDataLoanApplicantList(data);
@@ -166,7 +167,7 @@ const loanApplicantDataNotStore = () => {
 };
 
 function displayDepositSubmissionStatus() {
-  alert('Your deposit has been submitted. Under Review');
+  eventBus.dispatchEvent(events.successDeposit);
 }
 
 function resetForm() {
@@ -229,6 +230,7 @@ const events = {
     text: 'Approve deposit amount does not match Loan Applicant deposit amount',
   }),
   failDeposit: Event({ text: 'Deposit amount must not be less than your deposit preference' }),
+  successDeposit: Event({ text: 'Your deposit has been submitted. Under Review' }),
   modifyIndexdb: new CustomEvent('modify-indexdb'),
   manualCloseDialog: new CustomEvent('manual-close-dialog'),
 };

@@ -53,7 +53,7 @@ const addTextContentToBtnCancel = (button) => {
 };
 
 const addEventToBtnYes = (button) => {
-  button.addEventListener('click', getActionFromLocalStorage);
+  button.addEventListener('click', handleActionDirection);
   return button;
 };
 
@@ -69,7 +69,8 @@ const events = {
 const addEventToBtnCancel = (button) => {
   button.addEventListener('click', () => {
     eventBus.dispatchEvent(events.manualCloseDialog);
-    eventBus.dispatchEvent(events.previousContentEvent);
+
+    // eventBus.dispatchEvent(events.previousContentEvent);
   });
   return button;
 };
@@ -91,8 +92,14 @@ const Actions = {
 // if logout - logout user
 // if pending or approve - modify data
 // if view - get loan applicant data and modify data
+
 function getActionFromLocalStorage() {
   const data = localStorage.getData({ key: 'action' });
+  return data;
+}
+
+function handleActionDirection() {
+  const data = getActionFromLocalStorage();
 
   Actions[data?.action]();
 }
