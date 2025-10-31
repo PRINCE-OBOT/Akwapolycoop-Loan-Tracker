@@ -55,6 +55,7 @@ const fieldset = form.querySelector('fieldset');
 const withdrawalAmount = form.querySelector('#withdrawal-amount');
 const withdrawalPin = form.querySelector('#withdraw-pin');
 const withdrawalMsg = form.querySelector('.withdrawal-message');
+const percentageMsg = form.querySelector('.percentage-msg');
 const btnSubmitWithdrawal = form.querySelector('.btn-submit-withdrawal');
 const monthWithdrawalAmount = monthlyWithdrawalAmountSection.querySelector(
   '#monthly-withdrawal-amount',
@@ -66,6 +67,7 @@ btnTakeLoan.type = 'button';
 btnTakeLoan.textContent = 'Toggle Take loan';
 
 const MINIMUM_MONTH_DEPOSIT = 4;
+const PERCENTAGE = 5 / 100;
 
 const Event = ({ text, closedByValue = 'any' }) =>
   new CustomEvent('dialog-manager', {
@@ -87,6 +89,10 @@ const events = {
   noDeposit: Event({ text: 'You have not made any deposit' }),
   withdrawalSuccess: Event({ text: 'Your withdrawal request is under review' }),
 };
+
+function displayPercentageMsg() {
+  percentageMsg.textContent = `You will receive ${withdrawalAmount.value - PERCENTAGE * +withdrawalAmount.value}`;
+}
 
 let extraFieldState = false;
 function toggleFieldToTakeLoan() {
@@ -278,6 +284,7 @@ const bindSubmitWithdrawalButton = () =>
     eventBus.dispatchEvent(submitWithdrawalEvent),
   );
 
+withdrawalAmount.addEventListener('input', displayPercentageMsg);
 btnTakeLoan.addEventListener('click', toggleFieldToTakeLoan);
 
 export default bindSubmitWithdrawalButton;

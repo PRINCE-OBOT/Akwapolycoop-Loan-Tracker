@@ -3,6 +3,7 @@ import eventBus from '../../module/event-bus/event';
 import indexDB from '../../module/indexDB/indexDB';
 import eyeViewImg from '../../assets/images/eye-view.svg';
 import declineImg from '../../assets/images/delined-loan.svg';
+import approveImg from '../../assets/images/approve-loan.svg';
 
 import registerLocalStorageCustomMethod from '../../module/localStorage/localStorage';
 import { proofOfPayment } from '../../admin/admin-dashboard/proof-of-payment/proof-of-payment';
@@ -27,7 +28,7 @@ const myWithdrawal = (function createTableHeading() {
      <tr>
        <th>S/N</th>
        <th>Withdrawal ID</th>
-       <th>Amount</th>
+       <th>Amount(N)</th>
        <th>Status</th>
        <th>Proof </th>
        <th>Date</th>
@@ -167,7 +168,7 @@ function insertDataToProofOfPayment(result) {
     return;
   }
 
-  proofOfPaymentPreview.src = result.adminProofOfPayment ? result.adminProofOfPayment : declineImg;
+  proofOfPaymentPreview.src = result.status === 'Approve' ? approveImg : declineImg;
 
   const date = getDate(result.actionDate);
   const time = getTime(result.actionDate);

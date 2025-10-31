@@ -12,7 +12,6 @@ const contentHandler = {
 
 const updated = () => {
   const { firstKey, id, withdrawalAmount, value } = getActionDataFromLocalStorage();
-  // const { firstKey } = getActionDataFromLocalStorage();
 
   const key = firstKey[0];
 

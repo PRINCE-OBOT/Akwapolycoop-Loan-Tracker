@@ -23,6 +23,7 @@ form {
 }
 
 .field-section {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   row-gap: 33px;
@@ -32,6 +33,15 @@ form {
   background: var(--white);
   border: 1px solid var(--grey);
   border-radius: 10px;
+}
+
+fieldset div.percentage-msg {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  font-style: italic;
+  translate: -50%;
+  font-size: var(--fs-sm);
 }
 
 .field-section > div {

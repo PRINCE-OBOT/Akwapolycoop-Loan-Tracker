@@ -44,7 +44,6 @@ const withdrawalManagement = (function createDepositManagementContent() {
                     <th>Status</th>
                     <th>Date</th>
                     <th>Time</th>
-                    <th>Details</th>
                     <th colspan="3">Actions</th>
                   </tr>
                 </thead>

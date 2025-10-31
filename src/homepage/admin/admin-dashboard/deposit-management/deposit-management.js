@@ -44,9 +44,7 @@ const depositManagement = (function createDepositManagementContent() {
                     <th>Status</th>
                     <th>Date</th>
                     <th>Time</th>
-                    <th>Proof</th>
-                    <th>Details</th>
-                    <th colspan="3">Actions</th>
+                    <th colspan="4">Actions</th>
                   </tr>
                 </thead>
                 <tbody></tbody>

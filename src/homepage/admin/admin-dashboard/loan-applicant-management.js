@@ -45,7 +45,7 @@ const loanApplicantManagement = (function createLoanApplicantManagementContent()
                     <th>Status</th>
                     <th>Date</th>
                     <th>Time</th>
-                    <th>View</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
 

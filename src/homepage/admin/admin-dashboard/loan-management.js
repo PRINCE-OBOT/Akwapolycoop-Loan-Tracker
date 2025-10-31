@@ -41,8 +41,7 @@ const loanerManagement = (function createLoanerManagementContent() {
                   <tr>
                     <th>S/N</th>
                     <th>Loan ID</th>
-                    <th>Amount (N)</th>
-                    <th>Tenor (Days)</th>
+                    <th>Amount(N)</th>
                     <th>Status</th>
                     <th>Date</th>
                     <th>Time</th>

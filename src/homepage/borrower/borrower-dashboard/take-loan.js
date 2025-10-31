@@ -4,9 +4,13 @@ const takeLoan = (function () {
   const form = document.createElement('form');
 
   form.innerHTML = `
+  <p>We charge 5% of your Withdrawal Amount</p>
+
   <fieldset class="field-section">
-    <legend>Loan Request</legend>
+    <legend>Withdrawal Request</legend>
     
+    <div class='percentage-msg'></div>
+
     <div class="withdrawal-amount">
       <label for="withdrawal-amount">
         Withdrawal Amount
