@@ -5,11 +5,30 @@ import takeLoan from './take-loan';
 
 const form = takeLoan;
 
-const desiredAmount = form.querySelector('#desired-amount');
-const tenor = form.querySelector('#tenor');
-const loanPurpose = form.querySelector('#loan-purpose');
+const withdrawalAmount = form.querySelector('#withdrawal-amount');
 
-const btnSubmitLoan = form.querySelector('.btn-submit-loan');
+const loanPurpose = (function createLoanPurpose() {
+  const div = document.createElement('div');
+  div.classList.add('loan-purpose');
+
+  div.innerHTML = `
+    <label for="loan-purpose">
+      Purpose of Loan
+      <span class="required-asterisk">*</span>
+    </label>
+    <input
+      type="text"
+      id="loan-purpose"
+      placeholder="e.g Business"
+      pattern="[a-z ]{8,}$"
+      data-set-field-validation-value="setValidatePurposeOfLoan"
+      required
+    />
+    <output id="tenor-message" class="show-message"></output>
+  `;
+})();
+
+const btnSubmitLoan = form.querySelector('.btn-submit-withdrawal');
 
 const Event = ({ text, closedByValue = 'any' }) =>
   new CustomEvent('dialog-manager', {
@@ -80,7 +99,7 @@ function insertMoreFormFieldValues(data) {
     takeLoanData[element.id] = element.value;
   }
 
-  const listOfFormField = [tenor, desiredAmount, loanPurpose];
+  const listOfFormField = [withdrawalAmount, loanPurpose];
 
   listOfFormField.forEach((field) => {
     setValue(field);

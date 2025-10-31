@@ -34,7 +34,7 @@ const html = document.querySelector('html');
 // - Use custom method such `getData` and `setData` in localStorage
 registerLocalStorageCustomMethod();
 // - Click on element *specifically* in the sidebar to change content in the dashboard
-// - Click on `submit application`, `submit deposit preference` and `submit loan` button to submit the form
+// - Click on `submit application`, `submit deposit preference` and `Submit Withdrawal` button to submit the form
 bindSubmitApplicationButton();
 bindSubmitLoanButton();
 bindSubmitDepositPreference();

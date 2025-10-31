@@ -37,7 +37,7 @@ const loanApplicantDeposit = (function () {
                             placeholder="5000" 
                             step="0.01"
                             min="100"
-                            data-set-field-validation-value="setDesiredAmountValidationValue" 
+                            data-set-field-validation-value="setWithdrawalAmountValidationValue" 
                             min="0"
                             required
                         >
