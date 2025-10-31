@@ -179,7 +179,7 @@ function modifyDataHandler({ data, firstKey, secondKey, uniqueID, uniqueIDKey, n
   firstKey.forEach((key, index) => {
     const firstKeyType = Object.prototype.toString.call(data[key]).slice(8, -1);
 
-    firstKeyType === 'Undefined'
+    firstKeyType !== 'Object' || firstKeyType !== 'Array'
       ? DBKeyHandler.String(key, index)
       : DBKeyHandler[firstKeyType](key, index);
   });
