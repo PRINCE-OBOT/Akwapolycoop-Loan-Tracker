@@ -24,7 +24,7 @@ function getDepositPreferenceAction() {
     data: {
       action: 'modifyData',
       id,
-      value: [{ depositPreference: depositPreference.value }, { isMemberNew: false }],
+      value: [{ depositPreference: +depositPreference.value }, { isMemberNew: false }],
       firstKey: ['depositPreference', 'isMemberNew'],
     },
   };

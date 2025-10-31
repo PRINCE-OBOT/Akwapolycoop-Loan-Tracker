@@ -1,6 +1,6 @@
 import './loan-applicant-deposit.css';
 import '../../../assets/form-logic.css';
-import MathUtility from '../../../module/business-logic/mathUtility';
+// import MathUtility from '../../../module/business-logic/mathUtility';
 import eventBus from '../../../module/event-bus/event';
 import indexDB from '../../../module/indexDB/indexDB';
 
@@ -199,7 +199,7 @@ const errorGettingData = () => {
   console.log('Error getting data');
 };
 
-const getLoanApplicantDataFromIndexedDB = () => {
+const getLoanApplicantDataFromIndexedDB = (callback) => {
   const data = localStorage.getData({ key: 'recent-loan-applicant' });
   const id = data?.id;
 
@@ -208,7 +208,7 @@ const getLoanApplicantDataFromIndexedDB = () => {
       storeName: 'loan-applicant-list',
       keyPathValue: id,
       getMethod: 'get',
-      returnData: storeProofOfPaymentURLFormat,
+      returnData: callback,
       undefinedState: errorGettingData,
     },
     'getData',
@@ -228,7 +228,7 @@ const events = {
   failDepositApprove: Event({
     text: 'Approve deposit amount does not match Loan Applicant deposit amount',
   }),
-  failDeposit: Event({ text: 'You cannot deposit more than your outstanding balance' }),
+  failDeposit: Event({ text: 'Deposit amount must not be less than your deposit preference' }),
   modifyIndexdb: new CustomEvent('modify-indexdb'),
   manualCloseDialog: new CustomEvent('manual-close-dialog'),
 };
@@ -283,7 +283,7 @@ function checkIfAdminDepositAmountIsWithinRange(data) {
 }
 
 const Actions = {
-  deposit: getOutstandingBalance,
+  deposit: () => getLoanApplicantDataFromIndexedDB(isDepositAmountWithRange),
   modifyData: checkIfAdminDepositAmountIsWithinRange,
 };
 
@@ -292,22 +292,16 @@ function getActionFromLocalStorage() {
   return data;
 }
 
+function isDepositAmountWithRange(data) {
+  +depositAmount.value < +data.depositPreference
+    ? failDeposit()
+    : storeProofOfPaymentURLFormat(data);
+}
+
 function handleDepositDirection() {
   const data = getActionFromLocalStorage();
 
   Actions[data?.action](data);
-}
-
-function getOutstandingBalance(data) {
-  MathUtility.outstandingBalance(data?.id, checkIfDepositAmountIsWithinRange);
-}
-
-function checkIfDepositAmountIsWithinRange(outstandingBalanceValue) {
-  const depositAmountValue = +depositAmount.value;
-
-  depositAmountValue > outstandingBalanceValue
-    ? failDeposit()
-    : getLoanApplicantDataFromIndexedDB();
 }
 
 function failDeposit() {
