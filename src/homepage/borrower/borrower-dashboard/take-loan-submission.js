@@ -107,23 +107,24 @@ function toggleFieldToTakeLoan() {
 }
 
 function setWithdrawalMsgText(balance, data) {
-  const takeLoanAmount = +withdrawalAmount.value - balance;
+  const loanAmount = +withdrawalAmount.value - balance;
 
-  if (takeLoanAmount > data.preferredDepositAmount) {
+  console.log(loanAmount, data.preferredDepositAmount);
+  if (loanAmount > data.preferredDepositAmount) {
     withdrawalMsg.textContent = `
     Your withdrawal amount has exceed your balance and preferred monthly deposit. 
-    An addition of ${takeLoanAmount - data.preferredDepositAmount}`;
+    An addition of ${loanAmount - data.preferredDepositAmount}`;
 
     return;
   }
 
   if (extraFieldState) {
-    getRecentMemberData(isWithdrawalAndTakeLoan);
+    getRecentMemberData(isWithdrawalAndLoan);
   }
 
   withdrawalMsg.textContent = `
-  Your withdrawal amount has exceeded your balance. You will be taken a loan of ${takeLoanAmount}. 
-  Click Take Loan to continue`;
+  Your withdrawal amount has exceeded your balance. You will be taken a loan of ${loanAmount}. 
+  Click toggle take Loan to continue`;
   appendButtonToTakenLoan();
 }
 
@@ -158,7 +159,7 @@ function addTakeLoanFieldValue(data) {
 
 let mainBalance = 0;
 
-function isWithdrawalAndTakeLoan(data) {
+function isWithdrawalAndLoan(data) {
   const result = addFieldValueToData(data);
 
   const withdrawalLength = result.withdrawal.length - 1;

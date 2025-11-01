@@ -54,13 +54,29 @@ class MathUtility {
 
   static balance({ data, callback }) {
     const deposit = data.deposit;
+    const loan = data.loan;
 
     if (!deposit) return;
 
     const activeDeposit = deposit.filter(
-      (item) => item.depositAmountDynamic !== 0 && item.status !== 'Pending',
+      (item) => item.depositAmountDynamic !== 0 && item.status === 'Approve',
     );
-    const balance = activeDeposit.reduce((acc, current) => acc + current.depositAmountDynamic, 0);
+
+    const activeDepositBalance = activeDeposit.reduce(
+      (acc, current) => acc + current.depositAmountDynamic,
+      0,
+    );
+
+    const activeLoan = loan?.filter(
+      (item) => item.loanAmountDynamic !== 0 && item.status === 'Approve',
+    );
+
+    const activeLoanBalance = activeLoan?.reduce(
+      (acc, current) => acc + current.loanAmountDynamic,
+      0,
+    );
+
+    const balance = activeDepositBalance - (activeLoanBalance || 0);
 
     callback(balance, data);
   }
@@ -70,11 +86,12 @@ class MathUtility {
       if (!data.deposit) return;
 
       for (let i = 0; i < data.deposit.length; i++) {
-        if (data.deposit[i].status !== 'Approve' || data.deposit[i].depositAmountDynamic === 0)
+        if (data.deposit[i].status !== 'Approve' || data.deposit[i].depositAmountDynamic <= 0)
           continue;
 
         const balance = withdrawalAmount - data.deposit[i].depositAmountDynamic;
 
+        // Amount greater than 0 means you have withdraw all amount from that deposit
         if (balance >= 0) {
           data.deposit[i].depositAmountDynamic = 0;
         } else {
@@ -116,8 +133,9 @@ class MathUtility {
   }
 
   static depositApprove({ id, depositAmount, depositID }) {
+    let balance;
     const filterApproveAndUnpaidLoan = (data) => {
-      function setDepositAmountDynamic(balance) {
+      function setDepositAmountDynamic() {
         if (!data.deposit) return;
 
         for (let i = 0; i < data.deposit.length; i++) {
@@ -131,22 +149,25 @@ class MathUtility {
       if (!data.loan) return;
 
       for (let i = 0; i < data.loan.length; i++) {
-        if (data.loan[i].status !== 'Approve' || data.loan[i].loanAmountDynamic === 0) continue;
+        if (data.loan[i].status === 'Approve' && data.loan[i].loanAmountDynamic !== 0) {
+          balance = depositAmount - data.loan[i].loanAmountDynamic;
 
-        const balance = depositAmount - data.loan[i].loanAmountDynamic;
-        console.log(balance, data.loan[i], depositAmount);
-        if (balance >= 0) {
-          data.loan[i].loanAmountDynamic = 0;
-        } else {
-          const newDepositAmount = Math.abs(balance);
-          data.loan[i].loanAmountDynamic = newDepositAmount;
+          if (balance >= 0) {
+            data.loan[i].loanAmountDynamic = 0;
+          } else {
+            const newLoanAmount = Math.abs(balance);
+            data.loan[i].loanAmountDynamic = newLoanAmount;
 
-          setDepositAmountDynamic(balance);
-          break;
+            break;
+          }
+
+          depositAmount = balance;
         }
-
-        depositAmount = balance;
       }
+
+      balance = balance === undefined ? depositAmount : balance;
+
+      setDepositAmountDynamic(balance);
 
       const store = () => {
         console.log('Successfully Updated deposit');

@@ -26,7 +26,7 @@ import bindSubmitDepositPreference from './deposit-preference-form/deposit-prefe
 const leftSideBar = document.querySelector('.left-side-bar');
 const contentHolder = document.querySelector('.content-holder');
 const logoutButton = document.querySelector('.logout-button');
-const outstandingBalance = document.querySelector('.outstanding-balance');
+const balance = document.querySelector('.balance');
 
 const html = document.querySelector('html');
 
@@ -47,8 +47,8 @@ appendDialogToBody.prototype.body = document.body;
 appendDialogToBody();
 appendContent.prototype.holder = contentHolder;
 
-function setOutStandingBalance(outstandingBalanceValue) {
-  outstandingBalance.textContent = outstandingBalanceValue;
+function setBalance(outstandingBalanceValue) {
+  balance.textContent = outstandingBalanceValue;
 }
 
 const getRecentLoanApplicantID = () => {
@@ -95,13 +95,15 @@ function getRecentLoanApplicantData({ id, returnData }) {
   );
 }
 
-function getOutstandingBalance(id) {
-  MathUtility.outstandingBalance(id, setOutStandingBalance);
+function getBalance(data) {
+  MathUtility.balance({ data, callback: setBalance });
 }
 
 function isMemberNew(data) {
   if (data.isMemberNew) {
     eventBus.dispatchEvent(events.displayPreferredDepForm);
+  } else {
+    getBalance(data);
   }
 }
 
@@ -114,7 +116,6 @@ function isMemberNew(data) {
   }
   makeBorrowerDashboardDisplayBlock();
   // isMemberNew(id)
-  getOutstandingBalance(id);
   // `insertLoanApplicantDataToDashboardPage` is the callback function to run when
   // the recentLoanApplicantData is retrieve from indexedDB
   getRecentLoanApplicantData({ id, returnData: isMemberNew });
