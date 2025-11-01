@@ -115,6 +115,68 @@ class MathUtility {
     })();
   }
 
+  static depositApprove({ id, depositAmount, depositID }) {
+    const filterApproveAndUnpaidLoan = (data) => {
+      function setDepositAmountDynamic(balance) {
+        if (!data.deposit) return;
+
+        for (let i = 0; i < data.deposit.length; i++) {
+          if (data.deposit[i].depositID === depositID) {
+            data.deposit[i].depositAmountDynamic = balance;
+            break;
+          }
+        }
+      }
+
+      if (!data.loan) return;
+
+      for (let i = 0; i < data.loan.length; i++) {
+        if (data.loan[i].status !== 'Approve' || data.loan[i].loanAmountDynamic === 0) continue;
+
+        const balance = depositAmount - data.loan[i].loanAmountDynamic;
+        console.log(balance, data.loan[i], depositAmount);
+        if (balance >= 0) {
+          data.loan[i].loanAmountDynamic = 0;
+        } else {
+          const newDepositAmount = Math.abs(balance);
+          data.loan[i].loanAmountDynamic = newDepositAmount;
+
+          setDepositAmountDynamic(balance);
+          break;
+        }
+
+        depositAmount = balance;
+      }
+
+      const store = () => {
+        console.log('Successfully Updated deposit');
+      };
+
+      indexDB.interact(
+        {
+          storeName: 'loan-applicant-list',
+          data,
+          trueState: store,
+          undefinedState: errorGettingData,
+        },
+        'storeData',
+      );
+    };
+
+    (function getRecentLoanApplicantDataFromIndexedDB() {
+      indexDB.interact(
+        {
+          storeName: 'loan-applicant-list',
+          keyPathValue: id,
+          getMethod: 'get',
+          returnData: filterApproveAndUnpaidLoan,
+          undefinedState: errorGettingData,
+        },
+        'getData',
+      );
+    })();
+  }
+
   static overMetric({ totalTakenLoan, approveLoan, declineLoan, pendingLoan }) {
     const filterApproveLoan = (takeLoanList) => {
       const approveLoanResult = takeLoanList.filter((loan) => loan.status === 'Approve');

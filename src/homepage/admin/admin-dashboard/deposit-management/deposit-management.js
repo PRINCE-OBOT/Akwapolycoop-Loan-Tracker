@@ -40,7 +40,7 @@ const depositManagement = (function createDepositManagementContent() {
                   <tr>
                     <th>S/N</th>
                     <th>Deposit ID</th>
-                    <th>Amount Paid</th>
+                    <th>Amount</th>
                     <th>Status</th>
                     <th>Date</th>
                     <th>Time</th>
@@ -119,12 +119,12 @@ const provideModifyActionData = ({ id, e }) => {
     key: 'action',
     data: {
       action: 'modifyData',
-      id,
+      id: +id,
       depositID,
       value: [{ status }, { actionDate: new Date() }],
       firstKey: ['deposit', 'deposit'],
       secondKey: ['status', 'actionDate'],
-      depositAmount,
+      depositAmount: +depositAmount,
     },
   };
 

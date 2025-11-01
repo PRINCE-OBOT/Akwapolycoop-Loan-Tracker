@@ -40,7 +40,8 @@ const withdrawalManagement = (function createDepositManagementContent() {
                   <tr>
                     <th>S/N</th>
                     <th>Withdrawal ID</th>
-                    <th>Amount Paid</th>
+                    <th>Amount</th>
+                    <th>Pay</th>
                     <th>Status</th>
                     <th>Date</th>
                     <th>Time</th>
@@ -62,6 +63,8 @@ const searchBar = withdrawalManagement.querySelector('input[type=search]');
 const searchStatus = withdrawalManagement.querySelector('.search-status');
 const tbody = withdrawalManagement.querySelector('tbody');
 
+const PERCENTAGE = 5 / 100;
+
 function setNumberOfDepositValue(value) {
   numberOfDeposit.textContent = value;
 }
@@ -75,17 +78,17 @@ const question = (text) =>
     },
   });
 
-const questionEvent = {
+const events = {
   approve: question('approve the withdrawal?'),
   decline: question('decline the withdrawal?'),
 };
 
 const showDepositApproveOption = () => {
-  eventBus.dispatchEvent(questionEvent.approve);
+  eventBus.dispatchEvent(events.approve);
 };
 
 const showDepositDeclineOption = () => {
-  eventBus.dispatchEvent(questionEvent.decline);
+  eventBus.dispatchEvent(events.decline);
 };
 
 const OptionHandler = {
@@ -122,7 +125,7 @@ const provideModifyActionData = ({ id, e }) => {
       id: +id,
       withdrawalID,
       value: [{ status }, { actionDate: new Date() }],
-      firstKey: ['withdrawal', 'withdrawal'],
+      firstKey: new Array(2).fill('withdrawal'),
       secondKey: ['status', 'actionDate'],
       withdrawalAmount: +withdrawalAmount,
     },
@@ -255,6 +258,7 @@ function insertDepositDataToTable(depositList) {
        <td>${serialNumber}</td>
        <td class="withdrawalID">${data.withdrawalID}</td>
        <td>${data.withdrawalAmount}</td>
+       <td>${data.withdrawalAmount - PERCENTAGE * data.withdrawalAmount}</td>
        <td class="status">${data.status}</td>
        <td>${date}</td>
        <td>${time}</td>

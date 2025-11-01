@@ -66,7 +66,7 @@ const btnTakeLoan = document.createElement('button');
 btnTakeLoan.type = 'button';
 btnTakeLoan.textContent = 'Toggle Take loan';
 
-const MINIMUM_MONTH_DEPOSIT = 4;
+const MINIMUM_MONTH_DEPOSIT = 1;
 const PERCENTAGE = 5 / 100;
 
 const Event = ({ text, closedByValue = 'any' }) =>
@@ -145,6 +145,7 @@ function addTakeLoanFieldValue(data) {
     dateAndTime: new Date(),
     status: 'Pending',
     loanAmount: +withdrawalAmount.value - mainBalance,
+    loanAmountDynamic: 0,
     loanID: `LOAN${data?.id}-00${loanLength}`,
     loanPurpose: loanPurpose.value,
     monthlyWithdrawalAmount: monthWithdrawalAmount.value,

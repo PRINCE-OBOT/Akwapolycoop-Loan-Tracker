@@ -4,14 +4,15 @@ import indexDB from '../../module/indexDB/indexDB';
 
 // Dispatching the change custom-change-content refreshes `loan-management` and `deposit-management`
 const contentHandler = {
-  takeLoan: 'loan-management',
+  loan: 'loan-management',
   deposit: 'deposit-management',
   membershipApplicationForm: 'loan-applicant-management',
   withdrawal: 'withdrawal-management',
 };
 
 const updated = () => {
-  const { firstKey, id, withdrawalAmount, value } = getActionDataFromLocalStorage();
+  const { firstKey, id, withdrawalAmount, depositAmount, depositID, value } =
+    getActionDataFromLocalStorage();
 
   const key = firstKey[0];
 
@@ -24,10 +25,12 @@ const updated = () => {
   eventBus.dispatchEvent(customContentEvent);
 
   // run when withdrawal status is approve
-  const status = value.find((item) => item.status).status;
+  const status = value.find((item) => item.status)?.status;
 
   if (key === 'withdrawal' && status === 'Approve')
     MathUtility.withdrawalApprove({ id, withdrawalAmount });
+  if (key === 'deposit' && status === 'Approve')
+    MathUtility.depositApprove({ id, depositAmount, depositID });
 };
 
 const fail = () => {
@@ -46,6 +49,7 @@ const modifyLoanApplicantData = () => {
   const uniqueID = loanID || depositID || withdrawalID;
   const uniqueIDKey = loanID ? 'loanID' : depositID ? 'depositID' : 'withdrawalID';
 
+  // updated()
   indexDB.interact(
     {
       storeName: 'loan-applicant-list',

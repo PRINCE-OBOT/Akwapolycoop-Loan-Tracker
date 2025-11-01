@@ -42,6 +42,7 @@ const loanerManagement = (function createLoanerManagementContent() {
                     <th>S/N</th>
                     <th>Loan ID</th>
                     <th>Amount(N)</th>
+                    <th>Pay</th>
                     <th>Status</th>
                     <th>Date</th>
                     <th>Time</th>
@@ -63,6 +64,8 @@ const numberOfLoans = loanerManagement.querySelector('.number-of-loan');
 const searchBar = loanerManagement.querySelector('input[type=search]');
 const searchStatus = loanerManagement.querySelector('.search-status');
 const tbody = loanerManagement.querySelector('tbody');
+
+const PERCENTAGE = 5 / 100;
 
 function setNumberOfLoanValue(value) {
   numberOfLoans.textContent = value;
@@ -110,12 +113,18 @@ const getAttributeFromTarget = (e) => {
   return { status };
 };
 
+const getDepositAmountFromTr = (tr) => {
+  const loanAmount = tr.getAttribute('data-loan-amount');
+  return loanAmount;
+};
+
 const getAttributeFromTr = (e) => {
   const tr = e.target.closest('tr');
   const id = getIDFromTr(tr);
   const loanID = getLoanIDFromTr(tr);
+  const loanAmount = getDepositAmountFromTr(tr);
 
-  return { id, loanID };
+  return { id, loanID, loanAmount };
 };
 
 const storeActionToLocalStorage = (obj) => {
@@ -136,18 +145,20 @@ const getViewProfileActionData = (e) => {
   storeActionToLocalStorage(obj);
 };
 
-const provideModifyActionData = ({ amount, id, loanID, e }) => {
+const provideModifyActionData = ({ id, e }) => {
   const { status } = getAttributeFromTarget(e);
+  const { loanAmount, loanID } = getAttributeFromTr(e);
 
   const obj = {
     key: 'action',
     data: {
       action: 'modifyData',
-      id,
+      id: +id,
       loanID,
-      value: [{ status }, { outstandingBalance: +amount }, { actionDate: new Date() }],
-      firstKey: new Array(3).fill('takeLoan'),
-      secondKey: ['status', 'outstandingBalance', 'actionDate'],
+      value: [{ status }, { loanAmountDynamic: +loanAmount }, { actionDate: new Date() }],
+      firstKey: new Array(3).fill('loan'),
+      secondKey: ['status', 'loanAmountDynamic', 'actionDate'],
+      loanAmount: +loanAmount,
     },
   };
 
@@ -155,25 +166,9 @@ const provideModifyActionData = ({ amount, id, loanID, e }) => {
 };
 
 function getClickTrLoanApplicantData(e) {
-  const { id, loanID } = getAttributeFromTr(e);
+  const { id } = getAttributeFromTr(e);
 
-  const getTakeLoanAmount = (data) => {
-    const result = data.takeLoan.find((obj) => obj.loanID === loanID);
-    const amount = result['desired-amount'];
-
-    provideModifyActionData({ amount, id, loanID, e });
-  };
-
-  indexDB.interact(
-    {
-      storeName: 'loan-applicant-list',
-      getMethod: 'get',
-      keyPathValue: +id,
-      returnData: getTakeLoanAmount,
-      undefinedState: errorWhileGettingData,
-    },
-    'getData',
-  );
+  provideModifyActionData({ id, e });
 }
 
 const DBKeyHandler = {
@@ -209,11 +204,10 @@ const Event = ({ text = null, contentKey = 'question' }) =>
 const events = {
   approve: Event({ text: 'approve the loan?' }),
   decline: Event({ text: 'decline the loan?' }),
-  depositForm: Event({ contentKey: 'depositForm' }),
 };
 
-const showDepositForm = () => {
-  eventBus.dispatchEvent(events.depositForm);
+const showLoanApproveOption = () => {
+  eventBus.dispatchEvent(events.approve);
 };
 
 function showDeclineOption() {
@@ -221,7 +215,7 @@ function showDeclineOption() {
 }
 
 const OptionHandler = {
-  approveOption: showDepositForm,
+  approveOption: showLoanApproveOption,
   declineOption: showDeclineOption,
 };
 
@@ -242,17 +236,18 @@ const extractIdFromLoanID = (loanID) => {
   return id;
 };
 
-const setAttributeToTr = ({ tr, loanID }) => {
+const setAttributeToTr = ({ tr, loanID, loanAmount }) => {
   const id = extractIdFromLoanID(loanID);
 
-  tr.setAttribute('data-loan-id', loanID);
   tr.setAttribute('data-id', id);
+  tr.setAttribute('data-loan-id', loanID);
+  tr.setAttribute('data-loan-amount', loanAmount);
 };
 
-function insertTakeLoanDataToTable(takeLoanList) {
+function insertTakeLoanDataToTable(loanList) {
   tbody.innerHTML = '';
 
-  takeLoanList.forEach((data, index) => {
+  loanList.forEach((data, index) => {
     const tr = createTableTr();
     const serialNumber = getSerialNumber(index);
     const date = getDate(data.dateAndTime);
@@ -261,8 +256,8 @@ function insertTakeLoanDataToTable(takeLoanList) {
     tr.innerHTML = `
        <td>${serialNumber}</td>
        <td class="loanID">${data.loanID}</td>
-       <td>${data['desired-amount']}</td>
-       <td>${data.tenor}</td>
+       <td>${data.loanAmount}</td>
+       <td>${data.loanAmount - PERCENTAGE * data.loanAmount}</td>
        <td class="status">${data.status}</td>
        <td>${date}</td>
        <td>${time}</td>
@@ -270,7 +265,7 @@ function insertTakeLoanDataToTable(takeLoanList) {
        
       `;
     checkStatus({ tr, status: data.status });
-    setAttributeToTr({ tr, loanID: data.loanID });
+    setAttributeToTr({ tr, loanID: data.loanID, loanAmount: data.loanAmount });
     appendTrToTbody(tr);
   });
 }
@@ -285,22 +280,22 @@ function checkStatus({ tr, status }) {
   if (status === 'Pending') tr.innerHTML += optionKeySection;
 }
 
-const sortTakenLoan = (takeLoanList) => {
-  takeLoanList.sort((prev, next) => compareAsc(next.dateAndTime, prev.dateAndTime));
+const sortTakenLoan = (loanList) => {
+  loanList.sort((prev, next) => compareAsc(next.dateAndTime, prev.dateAndTime));
 
-  insertTakeLoanDataToTable(takeLoanList);
+  insertTakeLoanDataToTable(loanList);
 };
 
 const getTakeLoan = (loanApplicantListData) => {
-  const takeLoanList = [];
+  const loanList = [];
 
   loanApplicantListData.forEach((data) => {
-    if (!data.takeLoan) return;
-    data.takeLoan.forEach((takeLoan) => takeLoanList.push(takeLoan));
+    if (!data.loan) return;
+    data.loan.forEach((loan) => loanList.push(loan));
   });
 
-  setNumberOfLoanValue(takeLoanList.length);
-  sortTakenLoan(takeLoanList);
+  setNumberOfLoanValue(loanList.length);
+  sortTakenLoan(loanList);
 };
 
 const getLoanApplicantForLoanManagement = () => {
