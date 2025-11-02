@@ -109,7 +109,6 @@ function toggleFieldToTakeLoan() {
 function setWithdrawalMsgText(balance, data) {
   const loanAmount = +withdrawalAmount.value - balance;
 
-  console.log(loanAmount, data.preferredDepositAmount);
   if (loanAmount > data.preferredDepositAmount) {
     withdrawalMsg.textContent = `
     Your withdrawal amount has exceed your balance and preferred monthly deposit. 

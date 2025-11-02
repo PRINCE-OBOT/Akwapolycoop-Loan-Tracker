@@ -10,7 +10,7 @@
     <title>Borrower Dashboard</title>
   </head>
 
-  <body>
+  <body class="akwapoly-root">
     <div class="container">
       <header>
         <div class="logo-section">
@@ -23,28 +23,46 @@
         <div class="navigation-section">
           <a href="./index.html">Home</a>
 
-          <div class="profile">
-            <!-- <img class="image-profile" src="" alt=""> -->
-          </div>
+          <div class="profile"></div>
         </div>
       </header>
 
       <main>
-        <ul class="left-side-bar">
-          <div class="deposit-section">
-            <h3 class="balance">0</h3>
-            <button class="btn-deposit" data-content-key="deposit">Deposit</button>
+        <div class="left-side-bar">
+          <div class="balance-section">
+            <h4>Account Balance</h4>
+            <div class="currency">
+              <span class="naira-currency">&#x20A6;</span><span class="balance">0</span>
+            </div>
           </div>
 
-          <div class="bottom-left-sidebar">
-            <li data-content-key="take-loan">Withdrawal</li>
-            <li data-content-key="my-withdrawal">My Withdrawal</li>
-            <li data-content-key="my-loan">My Loan</li>
-            <li data-content-key="my-deposit">My Deposit</li>
-            <li class="logout-button">Logout</li>
+          <div class="deposit-and-withdrawal-section">
+            <button class="btn-deposit" data-content-key="deposit">Deposit</button>
+            <button class="btn-withdrawal" data-content-key="take-loan">Withdrawal</button>
           </div>
-        </ul>
-        <div class="content-holder">here</div>
+
+          <ul class="bottom-left-sidebar">
+            <li class="my-dashboard-section">
+              <img src="../../assets/images/dashboard.svg" class="icon" alt="" />
+              <div data-content-key="my-dashboard">My Dashboard</div>
+            </li>
+            <li class="my-withdrawal-section">
+              <img src="../../assets/images/security.svg" class="icon" alt="" />
+              <div data-content-key="my-withdrawal">My Withdrawal</div>
+            </li>
+            <li class="my-loan-section">
+              <img src="../../assets/images/community.svg" class="icon" alt="" />
+              <div data-content-key="my-loan">My Loan</div>
+            </li>
+            <li class="my-deposit-section">
+              <img src="../../assets/images/profile.svg" class="icon" alt="" />
+              <div data-content-key="my-deposit">My Deposit</div>
+            </li>
+            <li class="logout-button">Logout</li>
+          </ul>
+        </div>
+
+        <div class="content-holder"></div>
       </main>
     </div>
   </body>

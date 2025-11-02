@@ -4,9 +4,61 @@
 .content-holder {
   flex: 200px;
 }
-main {
-  background-color: rgb(165, 141, 141);
-  /* justify-content: none; */
+.balance-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  background: linear-gradient(var(--secondary-accent-faint) 10%, var(--transparent-white));
+  padding: 30px;
+  border-radius: 20px;
+}
+.naira-currency {
+  color: var(--transparent-black);
+}
+.balance {
+  font-weight: 900;
+  font-size: var(--fs-lg);
+}
+.deposit-and-withdrawal-section {
+  padding: 30px;
+  display: flex;
+  gap: 20px;
+  & > * {
+    border-radius: 5px;
+    box-shadow: var(--box-shadow);
+    border: none;
+    padding: 8px 12px;
+    color: var(--white);
+  }
+}
+.btn-deposit {
+  background: var(--clr-valid);
+}
+.btn-withdrawal {
+  background: var(--transparent-black);
+}
+.bottom-left-sidebar {
+  padding-top: 20px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  & > * {
+    display: flex;
+    gap: 10px;
+    transition: 300ms;
+  }
+  & > *:hover {
+    background-color: var(--secondary-accent-faint);
+    border-radius: 5px;
+    padding: 5px 8px;
+  }
+}
+
+.icon {
+  width: 20px;
 }
 input.user-interact:is(:valid, :invalid) {
   border-color: transparent;
