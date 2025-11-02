@@ -3,28 +3,23 @@ import dashboardContent from '../../module/dashboard-content/dashboard-content';
 
 const totalTakenLoan = dashboardContent.querySelector('.total-loan-value');
 const approveLoan = dashboardContent.querySelector('.approved-loan-value');
-const pendingLoan = dashboardContent.querySelector('.pending-loan-value');
 const declineLoan = dashboardContent.querySelector('.decline-loan-value');
 
-function setTotalTakenLoanValue(value) {
+function setLoanValue(value) {
   totalTakenLoan.textContent = value;
 }
-function setApproveLoanValue(value) {
+function setDepositValue(value) {
   approveLoan.textContent = value;
 }
-function setDeclineLoanValue(value) {
+function setWithdrawalValue(value) {
   declineLoan.textContent = value;
-}
-function setPendingLoanValue(value) {
-  pendingLoan.textContent = value;
 }
 
 function rerunOverMetric() {
   MathUtility.generalOverMetric({
-    totalTakenLoan: setTotalTakenLoanValue,
-    approveLoan: setApproveLoanValue,
-    declineLoan: setDeclineLoanValue,
-    pendingLoan: setPendingLoanValue,
+    loan: setLoanValue,
+    deposit: setDepositValue,
+    withdrawal: setWithdrawalValue,
   });
 }
 

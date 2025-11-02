@@ -8,21 +8,21 @@ const pendingLoanSection = dashboardContent.querySelector('.pending-loan-section
 
 pendingLoanSection.remove();
 
-function setTotalTakenLoanValue(value) {
+function setLoanValue(value) {
   totalTakenLoan.textContent = value;
 }
-function setApproveLoanValue(value) {
+function setDepositValue(value) {
   approveLoan.textContent = value;
 }
-function setDeclineLoanValue(value) {
+function setWithdrawalValue(value) {
   declineLoan.textContent = value;
 }
 
 function rerunOverMetric() {
   MathUtility.specificOverMetric({
-    loan: setTotalTakenLoanValue,
-    deposit: setApproveLoanValue,
-    withdrawal: setDeclineLoanValue,
+    loan: setLoanValue,
+    deposit: setDepositValue,
+    withdrawal: setWithdrawalValue,
   });
 }
 
