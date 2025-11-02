@@ -14,41 +14,66 @@ const dateOfPayment = proofOfPayment.querySelector('.date-of-payment');
 const timeOfPayment = proofOfPayment.querySelector('.time-of-payment');
 
 const myLoan = (function createTableHeading() {
-  const table = document.createElement('table');
+  const div = document.createElement('div');
 
-  table.innerHTML = `
-   <caption>
-     <h4 class="my-loan-table-heading">
-       My Loans
-     </h4>
-   </caption>
+  div.innerHTML = `
+            <h5 class="brief-text">Oversee and manage all loan applications within the system.</h5>
 
-   <thead>
-     <tr>
-       <th>S/N</th>
-       <th>Loan ID</th>
-       <th>Amount</th>
-       <th>Status</th>
-       <th>Proof </th>
-       <th>Date</th>
-       <th>Time</th>
-     </tr>
-   </thead>
+            <div class="filter-section">
+              <h3>Filter Loans</h3>
+              <p>Find specific loans by it status</p>
 
-   <tbody>
-   </tbody>`;
+              <div class="search-section">
+                <input type="search" placeholder="Search Loan by Loan ID" />
+                <select name="search-status" class="search-status" id="">
+                  <option value=" ">All Status</option>
+                  <option value="decline">Decline</option>
+                  <option value="approve">Approve</option>
+                  <option value="pending">Pending</option>
+                </select>
+              </div>
+            </div>
 
-  return table;
+            <div class="loan-list-section">
+              <table>
+                <caption>
+                  <h4 class="loan-list-heading">
+                    Loan(s)
+                    (<span class="number-of-loan"></span>)
+                  </h4>
+                  <p class="sub-heading">A comprehensive list of all taken loan</p>
+                </caption>
+
+                <thead>
+                  <tr>
+                    <th>S/N</th>
+                    <th>Loan ID</th>
+                    <th>Amount(N)</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th data-view="proofOfPayment">Actions</th>
+                  </tr>
+                </thead>
+
+                <tbody></tbody>
+              </table>
+            </div>
+          `;
+
+  div.classList.add('loan-management-content');
+
+  return div;
 })();
+
+const numberOfLoans = myLoan.querySelector('.number-of-loan');
+const searchBar = myLoan.querySelector('input[type=search]');
+const tbody = myLoan.querySelector('tbody');
+const searchStatus = myLoan.querySelector('.search-status');
 
 const getSerialNumber = (index) => {
   const serialNumber = index + 1;
   return serialNumber;
-};
-
-const getTbody = () => {
-  const tbody = myLoan.querySelector('tbody');
-  return tbody;
 };
 
 const Event = ({ text = null, closedByValue = 'any', contentKey = 'status' }) =>
@@ -69,10 +94,17 @@ const events = {
   }),
 };
 
-const checkIfLoanApplicantDataTakeLoanExist = (loanApplicantData) => {
-  !loanApplicantData.loan
-    ? eventBus.dispatchEvent(events.failMyLoan)
-    : insertLoanApplicantDataToTr(loanApplicantData);
+function setNumberOfLoanValue(value) {
+  numberOfLoans.textContent = value;
+}
+
+const isLoanExist = (loanApplicantData) => {
+  if (!loanApplicantData.loan) {
+    eventBus.dispatchEvent(events.failMyLoan);
+  } else {
+    setNumberOfLoanValue(loanApplicantData.loan.length);
+    insertLoanApplicantDataToTr(loanApplicantData);
+  }
 };
 
 const createTableTr = () => {
@@ -81,7 +113,6 @@ const createTableTr = () => {
 };
 
 const appendTrToTbody = (tr) => {
-  const tbody = getTbody();
   tbody.append(tr);
 };
 
@@ -91,7 +122,6 @@ function setAttributeToTr({ tr, id, loanID }) {
 }
 
 function insertLoanApplicantDataToTr(loanApplicantData) {
-  const tbody = getTbody();
   tbody.innerHTML = '';
 
   loanApplicantData.loan.reverse().forEach((data, index) => {
@@ -102,15 +132,15 @@ function insertLoanApplicantDataToTr(loanApplicantData) {
 
     tr.innerHTML = `
        <td>${serialNumber}</td>
-       <td>${data.loanID}</td>
+       <td class='loanID'>${data.loanID}</td>
        <td>${data.loanAmount}</td>
-       <td>${data.status}</td>
+       <td class="status">${data.status}</td>
+       <td>${date}</td>
+       <td>${time}</td>
        <td data-view="proofOfPayment">
        <img src="${eyeViewImg}" alt="view proof of payment" class="eye-view"/>
        View Proof
        </td>
-       <td>${date}</td>
-       <td>${time}</td>
       `;
 
     setAttributeToTr({ tr, id: loanApplicantData.id, loanID: data.loanID });
@@ -135,7 +165,7 @@ const getRecentLoanApplicant = () => {
       storeName: 'loan-applicant-list',
       keyPathValue: id,
       getMethod: 'get',
-      returnData: checkIfLoanApplicantDataTakeLoanExist,
+      returnData: isLoanExist,
       undefineState: errorWhileGettingData,
     },
     'getData',
@@ -220,10 +250,46 @@ function handleViewDisplay(e) {
 }
 
 (function addEventToTbody() {
-  const tbody = getTbody();
   tbody.addEventListener('click', handleViewDisplay);
 })();
 
+function getLoanID(tr) {
+  const loanID = tr.querySelector('.loanID');
+  return loanID.textContent.toLowerCase();
+}
+
+function getTrs() {
+  const trs = tbody.querySelectorAll('tr');
+  return trs;
+}
+
+function getStatus(tr) {
+  const status = tr.querySelector('.status');
+  return `${status.textContent.toLowerCase()} `;
+}
+
+function filterLoanApplicantByStatus(e) {
+  const trs = getTrs();
+  const searchStatusValue = e.target.value.toLowerCase();
+
+  trs.forEach((tr) => {
+    const status = getStatus(tr);
+    status.includes(searchStatusValue) ? tr.classList.remove('hide') : tr.classList.add('hide');
+  });
+}
+
+function filterLoanApplicantByLoanID(e) {
+  const trs = getTrs();
+  const searchBarValue = e.target.value.toLowerCase();
+
+  trs.forEach((tr) => {
+    const loanID = getLoanID(tr);
+    loanID.includes(searchBarValue) ? tr.classList.remove('hide') : tr.classList.add('hide');
+  });
+}
+
+searchStatus.addEventListener('change', filterLoanApplicantByStatus);
+searchBar.addEventListener('input', filterLoanApplicantByLoanID);
 const myLoanGetDataInDBBus = new EventTarget();
 myLoanGetDataInDBBus.addEventListener('render-content', getRecentLoanApplicant);
 

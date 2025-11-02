@@ -15,41 +15,65 @@ const dateOfPayment = proofOfPayment.querySelector('.date-of-payment');
 const timeOfPayment = proofOfPayment.querySelector('.time-of-payment');
 
 const myWithdrawal = (function createTableHeading() {
-  const table = document.createElement('table');
+  const div = document.createElement('div');
 
-  table.innerHTML = `
-   <caption>
-     <h4 class="my-withdrawal-table-heading">
-       My Withdrawal
-     </h4>
-   </caption>
+  div.innerHTML = `
+            <h5 class="brief-text">Oversee and manage all loan applications within the system.</h5>
 
-   <thead>
-     <tr>
-       <th>S/N</th>
-       <th>Withdrawal ID</th>
-       <th>Amount(N)</th>
-       <th>Status</th>
-       <th>Proof </th>
-       <th>Date</th>
-       <th>Time</th>
-     </tr>
-   </thead>
+            <div class="filter-section">
+              <h3>Filter Loans</h3>
+              <p>Find specific withdrawal by it status</p>
 
-   <tbody>
-   </tbody>`;
+              <div class="search-section">
+                <input type="search" placeholder="Search withdrawal by withdrawal ID" />
+                <select name="search-status" class="search-status" id="">
+                  <option value=" ">All Status</option>
+                  <option value="decline">Decline</option>
+                  <option value="approve">Approved</option>
+                  <option value="pending">Pending</option>
+                </select>
+              </div>
+            </div>
 
-  return table;
+            <div class="loan-list-section">
+              <table>
+                <caption>
+                  <h4 class="loan-list-heading">
+                    Withdrawal(s)
+                    (<span class="number-of-withdrawal"></span>)
+                  </h4>
+                  <p class="sub-heading">A comprehensive list of withdrawal</p>
+                </caption>
+
+                <thead>
+                  <tr>
+                    <th>S/N</th>
+                    <th>Withdrawal ID</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            `;
+
+  div.classList.add('my-withdrawal-container');
+
+  return div;
 })();
+
+const numberOfDeposit = myWithdrawal.querySelector('.number-of-withdrawal');
+const searchBar = myWithdrawal.querySelector('input[type=search]');
+const searchStatus = myWithdrawal.querySelector('.search-status');
+const tbody = myWithdrawal.querySelector('tbody');
 
 const getSerialNumber = (index) => {
   const serialNumber = index + 1;
   return serialNumber;
-};
-
-const getTbody = () => {
-  const tbody = myWithdrawal.querySelector('tbody');
-  return tbody;
 };
 
 const Event = ({ text = null, closedByValue = 'any', contentKey = 'status' }) =>
@@ -70,10 +94,18 @@ const events = {
   }),
 };
 
+function setNumberOfDepositValue(value) {
+  numberOfDeposit.textContent = value;
+}
+
 const isWithdrawalExist = (loanApplicantData) => {
-  !loanApplicantData.withdrawal
-    ? eventBus.dispatchEvent(events.failMyWithdrawal)
-    : insertLoanApplicantDataToTr(loanApplicantData);
+  if (!loanApplicantData.withdrawal) {
+    eventBus.dispatchEvent(events.failMyWithdrawal);
+  } else {
+    setNumberOfDepositValue(loanApplicantData.deposit.length);
+
+    insertLoanApplicantDataToTr(loanApplicantData);
+  }
 };
 
 const createTableTr = () => {
@@ -82,7 +114,6 @@ const createTableTr = () => {
 };
 
 const appendTrToTbody = (tr) => {
-  const tbody = getTbody();
   tbody.append(tr);
 };
 
@@ -92,7 +123,6 @@ function setAttributeToTr({ tr, id, withdrawalID }) {
 }
 
 function insertLoanApplicantDataToTr(loanApplicantData) {
-  const tbody = getTbody();
   tbody.innerHTML = '';
 
   loanApplicantData.withdrawal.reverse().forEach((data, index) => {
@@ -103,15 +133,15 @@ function insertLoanApplicantDataToTr(loanApplicantData) {
 
     tr.innerHTML = `
        <td>${serialNumber}</td>
-       <td>${data.withdrawalID}</td>
+       <td class="withdrawalID">${data.withdrawalID}</td>
        <td>${data.withdrawalAmount}</td>
-       <td>${data.status}</td>
+       <td class="status">${data.status}</td>
+       <td>${date}</td>
+       <td>${time}</td>
        <td data-view="proofOfPayment">
        <img src="${eyeViewImg}" alt="view proof of payment" class="eye-view"/>
        View Proof
        </td>
-       <td>${date}</td>
-       <td>${time}</td>
       `;
 
     setAttributeToTr({ tr, id: loanApplicantData.id, withdrawalID: data.withdrawalID });
@@ -220,11 +250,45 @@ function handleViewDisplay(e) {
   viewHandler[view](e);
 }
 
-(function addEventToTbody() {
-  const tbody = getTbody();
-  tbody.addEventListener('click', handleViewDisplay);
-})();
+function getDepositID(tr) {
+  const withdrawalID = tr.querySelector('.withdrawalID');
+  return withdrawalID.textContent.toLowerCase();
+}
 
+function getTrs() {
+  const trs = tbody.querySelectorAll('tr');
+  return trs;
+}
+
+function filterLoanApplicantByDepositID(e) {
+  const trs = getTrs();
+  const searchBarValue = e.target.value.toLowerCase();
+
+  trs.forEach((tr) => {
+    const withdrawalID = getDepositID(tr);
+    withdrawalID.includes(searchBarValue) ? tr.classList.remove('hide') : tr.classList.add('hide');
+  });
+}
+
+function getStatus(tr) {
+  const status = tr.querySelector('.status');
+  return `${status.textContent.toLowerCase()} `;
+}
+
+function filterLoanApplicantByStatus(e) {
+  const trs = getTrs();
+  const searchStatusValue = e.target.value.toLowerCase();
+
+  trs.forEach((tr) => {
+    const status = getStatus(tr);
+    status.includes(searchStatusValue) ? tr.classList.remove('hide') : tr.classList.add('hide');
+  });
+}
+
+searchStatus.addEventListener('change', filterLoanApplicantByStatus);
+searchBar.addEventListener('input', filterLoanApplicantByDepositID);
+
+tbody.addEventListener('click', handleViewDisplay);
 const myWithdrawalGetDataInDBBus = new EventTarget();
 myWithdrawalGetDataInDBBus.addEventListener('render-content', getRecentLoanApplicant);
 

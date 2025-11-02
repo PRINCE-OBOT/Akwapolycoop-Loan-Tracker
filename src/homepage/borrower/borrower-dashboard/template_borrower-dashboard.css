@@ -1,8 +1,13 @@
 .left-side-bar {
   max-width: 300px;
+  box-shadow: var(--box-shadow);
+  border-radius: 20px;
+  padding: 20px;
+  height: 80vh;
 }
 .content-holder {
   flex: 200px;
+  padding: 40px 0 0 20px;
 }
 .balance-section {
   display: flex;
