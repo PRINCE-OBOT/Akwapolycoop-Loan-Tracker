@@ -230,7 +230,6 @@ class MathUtility {
 
     function getDepositLength(obj) {
       depositLength += obj.deposit?.length || 0;
-      console.log(depositLength);
     }
 
     function getWithdrawalLength(obj) {

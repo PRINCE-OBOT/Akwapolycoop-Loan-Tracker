@@ -2,8 +2,8 @@ import chatWithAIImg from '../../assets/images/chat-with-ai.svg';
 import totalLoanApplicantImg from '../../assets/images/total-loan-applicant.svg';
 import revenueImg from '../../assets/images/revenue.svg';
 import pendingLoanImg from '../../assets/images/pending-loan.svg';
-import declineLoanImg from '../../assets/images/delined-loan.svg';
-import approveLoanImg from '../../assets/images/approve-loan.svg';
+import declineLoanImg from '../../assets/images/transactions.svg';
+import approveLoanImg from '../../assets/images/loan.svg';
 
 const dashboardContent = (function createAdminDashboardContent() {
   const div = document.createElement('div');
@@ -25,7 +25,7 @@ const dashboardContent = (function createAdminDashboardContent() {
               </div>
 
               <div class="dashboard-borrower-section-right-side">
-              <img src="${chatWithAIImg}" alt="Chat with AI">
+              <img class="section-right-side" src="${chatWithAIImg}"  alt="Chat with AI">
               </div>
             </div>
 

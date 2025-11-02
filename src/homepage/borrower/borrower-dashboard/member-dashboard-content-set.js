@@ -1,11 +1,15 @@
+import adventureMap from '../../assets/images/adventure-map.svg';
+
 import MathUtility from '../../module/business-logic/mathUtility';
 import dashboardContent from '../../module/dashboard-content/dashboard-content';
 
+const sectionRightImage = dashboardContent.querySelector('.section-right-side');
 const totalTakenLoan = dashboardContent.querySelector('.total-loan-value');
 const approveLoan = dashboardContent.querySelector('.approved-loan-value');
 const declineLoan = dashboardContent.querySelector('.decline-loan-value');
 const pendingLoanSection = dashboardContent.querySelector('.pending-loan-section');
 
+sectionRightImage.src = adventureMap;
 pendingLoanSection.remove();
 
 function setLoanValue(value) {

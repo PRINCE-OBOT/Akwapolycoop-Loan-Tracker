@@ -1,6 +1,9 @@
+import chatWithAI from '../../assets/images/chat-with-ai.svg';
+
 import MathUtility from '../../module/business-logic/mathUtility';
 import dashboardContent from '../../module/dashboard-content/dashboard-content';
 
+const sectionRightImage = dashboardContent.querySelector('.section-right-side');
 const totalTakenLoan = dashboardContent.querySelector('.total-loan-value');
 const approveLoan = dashboardContent.querySelector('.approved-loan-value');
 const declineLoan = dashboardContent.querySelector('.decline-loan-value');
@@ -16,6 +19,8 @@ function setWithdrawalValue(value) {
 }
 
 function rerunOverMetric() {
+  sectionRightImage.src = chatWithAI;
+
   MathUtility.generalOverMetric({
     loan: setLoanValue,
     deposit: setDepositValue,
