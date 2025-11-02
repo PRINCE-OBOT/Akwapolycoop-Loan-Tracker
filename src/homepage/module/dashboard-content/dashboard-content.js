@@ -4,9 +4,8 @@ import revenueImg from '../../assets/images/revenue.svg';
 import pendingLoanImg from '../../assets/images/pending-loan.svg';
 import declineLoanImg from '../../assets/images/delined-loan.svg';
 import approveLoanImg from '../../assets/images/approve-loan.svg';
-import MathUtility from '../../module/business-logic/mathUtility';
 
-const adminDashboardContent = (function createAdminDashboardContent() {
+const dashboardContent = (function createAdminDashboardContent() {
   const div = document.createElement('div');
 
   div.innerHTML = `
@@ -88,34 +87,4 @@ const adminDashboardContent = (function createAdminDashboardContent() {
   return div;
 })();
 
-const totalTakenLoan = adminDashboardContent.querySelector('.total-loan-value');
-const approveLoan = adminDashboardContent.querySelector('.approved-loan-value');
-const pendingLoan = adminDashboardContent.querySelector('.pending-loan-value');
-const declineLoan = adminDashboardContent.querySelector('.decline-loan-value');
-
-function setTotalTakenLoanValue(value) {
-  totalTakenLoan.textContent = value;
-}
-function setApproveLoanValue(value) {
-  approveLoan.textContent = value;
-}
-function setDeclineLoanValue(value) {
-  declineLoan.textContent = value;
-}
-function setPendingLoanValue(value) {
-  pendingLoan.textContent = value;
-}
-
-function rerunOverMetric() {
-  MathUtility.overMetric({
-    totalTakenLoan: setTotalTakenLoanValue,
-    approveLoan: setApproveLoanValue,
-    declineLoan: setDeclineLoanValue,
-    pendingLoan: setPendingLoanValue,
-  });
-}
-
-const adminDashboardContentBBus = new EventTarget();
-adminDashboardContentBBus.addEventListener('render-content', rerunOverMetric);
-
-export { adminDashboardContent, adminDashboardContentBBus };
+export default dashboardContent;

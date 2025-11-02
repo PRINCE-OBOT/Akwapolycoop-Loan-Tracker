@@ -3,10 +3,8 @@ import eventBus from '../event-bus/event';
 import loanApplicantForm from '../../borrower/borrower-dashboard/loan-applicant-form';
 import takeLoan from '../../borrower/borrower-dashboard/take-loan';
 import { myLoan, myLoanGetDataInDBBus } from '../../borrower/borrower-dashboard/myLoan';
-import {
-  adminDashboardContent,
-  adminDashboardContentBBus,
-} from '../../admin/admin-dashboard/admin-dashboard-content';
+import dashboardContent from '../dashboard-content/dashboard-content';
+import adminDashboardContentBus from '../../admin/admin-dashboard/admin-dashboard-content-set';
 import {
   loanerManagement,
   loanerManagementGetDataInDBBus,
@@ -29,6 +27,7 @@ import {
   withdrawalManagement,
   withdrawalManagementGetDataInDBBus,
 } from '../../admin/admin-dashboard/withdrawal-management';
+import memberDashboardContentBus from '../../borrower/borrower-dashboard/member-dashboard-content-set';
 
 const getDataInIndexedDB = new CustomEvent('render-content');
 
@@ -38,9 +37,10 @@ const bus = {
   'my-loan': myLoanGetDataInDBBus,
   'loan-applicant-management': loanApplicantManagementGetDataInDBBus,
   'my-deposit': depositRenderContentDBBus,
-  'admin-dashboard': adminDashboardContentBBus,
+  'admin-dashboard': adminDashboardContentBus,
   'my-withdrawal': myWithdrawalGetDataInDBBus,
   'withdrawal-management': withdrawalManagementGetDataInDBBus,
+  'member-dashboard': memberDashboardContentBus,
 };
 
 const contents = {
@@ -49,12 +49,13 @@ const contents = {
   'my-loan': myLoan,
   'my-deposit': myDeposit,
   deposit: loanApplicantDeposit,
-  'admin-dashboard': adminDashboardContent,
+  'admin-dashboard': dashboardContent,
   'loan-management': loanerManagement,
   'deposit-management': depositManagement,
   'loan-applicant-management': loanApplicantManagement,
   'my-withdrawal': myWithdrawal,
   'withdrawal-management': withdrawalManagement,
+  'member-dashboard': dashboardContent,
 };
 
 function appendContent(e) {
