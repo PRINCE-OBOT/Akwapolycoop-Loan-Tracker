@@ -198,35 +198,92 @@ class MathUtility {
     })();
   }
 
-  static overMetric({ totalTakenLoan, approveLoan, declineLoan, pendingLoan }) {
-    const filterApproveLoan = (takeLoanList) => {
-      const approveLoanResult = takeLoanList.filter((loan) => loan.status === 'Approve');
+  static specificOverMetric({ loan, deposit, withdrawal }) {
+    function filterLoan(loanApplicantData) {
+      if (!loanApplicantData.loan) return;
+
+      const loanList = [];
+
+      loanApplicantData.loan.forEach((obj) => {
+        loanList.push(obj);
+      });
+
+      loan(loanList.length);
+    }
+
+    function filterDeposit(loanApplicantData) {
+      if (!loanApplicantData.deposit) return;
+
+      const depositList = [];
+
+      loanApplicantData.deposit.forEach((obj) => {
+        depositList.push(obj);
+      });
+
+      deposit(depositList.length);
+    }
+
+    function filterWithdrawal(loanApplicantData) {
+      if (!loanApplicantData.withdrawal) return;
+
+      const withdrawalList = [];
+
+      loanApplicantData.withdrawal.forEach((obj) => {
+        withdrawalList.push(obj);
+      });
+
+      withdrawal(withdrawalList.length);
+    }
+
+    const filterData = (loanApplicantData) => {
+      filterLoan(loanApplicantData);
+      filterDeposit(loanApplicantData);
+      filterWithdrawal(loanApplicantData);
+    };
+
+    const id = getRecentLoanApplicantIDInLocalStorage();
+
+    indexDB.interact(
+      {
+        storeName: 'loan-applicant-list',
+        keyPathValue: id,
+        getMethod: 'get',
+        returnData: filterData,
+        undefinedState: errorGettingData,
+      },
+      'getData',
+    );
+  }
+
+  static generalOverMetric({ totalTakenLoan, approveLoan, declineLoan, pendingLoan }) {
+    const filterApproveLoan = (loanList) => {
+      const approveLoanResult = loanList.filter((loan) => loan.status === 'Approve');
       approveLoan(approveLoanResult.length);
     };
 
-    const filterDeclineLoan = (takeLoanList) => {
-      const declineLoanResult = takeLoanList.filter((loan) => loan.status === 'Decline');
+    const filterDeclineLoan = (loanList) => {
+      const declineLoanResult = loanList.filter((loan) => loan.status === 'Decline');
       declineLoan(declineLoanResult.length);
     };
 
-    const filterPendingLoan = (takeLoanList) => {
-      const pendingLoanResult = takeLoanList.filter((loan) => loan.status === 'Pending');
+    const filterPendingLoan = (loanList) => {
+      const pendingLoanResult = loanList.filter((loan) => loan.status === 'Pending');
       pendingLoan(pendingLoanResult.length);
     };
 
     const filterTakenLoan = (loanApplicantData) => {
-      const takeLoanList = [];
+      const loanList = [];
 
       loanApplicantData.forEach((data) => {
-        if (!data.takeLoan) return;
-        data.takeLoan.forEach((takeLoan) => takeLoanList.push(takeLoan));
+        if (!data.loan) return;
+        data.loan.forEach((loan) => loanList.push(loan));
       });
 
-      totalTakenLoan(takeLoanList.length);
+      totalTakenLoan(loanList.length);
 
-      filterApproveLoan(takeLoanList);
-      filterDeclineLoan(takeLoanList);
-      filterPendingLoan(takeLoanList);
+      filterApproveLoan(loanList);
+      filterDeclineLoan(loanList);
+      filterPendingLoan(loanList);
     };
 
     indexDB.interact(
@@ -243,6 +300,11 @@ class MathUtility {
 
 function errorGettingData() {
   console.log('Error getting data');
+}
+
+function getRecentLoanApplicantIDInLocalStorage() {
+  const data = localStorage.getData({ key: 'recent-loan-applicant' });
+  return data?.id;
 }
 
 export default MathUtility;

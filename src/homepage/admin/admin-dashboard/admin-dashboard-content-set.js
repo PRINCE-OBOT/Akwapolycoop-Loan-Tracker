@@ -20,7 +20,7 @@ function setPendingLoanValue(value) {
 }
 
 function rerunOverMetric() {
-  MathUtility.overMetric({
+  MathUtility.generalOverMetric({
     totalTakenLoan: setTotalTakenLoanValue,
     approveLoan: setApproveLoanValue,
     declineLoan: setDeclineLoanValue,

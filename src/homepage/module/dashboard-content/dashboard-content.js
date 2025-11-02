@@ -36,7 +36,7 @@ const dashboardContent = (function createAdminDashboardContent() {
                 <div class="total-applicant-loan-section">
                   <div class="total-loan-title-section">
                   <img src="${totalLoanApplicantImg}" alt="Total Loan Applicant">
-                    <h5>Total Taken Loans</h5>
+                    <h5>Loans</h5>
                   </div>
 
                   <h2 class="total-loan-value"></h2>
@@ -56,7 +56,7 @@ const dashboardContent = (function createAdminDashboardContent() {
                 <div class="approved-loan-section">
                   <div class="approved-loan-title-section">
                   <img src="${approveLoanImg}" alt="Approve Loan">
-                    <h5>Approved Loan</h5>
+                    <h5>Deposit</h5>
                   </div>
 
                   <h2 class="approved-loan-value"></h2>
@@ -73,7 +73,7 @@ const dashboardContent = (function createAdminDashboardContent() {
                 <div class="decline-loan-section">
                   <div class="decline-loan-title-section">
                   <img src="${declineLoanImg}" alt="Pending Loan">
-                    <h5>Decline Loan</h5>
+                    <h5>Withdrawal</h5>
                   </div>
 
                   <h2 class="decline-loan-value"></h2>
