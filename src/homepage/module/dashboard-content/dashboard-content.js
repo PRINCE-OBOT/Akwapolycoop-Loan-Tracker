@@ -12,8 +12,8 @@ const dashboardContent = (function createAdminDashboardContent() {
             <div class="dashboard-borrower-section">
               <div class="dashboard-borrower-section-left-side">
                 <div class="dashboard-borrower-section-left-side-text">
-                  <h2>Empowering Financial Journeys</h2>
-                  <p>
+                  <h2 class="title">Empowering Financial Journeys</h2>
+                  <p class="text">
                     Seamlessly manage and track all your loan activities, from Dashboard to
                     Repayment. Akwapolycoop Loan Tracker provides intuitive tools for both
                     administrators and borrowers to ensure clarity and efficiency.

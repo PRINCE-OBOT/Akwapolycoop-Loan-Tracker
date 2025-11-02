@@ -47,6 +47,8 @@ appendDialogToBody.prototype.body = document.body;
 appendDialogToBody();
 appendContent.prototype.holder = contentHolder;
 
+appendContent({ detail: { contentKey: 'member-dashboard' } });
+
 function setBalance(outstandingBalanceValue) {
   balance.textContent = outstandingBalanceValue;
 }

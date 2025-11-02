@@ -4,6 +4,8 @@ import MathUtility from '../../module/business-logic/mathUtility';
 import dashboardContent from '../../module/dashboard-content/dashboard-content';
 
 const sectionRightImage = dashboardContent.querySelector('.section-right-side');
+const title = dashboardContent.querySelector('.title');
+const text = dashboardContent.querySelector('.text');
 const totalTakenLoan = dashboardContent.querySelector('.total-loan-value');
 const approveLoan = dashboardContent.querySelector('.approved-loan-value');
 const declineLoan = dashboardContent.querySelector('.decline-loan-value');
@@ -19,6 +21,10 @@ function setWithdrawalValue(value) {
 }
 
 function rerunOverMetric() {
+  title.textContent = 'Empowering Financial Journeys';
+  text.textContent = `Seamlessly manage and track all your loan activities, from Dashboard to
+                        Repayment. Akwapolycoop Loan Tracker provides intuitive tools for both
+                        administrators and borrowers to ensure clarity and efficiency.`;
   sectionRightImage.src = chatWithAI;
 
   MathUtility.generalOverMetric({

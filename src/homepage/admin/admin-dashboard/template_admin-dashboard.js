@@ -30,7 +30,7 @@ appendDialogToBody.prototype.body = document.body;
 appendDialogToBody();
 
 appendContent.prototype.holder = contentHolder;
-appendContent({ detail: { contentKey: 'deposit-management' } });
+appendContent({ detail: { contentKey: 'admin-dashboard' } });
 
 const errorGettingData = () => {
   console.log('Error while getting data');
