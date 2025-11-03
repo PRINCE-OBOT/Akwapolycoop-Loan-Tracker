@@ -102,10 +102,9 @@ const isWithdrawalExist = (loanApplicantData) => {
   if (!loanApplicantData.withdrawal) {
     eventBus.dispatchEvent(events.failMyWithdrawal);
   } else {
-    setNumberOfDepositValue(loanApplicantData.deposit.length);
-
     insertLoanApplicantDataToTr(loanApplicantData);
   }
+  setNumberOfDepositValue(loanApplicantData.withdrawal?.length || 0);
 };
 
 const createTableTr = () => {

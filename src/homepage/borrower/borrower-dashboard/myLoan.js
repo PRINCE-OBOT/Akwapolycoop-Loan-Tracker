@@ -103,9 +103,9 @@ const isLoanExist = (loanApplicantData) => {
   if (!loanApplicantData.loan) {
     eventBus.dispatchEvent(events.failMyLoan);
   } else {
-    setNumberOfLoanValue(loanApplicantData.loan.length);
     insertLoanApplicantDataToTr(loanApplicantData);
   }
+  setNumberOfLoanValue(loanApplicantData.loan?.length || 0);
 };
 
 const createTableTr = () => {

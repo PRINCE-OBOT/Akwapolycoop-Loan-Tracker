@@ -102,9 +102,9 @@ const isDepositExist = (loanApplicantData) => {
   if (!loanApplicantData.deposit) {
     eventBus.dispatchEvent(events.failMyDeposit);
   } else {
-    setNumberOfDepositValue(loanApplicantData.deposit.length);
     insertLoanApplicantDataToTr(loanApplicantData);
   }
+  setNumberOfDepositValue(loanApplicantData.deposit?.length || 0);
 };
 
 const createTableTr = () => {
