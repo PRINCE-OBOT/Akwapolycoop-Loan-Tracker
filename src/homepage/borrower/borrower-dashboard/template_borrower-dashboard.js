@@ -23,10 +23,14 @@ import MathUtility from '../../module/business-logic/mathUtility';
 import { bindDepositDocumentUploadEvent } from './loan-applicant-deposit/loan-applicant-deposit';
 import bindSubmitDepositPreference from './deposit-preference-form/deposit-preference-form-submission';
 
+const profile = document.querySelector('.profile');
 const leftSideBar = document.querySelector('.left-side-bar');
 const contentHolder = document.querySelector('.content-holder');
 const logoutButton = document.querySelector('.logout-button');
 const balance = document.querySelector('.balance');
+
+const profileImg = document.createElement('img');
+profileImg.classList.add('profile-img');
 
 const html = document.querySelector('html');
 
@@ -78,12 +82,6 @@ const logoutBorrower = () => {
   navigateToLoginPage();
 };
 
-// const prependWhenLoanApplicantDataDoesNotExist = (data) => {
-//   if (data.membershipApplicationForm) {
-//     // if (data.membershipApplicationForm.status !== 'Approve') ;
-//   }
-// };
-
 function getRecentLoanApplicantData({ id, returnData }) {
   indexDB.interact(
     {
@@ -101,12 +99,19 @@ function getBalance(data) {
   MathUtility.balance({ data, callback: setBalance });
 }
 
+function displayPassportInProfile(data) {
+  profileImg.src = data.membershipApplicationForm.passport;
+  profile.append(profileImg);
+}
+
 function isMemberNew(data) {
   if (data.isMemberNew) {
     eventBus.dispatchEvent(events.displayPreferredDepForm);
   } else {
     getBalance(data);
   }
+
+  displayPassportInProfile(data);
 }
 
 (function checkIfThereIsRecentLoanApplicant() {
@@ -135,8 +140,13 @@ const storeActionToLocalStorage = (data) => {
 
 const processStoring = pipe(getAction, storeActionToLocalStorage);
 
-const Event = ({ text, contentKey = 'question', closedByValue = 'any' }) =>
-  new CustomEvent('dialog-manager', {
+const Event = ({
+  eventName = 'dialog-manager',
+  text,
+  contentKey = 'question',
+  closedByValue = 'any',
+}) =>
+  new CustomEvent(eventName, {
     detail: {
       contentKey,
       closedByValue,
@@ -150,6 +160,7 @@ const events = {
     contentKey: 'depositPreferenceForm',
     closedByValue: 'closerequest',
   }),
+  profile: Event({ eventName: 'profile', contentKey: 'profile' }),
 };
 
 const showLogoutOption = () => {
@@ -186,8 +197,29 @@ function handleContentDisplay(e) {
   eventBus.dispatchEvent(customContentEvent);
 }
 
+function getActionToDisplayProfile() {
+  const id = getRecentLoanApplicantID();
+  // convert id back to string so it get converted to number in one place, by the profile event callback
+  const obj = {
+    key: 'action',
+    data: {
+      id: `${id}`,
+    },
+  };
+
+  return obj;
+}
+
+function handleDisplayOfMemberProfile() {
+  const data = getActionToDisplayProfile();
+  storeActionToLocalStorage(data);
+  eventBus.dispatchEvent(events.profile);
+}
+
 eventBus.addEventListener('logout', logoutBorrower);
 
 logoutButton.addEventListener('click', showLogoutOption);
 
 leftSideBar.addEventListener('click', handleContentDisplay);
+
+profile.addEventListener('click', handleDisplayOfMemberProfile);

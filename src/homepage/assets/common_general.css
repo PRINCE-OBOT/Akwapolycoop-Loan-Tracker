@@ -47,11 +47,14 @@ header {
   justify-content: space-between;
   flex-wrap: wrap;
 }
-.profile {
+.profile,
+.profile-img {
   height: var(--profile-dim);
   width: var(--profile-dim);
-  background: linear-gradient(var(--primary-accent), var(--dark-yellow));
   border-radius: 50%;
+}
+.profile {
+  background: linear-gradient(var(--primary-accent), var(--dark-yellow));
   display: flex;
   justify-content: center;
   align-items: center;

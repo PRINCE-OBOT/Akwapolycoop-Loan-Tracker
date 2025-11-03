@@ -10,6 +10,7 @@ main {
   padding: 20px;
   height: 80vh;
 }
+
 .content-holder {
   flex: 200px;
   padding: 40px 0 0 20px;
@@ -81,7 +82,9 @@ form.loan-application-form {
 .logout-button {
   cursor: pointer;
 }
-
+.logout-button {
+  margin-top: 40px;
+}
 legend {
   padding: 5px;
   letter-spacing: 2px;

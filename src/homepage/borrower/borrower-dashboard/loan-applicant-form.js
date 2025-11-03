@@ -6,7 +6,7 @@ const loanApplicantForm = (function () {
   form.novalidate;
 
   form.innerHTML = `
-    <h3 class="heading">Loan Applicant Form</h3>
+    <h3 class="heading">Member Form</h3>
     
               <fieldset class="field-section personal-information">
                 <legend>Personal Information</legend>
