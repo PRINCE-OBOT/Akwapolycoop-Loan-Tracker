@@ -23,8 +23,9 @@ function setWithdrawalValue(value) {
 function rerunOverMetric() {
   title.textContent = 'Empowering Financial Journeys';
   text.textContent = `Seamlessly manage and track all your loan activities, from Dashboard to
-                        Repayment. Akwapolycoop Loan Tracker provides intuitive tools for both
-                        administrators and borrowers to ensure clarity and efficiency.`;
+Repayment. Akwapolycoop Loan Tracker provides intuitive tools for both
+administrators and borrowers to ensure clarity and efficiency.`;
+
   sectionRightImage.src = chatWithAI;
 
   MathUtility.generalOverMetric({
