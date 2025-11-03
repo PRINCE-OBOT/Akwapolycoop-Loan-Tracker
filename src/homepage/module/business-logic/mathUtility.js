@@ -200,9 +200,9 @@ class MathUtility {
 
   static specificOverMetric({ loan, deposit, withdrawal }) {
     const getLengthOfData = (loanApplicantData) => {
-      loan(loanApplicantData.loan?.length);
-      deposit(loanApplicantData.deposit?.length);
-      withdrawal(loanApplicantData.withdrawal?.length);
+      loan(loanApplicantData.loan?.length || 0);
+      deposit(loanApplicantData.deposit?.length || 0);
+      withdrawal(loanApplicantData.withdrawal?.length || 0);
     };
 
     const id = getRecentLoanApplicantIDInLocalStorage();
@@ -224,23 +224,23 @@ class MathUtility {
     let depositLength = 0;
     let withdrawalLength = 0;
 
-    function getLoanLength(obj) {
+    function setLoanLength(obj) {
       loanLength += obj.loan?.length || 0;
     }
 
-    function getDepositLength(obj) {
+    function setDepositLength(obj) {
       depositLength += obj.deposit?.length || 0;
     }
 
-    function getWithdrawalLength(obj) {
+    function setWithdrawalLength(obj) {
       withdrawalLength += obj.withdrawal?.length || 0;
     }
 
-    const getLengthOfData = (loanApplicantData) => {
+    const setLengthOfData = (loanApplicantData) => {
       loanApplicantData.forEach((obj) => {
-        getLoanLength(obj);
-        getDepositLength(obj);
-        getWithdrawalLength(obj);
+        setLoanLength(obj);
+        setDepositLength(obj);
+        setWithdrawalLength(obj);
       });
 
       loan(loanLength);
@@ -252,7 +252,7 @@ class MathUtility {
       {
         storeName: 'loan-applicant-list',
         getMethod: 'getAll',
-        returnData: getLengthOfData,
+        returnData: setLengthOfData,
         undefinedState: errorGettingData,
       },
       'getData',
