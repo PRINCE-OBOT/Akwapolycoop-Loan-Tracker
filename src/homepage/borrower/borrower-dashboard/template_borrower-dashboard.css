@@ -1,4 +1,9 @@
+main {
+  position: relative;
+}
 .left-side-bar {
+  position: sticky;
+  top: 30px;
   max-width: 300px;
   box-shadow: var(--box-shadow);
   border-radius: 20px;
