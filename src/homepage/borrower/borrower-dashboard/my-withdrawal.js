@@ -86,7 +86,7 @@ const Event = ({ text = null, closedByValue = 'any', contentKey = 'status' }) =>
   });
 
 const events = {
-  failMyWithdrawal: Event({ text: 'You have not taken a withdrawal' }),
+  failMyWithdrawal: Event({ text: 'You have not make a withdrawal' }),
   proof: Event({ contentKey: 'proof' }),
   underReviewProofOfPayment: Event({
     text: 'Your Withdrawal is under review',

@@ -68,7 +68,6 @@ select,
 textarea {
   padding-left: 10px;
   flex: 1;
-  border-radius: 5px;
   border-style: solid;
   background: var(--transparent-white);
   box-shadow: var(--box-shadow);
