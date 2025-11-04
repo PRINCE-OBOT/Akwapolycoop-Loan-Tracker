@@ -90,7 +90,7 @@ function DialogManager(e) {
 
   // hasPreviousContentListExceeded();
 
-  dialog.showModal();
+  dialog.show();
 }
 
 function closeDialog() {

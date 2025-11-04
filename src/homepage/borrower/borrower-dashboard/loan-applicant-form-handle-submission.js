@@ -4,55 +4,55 @@ import loanApplicantForm from './loan-applicant-form';
 
 import eventBus from '../../module/event-bus/event';
 
-const form = loanApplicantForm;
+const form = loanApplicantForm.querySelector('form');
 
 // Applicant Details
 const firstName = form.querySelector('#first-name');
 const lastName = form.querySelector('#last-name');
 const email = form.querySelector('#email');
 const gender = form.querySelector('#gender');
-// const maritalStatus = form.querySelector('#maritalStatus');
+const maritalStatus = form.querySelector('#maritalStatus');
 const dateOfBirth = form.querySelector('#date-of-birth');
 const residentAddress = form.querySelector('#resident-address');
 const phoneNumber = form.querySelector('#phone-number');
 const nin = form.querySelector('#nin');
-// const staffId = form.querySelector('#staffId');
-// const department = form.querySelector('#department');
-// const position = form.querySelector('#position');
+const staffId = form.querySelector('#staffId');
+const department = form.querySelector('#department');
+const position = form.querySelector('#position');
 const passport = form.querySelector('#passport');
-// const employmentDate = form.querySelector('#employmentDate');
-// const employmentType = form.querySelector('#employmentType');
-// const salaryRange = form.querySelector('#salaryRange');
-// const applicationLetter = form.querySelector('#applicationLetter');
-// const RNumber = form.querySelector('#RNumber');
+const employmentDate = form.querySelector('#employmentDate');
+const employmentType = form.querySelector('#employmentType');
+const salaryRange = form.querySelector('#salaryRange');
+const applicationLetter = form.querySelector('#applicationLetter');
+const RNumber = form.querySelector('#RNumber');
 const accountNumber = form.querySelector('#account-number');
 const accountName = form.querySelector('#account-name');
 const bankName = form.querySelector('#bank-name');
 
 // First guarantor information
-// const guarantor1Name = form.querySelector('#guarantor1Name');
-// const guarantor1StaffId = form.querySelector('#guarantor1StaffId');
-// const guarantorDepartment = form.querySelector('#guarantor1Department');
-// const guarantor1Position = form.querySelector('#guarantor1Position');
-// const guarantor1Phone = form.querySelector('#guarantor1Phone');
-// const guarantor1Email = form.querySelector('#guarantor1Email');
-// const guarantor1Relationship = form.querySelector('#guarantor1Relationship');
+const guarantor1Name = form.querySelector('#guarantor1Name');
+const guarantor1StaffId = form.querySelector('#guarantor1StaffId');
+const guarantorDepartment = form.querySelector('#guarantor1Department');
+const guarantor1Position = form.querySelector('#guarantor1Position');
+const guarantor1Phone = form.querySelector('#guarantor1Phone');
+const guarantor1Email = form.querySelector('#guarantor1Email');
+const guarantor1Relationship = form.querySelector('#guarantor1Relationship');
 
 // Second guarantor information
-// const guarantor2Name = form.querySelector('#guarantor2Name');
-// const guarantor2StaffId = form.querySelector('#guarantor2StaffId');
-// const guarantor2Department = form.querySelector('#guarantor2Department');
-// const guarantor2Position = form.querySelector('#guarantor2Position');
-// const guarantor2Phone = form.querySelector('#guarantor2Phone');
-// const guarantor2Email = form.querySelector('#guarantor2Email');
-// const guarantor2Relationship = form.querySelector('#guarantor2Relationship');
+const guarantor2Name = form.querySelector('#guarantor2Name');
+const guarantor2StaffId = form.querySelector('#guarantor2StaffId');
+const guarantor2Department = form.querySelector('#guarantor2Department');
+const guarantor2Position = form.querySelector('#guarantor2Position');
+const guarantor2Phone = form.querySelector('#guarantor2Phone');
+const guarantor2Email = form.querySelector('#guarantor2Email');
+const guarantor2Relationship = form.querySelector('#guarantor2Relationship');
 
 const btnSubmitApplication = form.querySelector('.btn-submit-application');
 
 const submitLoanApplicationFormEvent = new CustomEvent('all-field-valid', {
   detail: {
     form,
-    functionToGetDataInIndexBD: convertFileToDataURLFormat,
+    functionToGetDataInIndexBD: gatherData,
   },
 });
 
@@ -62,26 +62,59 @@ const bindSubmitApplicationButton = () =>
   );
 
 function resetForm() {
-  loanApplicantForm.reset();
+  form.reset();
+}
+
+function gatherData() {
+  const result = convertFileToDataURLFormat();
+
+  result.then((listOfFiles) => {
+    const data = {};
+    data.membershipApplicationForm = {};
+
+    const obj = listOfFiles[0];
+
+    const keys = Object.keys(obj);
+
+    keys.forEach((key) => {
+      data.membershipApplicationForm[key] = obj[key];
+    });
+
+    insertMoreFormFieldValues(data);
+  });
 }
 
 function convertFileToDataURLFormat() {
-  const data = {};
-  const selectedPassport = passport.files[0];
+  const applicantPassport = passport.files[0];
+  const applicantApplicationLetter = applicationLetter.files[0];
 
-  const reader = new FileReader();
+  const passportReader = new FileReader();
+  const applicationLetterReader = new FileReader();
 
-  reader.readAsDataURL(selectedPassport);
+  passportReader.readAsDataURL(applicantPassport);
+  applicationLetterReader.readAsDataURL(applicantApplicationLetter);
 
-  reader.onload = (e) => {
-    data.membershipApplicationForm = {};
-    data.membershipApplicationForm.passport = e.target.result;
+  const listOfFiles = {};
 
-    insertMoreFormFieldValues(data);
-  };
+  const passportPromise = new Promise((resolve) => {
+    passportReader.onload = (e) => {
+      listOfFiles.passport = e.target.result;
+      resolve(listOfFiles);
+    };
+  });
+
+  const applicationLetterPromise = new Promise((resolve) => {
+    applicationLetterReader.onload = (e) => {
+      listOfFiles.applicationLetter = e.target.result;
+      resolve(listOfFiles);
+    };
+  });
+
+  return Promise.all([passportPromise, applicationLetterPromise]);
 }
 
 function insertMoreFormFieldValues(data) {
+  console.log(data);
   data.membershipApplicationForm.dateAndTime = new Date();
   data.membershipApplicationForm.status = 'Pending';
 
@@ -94,6 +127,14 @@ function insertMoreFormFieldValues(data) {
     lastName,
     email,
     gender,
+    staffId,
+    department,
+    position,
+    maritalStatus,
+    employmentDate,
+    employmentType,
+    salaryRange,
+    RNumber,
     accountNumber,
     accountName,
     bankName,
@@ -101,6 +142,20 @@ function insertMoreFormFieldValues(data) {
     phoneNumber,
     dateOfBirth,
     residentAddress,
+    guarantor1Name,
+    guarantor1StaffId,
+    guarantorDepartment,
+    guarantor1Position,
+    guarantor1Phone,
+    guarantor1Email,
+    guarantor1Relationship,
+    guarantor2Name,
+    guarantor2StaffId,
+    guarantor2Department,
+    guarantor2Position,
+    guarantor2Phone,
+    guarantor2Email,
+    guarantor2Relationship,
   ];
 
   listOfFormField.forEach((field) => {
