@@ -5,25 +5,47 @@ import loanApplicantForm from './loan-applicant-form';
 import eventBus from '../../module/event-bus/event';
 
 const form = loanApplicantForm;
+
+// Applicant Details
 const firstName = form.querySelector('#first-name');
 const lastName = form.querySelector('#last-name');
 const email = form.querySelector('#email');
 const gender = form.querySelector('#gender');
-const phoneNumber = form.querySelector('#phone-number');
+// const maritalStatus = form.querySelector('#maritalStatus');
 const dateOfBirth = form.querySelector('#date-of-birth');
 const residentAddress = form.querySelector('#resident-address');
+const phoneNumber = form.querySelector('#phone-number');
 const nin = form.querySelector('#nin');
+// const staffId = form.querySelector('#staffId');
+// const department = form.querySelector('#department');
+// const position = form.querySelector('#position');
 const passport = form.querySelector('#passport');
-const guarantorFirstName = form.querySelector('#guarantor-first-name');
-const guarantorLastName = form.querySelector('#guarantor-last-name');
-const guarantorEmail = form.querySelector('#guarantor-email');
-const guarantorGender = form.querySelector('#guarantor-gender');
-const guarantorPhoneNumber = form.querySelector('#guarantor-phone-number');
-const guarantorDateOfBirth = form.querySelector('#guarantor-date-of-birth');
-const guarantorResidentAddress = form.querySelector('#guarantor-resident-address');
+// const employmentDate = form.querySelector('#employmentDate');
+// const employmentType = form.querySelector('#employmentType');
+// const salaryRange = form.querySelector('#salaryRange');
+// const applicationLetter = form.querySelector('#applicationLetter');
+// const RNumber = form.querySelector('#RNumber');
 const accountNumber = form.querySelector('#account-number');
 const accountName = form.querySelector('#account-name');
 const bankName = form.querySelector('#bank-name');
+
+// First guarantor information
+// const guarantor1Name = form.querySelector('#guarantor1Name');
+// const guarantor1StaffId = form.querySelector('#guarantor1StaffId');
+// const guarantorDepartment = form.querySelector('#guarantor1Department');
+// const guarantor1Position = form.querySelector('#guarantor1Position');
+// const guarantor1Phone = form.querySelector('#guarantor1Phone');
+// const guarantor1Email = form.querySelector('#guarantor1Email');
+// const guarantor1Relationship = form.querySelector('#guarantor1Relationship');
+
+// Second guarantor information
+// const guarantor2Name = form.querySelector('#guarantor2Name');
+// const guarantor2StaffId = form.querySelector('#guarantor2StaffId');
+// const guarantor2Department = form.querySelector('#guarantor2Department');
+// const guarantor2Position = form.querySelector('#guarantor2Position');
+// const guarantor2Phone = form.querySelector('#guarantor2Phone');
+// const guarantor2Email = form.querySelector('#guarantor2Email');
+// const guarantor2Relationship = form.querySelector('#guarantor2Relationship');
 
 const btnSubmitApplication = form.querySelector('.btn-submit-application');
 
@@ -72,10 +94,6 @@ function insertMoreFormFieldValues(data) {
     lastName,
     email,
     gender,
-    guarantorGender,
-    guarantorEmail,
-    guarantorLastName,
-    guarantorFirstName,
     accountNumber,
     accountName,
     bankName,
@@ -83,9 +101,6 @@ function insertMoreFormFieldValues(data) {
     phoneNumber,
     dateOfBirth,
     residentAddress,
-    guarantorPhoneNumber,
-    guarantorDateOfBirth,
-    guarantorResidentAddress,
   ];
 
   listOfFormField.forEach((field) => {

@@ -1,6 +1,10 @@
 [data-set-field-validation-value].invalid {
   border: 1.5px solid var(--clr-invalid);
 }
+[type='checkbox'][data-set-field-validation-value].invalid {
+  outline: 1.5px solid var(--clr-invalid);
+}
+
 [data-set-field-validation-value] {
   &.user-interact:invalid {
     border: 1.5px solid var(--clr-invalid);

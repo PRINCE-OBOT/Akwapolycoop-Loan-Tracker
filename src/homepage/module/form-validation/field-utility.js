@@ -36,6 +36,7 @@ export default class FieldValidationUtility {
         const input = invalidMessage
           .closest('div')
           .querySelector('[data-set-field-validation-value]');
+
         input.classList.add('invalid');
       });
     }

@@ -39,8 +39,8 @@ class FieldValidator {
 }
 
 const validation = {
-  isFieldValid: null,
-  fieldErrorMessage: null,
+  isFieldValid: false,
+  fieldErrorMessage: false,
 
   setNameValidationValue({ field }) {
     this.isFieldValid = /^[a-zA-Z]{1,}$/.test(field.value);
@@ -128,6 +128,11 @@ const validation = {
   setAccountNameValidationValue({ field }) {
     this.isFieldValid = /[a-z]+ ([a-z]+ ?)+/i.test(field.value);
     this.fieldErrorMessage = 'Invalid Account Name';
+  },
+
+  setCheckElementValidationValue({ field }) {
+    this.isFieldValid = field.checked;
+    this.fieldErrorMessage = 'Check the box';
   },
 
   setBankNameValidationValue({ field }) {
