@@ -1,4 +1,7 @@
-form {
+.field-section > div {
+  position: relative;
+}
+/* form {
   flex: 1;
   padding: 10px;
   border-radius: 5px;
@@ -102,4 +105,4 @@ input[type='file'] {
 }
 .dialog-signup-section h4 {
   color: var(--white);
-}
+} */

@@ -4,6 +4,7 @@ import '../../assets/reset.css';
 import '../../assets/font.css';
 import '../../assets/common_general.css';
 import '../../assets/style-border-button.css';
+import './template_borrower-sign-up.css';
 
 import loanApplicantForm from '../borrower-dashboard/loan-applicant-form';
 import bindAllFieldValidEvent from '../borrower-dashboard/is-all-field-valid';
