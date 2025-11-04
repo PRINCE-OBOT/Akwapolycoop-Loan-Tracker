@@ -8,8 +8,23 @@
   </head>
   <body>
     <div class="container">
-      <header>
-        <div class="logo-section">
+      <!-- <header> -->
+      <nav>
+        <div class="logo">
+          <img
+            src="./assets/images/akp-loan-tracker-logo.svg"
+            alt="Akwapolycoop Loan Tracker Logo"
+          />
+        </div>
+        <ul class="nav-links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#requirements">Requirements</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- <div class="logo-section">
           <img
             src="./assets/images/akp-loan-tracker-logo.svg"
             alt="Akwapolycoop Loan Tracker Logo"
@@ -59,82 +74,174 @@
           <ul>
             <button class="contact-us">Contact Us</button>
           </ul>
-        </nav>
-      </header>
+        </nav> -->
+      <!-- </header> -->
 
-      <main>
-        <div class="main_top-section">
-          <div class="main_top-section_left-side">
-            <h1>Stay in control of your cooperative loans</h1>
+      <section class="hero" id="home">
+        <div class="particles" id="particles"></div>
+        <div class="hero-content">
+          <div class="hero-icon">🏛️</div>
+          <h1>Building Financial Security Together</h1>
+          <p>
+            Join the trusted cooperative society for Akwa Ibom State Polytechnic staff. Save,
+            contribute, and access loans with ease.
+          </p>
+          <div class="cta-buttons">
+            <a href="#requirements" class="cta-button">Join Us Today</a>
+            <a href="#about" class="cta-button secondary">Learn More</a>
+          </div>
+        </div>
+        <div class="scroll-indicator-section">
+          <div class="scroll-indicator">
+            <span></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="requirements" id="requirements">
+        <h2 class="section-title">Membership Requirements</h2>
+        <p class="section-subtitle">Follow these simple steps to become a member</p>
+
+        <div class="requirements-grid">
+          <div class="requirement-card">
+            <div class="requirement-icon">👤</div>
+            <h3>Staff Verification</h3>
             <p>
-              AkwapolyCoop Loan Tracker helps you track loan history, monitor how interest
-              accumulates, and stay updated on repayments. With clear records and easy access,
-              members never lose sight of their financial journey.
+              You must be a verified staff member of Akwa Ibom State Polytechnic to be eligible for
+              membership in our cooperative society.
             </p>
-            <img src="./assets/images/stripe-payments.svg" alt="stripe-payments" />
           </div>
-          <div class="main_top-section_right-side">
-            <img src="./assets/images/stripe-payments.svg" alt="stripe-payments" />
-          </div>
-        </div>
 
-        <div class="main_middle-section">
-          <div class="trusted-by-section">
-            <h2>Trusted by cooperative members and students across Nigeria</h2>
-
+          <div class="requirement-card">
+            <div class="requirement-icon">📸</div>
+            <h3>Passport Photograph</h3>
             <p>
-              With a rapidly growing base of borrowers and savers, Akwapolycoop Loan Tracker is
-              transforming how people monitor loans and track repayment progress.
+              Submit a recent passport-sized photograph for your membership profile and
+              identification purposes.
             </p>
           </div>
 
-          <div class="over-section">
-            <img
-              class="circle-outline"
-              src="./assets/images/circle-and-outer-lines_yellow.svg"
-              alt="Circle outline"
-            />
-            <h3>Over</h3>
-            <h2>15,000</h2>
-            <p>LOANS DISBURSED PER DAY</p>
-          </div>
-
-          <div class="loan-processed">
-            <img
-              class="circle-outline"
-              src="./assets/images/circle-and-outer-lines_teal.svg"
-              alt="Circle outline"
-            />
-            <h3>LOANS PROCESSED IN</h3>
-            <h2 class="number">5</h2>
-            <p>MINUTES</p>
+          <div class="requirement-card">
+            <div class="requirement-icon">✍️</div>
+            <h3>Two Guarantors</h3>
+            <p>
+              Provide two guarantors who are both verified staff members of Akwa Ibom State
+              Polytechnic institution.
+            </p>
           </div>
         </div>
-      </main>
+      </section>
 
-      <footer>
-        <div class="back-to-top">&#10152;</div>
-
-        <div class="links">
-          <a href="./borrower-dashboard.html">Dashboard</a>
-          <a href="./borrower-login.html">Login</a>
-          <a href="./borrower-sign-up.html">Join Us</a>
-        </div>
-
-        <h3 class="title">Contact Us</h3>
-        <div class="contact-us-details">
-          <div class="email-section">
-            <img src="./assets/images/email.svg" alt="" />
-            <p class="email">akwapolycoop@gmail.com</p>
-          </div>
-
-          <div class="tel-section">
-            <img src="./assets/images/tel.svg" alt="" />
-            <p class="tel">000000000</p>
+      <section class="trust-section" id="about">
+        <div class="trust-content">
+          <div class="trust-image">💼</div>
+          <div class="trust-text">
+            <h2>Trust Built Over Years</h2>
+            <p>
+              For years, we have been the financial backbone of our staff community, providing
+              reliable savings and loan services that have helped hundreds of members achieve their
+              financial goals.
+            </p>
+            <p>
+              Our transparent operations and member-first approach have made us the most trusted
+              cooperative society at Akwa Ibom State Polytechnic.
+            </p>
           </div>
         </div>
 
-        <div class="all-right-reserved">All rights reserved. © 2025 AkwapolyCoop Loan Tracker</div>
+        <div class="trust-content reverse">
+          <div class="trust-image">🤝</div>
+          <div class="trust-text">
+            <h2>Your Success is Our Mission</h2>
+            <p>
+              We understand that financial stability is crucial for peace of mind. That's why we've
+              designed our cooperative to be accessible, supportive, and always working in your best
+              interest.
+            </p>
+            <p>
+              From emergency loans to long-term savings plans, we're here to support you through
+              every financial milestone.
+            </p>
+          </div>
+        </div>
+
+        <div class="trust-content">
+          <div class="trust-image">🛡️</div>
+          <div class="trust-text">
+            <h2>Secure and Reliable</h2>
+            <p>
+              Your contributions are safe with us. We maintain strict financial protocols and
+              regular audits to ensure every member's money is protected and properly managed.
+            </p>
+            <p>
+              With competitive interest rates and flexible repayment terms, we make sure your
+              financial partnership with us is always beneficial.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="benefits">
+        <h2 class="section-title">Why Choose Us</h2>
+        <p class="section-subtitle">Numbers that speak for themselves</p>
+
+        <div class="benefits-grid">
+          <div class="benefit-item">
+            <h3>500+</h3>
+            <p>Active Members</p>
+          </div>
+          <div class="benefit-item">
+            <h3>8+</h3>
+            <p>Years of Service</p>
+          </div>
+          <div class="benefit-item">
+            <h3>98%</h3>
+            <p>Satisfaction Rate</p>
+          </div>
+          <div class="benefit-item">
+            <h3>24/7</h3>
+            <p>Support Available</p>
+          </div>
+        </div>
+      </section>
+
+      <footer id="contact">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>About AKWAPOLYCO</h3>
+            <p>
+              We are the premier cooperative society for Akwa Ibom State Polytechnic staff,
+              dedicated to fostering financial growth and security for our members.
+            </p>
+          </div>
+
+          <div class="footer-section">
+            <h3>Quick Links</h3>
+            <a href="#home">Home</a>
+            <a href="#requirements">Requirements</a>
+            <a href="#about">About Us</a>
+            <a href="#contact">Contact</a>
+          </div>
+
+          <div class="footer-section">
+            <h3>Contact Us</h3>
+            <p>Akwa Ibom State Polytechnic</p>
+            <p>Ikot Osurua, Ikot Ekpene</p>
+            <p>Email: info@akwapolyco.org</p>
+            <p>Phone: +234 XXX XXX XXXX</p>
+          </div>
+
+          <div class="footer-section">
+            <h3>Office Hours</h3>
+            <p>Monday - Friday</p>
+            <p>8:00 AM - 4:00 PM</p>
+            <p>Saturday & Sunday: Close</p>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2025 Akwapolycoop. All rights reserved.</p>
+        </div>
       </footer>
     </div>
   </body>
