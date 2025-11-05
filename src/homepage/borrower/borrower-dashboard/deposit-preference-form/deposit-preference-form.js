@@ -2,9 +2,9 @@ import './deposit-preference-form.css';
 
 import handleFieldValidationLogic from '../../../module/form-validation/field-validator';
 
-const depositPreferenceForm = (function createdepositPreferenceForm() {
+const depositPreferenceForm = (function createDepositPreferenceForm() {
   const div = document.createElement('div');
-  div.classList.add('form-container');
+  div.classList.add('deposit-preference-form');
 
   div.innerHTML = `
         <div class="form-header">

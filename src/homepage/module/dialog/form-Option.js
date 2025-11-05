@@ -64,12 +64,26 @@ const events = {
     detail: { contentKey: 'previousContent', closedByValue: 'any' },
   }),
   manualCloseDialog: new CustomEvent('manual-close-dialog'),
+  displayPreferredDepForm: new CustomEvent('dialog-manager', {
+    detail: {
+      contentKey: 'depositPreferenceForm',
+      closedByValue: 'closerequest',
+    },
+  }),
 };
+
+function isActionPreferredDepositAmount() {
+  const action = getActionFromLocalStorage();
+
+  if (action.firstKey[0] === 'preferredDepositAmount')
+    eventBus.dispatchEvent(events.displayPreferredDepForm);
+}
 
 const addEventToBtnCancel = (button) => {
   button.addEventListener('click', () => {
     eventBus.dispatchEvent(events.manualCloseDialog);
 
+    isActionPreferredDepositAmount();
     // eventBus.dispatchEvent(events.previousContentEvent);
   });
   return button;

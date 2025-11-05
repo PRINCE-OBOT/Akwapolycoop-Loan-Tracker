@@ -44,6 +44,22 @@ const loanApplicantForm = (function () {
               required />
               <output class="show-message"></output>
             </div>
+
+            <div class="form-group">
+              <label for="lga">
+                LGA
+                <span class="required-asterisk">*</span>
+              </label>
+              <input
+                type="text"
+                id="lga"
+                placeholder="Ibeno"
+                pattern="^.{1,}$"
+                data-set-field-validation-value="setEmptyFieldValidationValue"
+                required
+              />
+              <output class="show-message"></output>
+            </div>  
           </div>
 
           <div class="form-row">
@@ -69,18 +85,6 @@ const loanApplicantForm = (function () {
                 </select>
               <output class="show-message"></output>
             </div>
-          </div>
-
-          <div class="form-group full-width">
-            <label>Home Address <span class="required">*</span></label>
-            <textarea
-              required
-              placeholder="Enter your complete home address"
-              id="resident-address"
-              pattern="(?=.* )(?=.*[a-zA-Z])(?=.*[0-9]).{20,}"
-              data-set-field-validation-value="setAddressValidationValue"
-              ></textarea>
-            <output class="show-message"></output>
           </div>
 
           <div class="form-row">
@@ -139,21 +143,17 @@ const loanApplicantForm = (function () {
             </div>
             
             <div class="form-row">
-              <div class="form-group">
-              <label for="lga">
-                LGA
-                <span class="required-asterisk">*</span>
-              </label>
-              <input
-                type="text"
-                id="lga"
-                placeholder="Ibeno"
-                pattern="^.{1,}$"
-                data-set-field-validation-value="setEmptyFieldValidationValue"
+              <div class="form-group full-width">
+              <label>Home Address <span class="required">*</span></label>
+              <textarea
                 required
-              />
+                placeholder="Enter your complete home address"
+                id="resident-address"
+                pattern="(?=.* )(?=.*[a-zA-Z])(?=.*[0-9]).{20,}"
+                data-set-field-validation-value="setAddressValidationValue"
+                ></textarea>
               <output class="show-message"></output>
-            </div>  
+            </div>
           </div>
 
         </div>
