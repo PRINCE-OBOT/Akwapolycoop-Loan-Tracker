@@ -593,7 +593,7 @@ const loanApplicantForm = (function () {
         <!-- Submit Section -->
         <div class="submit-section">
           <button type="button" class="submit-button btn-submit-application">Submit Application</button>
-          <p style="color: #666; margin-top: 1rem; font-size: 0.9rem">
+          <p style="color: #666;  font-size: 0.9rem">
             By submitting this form, you agree to our terms and conditions
           </p>
         </div>

@@ -90,7 +90,8 @@ function DialogManager(e) {
 
   // hasPreviousContentListExceeded();
 
-  dialog.show();
+  // dialog.show();
+  dialog[detail.showType]();
 }
 
 function closeDialog() {

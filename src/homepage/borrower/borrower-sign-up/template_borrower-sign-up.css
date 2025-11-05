@@ -1,12 +1,10 @@
 body {
-  background: linear-gradient(135deg, #f5f7fa 0%, #e8f0e8 100%);
+  background: white;
 }
 .container {
   max-width: 900px;
   margin: 0 auto;
-  background: white;
   border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 main {
@@ -226,6 +224,9 @@ input[type='checkbox'] {
   box-shadow: 0 4px 15px rgba(26, 95, 63, 0.3);
 }
 
+.submit-section p {
+  margin: 1rem auto 0;
+}
 .submit-button:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 20px rgba(26, 95, 63, 0.4);

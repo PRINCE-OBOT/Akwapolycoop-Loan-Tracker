@@ -66,55 +66,48 @@ function resetForm() {
 }
 
 function gatherData() {
-  const result = convertFileToDataURLFormat();
+  const passportDataURL = convertPassportToDataURL();
 
-  result.then((listOfFiles) => {
-    const data = {};
-    data.membershipApplicationForm = {};
+  passportDataURL.then((data) => {
+    const applicationLetterURL = convertApplicationLetterToDataURL(data);
 
-    const obj = listOfFiles[0];
-
-    const keys = Object.keys(obj);
-
-    keys.forEach((key) => {
-      data.membershipApplicationForm[key] = obj[key];
+    applicationLetterURL.then((moreData) => {
+      insertMoreFormFieldValues(moreData);
     });
-
-    insertMoreFormFieldValues(data);
   });
 }
 
-function convertFileToDataURLFormat() {
-  const applicantPassport = passport.files[0];
+function convertApplicationLetterToDataURL(data) {
   const applicantApplicationLetter = applicationLetter.files[0];
 
-  const passportReader = new FileReader();
-  const applicationLetterReader = new FileReader();
+  const reader = new FileReader();
+  reader.readAsDataURL(applicantApplicationLetter);
 
-  passportReader.readAsDataURL(applicantPassport);
-  applicationLetterReader.readAsDataURL(applicantApplicationLetter);
-
-  const listOfFiles = {};
-
-  const passportPromise = new Promise((resolve) => {
-    passportReader.onload = (e) => {
-      listOfFiles.passport = e.target.result;
-      resolve(listOfFiles);
+  return new Promise((resolve) => {
+    reader.onload = (e) => {
+      data.membershipApplicationForm.applicationLetter = e.target.result;
+      resolve(data);
     };
   });
-
-  const applicationLetterPromise = new Promise((resolve) => {
-    applicationLetterReader.onload = (e) => {
-      listOfFiles.applicationLetter = e.target.result;
-      resolve(listOfFiles);
-    };
-  });
-
-  return Promise.all([passportPromise, applicationLetterPromise]);
 }
 
+function convertPassportToDataURL() {
+  const applicantPassport = passport.files[0];
+
+  const reader = new FileReader();
+  reader.readAsDataURL(applicantPassport);
+
+  const data = {};
+  data.membershipApplicationForm = {};
+
+  return new Promise((resolve) => {
+    reader.onload = (e) => {
+      data.membershipApplicationForm.passport = e.target.result;
+      resolve(data);
+    };
+  });
+}
 function insertMoreFormFieldValues(data) {
-  console.log(data);
   data.membershipApplicationForm.dateAndTime = new Date();
   data.membershipApplicationForm.status = 'Pending';
 
