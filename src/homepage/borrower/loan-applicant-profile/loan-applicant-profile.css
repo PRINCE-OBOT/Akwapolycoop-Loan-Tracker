@@ -1,8 +1,18 @@
 :root {
   --medium-dim: 200px;
+  --mobile-screen-size: 300px;
+}
+dialog[data-size='big'] {
+  width: max(85%, var(--mobile-screen-size));
+}
+dialog[data-size='medium'] {
+  width: max(60%, var(--mobile-screen-size));
+}
+dialog[data-size='small'] {
+  width: max(30%, var(--mobile-screen-size));
 }
 .profile-container {
-  max-width: 900px;
+  /* max-width: 900px; */
   margin: 0 auto;
   background: white;
   border-radius: 16px;

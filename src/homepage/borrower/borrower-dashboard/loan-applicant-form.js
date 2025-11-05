@@ -234,7 +234,7 @@ const loanApplicantForm = (function () {
             Application Letter
           </div>
           <p class="section-description">
-            Upload your signed application letter (Maximum file size: 5MB, Format: PDF, DOC, DOCX)
+            Upload your signed application letter (Maximum file size: 5MB, Format: JPEG, JPG, PDF)
           </p>
           <div class="info-box">
           <p>
@@ -248,7 +248,7 @@ const loanApplicantForm = (function () {
           <input
           type="file"
           id="applicationLetter"
-          accept=".pdf,.doc,.docx"
+          accept="image/*"
           data-set-field-validation-value="setEmptyFieldValidationValue"
           required
           />

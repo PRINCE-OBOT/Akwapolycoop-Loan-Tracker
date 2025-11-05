@@ -50,6 +50,10 @@ const addTextContentToDiv = (div) => {
     
                 <div class="grid">
                 <div class="field">
+                    <label>Staff ID</label>
+                    <div class="field-value staffId"></div>
+                </div>
+                <div class="field">
                     <label>First Name</label>
                     <div class="field-value first-name">Chukwudi</div>
                 </div>
@@ -94,9 +98,25 @@ const addTextContentToDiv = (div) => {
                     <label>LGA</label>
                     <div class="field-value">Ikeja</div>
                 </div>
-                <div class="field full-width resident-address">
+                <div class="field full-width">
                     <label>Residential Address</label>
-                    <div class="field-value">45 Allen Avenue, Ikeja, Lagos State</div>
+                    <div class="field-value resident-address"></div>
+                </div>
+                <div class="field full-width">
+                    <label>Department</label>
+                    <div class="field-value department"></div>
+                </div>
+                <div class="field full-width">
+                    <label>Employment Date</label>
+                    <div class="field-value employmentDate"></div>
+                </div>
+                <div class="field full-width">
+                    <label>Employment Type</label>
+                    <div class="field-value employmentType"></div>
+                </div>
+                <div class="field full-width">
+                    <label>Salary Range</label>
+                    <div class="field-value salaryRange"></div>
                 </div>
             </div>
         </div>
@@ -130,50 +150,118 @@ const addTextContentToDiv = (div) => {
                     <label>Account Name</label>
                     <div class="field-value account-name">Chukwudi Okonkwo</div>
                 </div>
+                <div class="field full-width">
+                    <label>RNumber</label>
+                    <div class="field-value RNumber"></div>
+                </div>
+            </div>
+            <div>
+              <details>
+               <summary>Application Letter</summary>
+               <img class="application-letter" src="" alt="Application Letter" />
+              </details>
             </div>
         </div>
     
-        <!-- Guarantor Information -->
-        <div class="section">
+        <!-- Guarantor Information (first) -->
+          <div class="section">
+            
             <div class="section-header">
                 <div class="icon-box purple">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
                     </svg>
                 </div>
-                <h2>Guarantor Information</h2>
+                <h2>Guarantor (First)</h2>
             </div>
     
             <div class="grid">
-                <div class="field">
-                    <label>First Name</label>
-                    <div class="field-value guarantor-first-name">Adebayo</div>
+              <div class="field">
+                  <label>Staff ID</label>
+                  <div class="field-value guarantor1StaffId"></div>
+              </div>
+              
+              <div class="field">
+                  <label>Full Name</label>
+                  <div class="field-value guarantor1Name"></div>
+              </div>
+              
+              <div class="field">
+                  <label>Email</label>
+                  <div class="field-value guarantor1Email"></div>
+              </div>
+              
+              <div class="field">
+                  <label>Phone Number</label>
+                  <div class="field-value guarantor1Phone"></div>
+              </div>
+              
+              <div class="field">
+                  <label>Department</label>
+                  <div class="field-value guarantor1Department"></div>
+              </div>
+              
+              <div class="field">
+                  <label>Position</label>
+                  <div class="field-value guarantor1Position"></div>
+              </div>
+              
+              <div class="field">
+                  <label>Relationship</label>
+                  <div class="field-value guarantor1Relationship"></div>
+              </div>
+    
+            </div>
+        </div>
+          
+        <!-- Guarantor Information (second) -->
+        <div class="section">
+            
+            <div class="section-header">
+                <div class="icon-box purple">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                    </svg>
                 </div>
-                <div class="field">
-                    <label>Last Name</label>
-                    <div class="field-value guarantor-last-name">Williams</div>
-                </div>
-                <div class="field">
-                    <label>Phone Number</label>
-                    <div class="field-value guarantor-phone-number">+234 805 123 4567</div>
-                </div>
-                <div class="field">
-                    <label>Date of Birth</label>
-                    <div class="field-value">
-                        <svg class="field-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                        </svg>
-                        7/22/1978
-                    </div>
-                </div>
-                <div class="field full-width">
-                    <label>Residential Address</label>
-                    <div class="field-value guarantor-resident-address">12 Victoria Island Road, Victoria Island, Lagos State</div>
-                </div>
-                <div class="field full-width">
-                    <label>Gender</label>
-                    <div class="field-value guarantor-gender"></div>
-                </div>
+                <h2>Guarantor (Second)</h2>
+            </div>
+    
+            <div class="grid">
+              <div class="field">
+                  <label>Staff ID</label>
+                  <div class="field-value guarantor2StaffId"></div>
+              </div>
+              
+              <div class="field">
+                  <label>Full Name</label>
+                  <div class="field-value guarantor2Name"></div>
+              </div>
+              
+              <div class="field">
+                  <label>Email</label>
+                  <div class="field-value guarantor2Email"></div>
+              </div>
+              
+              <div class="field">
+                  <label>Phone Number</label>
+                  <div class="field-value guarantor2Phone"></div>
+              </div>
+              
+              <div class="field">
+                  <label>Department</label>
+                  <div class="field-value guarantor2Department"></div>
+              </div>
+              
+              <div class="field">
+                  <label>Position</label>
+                  <div class="field-value guarantor2Position"></div>
+              </div>
+              
+              <div class="field">
+                  <label>Relationship</label>
+                  <div class="field-value guarantor2Relationship"></div>
+              </div>
+    
             </div>
         </div>
     </div>
@@ -309,25 +397,27 @@ const getActionDataFromLocalStorage = () => {
   return data;
 };
 
-const profile = () =>
+const Event = () =>
   new CustomEvent('dialog-manager', {
     detail: {
       contentKey: 'profile',
       closedByValue: 'any',
+      size: 'big',
     },
   });
 
-const profileEvent = {
-  profile: profile(),
+const events = {
+  profile: Event(),
 };
 
 const dispatchProfileEvent = () => {
-  eventBus.dispatchEvent(profileEvent.profile);
+  eventBus.dispatchEvent(events.profile);
 };
 
 const applicationDate = loanApplicantProfile.querySelector('#application-date');
 const applicationTime = loanApplicantProfile.querySelector('#application-time');
 const passport = loanApplicantProfile.querySelector('.passport');
+const staffId = loanApplicantProfile.querySelector('.staffId');
 const firstName = loanApplicantProfile.querySelector('.first-name');
 const lastName = loanApplicantProfile.querySelector('.last-name');
 const email = loanApplicantProfile.querySelector('.email');
@@ -337,14 +427,30 @@ const residentAddress = loanApplicantProfile.querySelector('.resident-address');
 const bankName = loanApplicantProfile.querySelector('.bank-name');
 const accountNumber = loanApplicantProfile.querySelector('.account-number');
 const accountName = loanApplicantProfile.querySelector('.account-name');
+const RNumber = loanApplicantProfile.querySelector('.RNumber');
+const applicationLetter = loanApplicantProfile.querySelector('.application-letter');
+const department = loanApplicantProfile.querySelector('.department');
+const employmentDate = loanApplicantProfile.querySelector('.employmentDate');
+const employmentType = loanApplicantProfile.querySelector('.employmentType');
+const salaryRange = loanApplicantProfile.querySelector('.salaryRange');
 const status = loanApplicantProfile.querySelector('.status');
 // const state = loanApplicantProfile.querySelector('.state')
 
-const guarantorFirstName = loanApplicantProfile.querySelector('.guarantor-first-name');
-const guarantorLastName = loanApplicantProfile.querySelector('.guarantor-last-name');
-const guarantorPhoneNumber = loanApplicantProfile.querySelector('.guarantor-phone-number');
-const guarantorResidentAddress = loanApplicantProfile.querySelector('.guarantor-resident-address');
-const guarantorGender = loanApplicantProfile.querySelector('.guarantor-gender');
+const guarantor1StaffId = loanApplicantProfile.querySelector('.guarantor1StaffId');
+const guarantor1Name = loanApplicantProfile.querySelector('.guarantor1Name');
+const guarantor1Email = loanApplicantProfile.querySelector('.guarantor1Email');
+const guarantor1Phone = loanApplicantProfile.querySelector('.guarantor1Phone');
+const guarantor1Department = loanApplicantProfile.querySelector('.guarantor1Department');
+const guarantor1Position = loanApplicantProfile.querySelector('.guarantor1Position');
+const guarantor1Relationship = loanApplicantProfile.querySelector('.guarantor1Relationship');
+
+const guarantor2StaffId = loanApplicantProfile.querySelector('.guarantor2StaffId');
+const guarantor2Name = loanApplicantProfile.querySelector('.guarantor2Name');
+const guarantor2Email = loanApplicantProfile.querySelector('.guarantor2Email');
+const guarantor2Phone = loanApplicantProfile.querySelector('.guarantor2Phone');
+const guarantor2Position = loanApplicantProfile.querySelector('.guarantor2Position');
+const guarantor2Department = loanApplicantProfile.querySelector('.guarantor2Department');
+const guarantor2Relationship = loanApplicantProfile.querySelector('.guarantor2Relationship');
 
 const errorGettingData = () => {
   console.log('Error getting data');
@@ -375,6 +481,7 @@ function insertLoanApplicantDataToProfile(data) {
   applicationTime.textContent = time;
   passport.src = membershipApplicationForm.passport;
 
+  staffId.textContent = membershipApplicationForm.staffId;
   firstName.textContent = membershipApplicationForm['first-name'];
   lastName.textContent = membershipApplicationForm['last-name'];
   email.textContent = membershipApplicationForm.email;
@@ -384,13 +491,31 @@ function insertLoanApplicantDataToProfile(data) {
   accountNumber.textContent = membershipApplicationForm['account-number'];
   accountName.textContent = membershipApplicationForm['account-name'];
   bankName.textContent = membershipApplicationForm['bank-name'];
+  RNumber.textContent = membershipApplicationForm.RNumber;
+  applicationLetter.src = membershipApplicationForm.applicationLetter;
+  department.textContent = membershipApplicationForm.department;
+  employmentDate.textContent = membershipApplicationForm.employmentDate;
+  employmentType.textContent = membershipApplicationForm.employmentType;
+  salaryRange.textContent = membershipApplicationForm.salaryRange;
   status.textContent = membershipApplicationForm.status;
 
-  guarantorFirstName.textContent = membershipApplicationForm['guarantor-first-name'];
-  guarantorLastName.textContent = membershipApplicationForm['guarantor-last-name'];
-  guarantorPhoneNumber.textContent = membershipApplicationForm['guarantor-phone-number'];
-  guarantorResidentAddress.textContent = membershipApplicationForm['guarantor-resident-address'];
-  guarantorGender.textContent = membershipApplicationForm['guarantor-gender'];
+  // First guarantor information
+  guarantor1StaffId.textContent = membershipApplicationForm.guarantor1StaffId;
+  guarantor1Name.textContent = membershipApplicationForm.guarantor1Name;
+  guarantor1Email.textContent = membershipApplicationForm.guarantor1Email;
+  guarantor1Phone.textContent = membershipApplicationForm.guarantor1Phone;
+  guarantor1Department.textContent = membershipApplicationForm.guarantor1Department;
+  guarantor1Position.textContent = membershipApplicationForm.guarantor1Position;
+  guarantor1Relationship.textContent = membershipApplicationForm.guarantor1Relationship;
+
+  // Second guarantor information
+  guarantor2StaffId.textContent = membershipApplicationForm.guarantor2StaffId;
+  guarantor2Name.textContent = membershipApplicationForm.guarantor2Name;
+  guarantor2Email.textContent = membershipApplicationForm.guarantor2Email;
+  guarantor2Phone.textContent = membershipApplicationForm.guarantor2Phone;
+  guarantor2Position.textContent = membershipApplicationForm.guarantor2Position;
+  guarantor2Department.textContent = membershipApplicationForm.guarantor2Department;
+  guarantor2Relationship.textContent = membershipApplicationForm.guarantor2Relationship;
 
   checkStatusOfProfile(membershipApplicationForm);
   dispatchProfileEvent();

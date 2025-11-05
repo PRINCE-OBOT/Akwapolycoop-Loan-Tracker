@@ -90,8 +90,14 @@ function DialogManager(e) {
 
   // hasPreviousContentListExceeded();
 
-  // dialog.show();
-  dialog[detail.showType]();
+  setDataSizeOfDialog(detail.size);
+
+  dialog.showModal();
+  // dialog[detail.showType]();
+}
+
+function setDataSizeOfDialog(size = 'small') {
+  dialog.setAttribute('data-size', size);
 }
 
 function closeDialog() {
