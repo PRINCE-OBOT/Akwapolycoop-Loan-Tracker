@@ -44,6 +44,8 @@ const loanerManagement = (function createLoanerManagementContent() {
                     <th>Amount(N)</th>
                     <th>Pay</th>
                     <th>Status</th>
+                    <th>Loan Purpose</th>
+                    <th>Monthly WA</th>
                     <th>Date</th>
                     <th>Time</th>
                     <th colspan="3">Actions</th>
@@ -259,6 +261,8 @@ function insertTakeLoanDataToTable(loanList) {
        <td>${data.loanAmount}</td>
        <td>${data.loanAmount - PERCENTAGE * data.loanAmount}</td>
        <td class="status">${data.status}</td>
+       <td>${data.loanPurpose}</td>
+       <td>${data.monthlyWithdrawalAmount}</td>
        <td>${date}</td>
        <td>${time}</td>
        <td data-db-first-key="loanApplicantForm"><img src="${eyeViewImg}" class="eye-view" alt="eye view"/>View Profile</td>
