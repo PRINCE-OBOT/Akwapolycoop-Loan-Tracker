@@ -98,19 +98,19 @@ const addTextContentToDiv = (div) => {
                     <label>LGA</label>
                     <div class="field-value lga"></div>
                 </div>
-                <div class="field full-width">
+                <div class="field ">
                     <label>Department</label>
                     <div class="field-value department"></div>
                 </div>
-                <div class="field full-width">
+                <div class="field ">
                     <label>Employment Date</label>
                     <div class="field-value employmentDate"></div>
                 </div>
-                <div class="field full-width">
+                <div class="field ">
                     <label>Employment Type</label>
                     <div class="field-value employmentType"></div>
                 </div>
-                <div class="field full-width">
+                <div class="field ">
                     <label>Salary Range</label>
                     <div class="field-value salaryRange"></div>
                 </div>
@@ -146,11 +146,11 @@ const addTextContentToDiv = (div) => {
                         0123456789
                     </div>
                 </div>
-                <div class="field full-width">
+                <div class="field ">
                     <label>Account Name</label>
                     <div class="field-value account-name">Chukwudi Okonkwo</div>
                 </div>
-                <div class="field full-width">
+                <div class="field">
                     <label>RNumber</label>
                     <div class="field-value RNumber"></div>
                 </div>

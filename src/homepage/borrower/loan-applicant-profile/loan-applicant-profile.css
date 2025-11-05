@@ -91,7 +91,9 @@ dialog[data-size='small'] {
   align-items: center;
   justify-content: center;
 }
-
+.application-letter {
+  width: min(400px, 80%);
+}
 .icon-box.blue {
   background: #dbeafe;
 }

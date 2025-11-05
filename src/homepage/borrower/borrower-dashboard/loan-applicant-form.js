@@ -242,7 +242,7 @@ const loanApplicantForm = (function () {
             Passport Photograph
           </div>
           <p class="section-description">
-            Upload a recent passport-sized photograph (Maximum file size: 2MB, Format: JPG, PNG)
+            Upload a recent passport-sized photograph (Maximum file size: 2MB, Format: JPEG, JPG, PNG)
           </p>
 
           <div class="form-group">
@@ -268,7 +268,7 @@ const loanApplicantForm = (function () {
             Application Letter
           </div>
           <p class="section-description">
-            Upload your signed application letter (Maximum file size: 5MB, Format: JPEG, JPG, PDF)
+            Upload your signed application letter (Maximum file size: 5MB, Format: JPEG, JPG, PNG)
           </p>
           <div class="info-box">
           <p>
@@ -290,7 +290,7 @@ const loanApplicantForm = (function () {
           <label for="applicationLetter" class="file-upload-label">
           <div class="upload-icon">📝</div>
           <div class="upload-text">Click to upload your application letter</div>
-          <div class="upload-hint">Accepted formats: PDF, DOC, DOCX</div>
+          <div class="upload-hint">Accepted formats: JPEG, JPG, PNG</div>
           </label>
           <output class="show-message"></output>
         </div>
