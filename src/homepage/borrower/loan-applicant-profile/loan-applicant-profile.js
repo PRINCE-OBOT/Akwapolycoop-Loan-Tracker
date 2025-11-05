@@ -21,7 +21,7 @@ const addTextContentToDiv = (div) => {
         <div class="header-content">
             <div>
                 <h1>Member Profile</h1>
-                <p>MEMBERSHIP ID: <span class="membershipID">Pending</span></p> 
+                <p>MEMBERSHIP ID: <span class="membershipID"></span></p> 
             </div>
             <div class="date-box">
                 <p class="date-box-label">Application Date/Time</p>
@@ -526,11 +526,16 @@ function insertLoanApplicantDataToProfile(data) {
   guarantor2Department.textContent = membershipApplicationForm.guarantor2Department;
   guarantor2Relationship.textContent = membershipApplicationForm.guarantor2Relationship;
 
-  optionKeySection.remove();
-  console.log(membershipApplicationForm.status);
+  profileReset();
+
   applicationStatus[membershipApplicationForm.status](membershipApplicationForm);
 
   dispatchProfileEvent();
+}
+
+function profileReset() {
+  optionKeySection.remove();
+  membershipID.textContent = 'Pending';
 }
 
 function getLoanApplicantData() {

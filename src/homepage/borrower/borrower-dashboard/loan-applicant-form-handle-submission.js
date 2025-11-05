@@ -111,6 +111,7 @@ function convertPassportToDataURL() {
     };
   });
 }
+
 function insertMoreFormFieldValues(data) {
   data.membershipApplicationForm.dateAndTime = new Date();
   data.membershipApplicationForm.status = 'Pending';
@@ -161,6 +162,7 @@ function insertMoreFormFieldValues(data) {
     setValue(field);
   });
 
+  // eventBus.dispatchEvent(events)
   storeDataLoanApplicantList(data);
 }
 
