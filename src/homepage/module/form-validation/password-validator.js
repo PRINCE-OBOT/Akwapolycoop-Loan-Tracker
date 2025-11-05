@@ -102,7 +102,7 @@ export default class Password {
       validityState = 'valid';
     } else if (this.password.value !== this.confirmPassword.value) {
       validityState = 'invalid';
-      // this.confirmPasswordMessage.value = 'Password Mismatch';
+      this.confirmPasswordMessage.value = 'Password Mismatch';
       this.confirmPasswordMessage.value = 'Pin Mismatch';
     }
 

@@ -24,6 +24,7 @@ const appendProofOfPaymentToDialog = () => {
 
 const appendDepositPreferenceFormToDialog = () => {
   dialog.append(depositPreferenceForm);
+  // dialog.showModal()
 };
 
 const appendDepositFormToDialog = () => {
@@ -93,6 +94,8 @@ function DialogManager(e) {
   setDataSizeOfDialog(detail.size);
 
   dialog.showModal();
+  // debugger
+  // dialog.show();
   // dialog[detail.showType]();
 }
 
@@ -107,4 +110,4 @@ function closeDialog() {
 eventBus.addEventListener('dialog-manager', DialogManager);
 eventBus.addEventListener('manual-close-dialog', closeDialog);
 
-export default appendDialogToBody;
+export { dialog, appendDialogToBody };

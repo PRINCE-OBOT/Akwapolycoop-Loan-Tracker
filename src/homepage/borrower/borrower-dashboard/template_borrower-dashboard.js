@@ -17,7 +17,7 @@ import bindSubmitWithdrawalButton from './take-loan-submission';
 import indexDB from '../../module/indexDB/indexDB';
 
 import eventBus from '../../module/event-bus/event';
-import appendDialogToBody from '../../module/dialog/dialog-manager';
+import { appendDialogToBody } from '../../module/dialog/dialog-manager';
 import pipe from '../../module/composition/pipe';
 import MathUtility from '../../module/business-logic/mathUtility';
 import { bindDepositDocumentUploadEvent } from './loan-applicant-deposit/loan-applicant-deposit';

@@ -2,6 +2,7 @@ import handleFieldValidationLogic from '../../module/form-validation/field-valid
 
 const takeLoan = (function () {
   const form = document.createElement('form');
+  form.classList.add('withdrawal-request-form');
 
   form.innerHTML = `
   <p>We charge 5% of your Withdrawal Amount</p>

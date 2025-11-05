@@ -19,13 +19,6 @@ export default class FieldValidationUtility {
     );
 
     if (isEveryMessageValid && isEveryInputValid) {
-      this.inputs.forEach((input) => input.classList.remove('user-interact'));
-
-      this.messages.forEach((message) => {
-        message.classList.remove('valid');
-        message.textContent = '';
-      });
-
       this.runWhenAllFieldFillIsValid();
     } else {
       const invalidMessages = [...this.messages].filter(
@@ -90,6 +83,8 @@ export default class FieldValidationUtility {
     let message;
     let validityState;
 
+    // if (!field.dataset.setFieldValidationValue) return;
+    //  Check back why ✓ keeps been added to withdrawal output textContent after when the form is submitted and clear
     if (field.validity.valid && isFieldValid) {
       message = '✓';
       validityState = 'valid';

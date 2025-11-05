@@ -94,20 +94,21 @@ function displayPercentageMsg() {
   percentageMsg.textContent = `You will receive ${withdrawalAmount.value - PERCENTAGE * +withdrawalAmount.value}`;
 }
 
-let extraFieldState = false;
+let isExtraField = false;
 function toggleFieldToTakeLoan() {
-  if (!extraFieldState) {
+  if (!isExtraField) {
     fieldset.append(loanPurposeSection, monthlyWithdrawalAmountSection);
-    extraFieldState = true;
+    isExtraField = true;
   } else {
     loanPurposeSection.remove();
     monthlyWithdrawalAmountSection.remove();
-    extraFieldState = false;
+    isExtraField = false;
   }
 }
 
+let loanAmount = 0;
 function setWithdrawalMsgText(balance, data) {
-  const loanAmount = +withdrawalAmount.value - balance;
+  loanAmount = +withdrawalAmount.value - Math.abs(balance);
 
   if (loanAmount > data.preferredDepositAmount) {
     withdrawalMsg.textContent = `
@@ -116,8 +117,11 @@ function setWithdrawalMsgText(balance, data) {
 
     return;
   }
+  if (loanAmount <= 0) {
+    loanAmount = data.preferredDepositAmount - Math.abs(balance);
+  }
 
-  if (extraFieldState) {
+  if (isExtraField) {
     getRecentMemberData(isWithdrawalAndLoan);
   }
 
@@ -144,7 +148,7 @@ function addTakeLoanFieldValue(data) {
   const loanFieldValue = {
     dateAndTime: new Date(),
     status: 'Pending',
-    loanAmount: +withdrawalAmount.value - mainBalance,
+    loanAmount,
     loanAmountDynamic: 0,
     loanID: `LOAN${data?.id}-00${loanLength}`,
     loanPurpose: loanPurpose.value,

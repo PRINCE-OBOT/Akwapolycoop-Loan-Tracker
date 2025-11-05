@@ -110,3 +110,33 @@ textarea {
   box-shadow: var(--box-shadow-transparent);
   cursor: pointer;
 }
+/* withdrawal request  */
+
+.withdrawal-request-form {
+  fieldset {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    position: relative;
+    padding: 40px 10px 20px 10px;
+    border-radius: 10px;
+  }
+  .percentage-msg {
+    position: absolute;
+    top: -10px;
+    right: 10px;
+  }
+  fieldset > div {
+    flex: 1;
+  }
+  input {
+    width: 100%;
+    height: 40px;
+  }
+  .withdrawal-message {
+    margin: 20px 0 20px 0;
+  }
+  .withdrawal-message + button {
+    margin-bottom: 20px;
+  }
+}
