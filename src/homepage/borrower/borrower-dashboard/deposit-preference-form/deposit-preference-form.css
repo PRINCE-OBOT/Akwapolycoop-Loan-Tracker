@@ -29,6 +29,7 @@
 
 label {
   display: block;
+  white-space: nowrap;
   color: #2d3748;
   font-weight: 600;
   margin-bottom: 8px;

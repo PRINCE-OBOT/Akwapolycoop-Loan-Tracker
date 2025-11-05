@@ -1,5 +1,6 @@
 import MathUtility from '../../module/business-logic/mathUtility';
 import eventBus from '../../module/event-bus/event';
+import FieldValidationUtility from '../../module/form-validation/field-utility';
 import indexDB from '../../module/indexDB/indexDB';
 
 import takeLoan from './take-loan';
@@ -238,6 +239,7 @@ function isWithDrawalPinCorrect(data) {
     isMemberActiveForSixMonth(data);
   } else {
     resetForm();
+    FieldValidationUtility.resetFieldValidity(form);
     eventBus.dispatchEvent(events.failWithdrawal);
   }
 }

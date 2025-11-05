@@ -5,6 +5,7 @@ import eventBus from '../../../module/event-bus/event';
 import indexDB from '../../../module/indexDB/indexDB';
 
 import handleFieldValidationLogic from '../../../module/form-validation/field-validator';
+import FieldValidationUtility from '../../../module/form-validation/field-utility';
 
 const loanApplicantDeposit = (function () {
   const form = document.createElement('form');
@@ -174,6 +175,7 @@ function resetForm() {
   filePreview.src = '';
   fileName.textContent = 'Your Document Preview will display here.';
   loanApplicantDeposit.reset();
+  FieldValidationUtility.resetFieldValidity(loanApplicantDeposit);
 }
 
 function storeDataLoanApplicantList(data) {

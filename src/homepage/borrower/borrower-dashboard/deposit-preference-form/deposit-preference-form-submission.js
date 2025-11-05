@@ -1,4 +1,5 @@
 import eventBus from '../../../module/event-bus/event';
+import FieldValidationUtility from '../../../module/form-validation/field-utility';
 import Password from '../../../module/form-validation/password-validator';
 import preferredDepositAmountForm from './deposit-preference-form';
 
@@ -19,6 +20,7 @@ const btnSubmitPreferredDepositAmount = preferredDepositAmountForm.querySelector
 
 function resetForm() {
   form.reset();
+  FieldValidationUtility.resetFieldValidity(form);
 }
 
 const getRecentLoanApplicantIDInLocalStorage = () => {
@@ -97,4 +99,5 @@ new Password({
   confirmPassword: confirmWithdrawalPin,
   confirmPasswordMessage: confirmWithdrawalPinMsg,
 });
+
 export default bindSubmitPreferredDepositAmount;

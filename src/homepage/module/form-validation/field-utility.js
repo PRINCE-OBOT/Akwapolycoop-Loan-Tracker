@@ -35,6 +35,27 @@ export default class FieldValidationUtility {
     }
   }
 
+  static resetFieldValidity(form) {
+    const messages = form.querySelectorAll('output.show-message');
+    const inputs = form.querySelectorAll('input');
+    const textAreas = form.querySelectorAll('textarea');
+    const selects = form.querySelectorAll('select');
+
+    messages.forEach((message) => {
+      message.classList.remove('valid');
+      message.textContent = '';
+    });
+
+    const listOfInputElement = [...inputs];
+
+    if (textAreas) listOfInputElement.push(...textAreas);
+    if (selects) listOfInputElement.push(...selects);
+
+    listOfInputElement.forEach((input) => {
+      input.classList.remove('user-interact');
+    });
+  }
+
   static hasUserInteract({ field }) {
     if (field.value !== '' && !field.classList.contains('user-interact')) {
       field.classList.add('user-interact');

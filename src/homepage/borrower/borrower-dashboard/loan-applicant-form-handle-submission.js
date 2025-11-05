@@ -3,6 +3,7 @@ import indexDB from '../../module/indexDB/indexDB';
 import loanApplicantForm from './loan-applicant-form';
 
 import eventBus from '../../module/event-bus/event';
+import FieldValidationUtility from '../../module/form-validation/field-utility';
 
 const form = loanApplicantForm.querySelector('form');
 
@@ -65,6 +66,7 @@ const bindSubmitApplicationButton = () =>
 
 function resetForm() {
   form.reset();
+  FieldValidationUtility.resetFieldValidity(form);
 }
 
 function gatherData() {
