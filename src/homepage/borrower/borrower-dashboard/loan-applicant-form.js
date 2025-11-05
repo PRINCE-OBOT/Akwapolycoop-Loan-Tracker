@@ -111,7 +111,7 @@ const loanApplicantForm = (function () {
                <span class="required-asterisk">*</span>
              </label>
              <input
-               type="tel"
+               type="number"
                id="nin"
                placeholder="xxxxxxxxxxx"
                pattern="^[0-9]{11}$"
@@ -119,6 +119,40 @@ const loanApplicantForm = (function () {
                required
              />
              <output class="show-message"></output>
+            </div>  
+            
+            <div class="form-group">
+             <label for="state">
+               State
+               <span class="required-asterisk">*</span>
+             </label>
+             <input
+               type="text"
+               id="state"
+               placeholder="Akwa Ibom"
+               pattern="^.{1,}$"
+               data-set-field-validation-value="setEmptyFieldValidationValue"
+               required
+             />
+             <output class="show-message"></output>
+            </div>  
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+              <label for="lga">
+                LGA
+                <span class="required-asterisk">*</span>
+              </label>
+              <input
+                type="text"
+                id="lga"
+                placeholder="Ibeno"
+                pattern="^.{1,}$"
+                data-set-field-validation-value="setEmptyFieldValidationValue"
+                required
+              />
+              <output class="show-message"></output>
             </div>  
           </div>
 

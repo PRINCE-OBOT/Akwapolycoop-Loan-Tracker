@@ -16,6 +16,8 @@ const dateOfBirth = form.querySelector('#date-of-birth');
 const residentAddress = form.querySelector('#resident-address');
 const phoneNumber = form.querySelector('#phone-number');
 const nin = form.querySelector('#nin');
+const state = form.querySelector('#state');
+const lga = form.querySelector('#lga');
 const staffId = form.querySelector('#staffId');
 const department = form.querySelector('#department');
 const position = form.querySelector('#position');
@@ -132,6 +134,8 @@ function insertMoreFormFieldValues(data) {
     accountName,
     bankName,
     nin,
+    state,
+    lga,
     phoneNumber,
     dateOfBirth,
     residentAddress,

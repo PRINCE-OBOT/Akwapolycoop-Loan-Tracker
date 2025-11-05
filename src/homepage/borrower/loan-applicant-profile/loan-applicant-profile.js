@@ -96,11 +96,7 @@ const addTextContentToDiv = (div) => {
                 </div>
                 <div class="field">
                     <label>LGA</label>
-                    <div class="field-value">Ikeja</div>
-                </div>
-                <div class="field full-width">
-                    <label>Residential Address</label>
-                    <div class="field-value resident-address"></div>
+                    <div class="field-value lga"></div>
                 </div>
                 <div class="field full-width">
                     <label>Department</label>
@@ -117,6 +113,10 @@ const addTextContentToDiv = (div) => {
                 <div class="field full-width">
                     <label>Salary Range</label>
                     <div class="field-value salaryRange"></div>
+                </div>
+                 <div class="field full-width">
+                    <label>Residential Address</label>
+                    <div class="field-value resident-address"></div>
                 </div>
             </div>
         </div>
@@ -434,7 +434,8 @@ const employmentDate = loanApplicantProfile.querySelector('.employmentDate');
 const employmentType = loanApplicantProfile.querySelector('.employmentType');
 const salaryRange = loanApplicantProfile.querySelector('.salaryRange');
 const status = loanApplicantProfile.querySelector('.status');
-// const state = loanApplicantProfile.querySelector('.state')
+const state = loanApplicantProfile.querySelector('.state');
+const lga = loanApplicantProfile.querySelector('.lga');
 
 const guarantor1StaffId = loanApplicantProfile.querySelector('.guarantor1StaffId');
 const guarantor1Name = loanApplicantProfile.querySelector('.guarantor1Name');
@@ -485,6 +486,8 @@ function insertLoanApplicantDataToProfile(data) {
   firstName.textContent = membershipApplicationForm['first-name'];
   lastName.textContent = membershipApplicationForm['last-name'];
   email.textContent = membershipApplicationForm.email;
+  state.textContent = membershipApplicationForm.state;
+  lga.textContent = membershipApplicationForm.lga;
   phoneNumber.textContent = membershipApplicationForm['phone-number'];
   dateOfBirth.textContent = membershipApplicationForm['date-of-birth'];
   residentAddress.textContent = membershipApplicationForm['resident-address'];
