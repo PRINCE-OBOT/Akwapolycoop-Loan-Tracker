@@ -21,7 +21,7 @@ const addTextContentToDiv = (div) => {
         <div class="header-content">
             <div>
                 <h1>Member Profile</h1>
-                <!-- <p class="header-id">Application ID: LA-2025-<span id="appId"></span></p> -->
+                <p>MEMBERSHIP ID: <span class="membershipID">Pending</span></p> 
             </div>
             <div class="date-box">
                 <p class="date-box-label">Application Date/Time</p>
@@ -436,6 +436,7 @@ const salaryRange = loanApplicantProfile.querySelector('.salaryRange');
 const status = loanApplicantProfile.querySelector('.status');
 const state = loanApplicantProfile.querySelector('.state');
 const lga = loanApplicantProfile.querySelector('.lga');
+const membershipID = loanApplicantProfile.querySelector('.membershipID');
 
 const guarantor1StaffId = loanApplicantProfile.querySelector('.guarantor1StaffId');
 const guarantor1Name = loanApplicantProfile.querySelector('.guarantor1Name');
@@ -457,11 +458,6 @@ const errorGettingData = () => {
   console.log('Error getting data');
 };
 
-function checkStatusOfProfile(membershipApplicationForm) {
-  optionKeySection.remove();
-  if (membershipApplicationForm.status === 'Pending') footer.append(optionKeySection);
-}
-
 const getDate = (dateAndTime) => {
   const date = format(dateAndTime, 'yyyy-MM-dd');
   return date;
@@ -470,6 +466,16 @@ const getDate = (dateAndTime) => {
 const getTime = (dateAndTime) => {
   const time = format(dateAndTime, 'HH:mm:ss');
   return time;
+};
+
+const applicationStatus = {
+  Pending: () => footer.append(optionKeySection),
+  Approve: (membershipApplicationForm) => {
+    membershipID.textContent = membershipApplicationForm.membershipID;
+  },
+  Decline: () => {
+    membershipID.textContent = 'Decline';
+  },
 };
 
 function insertLoanApplicantDataToProfile(data) {
@@ -520,7 +526,10 @@ function insertLoanApplicantDataToProfile(data) {
   guarantor2Department.textContent = membershipApplicationForm.guarantor2Department;
   guarantor2Relationship.textContent = membershipApplicationForm.guarantor2Relationship;
 
-  checkStatusOfProfile(membershipApplicationForm);
+  optionKeySection.remove();
+  console.log(membershipApplicationForm.status);
+  applicationStatus[membershipApplicationForm.status](membershipApplicationForm);
+
   dispatchProfileEvent();
 }
 
