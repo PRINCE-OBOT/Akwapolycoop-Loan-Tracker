@@ -106,33 +106,31 @@ function toggleFieldToTakeLoan() {
   }
 }
 
-let loanAmount = 0;
-function setWithdrawalMsgText(balance, data) {
-  loanAmount = +withdrawalAmount.value - Math.abs(balance);
-
-  if (loanAmount > data.preferredDepositAmount) {
-    withdrawalMsg.textContent = `
-    Your withdrawal amount has exceed your balance and preferred monthly deposit. 
-    An addition of ${loanAmount - data.preferredDepositAmount}`;
-
-    return;
-  }
-  if (loanAmount <= 0) {
-    loanAmount = data.preferredDepositAmount - Math.abs(balance);
-  }
-
-  if (isExtraField) {
-    getRecentMemberData(isWithdrawalAndLoan);
-  }
-
+function hasExceedMaxWithdrawalAmount(value) {
   withdrawalMsg.textContent = `
-  Your withdrawal amount has exceeded your balance. You will be taken a loan of ${loanAmount}. 
+    Your withdrawal amount has exceed your balance and preferred monthly deposit. 
+    An addition of ${value}`;
+}
+
+function hasExceedBalance() {
+  withdrawalMsg.textContent = `
+  Your withdrawal amount has exceeded your balance. You will be taken a loan of ${loan}. 
   Click toggle take Loan to continue`;
   appendButtonToTakenLoan();
 }
 
+function isLoanFieldInForm() {
+  const isLoanPurposeInform = form.querySelector('#loan-purpose');
+  if (isLoanPurposeInform) getRecentMemberData(isWithdrawalAndLoan);
+}
+
 function appendButtonToTakenLoan() {
   withdrawalMsg.after(btnTakeLoan);
+}
+
+function clearMessage() {
+  withdrawalMsg.textContent = '';
+  btnTakeLoan.remove();
 }
 
 function isOnlyWithdrawal(data) {
@@ -140,6 +138,7 @@ function isOnlyWithdrawal(data) {
   storeDataLoanApplicantList(result);
 }
 
+let loan;
 function addTakeLoanFieldValue(data) {
   if (!data.loan) data.loan = [];
 
@@ -148,7 +147,7 @@ function addTakeLoanFieldValue(data) {
   const loanFieldValue = {
     dateAndTime: new Date(),
     status: 'Pending',
-    loanAmount,
+    loanAmount: loan,
     loanAmountDynamic: 0,
     loanID: `LOAN${data?.id}-00${loanLength}`,
     loanPurpose: loanPurpose.value,
@@ -193,10 +192,30 @@ function addFieldValueToData(data) {
 
 function isWithdrawalAmountGreaterThanBalance(balance, data) {
   mainBalance = balance;
-  if (+withdrawalAmount.value > balance) {
-    setWithdrawalMsgText(balance, data);
-  } else {
+  const amount = +withdrawalAmount.value;
+  let maxWithdrawalAmount = balance + data.preferredDepositAmount;
+
+  clearMessage();
+
+  if (amount > maxWithdrawalAmount) {
+    hasExceedMaxWithdrawalAmount(amount - maxWithdrawalAmount);
+  } else if (balance > 0 && amount > balance && amount <= data.preferredDepositAmount) {
+    loan = amount - balance;
+    hasExceedBalance();
+    isLoanFieldInForm();
+  } else if (amount <= balance && amount > 100) {
     getRecentMemberData(isOnlyWithdrawal);
+  } else if (balance <= 0) {
+    maxWithdrawalAmount = data.preferredDepositAmount - Math.abs(balance);
+
+    if (amount > maxWithdrawalAmount) {
+      hasExceedMaxWithdrawalAmount(amount - maxWithdrawalAmount);
+      return;
+    }
+
+    loan = amount;
+    hasExceedBalance();
+    isLoanFieldInForm();
   }
 }
 
