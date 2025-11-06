@@ -1,4 +1,5 @@
 import eventBus from '../../module/event-bus/event';
+import FieldValidationUtility from '../../module/form-validation/field-utility';
 import handleFieldValidationLogic from '../../module/form-validation/field-validator';
 import indexDB from '../../module/indexDB/indexDB';
 
@@ -36,6 +37,7 @@ const adminVerificationForm = (function createAdminVerificationForm() {
   return div;
 })();
 
+const form = adminVerificationForm.querySelector('form');
 const btnVerifyAdmin = adminVerificationForm.querySelector('.btn-verify-admin');
 const password = adminVerificationForm.querySelector('#password');
 
@@ -73,8 +75,14 @@ function getAdminData() {
   );
 }
 
+function resetForm() {
+  form.reset();
+  FieldValidationUtility.resetFieldValidity(form);
+}
+
 function isPasswordCorrect(data) {
   if (data.signUpData.password === password.value) {
+    resetForm();
     eventBus.dispatchEvent(events.pinSuccess);
   } else {
     eventBus.dispatchEvent(events.pinFail);

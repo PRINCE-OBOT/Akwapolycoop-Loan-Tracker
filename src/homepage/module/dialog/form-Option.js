@@ -75,7 +75,7 @@ const events = {
 function isActionPreferredDepositAmount() {
   const action = getActionFromLocalStorage();
 
-  if (action.firstKey[0] === 'preferredDepositAmount')
+  if (action?.firstKey[0] === 'preferredDepositAmount')
     eventBus.dispatchEvent(events.displayPreferredDepForm);
 }
 
