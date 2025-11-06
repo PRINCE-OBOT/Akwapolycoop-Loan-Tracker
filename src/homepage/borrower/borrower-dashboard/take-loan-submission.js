@@ -29,24 +29,24 @@ const loanPurposeSection = (function createLoanPurpose() {
   return div;
 })();
 
-const monthlyWithdrawalAmountSection = (function createMonthlyWithdrawalAmount() {
+const monthlyWithdrawalTimesSection = (function createmonthlyWithdrawalTimes() {
   const div = document.createElement('div');
-  div.classList.add('monthly-withdrawal-amount');
+  div.classList.add('monthly-withdrawal-times');
 
   div.innerHTML = `
-    <label for="monthly-withdrawal-amount">
-    Monthly Withdrawal Amount
+    <label for="monthly-withdrawal-times">
+    Monthly Withdrawal Times
     <span class="required-asterisk">*</span>
     </label>
     <input
       type="number"
-      id="monthly-withdrawal-amount"
-      placeholder="e.g 10000"
+      id="monthly-withdrawal-times"
+      placeholder="e.g 2"
       pattern="^.{1,}$"
       data-set-field-validation-value="setPatternForEmptyField"
       required
     />
-    <output id="monthly-withdrawal-amount-message" class="show-message"></output>
+    <output class="show-message"></output>
     `;
 
   return div;
@@ -58,8 +58,8 @@ const withdrawalPin = form.querySelector('#withdraw-pin');
 const withdrawalMsg = form.querySelector('.withdrawal-message');
 const percentageMsg = form.querySelector('.percentage-msg');
 const btnSubmitWithdrawal = form.querySelector('.btn-submit-withdrawal');
-const monthWithdrawalAmount = monthlyWithdrawalAmountSection.querySelector(
-  '#monthly-withdrawal-amount',
+const monthWithdrawalTimes = monthlyWithdrawalTimesSection.querySelector(
+  '#monthly-withdrawal-times',
 );
 const loanPurpose = loanPurposeSection.querySelector('#loan-purpose');
 
@@ -98,11 +98,11 @@ function displayPercentageMsg() {
 let isExtraField = false;
 function toggleFieldToTakeLoan() {
   if (!isExtraField) {
-    fieldset.append(loanPurposeSection, monthlyWithdrawalAmountSection);
+    fieldset.append(loanPurposeSection, monthlyWithdrawalTimesSection);
     isExtraField = true;
   } else {
     loanPurposeSection.remove();
-    monthlyWithdrawalAmountSection.remove();
+    monthlyWithdrawalTimesSection.remove();
     isExtraField = false;
   }
 }
@@ -122,7 +122,9 @@ function hasExceedBalance() {
 
 function isLoanFieldInForm() {
   const isLoanPurposeInform = form.querySelector('#loan-purpose');
-  if (isLoanPurposeInform) getRecentMemberData(isWithdrawalAndLoan);
+  if (isLoanPurposeInform) {
+    getRecentMemberData(isWithdrawalAndLoan);
+  }
 }
 
 function appendButtonToTakenLoan() {
@@ -144,6 +146,8 @@ function addTakeLoanFieldValue(data) {
   if (!data.loan) data.loan = [];
 
   const loanLength = data.loan.length;
+  const withdrawalTimes = +monthWithdrawalTimes.value;
+  const monthlyWithdrawalAmount = loan / withdrawalTimes;
 
   const loanFieldValue = {
     dateAndTime: new Date(),
@@ -152,7 +156,8 @@ function addTakeLoanFieldValue(data) {
     loanAmountDynamic: 0,
     loanID: `LOAN${data?.id}-00${loanLength}`,
     loanPurpose: loanPurpose.value,
-    monthlyWithdrawalAmount: monthWithdrawalAmount.value,
+    monthlyWithdrawalTimes: withdrawalTimes,
+    monthlyWithdrawalAmount,
   };
 
   data.loan.push(loanFieldValue);
@@ -239,7 +244,6 @@ function isWithDrawalPinCorrect(data) {
     isMemberActiveForSixMonth(data);
   } else {
     resetForm();
-    FieldValidationUtility.resetFieldValidity(form);
     eventBus.dispatchEvent(events.failWithdrawal);
   }
 }
@@ -274,6 +278,7 @@ function getRecentMemberData(callback) {
 }
 function resetForm() {
   takeLoan.reset();
+  FieldValidationUtility.resetFieldValidity(form);
 }
 
 function withdrawalSuccessful() {

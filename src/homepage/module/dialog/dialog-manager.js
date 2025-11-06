@@ -104,7 +104,7 @@ function DialogManager(e) {
   // dialog[detail.showType]();
 }
 
-function setDataSizeOfDialog(size = 'small') {
+function setDataSizeOfDialog(size = 'medium') {
   dialog.setAttribute('data-size', size);
 }
 

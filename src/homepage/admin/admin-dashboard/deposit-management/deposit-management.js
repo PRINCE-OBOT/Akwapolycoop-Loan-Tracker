@@ -192,9 +192,9 @@ const getProofOfPaymentActionData = (e) => {
   storeActionToLocalStorage(obj);
 };
 
-const storeActionToLocalStorage = (obj) => {
+function storeActionToLocalStorage(obj) {
   localStorage.setData(obj);
-};
+}
 
 const DBKeyHandler = {
   deposit: getClickTrLoanApplicantData,
@@ -270,6 +270,26 @@ const appendTrToTbody = (tr) => {
 
 function showAdminVerificationForm() {
   eventBus.dispatchEvent(events.adminVerification);
+}
+
+function getMassDepositAction() {
+  const obj = {
+    key: 'action',
+    data: {
+      action: 'massModifyData',
+    },
+  };
+  return obj;
+}
+
+function handleMassDepositActionStorage() {
+  const massDepositAction = getMassDepositAction();
+  storeActionToLocalStorage(massDepositAction);
+}
+
+function handleCreateMassDeposit() {
+  showAdminVerificationForm();
+  handleMassDepositActionStorage();
 }
 
 function insertDepositDataToTable(depositList) {
@@ -383,7 +403,7 @@ function filterLoanApplicantByStatus(e) {
   });
 }
 
-btnCreateMassDeposit.addEventListener('click', showAdminVerificationForm);
+btnCreateMassDeposit.addEventListener('click', handleCreateMassDeposit);
 searchStatus.addEventListener('change', filterLoanApplicantByStatus);
 searchBar.addEventListener('input', filterLoanApplicantByDepositID);
 tbody.addEventListener('click', handleOptionContent);

@@ -85,6 +85,7 @@ function isPasswordCorrect(data) {
     resetForm();
     eventBus.dispatchEvent(events.pinSuccess);
   } else {
+    // Do not reset form when password is incorrect so you can see your mistake in password
     eventBus.dispatchEvent(events.pinFail);
   }
 }

@@ -14,6 +14,7 @@ import eventBus from '../../module/event-bus/event';
 import { bindDepositDocumentUploadEvent } from '../../borrower/borrower-dashboard/loan-applicant-deposit/loan-applicant-deposit';
 import bindAllFieldValidEvent from '../../borrower/borrower-dashboard/is-all-field-valid';
 import pipe from '../../module/composition/pipe';
+import bindMassModifyIndexedDB from './mass-modify-indexedDB';
 
 const headerBottomSection = document.querySelector('.header_bottom-section');
 const contentHolder = document.querySelector('.content-holder');
@@ -25,6 +26,7 @@ registerLocalStorageCustomMethod();
 
 bindDepositDocumentUploadEvent();
 bindAllFieldValidEvent();
+bindMassModifyIndexedDB();
 
 appendDialogToBody.prototype.body = document.body;
 appendDialogToBody();

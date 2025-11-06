@@ -3,6 +3,7 @@ import './proof-of-payment.css';
 import { format } from 'date-fns';
 import eventBus from '../../../module/event-bus/event';
 import indexDB from '../../../module/indexDB/indexDB';
+import approveImg from '../../../assets/images/approve-loan.svg';
 
 const proofOfPayment = (function createProofOfPayment() {
   const form = document.createElement('form');
@@ -73,7 +74,7 @@ const insertDepositProofOfPayment = (data) => {
   const date = getDate(result.dateAndTime);
   const time = getTime(result.dateAndTime);
 
-  proofOfPaymentPreview.src = result.proofOfPayment;
+  proofOfPaymentPreview.src = result.massDeposit ? approveImg : result.proofOfPayment;
   dateOfPayment.textContent = date;
   timeOfPayment.textContent = time;
 

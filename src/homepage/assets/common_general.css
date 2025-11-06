@@ -77,6 +77,8 @@ button {
   padding: 4px 8px;
   border-radius: 10px;
   border: none;
+  color: var(--white);
+  background-color: var(--dark-yellow);
   box-shadow: var(--box-shadow);
 }
 a {
