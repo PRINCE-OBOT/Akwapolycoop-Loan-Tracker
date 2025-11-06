@@ -9,39 +9,14 @@ function displayStoreMsg() {
   alert('store');
 }
 
-function storeDeposit(deposit) {
-  indexDB.interact(
-    {
-      storeName: 'loan-applicant-list',
-      data: deposit,
-      trueState: getAllMember,
-      undefinedState: error,
-    },
-    'storeData',
-  );
-}
-
-function addDeposit({ obj, depositAmount }) {
-  if (!obj.deposit) obj.deposit = [];
-
-  const depositLength = obj.deposit.length;
-
-  const deposit = {
-    dateAndTime: new Date(),
-    status: 'Approve',
-    depositAmount,
-    depositAmountDynamic: depositAmount,
-    depositID: `DEP${obj?.id}-00${depositLength}`,
-    massDeposit: true,
-  };
-
-  obj.deposit.push(deposit);
-}
+// Iterate through every member that has set a preferred deposit amount
+// If they don't have a loan, the preferred deposit amount get stored as his/her deposit amount
+// If they have a loan, check if their is any loan that is approve and not paid completely
+// If their is none, move on, else update the `loanAmount` to be `loanAmount` - `monthlyDepositAmount`
 
 let i = 0;
 function insertDepositData(data) {
   if (i >= data.length) {
-    console.log(i, data.length);
     displayStoreMsg();
     return;
   }
@@ -84,6 +59,35 @@ function insertDepositData(data) {
 
   i += 1;
   storeDeposit(obj);
+}
+
+function addDeposit({ obj, depositAmount }) {
+  if (!obj.deposit) obj.deposit = [];
+
+  const depositLength = obj.deposit.length;
+
+  const deposit = {
+    dateAndTime: new Date(),
+    status: 'Approve',
+    depositAmount,
+    depositAmountDynamic: depositAmount,
+    depositID: `DEP${obj?.id}-00${depositLength}`,
+    massDeposit: true,
+  };
+
+  obj.deposit.push(deposit);
+}
+
+function storeDeposit(deposit) {
+  indexDB.interact(
+    {
+      storeName: 'loan-applicant-list',
+      data: deposit,
+      trueState: getAllMember,
+      undefinedState: error,
+    },
+    'storeData',
+  );
 }
 
 function getAllMember() {

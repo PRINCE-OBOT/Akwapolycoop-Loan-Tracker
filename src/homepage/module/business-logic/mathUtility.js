@@ -1,57 +1,6 @@
-import { addDays, differenceInDays } from 'date-fns';
 import indexDB from '../indexDB/indexDB';
 
-const PERCENTAGE = 0.5 / 100;
-//  0.3333/100 * amount(30000) =  99.999 per day accumulated
-
-const getDifferenceInDays = (actionDate) =>
-  // const futureDay = addDays(new Date(), 4);
-
-  // differenceInDays(new Date(), actionDate);
-  differenceInDays(addDays(new Date(), 4), actionDate);
 class MathUtility {
-  static outstandingBalance(id, callback) {
-    const calculateOutstandingBalance = (approveAndIncompleteLoan) => {
-      const outstandingBalance = approveAndIncompleteLoan.reduce((accumulator, currentObject) => {
-        const interest =
-          currentObject.outstandingBalance *
-          PERCENTAGE *
-          getDifferenceInDays(currentObject.actionDate);
-
-        const repayment = interest + currentObject.outstandingBalance;
-
-        accumulator += Math.round(repayment * 100) / 100;
-
-        return accumulator;
-      }, 0);
-
-      callback(outstandingBalance);
-    };
-
-    const filterApproveAndIncompleteLoan = (data) => {
-      if (!data.takeLoan) return;
-
-      const approveAndIncompleteLoan = data.takeLoan.filter(
-        (loan) => loan.status === 'Approve' && loan.paidStatus === 'Incomplete',
-      );
-
-      calculateOutstandingBalance(approveAndIncompleteLoan);
-    };
-
-    (function getRecentLoanApplicantDataFromIndexedDB() {
-      indexDB.interact(
-        {
-          storeName: 'loan-applicant-list',
-          keyPathValue: id,
-          getMethod: 'get',
-          returnData: filterApproveAndIncompleteLoan,
-          undefinedState: errorGettingData,
-        },
-        'getData',
-      );
-    })();
-  }
-
   static balance({ data, callback }) {
     const deposit = data.deposit;
     const loan = data.loan;
@@ -81,26 +30,33 @@ class MathUtility {
     callback(balance, data);
   }
 
+  // If member has deposit, check if their is any deposit that is approve and can be use to subtract
+  // If it exist, get that deposit, use the withdrawal amount and subtract the depositAmountDynamic,
+  // depositAmountDynamic - is a duplicate of the real deposit amount that is use for calculation
+  // If the balance is more than 0, make `depositAmountDynamic` to be 0, initially depositAmountDynamic will be the deposit amount.
+  // That way when member balance is been accumulated from database using the depositAmountDynamic and loanAmountDynamic
+  // Their will be a reduction in member balance.
+  // When the balance return a negative number that means the withdrawal amount is exhausted
+  // So the `depositAmountDynamic` becomes Math.abs(negativeNumber)
+
   static withdrawalApprove({ id, withdrawalAmount }) {
     const filterApproveAndUnpaidDeposit = (data) => {
       if (!data.deposit) return;
 
       for (let i = 0; i < data.deposit.length; i++) {
-        if (data.deposit[i].status !== 'Approve' || data.deposit[i].depositAmountDynamic <= 0)
-          continue;
+        if (data.deposit[i].status === 'Approve' && data.deposit[i].depositAmountDynamic !== 0) {
+          const balance = withdrawalAmount - data.deposit[i].depositAmountDynamic;
 
-        const balance = withdrawalAmount - data.deposit[i].depositAmountDynamic;
+          if (balance >= 0) {
+            data.deposit[i].depositAmountDynamic = 0;
+          } else {
+            const newDepositAmount = Math.abs(balance);
+            data.deposit[i].depositAmountDynamic = newDepositAmount;
+            return;
+          }
 
-        // Amount greater than 0 means you have withdraw all amount from that deposit
-        if (balance >= 0) {
-          data.deposit[i].depositAmountDynamic = 0;
-        } else {
-          const newDepositAmount = Math.abs(balance);
-          data.deposit[i].depositAmountDynamic = newDepositAmount;
-          break;
+          withdrawalAmount = balance;
         }
-
-        withdrawalAmount = balance;
       }
 
       const store = () => {
@@ -132,20 +88,15 @@ class MathUtility {
     })();
   }
 
+  // If member has taken loan, check if their is any loan that is approve and not paid completely
+  // If it exist get that loan, use the amount deposit and subtract the loan,
+  // If the balance is more than 0, make `depositAmount` to be balance value as it amount could pay off another loan,
+  // When the balance return a negative number that means the deposit amount could not pay off the entire loan amount
+  // So the `loanAmount` becomes Math.abs(negativeNumber),  and the deposit amount becomes 0
+
   static depositApprove({ id, depositAmount, depositID }) {
     let balance;
     const filterApproveAndUnpaidLoan = (data) => {
-      function setDepositAmountDynamic() {
-        if (!data.deposit) return;
-
-        for (let i = 0; i < data.deposit.length; i++) {
-          if (data.deposit[i].depositID === depositID) {
-            data.deposit[i].depositAmountDynamic = balance;
-            break;
-          }
-        }
-      }
-
       if (!data.loan) return;
 
       for (let i = 0; i < data.loan.length; i++) {
@@ -157,8 +108,8 @@ class MathUtility {
           } else {
             const newLoanAmount = Math.abs(balance);
             data.loan[i].loanAmountDynamic = newLoanAmount;
-
-            break;
+            balance = 0;
+            return;
           }
 
           depositAmount = balance;
@@ -167,7 +118,16 @@ class MathUtility {
 
       balance = balance === undefined ? depositAmount : balance;
 
-      setDepositAmountDynamic(balance);
+      (function setDepositAmountDynamic() {
+        if (!data.deposit) return;
+
+        for (let i = 0; i < data.deposit.length; i++) {
+          if (data.deposit[i].depositID === depositID) {
+            data.deposit[i].depositAmountDynamic = balance;
+            break;
+          }
+        }
+      })();
 
       const store = () => {
         console.log('Successfully Updated deposit');
