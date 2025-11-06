@@ -98,7 +98,7 @@ export default class Password {
     let validityState;
 
     if (this.password.value === this.confirmPassword.value) {
-      this.confirmPasswordMessage.value = '✓';
+      this.confirmPasswordMessage.innerHTML = '&#9864;';
       validityState = 'valid';
     } else if (this.password.value !== this.confirmPassword.value) {
       validityState = 'invalid';

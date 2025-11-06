@@ -1,5 +1,6 @@
-// import eventBus from '../../module/event-bus/event';
+import eventBus from '../../module/event-bus/event';
 import handleFieldValidationLogic from '../../module/form-validation/field-validator';
+import indexDB from '../../module/indexDB/indexDB';
 
 const adminVerificationForm = (function createAdminVerificationForm() {
   const div = document.createElement('div');
@@ -13,20 +14,20 @@ const adminVerificationForm = (function createAdminVerificationForm() {
 
         <form class="preferred-deposit-form" id="depositForm" novalidate>
 
-            <div class="withdrawal-pin">
-              <label for="withdrawal-pin">
-                Withdrawal Pin
+            <div class="password">
+              <label for="password">
+                Password
                 <span class="required-asterisk">*</span>
               </label>
               <input
                 type="number"
-                id="withdrawal-pin"
-                placeholder="e.g 9182"
-                pattern="^.{4}$"
-                data-set-field-validation-value
+                id="password"
+                placeholder="xxxxxx"
+                pattern="^.{1,}$"
+                data-set-field-validation-value="setEmptyFieldValidationValue"
                 required
               />
-              <output id="withdrawal-pin-message" class="show-message"></output>
+              <output id="password-message" class="show-message"></output>
             </div>
 
             <button type="button" class="btn-verify-admin">Verify</button>
@@ -35,21 +36,56 @@ const adminVerificationForm = (function createAdminVerificationForm() {
   return div;
 })();
 
-// const btnVerifyAdmin = adminVerificationForm.querySelector('.btn-verify-admin');
+const btnVerifyAdmin = adminVerificationForm.querySelector('.btn-verify-admin');
+const password = adminVerificationForm.querySelector('#password');
 
-// const Event = ({contentKey = ''}) =>
-//   new CustomEvent('dialog-manager', {
-//       detail: {
-//       contentKey,
-//       closedByValue: 'any',
-//     },
-//   });
+const submitAdminVerificationForm = new CustomEvent('all-field-valid', {
+  detail: {
+    form: adminVerificationForm,
+    functionToGetDataInIndexBD: getAdminData,
+  },
+});
 
-// const events = {
-//     adminVerificationForm: Event({}),
-// };
+const Event = ({ contentKey = 'question', text }) =>
+  new CustomEvent('dialog-manager', {
+    detail: {
+      contentKey,
+      closedByValue: 'any',
+      text,
+    },
+  });
 
-// btnVerifyAdmin.addEventListener('click', )
+const events = {
+  pinSuccess: Event({ text: 'approve the mass deposit' }),
+  pinFail: Event({ contentKey: 'status', text: 'Incorrect Password' }),
+};
+
+function getAdminData() {
+  indexDB.interact(
+    {
+      storeName: 'admin',
+      keyPathValue: 1,
+      getMethod: 'get',
+      returnData: isPasswordCorrect,
+      undefineState: errorWhileGettingData,
+    },
+    'getData',
+  );
+}
+
+function isPasswordCorrect(data) {
+  if (data.signUpData.password === password.value) {
+    eventBus.dispatchEvent(events.pinSuccess);
+  } else {
+    eventBus.dispatchEvent(events.pinFail);
+  }
+}
+
+function errorWhileGettingData() {
+  console.log('Error while getting data');
+}
+
+btnVerifyAdmin.addEventListener('click', () => eventBus.dispatchEvent(submitAdminVerificationForm));
 
 adminVerificationForm.addEventListener('input', handleFieldValidationLogic);
 

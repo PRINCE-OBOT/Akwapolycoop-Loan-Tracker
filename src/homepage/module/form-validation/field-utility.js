@@ -107,14 +107,14 @@ export default class FieldValidationUtility {
     // if (!field.dataset.setFieldValidationValue) return;
     //  Check back why ✓ keeps been added to withdrawal output textContent after when the form is submitted and clear
     if (field.validity.valid && isFieldValid) {
-      message = '✓';
+      message = '&#9864;';
       validityState = 'valid';
     } else {
       message = msg;
       validityState = 'invalid';
     }
 
-    if (message) fieldMessage.textContent = message;
+    if (message) fieldMessage.innerHTML = message;
 
     this.colorCustomMessage({
       msgToColor: fieldMessage,
