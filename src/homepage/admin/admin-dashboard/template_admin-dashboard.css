@@ -75,3 +75,11 @@ main {
 .content-holder {
   flex: 1;
 }
+/* Deposit Management */
+
+.btn-create-mass-deposit {
+  background: var(--clr-invalid);
+  color: var(--transparent-white);
+  display: block;
+  margin: 20px 0 0 auto;
+}

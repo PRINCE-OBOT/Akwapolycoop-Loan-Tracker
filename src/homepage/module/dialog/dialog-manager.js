@@ -5,6 +5,7 @@ import loanApplicantProfile from '../../borrower/loan-applicant-profile/loan-app
 import { proofOfPayment } from '../../admin/admin-dashboard/proof-of-payment/proof-of-payment';
 import { loanApplicantDeposit } from '../../borrower/borrower-dashboard/loan-applicant-deposit/loan-applicant-deposit';
 import depositPreferenceForm from '../../borrower/borrower-dashboard/deposit-preference-form/deposit-preference-form';
+import adminVerificationForm from '../../admin/admin-dashboard/verification-form';
 
 const dialog = (function createDialogElement() {
   return document.createElement('dialog');
@@ -24,7 +25,10 @@ const appendProofOfPaymentToDialog = () => {
 
 const appendDepositPreferenceFormToDialog = () => {
   dialog.append(depositPreferenceForm);
-  // dialog.showModal()
+};
+
+const appendAdminVerificationFormToDialog = () => {
+  dialog.append(adminVerificationForm);
 };
 
 const appendDepositFormToDialog = () => {
@@ -56,6 +60,7 @@ const dialogContentHandler = {
   proof: appendProofOfPaymentToDialog,
   depositForm: appendDepositFormToDialog,
   depositPreferenceForm: appendDepositPreferenceFormToDialog,
+  adminVerification: appendAdminVerificationFormToDialog,
   // previousContent: appendPreviousContent,
 };
 

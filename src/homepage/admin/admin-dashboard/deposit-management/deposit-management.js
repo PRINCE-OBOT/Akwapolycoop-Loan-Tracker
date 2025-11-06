@@ -10,7 +10,7 @@ const depositManagement = (function createDepositManagementContent() {
 
   div.innerHTML = `
             <h5 class="brief-text">Oversee and manage all loan applications within the system.</h5>
-
+            <button type="button" class="btn-create-mass-deposit">Create Mass Deposit</button>  
             <div class="filter-section">
               <h3>Filter Loans</h3>
               <p>Find specific loans by it status</p>
@@ -61,31 +61,33 @@ const numberOfDeposit = depositManagement.querySelector('.number-of-deposit');
 const searchBar = depositManagement.querySelector('input[type=search]');
 const searchStatus = depositManagement.querySelector('.search-status');
 const tbody = depositManagement.querySelector('tbody');
+const btnCreateMassDeposit = depositManagement.querySelector('.btn-create-mass-deposit');
 
 function setNumberOfDepositValue(value) {
   numberOfDeposit.textContent = value;
 }
 
-const question = (text) =>
+const Event = ({ text, contentKey = 'question' }) =>
   new CustomEvent('dialog-manager', {
     detail: {
-      contentKey: 'question',
+      contentKey,
       closedByValue: 'any',
       text,
     },
   });
 
-const questionEvent = {
-  approve: question('approve the deposit?'),
-  decline: question('decline the deposit?'),
+const events = {
+  approve: Event({ text: 'approve the deposit?' }),
+  decline: Event({ text: 'decline the deposit?' }),
+  adminVerification: Event({ contentKey: 'adminVerification' }),
 };
 
 const showDepositApproveOption = () => {
-  eventBus.dispatchEvent(questionEvent.approve);
+  eventBus.dispatchEvent(events.approve);
 };
 
 const showDepositDeclineOption = () => {
-  eventBus.dispatchEvent(questionEvent.decline);
+  eventBus.dispatchEvent(events.decline);
 };
 
 const OptionHandler = {
@@ -266,6 +268,10 @@ const appendTrToTbody = (tr) => {
   tbody.append(tr);
 };
 
+function showAdminVerificationForm() {
+  eventBus.dispatchEvent(events.adminVerification);
+}
+
 function insertDepositDataToTable(depositList) {
   tbody.innerHTML = '';
 
@@ -377,6 +383,7 @@ function filterLoanApplicantByStatus(e) {
   });
 }
 
+btnCreateMassDeposit.addEventListener('click', showAdminVerificationForm);
 searchStatus.addEventListener('change', filterLoanApplicantByStatus);
 searchBar.addEventListener('input', filterLoanApplicantByDepositID);
 tbody.addEventListener('click', handleOptionContent);

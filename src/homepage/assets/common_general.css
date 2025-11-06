@@ -73,6 +73,12 @@ header {
 .logo-section img {
   height: 50px;
 }
+button {
+  padding: 4px 8px;
+  border-radius: 10px;
+  border: none;
+  box-shadow: var(--box-shadow);
+}
 a {
   text-decoration: none;
   color: var(--dark-yellow);
@@ -135,7 +141,7 @@ a {
   transition: 300ms;
 }
 :where(button, a):active {
-  transform: scale(0.8);
+  transform: scale(0.9);
 }
 :where(button, a):hover {
   opacity: 0.8;
