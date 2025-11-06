@@ -3,7 +3,6 @@ import indexDB from '../indexDB/indexDB';
 class MathUtility {
   static balance({ data, callback }) {
     const deposit = data.deposit;
-    const loan = data.loan;
 
     if (!deposit) return;
 
@@ -16,18 +15,7 @@ class MathUtility {
       0,
     );
 
-    const activeLoan = loan?.filter(
-      (item) => item.loanAmountDynamic !== 0 && item.status === 'Approve',
-    );
-
-    const activeLoanBalance = activeLoan?.reduce(
-      (acc, current) => acc + current.loanAmountDynamic,
-      0,
-    );
-
-    const balance = activeDepositBalance - (activeLoanBalance || 0);
-
-    callback(balance, data);
+    callback(activeDepositBalance, data);
   }
 
   // If member has deposit, check if their is any deposit that is approve and can be use to subtract
@@ -95,35 +83,47 @@ class MathUtility {
   // So the `loanAmount` becomes Math.abs(negativeNumber),  and the deposit amount becomes 0
 
   static depositApprove({ id, depositAmount, depositID }) {
-    let balance;
+    let monthlyWithdrawalAmountSum = 0;
+
     const filterApproveAndUnpaidLoan = (data) => {
       if (!data.loan) return;
 
       for (let i = 0; i < data.loan.length; i++) {
-        if (data.loan[i].status === 'Approve' && data.loan[i].loanAmountDynamic !== 0) {
-          balance = depositAmount - data.loan[i].loanAmountDynamic;
+        const loan = data.loan[i];
 
-          if (balance >= 0) {
-            data.loan[i].loanAmountDynamic = 0;
+        // if (loan.status === 'Approve' && loan.loanAmountDynamic !== 0)
+        if (loan.status === 'Approve' && loan.loanAmountDynamic !== 0) {
+          const newLoanAmountDynamic = loan.loanAmountDynamic - loan.monthlyWithdrawalAmount;
+
+          if (newLoanAmountDynamic >= 0) {
+            // This prevent case when the deposited amount is smaller than the monthlyWithdrawalAmount
+            // e.g Member deposit 500, and the next expression is loanAmountDynamic (1000) - monthlyWithdrawalAmount (600)
+            // In the above case the loanAmount get subtract for what the member did'nt pay for.
+
+            monthlyWithdrawalAmountSum += loan.monthlyWithdrawalAmount;
+
+            if (monthlyWithdrawalAmountSum > depositAmount) {
+              const owingBalance = loan.loanAmountDynamic - loan.monthlyWithdrawalAmount;
+              loan.loanAmountDynamic = owingBalance + (monthlyWithdrawalAmountSum - depositAmount);
+              break;
+            }
+
+            loan.loanAmountDynamic = newLoanAmountDynamic;
           } else {
-            const newLoanAmount = Math.abs(balance);
-            data.loan[i].loanAmountDynamic = newLoanAmount;
-            balance = 0;
-            return;
+            loan.loanAmountDynamic = 0;
           }
-
-          depositAmount = balance;
         }
       }
-
-      balance = balance === undefined ? depositAmount : balance;
 
       (function setDepositAmountDynamic() {
         if (!data.deposit) return;
 
+        const amount = depositAmount - monthlyWithdrawalAmountSum;
+        const depositAmountDynamic = amount <= 0 ? 0 : amount;
+
         for (let i = 0; i < data.deposit.length; i++) {
           if (data.deposit[i].depositID === depositID) {
-            data.deposit[i].depositAmountDynamic = balance;
+            data.deposit[i].depositAmountDynamic = depositAmountDynamic;
             break;
           }
         }

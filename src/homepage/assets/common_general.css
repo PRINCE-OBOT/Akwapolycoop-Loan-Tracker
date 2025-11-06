@@ -150,6 +150,7 @@ a {
 }
 form {
   letter-spacing: 1.5px;
+  min-width: 100%;
 }
 /* admin content - admin content also utilize by member dashboard */
 

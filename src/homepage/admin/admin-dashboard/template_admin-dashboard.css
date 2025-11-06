@@ -79,7 +79,7 @@ main {
 
 .btn-create-mass-deposit {
   background: var(--clr-invalid);
-  color: var(--transparent-white);
+  color: var(--secondary-accent-faint);
   display: block;
   margin: 20px 0 0 auto;
 }

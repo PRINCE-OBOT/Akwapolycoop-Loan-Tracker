@@ -205,11 +205,11 @@ function isWithdrawalAmountGreaterThanBalance(balance, data) {
 
   if (amount > maxWithdrawalAmount) {
     hasExceedMaxWithdrawalAmount(amount - maxWithdrawalAmount);
-  } else if (balance > 0 && amount > balance && amount <= data.preferredDepositAmount) {
+  } else if (balance > 0 && amount > balance && amount <= balance + data.preferredDepositAmount) {
     loan = amount - balance;
     hasExceedBalance();
     isLoanFieldInForm();
-  } else if (amount <= balance && amount > 100) {
+  } else if (balance > 0 && amount <= balance) {
     getRecentMemberData(isOnlyWithdrawal);
   } else if (balance <= 0) {
     maxWithdrawalAmount = data.preferredDepositAmount - Math.abs(balance);

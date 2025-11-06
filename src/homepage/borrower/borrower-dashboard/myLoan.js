@@ -50,8 +50,9 @@ const myLoan = (function createTableHeading() {
                     <th>S/N</th>
                     <th>Loan ID</th>
                     <th>Amount(N)</th>
-                    <th>Status</th>
+                    <th>Loan Status</th>
                     <th>Monthly WA</th>
+                    <th>Paid Status</th>
                     <th>Date</th>
                     <th>Time</th>
                     <th data-view="proofOfPayment">Actions</th>
@@ -131,13 +132,17 @@ function insertLoanApplicantDataToTr(loanApplicantData) {
     const serialNumber = getSerialNumber(index);
     const date = getDate(data.dateAndTime);
     const time = getTime(data.dateAndTime);
+    const paidStatus =
+      data.status === 'Approve' && data.loanAmountDynamic === 0 ? 'Complete' : 'Incomplete';
 
+    console.log(data);
     tr.innerHTML = `
        <td>${serialNumber}</td>
        <td class='loanID'>${data.loanID}</td>
        <td>${data.loanAmount}</td>
        <td class="status">${data.status}</td>
        <td>${data.monthlyWithdrawalAmount}</td>
+       <td>${paidStatus}</td>
        <td>${date}</td>
        <td>${time}</td>
        <td data-view="proofOfPayment">

@@ -16,52 +16,66 @@ function displayStoreMsg() {
 
 let i = 0;
 function insertDepositData(data) {
+  console.log('insertDepositData');
+
   if (i >= data.length) {
     displayStoreMsg();
     return;
   }
 
-  const preferredDepositAmount = data[i].preferredDepositAmount;
+  const obj = data[i];
+
+  const preferredDepositAmount = obj.preferredDepositAmount;
   if (!preferredDepositAmount) {
     getAllMember();
     return;
   }
 
-  const obj = data[i];
-  const loan = data[i].loan;
-
-  if (!loan) {
+  if (!obj.loan) {
     addDeposit({
       obj,
       depositAmount: preferredDepositAmount,
     });
   } else {
-    for (let j = 0; j < loan.length; j++) {
-      if (loan[j].status === 'Approve' && loan[j].loanAmountDynamicDynamic !== 0) {
-        const balance = +loan[i].loanAmountDynamic - loan[j].monthlyWithdrawalAmount;
+    let monthlyWithdrawalAmountSum = 0;
 
-        // Else condition rarely happen since the subtracting of monthly withdrawal amount is calculated evenly base on the loan amount
-        // e.g loan amount 2000, monthly withdrawal times 2, monthly withdrawal amount 2000 / 2 = 1000
-        // So 1000 will be subtracted from the loan amount 2 times leaving no value less than 0
-        // But still leave the else in case of rare cases where balance is insignificant decimal, like 0.9999
+    for (let j = 0; j < obj.loan.length; j++) {
+      const loan = obj.loan[j];
 
-        if (balance >= 0) {
-          loan[i].loanAmountDynamic = balance;
-          addDeposit({ obj, depositAmount: preferredDepositAmount });
+      if (loan.status === 'Approve' && loan.loanAmountDynamic !== 0) {
+        const newLoanAmountDynamic = loan.loanAmountDynamic - loan.monthlyWithdrawalAmount;
+
+        if (newLoanAmountDynamic >= 0) {
+          // This prevent case when the deposited amount is smaller than the monthlyWithdrawalAmount
+          // e.g Member deposit 500, and the next expression is loanAmountDynamic (1000) - monthlyWithdrawalAmount (600)
+          // In the above case the loanAmount get subtract for what the member did'nt pay for.
+
+          monthlyWithdrawalAmountSum += loan.monthlyWithdrawalAmount;
+
+          if (monthlyWithdrawalAmountSum > preferredDepositAmount) {
+            const owingBalance = loan.loanAmountDynamic - loan.monthlyWithdrawalAmount;
+            loan.loanAmountDynamic =
+              owingBalance + (monthlyWithdrawalAmountSum - preferredDepositAmount);
+            break;
+          }
+
+          loan.loanAmountDynamic = newLoanAmountDynamic;
         } else {
-          loan[i].loanAmountDynamic = 0;
-          addDeposit({ obj, depositAmount: preferredDepositAmount });
+          loan.loanAmountDynamic = 0;
         }
-        break;
       }
     }
+
+    const amount = preferredDepositAmount - monthlyWithdrawalAmountSum;
+    const depositAmountDynamic = amount <= 0 ? 0 : amount;
+    addDeposit({ obj, depositAmount: preferredDepositAmount, depositAmountDynamic });
   }
 
   i += 1;
   storeDeposit(obj);
 }
 
-function addDeposit({ obj, depositAmount }) {
+function addDeposit({ obj, depositAmount, depositAmountDynamic }) {
   if (!obj.deposit) obj.deposit = [];
 
   const depositLength = obj.deposit.length;
@@ -70,7 +84,7 @@ function addDeposit({ obj, depositAmount }) {
     dateAndTime: new Date(),
     status: 'Approve',
     depositAmount,
-    depositAmountDynamic: depositAmount,
+    depositAmountDynamic,
     depositID: `DEP${obj?.id}-00${depositLength}`,
     massDeposit: true,
   };
