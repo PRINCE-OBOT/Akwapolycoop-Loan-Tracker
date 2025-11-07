@@ -21,7 +21,7 @@ const myDeposit = (function createTableHeading() {
             <h5 class="brief-text">Oversee and manage all loan applications within the system.</h5>
 
             <div class="filter-section">
-              <h3>Filter Loans</h3>
+              <h3>Filter Deposit</h3>
               <p>Find specific loans by it status</p>
 
               <div class="search-section">

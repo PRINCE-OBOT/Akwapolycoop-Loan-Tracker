@@ -12,7 +12,7 @@ const depositManagement = (function createDepositManagementContent() {
             <h5 class="brief-text">Oversee and manage all loan applications within the system.</h5>
             <button type="button" class="btn-create-mass-deposit">Create Mass Deposit</button>  
             <div class="filter-section">
-              <h3>Filter Loans</h3>
+              <h3>Filter Deposit</h3>
               <p>Find specific loans by it status</p>
 
               <div class="search-section">
