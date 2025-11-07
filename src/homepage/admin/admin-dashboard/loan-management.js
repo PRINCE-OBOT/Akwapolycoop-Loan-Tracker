@@ -268,7 +268,8 @@ function insertTakeLoanDataToTable(loanList) {
        <td>${date}</td>
        <td>${time}</td>
        <td data-db-first-key="loanApplicantForm"><img src="${eyeViewImg}" class="eye-view" alt="eye view"/>View Profile</td>
-       
+       <td><button data-option-key="approveOption" data-db-first-key="takeLoan" data-status="Approve" class="btn-approve-loan">Approve</button></td>
+       <td><button data-option-key="declineOption" data-db-first-key="takeLoan" data-status="Decline" class="btn-decline-loan">Decline</button></td>
       `;
     checkStatus({ tr, status: data.status });
     setAttributeToTr({ tr, loanID: data.loanID, loanAmount: data.loanAmount });
@@ -276,14 +277,8 @@ function insertTakeLoanDataToTable(loanList) {
   });
 }
 
-const optionKeySection = (function createOptionKey() {
-  return `
-  <td><button data-option-key="approveOption" data-db-first-key="takeLoan" data-status="Approve" class="btn-approve-loan">Approve</button></td>
-  <td><button data-option-key="declineOption" data-db-first-key="takeLoan" data-status="Decline" class="btn-decline-loan">Decline</button></td>`;
-})();
-
 function checkStatus({ tr, status }) {
-  if (status === 'Pending') tr.innerHTML += optionKeySection;
+  if (status !== 'Pending') tr.setAttribute('data-action-perform', 'not-pending');
 }
 
 const sortTakenLoan = (loanList) => {

@@ -385,6 +385,12 @@ td {
 td[data-db-first-key] {
   cursor: pointer;
 }
+[data-action-perform] [data-option-key] {
+  pointer-events: none;
+  opacity: 0.3;
+  background-color: var(--transparent-black);
+  color: var(--secondary-accent-faint);
+}
 .loan-list-section_actions {
   display: flex;
   align-items: center;
