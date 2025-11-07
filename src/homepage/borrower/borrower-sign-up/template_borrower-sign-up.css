@@ -33,7 +33,9 @@ main {
 .form-content {
   padding: 3rem 2rem;
 }
-
+.checkbox-group label {
+  white-space: wrap;
+}
 .section {
   margin-bottom: 3rem;
   padding-bottom: 2rem;
