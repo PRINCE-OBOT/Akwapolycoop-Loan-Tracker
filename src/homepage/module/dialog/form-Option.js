@@ -76,8 +76,13 @@ const events = {
 function isActionPreferredDepositAmount() {
   const action = getActionFromLocalStorage();
 
-  if (action?.firstKey[0] === 'preferredDepositAmount')
-    eventBus.dispatchEvent(events.displayPreferredDepForm);
+  if (action) {
+    const firstKey = action.firstKey;
+    if (firstKey) {
+      if (firstKey[0] === 'preferredDepositAmount')
+        eventBus.dispatchEvent(events.displayPreferredDepForm);
+    }
+  }
 }
 
 const addEventToBtnCancel = (button) => {

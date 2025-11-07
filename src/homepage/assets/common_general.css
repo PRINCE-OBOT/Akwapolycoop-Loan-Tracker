@@ -361,6 +361,7 @@ table {
 tbody tr {
   border-top: 0.5px solid var(--grey);
   border-bottom: 0.5px solid var(--grey);
+  max-height: 30px;
 }
 thead {
   background-color: var(--secondary-accent-faint);
@@ -376,6 +377,10 @@ td {
 
 td {
   color: var(--transparent-black);
+  max-height: 40px;
+  text-wrap: nowrap;
+  max-width: 100px;
+  overflow-x: auto;
 }
 td[data-db-first-key] {
   cursor: pointer;
