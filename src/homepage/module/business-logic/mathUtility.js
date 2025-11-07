@@ -97,11 +97,17 @@ class MathUtility {
           const newLoanAmountDynamic = loan.loanAmountDynamic - loan.monthlyWithdrawalAmount;
 
           if (newLoanAmountDynamic >= 0) {
-            // This prevent case when the deposited amount is smaller than the monthlyWithdrawalAmount
-            // e.g Member deposit 500, and the next expression is loanAmountDynamic (1000) - monthlyWithdrawalAmount (600)
-            // In the above case the loanAmount get subtract for what the member did'nt pay for.
-
             monthlyWithdrawalAmountSum += loan.monthlyWithdrawalAmount;
+
+            // This prevent case when the deposited amount is smaller than the monthlyWithdrawalAmount
+            // e.g Member has the O/S of N1000 and monthlyWithdrawalAmount N600
+            // Member deposit 500, instead of doing the normal O/S - monthlyWA to get the O/S
+            // Paying off debt the member did'nt pay for.
+            // So we do;
+            // O/S 1000 - MWA 600 = x 400,
+            // To ensure the O/S is subtracting 500
+            // We do; O/S = x 400 + (MWA 600 - deposit 500)
+            // Resulting to O/S = 500
 
             if (monthlyWithdrawalAmountSum > depositAmount) {
               const owingBalance = loan.loanAmountDynamic - loan.monthlyWithdrawalAmount;
@@ -120,6 +126,14 @@ class MathUtility {
 
       (function setDepositAmountDynamic() {
         if (!data.deposit) return;
+        // newDeposit1 is used in the case when the money deposited has been exhausted
+        // when paying off the monthlyWithdrawalAmount. Thereby setting the depositAmountDynamic to 0
+        // To avoid having negative value in the account balance when accumulating deposit
+
+        // newDeposit2 is used in situation when the outstanding balance is less than the monthly withdrawal amount
+        // that way we subtract the O/S from the deposit amount, instead of the normal subtract of
+        // deposit amount from monthlyWithdrawalAmount, that way member don't end up paying more than what they owe
+        // e.g Obi O/S is N20, but MonthlyWA is N300, so do depositAmount - O/S instead of the normal depositAmount - MonthlyWA
 
         const newDeposit1 = depositAmount - monthlyWithdrawalAmountSum;
         const newDeposit2 = depositAmount - loanAmountDynamic;
@@ -127,7 +141,6 @@ class MathUtility {
         const depositAmountDynamic =
           newDeposit1 <= 0 ? 0 : isOSLessThanMonthlyWA ? newDeposit2 : newDeposit1;
 
-        // debugger
         for (let i = 0; i < data.deposit.length; i++) {
           if (data.deposit[i].depositID === depositID) {
             data.deposit[i].depositAmountDynamic = depositAmountDynamic;
