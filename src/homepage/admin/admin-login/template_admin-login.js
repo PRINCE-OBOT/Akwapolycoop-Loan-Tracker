@@ -12,7 +12,7 @@ import registerLocalStorageCustomMethod from '../../module/localStorage/localSto
 import eventBus from '../../module/event-bus/event';
 import { appendDialogToBody } from '../../module/dialog/dialog-manager';
 
-const form = document.querySelector('.admin-login-form');
+const form = document.querySelector('.login-form');
 const username = form.querySelector('#username');
 const password = form.querySelector('#password');
 const inputs = form.querySelectorAll('input');

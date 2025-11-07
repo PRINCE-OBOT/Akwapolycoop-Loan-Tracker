@@ -12,7 +12,7 @@ import indexDB from '../../module/indexDB/indexDB';
 import eventBus from '../../module/event-bus/event';
 import { appendDialogToBody } from '../../module/dialog/dialog-manager';
 
-const form = document.querySelector('.borrower-login-form');
+const form = document.querySelector('.login-form');
 const membershipID = form.querySelector('#membership-ID');
 const inputs = form.querySelectorAll('input');
 const messages = form.querySelectorAll('output.show-message');

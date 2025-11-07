@@ -59,6 +59,7 @@ header {
   justify-content: center;
   align-items: center;
 }
+
 .navigation-section {
   display: flex;
   gap: 20px;
@@ -151,6 +152,9 @@ a {
 form {
   letter-spacing: 1.5px;
   min-width: 100%;
+}
+.login-form {
+  min-width: max(50%, 300px);
 }
 /* admin content - admin content also utilize by member dashboard */
 
