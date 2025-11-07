@@ -22,6 +22,7 @@ const addTextContentToDiv = (div) => {
             <div>
                 <h1>Member Profile</h1>
                 <p>MEMBERSHIP ID: <span class="membershipID"></span></p> 
+                <p>FIXED MONTHLY DEPOSIT AMOUNT: <span class="fixMonthlyDepositAmount"></span></p> 
             </div>
             <div class="date-box">
                 <p class="date-box-label">Application Date/Time</p>
@@ -437,6 +438,7 @@ const status = loanApplicantProfile.querySelector('.status');
 const state = loanApplicantProfile.querySelector('.state');
 const lga = loanApplicantProfile.querySelector('.lga');
 const membershipID = loanApplicantProfile.querySelector('.membershipID');
+const fixMonthlyDepositAmount = loanApplicantProfile.querySelector('.fixMonthlyDepositAmount');
 
 const guarantor1StaffId = loanApplicantProfile.querySelector('.guarantor1StaffId');
 const guarantor1Name = loanApplicantProfile.querySelector('.guarantor1Name');
@@ -470,11 +472,13 @@ const getTime = (dateAndTime) => {
 
 const applicationStatus = {
   Pending: () => footer.append(optionKeySection),
-  Approve: (membershipApplicationForm) => {
-    membershipID.textContent = membershipApplicationForm.membershipID;
+  Approve: (data) => {
+    fixMonthlyDepositAmount.textContent = data.preferredDepositAmount;
+    membershipID.textContent = data.membershipApplicationForm.membershipID;
   },
   Decline: () => {
     membershipID.textContent = 'Decline';
+    fixMonthlyDepositAmount.textContent = 'Decline';
   },
 };
 
@@ -528,7 +532,7 @@ function insertLoanApplicantDataToProfile(data) {
 
   profileReset();
 
-  applicationStatus[membershipApplicationForm.status](membershipApplicationForm);
+  applicationStatus[membershipApplicationForm.status](data);
 
   dispatchProfileEvent();
 }
@@ -536,6 +540,7 @@ function insertLoanApplicantDataToProfile(data) {
 function profileReset() {
   optionKeySection.remove();
   membershipID.textContent = 'Pending';
+  fixMonthlyDepositAmount.textContent = 'Pending';
 }
 
 function getLoanApplicantData() {
