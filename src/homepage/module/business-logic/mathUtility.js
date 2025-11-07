@@ -84,6 +84,8 @@ class MathUtility {
 
   static depositApprove({ id, depositAmount, depositID }) {
     let monthlyWithdrawalAmountSum = 0;
+    let isOSLessThanMonthlyWA;
+    let loanAmountDynamic;
 
     const filterApproveAndUnpaidLoan = (data) => {
       if (!data.loan) return;
@@ -91,7 +93,6 @@ class MathUtility {
       for (let i = 0; i < data.loan.length; i++) {
         const loan = data.loan[i];
 
-        // if (loan.status === 'Approve' && loan.loanAmountDynamic !== 0)
         if (loan.status === 'Approve' && loan.loanAmountDynamic !== 0) {
           const newLoanAmountDynamic = loan.loanAmountDynamic - loan.monthlyWithdrawalAmount;
 
@@ -110,6 +111,8 @@ class MathUtility {
 
             loan.loanAmountDynamic = newLoanAmountDynamic;
           } else {
+            loanAmountDynamic = loan.loanAmountDynamic;
+            isOSLessThanMonthlyWA = true;
             loan.loanAmountDynamic = 0;
           }
         }
@@ -118,9 +121,13 @@ class MathUtility {
       (function setDepositAmountDynamic() {
         if (!data.deposit) return;
 
-        const amount = depositAmount - monthlyWithdrawalAmountSum;
-        const depositAmountDynamic = amount <= 0 ? 0 : amount;
+        const newDeposit1 = depositAmount - monthlyWithdrawalAmountSum;
+        const newDeposit2 = depositAmount - loanAmountDynamic;
 
+        const depositAmountDynamic =
+          newDeposit1 <= 0 ? 0 : isOSLessThanMonthlyWA ? newDeposit2 : newDeposit1;
+
+        // debugger
         for (let i = 0; i < data.deposit.length; i++) {
           if (data.deposit[i].depositID === depositID) {
             data.deposit[i].depositAmountDynamic = depositAmountDynamic;

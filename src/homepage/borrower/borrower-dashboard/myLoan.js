@@ -53,6 +53,7 @@ const myLoan = (function createTableHeading() {
                     <th>Loan Status</th>
                     <th>Monthly WA</th>
                     <th>Paid Status</th>
+                    <th>O/S</th>
                     <th>Date</th>
                     <th>Time</th>
                     <th data-view="proofOfPayment">Actions</th>
@@ -143,6 +144,7 @@ function insertLoanApplicantDataToTr(loanApplicantData) {
        <td class="status">${data.status}</td>
        <td>${data.monthlyWithdrawalAmount}</td>
        <td>${paidStatus}</td>
+       <td>${data.loanAmountDynamic}</td>
        <td>${date}</td>
        <td>${time}</td>
        <td data-view="proofOfPayment">
