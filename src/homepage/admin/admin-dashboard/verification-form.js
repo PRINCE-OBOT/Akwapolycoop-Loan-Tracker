@@ -21,7 +21,7 @@ const adminVerificationForm = (function createAdminVerificationForm() {
                 <span class="required-asterisk">*</span>
               </label>
               <input
-                type="number"
+                type="password"
                 id="password"
                 placeholder="xxxxxx"
                 pattern="^.{1,}$"
