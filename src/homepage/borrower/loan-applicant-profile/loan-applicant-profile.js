@@ -22,8 +22,9 @@ const addTextContentToDiv = (div) => {
             <div>
                 <h1>Member Profile</h1>
                 <p>MEMBERSHIP ID: <span class="membershipID"></span></p> 
-                <p>FIXED MONTHLY DEPOSIT AMOUNT: <span class="fixMonthlyDepositAmount"></span></p> 
+                <p>FIXED MONTHLY DEPOSIT AMOUNT: <span class="fixed-deposit-amount"></span></p> 
             </div>
+            
             <div class="date-box">
                 <p class="date-box-label">Application Date/Time</p>
                 <p class="date-box-value" id="application-date"></p>
@@ -425,6 +426,7 @@ const email = loanApplicantProfile.querySelector('.email');
 const phoneNumber = loanApplicantProfile.querySelector('.phone-number');
 const dateOfBirth = loanApplicantProfile.querySelector('.date-of-birth');
 const residentAddress = loanApplicantProfile.querySelector('.resident-address');
+const fixedDepositAmount = loanApplicantProfile.querySelector('.fixed-deposit-amount');
 const bankName = loanApplicantProfile.querySelector('.bank-name');
 const accountNumber = loanApplicantProfile.querySelector('.account-number');
 const accountName = loanApplicantProfile.querySelector('.account-name');
@@ -438,7 +440,6 @@ const status = loanApplicantProfile.querySelector('.status');
 const state = loanApplicantProfile.querySelector('.state');
 const lga = loanApplicantProfile.querySelector('.lga');
 const membershipID = loanApplicantProfile.querySelector('.membershipID');
-const fixMonthlyDepositAmount = loanApplicantProfile.querySelector('.fixMonthlyDepositAmount');
 
 const guarantor1StaffId = loanApplicantProfile.querySelector('.guarantor1StaffId');
 const guarantor1Name = loanApplicantProfile.querySelector('.guarantor1Name');
@@ -472,13 +473,13 @@ const getTime = (dateAndTime) => {
 
 const applicationStatus = {
   Pending: () => footer.append(optionKeySection),
-  Approve: (data) => {
-    fixMonthlyDepositAmount.textContent = data.preferredDepositAmount;
-    membershipID.textContent = data.membershipApplicationForm.membershipID;
+  Approve: (membershipApplicationForm) => {
+    fixedDepositAmount.textContent = membershipApplicationForm['fixed-deposit-amount'];
+    membershipID.textContent = membershipApplicationForm.membershipID;
   },
   Decline: () => {
     membershipID.textContent = 'Decline';
-    fixMonthlyDepositAmount.textContent = 'Decline';
+    fixedDepositAmount.textContent = 'Decline';
   },
 };
 
@@ -532,7 +533,7 @@ function insertLoanApplicantDataToProfile(data) {
 
   profileReset();
 
-  applicationStatus[membershipApplicationForm.status](data);
+  applicationStatus[membershipApplicationForm.status](membershipApplicationForm);
 
   dispatchProfileEvent();
 }
@@ -540,7 +541,7 @@ function insertLoanApplicantDataToProfile(data) {
 function profileReset() {
   optionKeySection.remove();
   membershipID.textContent = 'Pending';
-  fixMonthlyDepositAmount.textContent = 'Pending';
+  fixedDepositAmount.textContent = 'Pending';
 }
 
 function getLoanApplicantData() {

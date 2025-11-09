@@ -8,27 +8,11 @@ const depositPreferenceForm = (function createDepositPreferenceForm() {
 
   div.innerHTML = `
         <div class="form-header">
-            <h1>Monthly Deposit Preference</h1>
-            <p>Please provide your preferred monthly deposit amount</p>
+            <h1>Withdrawal Pin</h1>
+            <p>Please set your withdrawal pin</p>
         </div>
 
         <form class="preferred-deposit-form" id="depositForm" novalidate>
-
-            <div class="preferred-deposit-amount">
-              <label for="preferred-deposit-amount">
-                Preferred Monthly Deposit Amount
-                <span class="required-asterisk">*</span>
-              </label>
-              <input
-                type="number"
-                id="preferred-deposit-amount"
-                placeholder="e.g 50000"
-                pattern="^.{1,}$"
-                data-set-field-validation-value="setPatternForEmptyField"
-                required
-              />
-              <output id="preferred-deposit-amount-message" class="show-message"></output>
-            </div>
 
             <div class="withdrawal-pin">
               <label for="withdrawal-pin">

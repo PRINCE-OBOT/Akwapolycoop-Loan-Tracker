@@ -21,6 +21,7 @@ const state = form.querySelector('#state');
 const lga = form.querySelector('#lga');
 const staffId = form.querySelector('#staffId');
 const department = form.querySelector('#department');
+const fixedDepositAmount = form.querySelector('#fixed-deposit-amount');
 const position = form.querySelector('#position');
 const passport = form.querySelector('#passport');
 const employmentDate = form.querySelector('#employmentDate');
@@ -127,6 +128,7 @@ function insertMoreFormFieldValues(data) {
     gender,
     staffId,
     department,
+    fixedDepositAmount,
     position,
     maritalStatus,
     employmentDate,
