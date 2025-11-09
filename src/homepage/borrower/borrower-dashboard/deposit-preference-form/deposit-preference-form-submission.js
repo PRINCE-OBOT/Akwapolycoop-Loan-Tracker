@@ -4,7 +4,6 @@ import Password from '../../../module/form-validation/password-validator';
 import fixedDepositAmountForm from './deposit-preference-form';
 
 const form = fixedDepositAmountForm.querySelector('form');
-const fixedDepositAmount = fixedDepositAmountForm.querySelector('#preferred-deposit-amount');
 const withdrawalPin = fixedDepositAmountForm.querySelector('#withdrawal-pin');
 const withdrawalPinMsg = fixedDepositAmountForm.querySelector('#withdrawal-pin-message');
 const confirmWithdrawalPinMsg = fixedDepositAmountForm.querySelector(
@@ -12,9 +11,7 @@ const confirmWithdrawalPinMsg = fixedDepositAmountForm.querySelector(
 );
 const confirmWithdrawalPin = fixedDepositAmountForm.querySelector('#confirm-withdrawal-pin');
 
-const btnSubmitfixedDepositAmount = fixedDepositAmountForm.querySelector(
-  '.btn-submit-deposit-preference',
-);
+const btnSubmitSetPin = fixedDepositAmountForm.querySelector('.btn-submit-deposit-preference');
 
 function resetForm() {
   form.reset();
@@ -26,7 +23,7 @@ const getRecentLoanApplicantIDInLocalStorage = () => {
   return data?.id;
 };
 
-function getfixedDepositAmountAction() {
+function getSetWithdrawalPinAction() {
   const id = getRecentLoanApplicantIDInLocalStorage();
 
   const obj = {
@@ -34,12 +31,8 @@ function getfixedDepositAmountAction() {
     data: {
       action: 'modifyData',
       id,
-      value: [
-        { fixedDepositAmount: +fixedDepositAmount.value },
-        { withdrawalPin: withdrawalPin.value },
-        { isMemberNew: false },
-      ],
-      firstKey: ['fixedDepositAmount', 'withdrawalPin', 'isMemberNew'],
+      value: [{ withdrawalPin: withdrawalPin.value }, { isMemberNew: false }],
+      firstKey: ['withdrawalPin', 'isMemberNew'],
     },
   };
   return obj;
@@ -50,8 +43,8 @@ const storeActionToLocalStorage = (obj) => {
 };
 
 function handleActionStorage() {
-  const fixedDepositAmountAction = getfixedDepositAmountAction();
-  storeActionToLocalStorage(fixedDepositAmountAction);
+  const setWithdrawalPinAction = getSetWithdrawalPinAction();
+  storeActionToLocalStorage(setWithdrawalPinAction);
   resetForm();
 }
 
@@ -66,7 +59,7 @@ const Event = ({ text, contentKey = 'question' }) =>
 
 const events = {
   fixedDepositAmountQuestion: Event({
-    text: 'use the amount as your monthly deposit preference?',
+    text: 'use the pin?',
   }),
 };
 
@@ -74,22 +67,20 @@ function handleOptionContent() {
   eventBus.dispatchEvent(events.fixedDepositAmountQuestion);
 }
 
-function processfixedDepositAmountForStoring() {
+function processSetWithdrawalPinForStoring() {
   handleActionStorage();
   handleOptionContent();
 }
 
-const submitfixedDepositAmountFormEvent = new CustomEvent('all-field-valid', {
+const submitWithdrawalPinEvent = new CustomEvent('all-field-valid', {
   detail: {
     form: fixedDepositAmountForm,
-    functionToGetDataInIndexBD: processfixedDepositAmountForStoring,
+    functionToGetDataInIndexBD: processSetWithdrawalPinForStoring,
   },
 });
 
-const bindSubmitfixedDepositAmount = () =>
-  btnSubmitfixedDepositAmount.addEventListener('click', () =>
-    eventBus.dispatchEvent(submitfixedDepositAmountFormEvent),
-  );
+const bindSubmitWithdrawalPin = () =>
+  btnSubmitSetPin.addEventListener('click', () => eventBus.dispatchEvent(submitWithdrawalPinEvent));
 
 new Password({
   password: withdrawalPin,
@@ -98,4 +89,4 @@ new Password({
   confirmPasswordMessage: confirmWithdrawalPinMsg,
 });
 
-export default bindSubmitfixedDepositAmount;
+export default bindSubmitWithdrawalPin;

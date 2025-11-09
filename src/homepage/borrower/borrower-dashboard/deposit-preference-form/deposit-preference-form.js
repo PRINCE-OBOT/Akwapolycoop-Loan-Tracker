@@ -20,7 +20,7 @@ const depositPreferenceForm = (function createDepositPreferenceForm() {
                 <span class="required-asterisk">*</span>
               </label>
               <input
-                type="number"
+                type="password"
                 id="withdrawal-pin"
                 placeholder="e.g 9182"
                 pattern="^.{4}$"
@@ -37,7 +37,7 @@ const depositPreferenceForm = (function createDepositPreferenceForm() {
                 <span class="required-asterisk">*</span>
               </label>
               <input
-                type="number"
+                type="password"
                 id="confirm-withdrawal-pin"
                 placeholder="e.g 9182"
                 pattern="^.{4}$"
@@ -47,7 +47,7 @@ const depositPreferenceForm = (function createDepositPreferenceForm() {
               <output id="confirm-withdrawal-pin-message" class="show-message"></output>
             </div>
 
-            <button type="button" class="btn-submit-deposit-preference">Submit Preference</button>
+            <button type="button" class="btn-submit-deposit-preference">Set Pin</button>
         </form>`;
 
   return div;
