@@ -199,20 +199,20 @@ function addFieldValueToData(data) {
 function isWithdrawalAmountGreaterThanBalance(balance, data) {
   mainBalance = balance;
   const amount = +withdrawalAmount.value;
-  let maxWithdrawalAmount = balance + data.preferredDepositAmount;
+  let maxWithdrawalAmount = balance + data.fixedDepositAmount;
 
   clearMessage();
 
   if (amount > maxWithdrawalAmount) {
     hasExceedMaxWithdrawalAmount(amount - maxWithdrawalAmount);
-  } else if (balance > 0 && amount > balance && amount <= balance + data.preferredDepositAmount) {
+  } else if (balance > 0 && amount > balance && amount <= balance + data.fixedDepositAmount) {
     loan = amount - balance;
     hasExceedBalance();
     isLoanFieldInForm();
   } else if (balance > 0 && amount <= balance) {
     getRecentMemberData(isOnlyWithdrawal);
   } else if (balance <= 0) {
-    maxWithdrawalAmount = data.preferredDepositAmount - Math.abs(balance);
+    maxWithdrawalAmount = data.fixedDepositAmount - Math.abs(balance);
 
     if (amount > maxWithdrawalAmount) {
       hasExceedMaxWithdrawalAmount(amount - maxWithdrawalAmount);

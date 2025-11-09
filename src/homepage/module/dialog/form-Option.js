@@ -73,13 +73,13 @@ const events = {
   }),
 };
 
-function isActionPreferredDepositAmount() {
+function isActionfixedDepositAmount() {
   const action = getActionFromLocalStorage();
 
   if (action) {
     const firstKey = action.firstKey;
     if (firstKey) {
-      if (firstKey[0] === 'preferredDepositAmount')
+      if (firstKey[0] === 'fixedDepositAmount')
         eventBus.dispatchEvent(events.displayPreferredDepForm);
     }
   }
@@ -89,7 +89,7 @@ const addEventToBtnCancel = (button) => {
   button.addEventListener('click', () => {
     eventBus.dispatchEvent(events.manualCloseDialog);
 
-    isActionPreferredDepositAmount();
+    isActionfixedDepositAmount();
     // eventBus.dispatchEvent(events.previousContentEvent);
   });
   return button;

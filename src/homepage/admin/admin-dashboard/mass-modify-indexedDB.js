@@ -25,8 +25,8 @@ function insertDepositData(data) {
 
   const obj = data[i];
 
-  const preferredDepositAmount = obj.preferredDepositAmount;
-  if (!preferredDepositAmount) {
+  const fixedDepositAmount = obj.membershipApplicationForm.fixedDepositAmount;
+  if (!fixedDepositAmount) {
     getAllMember();
     return;
   }
@@ -34,7 +34,7 @@ function insertDepositData(data) {
   if (!obj.loan) {
     addDeposit({
       obj,
-      depositAmount: preferredDepositAmount,
+      depositAmount: fixedDepositAmount,
     });
   } else {
     let monthlyWithdrawalAmountSum = 0;
@@ -55,10 +55,10 @@ function insertDepositData(data) {
           monthlyWithdrawalAmountSum += loan.monthlyWithdrawalAmount;
 
           // For this section explanation - Find comment in MathUtility (look for it similar section )
-          if (monthlyWithdrawalAmountSum > preferredDepositAmount) {
+          if (monthlyWithdrawalAmountSum > fixedDepositAmount) {
             const owingBalance = loan.loanAmountDynamic - loan.monthlyWithdrawalAmount;
             loan.loanAmountDynamic =
-              owingBalance + (monthlyWithdrawalAmountSum - preferredDepositAmount);
+              owingBalance + (monthlyWithdrawalAmountSum - fixedDepositAmount);
             break;
           }
 
@@ -72,13 +72,13 @@ function insertDepositData(data) {
     }
 
     // For this section explanation - Find comment in MathUtility (look for it similar section )
-    const newDeposit1 = preferredDepositAmount - monthlyWithdrawalAmountSum;
-    const newDeposit2 = preferredDepositAmount - loanAmountDynamic;
+    const newDeposit1 = fixedDepositAmount - monthlyWithdrawalAmountSum;
+    const newDeposit2 = fixedDepositAmount - loanAmountDynamic;
 
     const depositAmountDynamic =
       newDeposit1 <= 0 ? 0 : isOSLessThanMonthlyWA ? newDeposit2 : newDeposit1;
 
-    addDeposit({ obj, depositAmount: preferredDepositAmount, depositAmountDynamic });
+    addDeposit({ obj, depositAmount: fixedDepositAmount, depositAmountDynamic });
   }
 
   i += 1;

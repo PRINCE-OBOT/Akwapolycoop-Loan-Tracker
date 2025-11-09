@@ -101,8 +101,8 @@ class MathUtility {
 
             // This prevent case when the deposited amount is smaller than the monthlyWithdrawalAmount
             // e.g Member has the O/S of N1000 and monthlyWithdrawalAmount N600
-            // Member deposit 500, instead of doing the normal O/S - monthlyWA to get the O/S
-            // Paying off debt the member did'nt pay for.
+            // Member deposit 500, instead of doing the normal current O/S - monthlyWA to get the new O/S
+            // Which will result to paying off debt the member did'nt pay for.
             // So we do;
             // O/S 1000 - MWA 600 = x 400,
             // To ensure the O/S is subtracting 500

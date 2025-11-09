@@ -1,20 +1,18 @@
 import eventBus from '../../../module/event-bus/event';
 import FieldValidationUtility from '../../../module/form-validation/field-utility';
 import Password from '../../../module/form-validation/password-validator';
-import preferredDepositAmountForm from './deposit-preference-form';
+import fixedDepositAmountForm from './deposit-preference-form';
 
-const form = preferredDepositAmountForm.querySelector('form');
-const preferredDepositAmount = preferredDepositAmountForm.querySelector(
-  '#preferred-deposit-amount',
-);
-const withdrawalPin = preferredDepositAmountForm.querySelector('#withdrawal-pin');
-const withdrawalPinMsg = preferredDepositAmountForm.querySelector('#withdrawal-pin-message');
-const confirmWithdrawalPinMsg = preferredDepositAmountForm.querySelector(
+const form = fixedDepositAmountForm.querySelector('form');
+const fixedDepositAmount = fixedDepositAmountForm.querySelector('#preferred-deposit-amount');
+const withdrawalPin = fixedDepositAmountForm.querySelector('#withdrawal-pin');
+const withdrawalPinMsg = fixedDepositAmountForm.querySelector('#withdrawal-pin-message');
+const confirmWithdrawalPinMsg = fixedDepositAmountForm.querySelector(
   '#confirm-withdrawal-pin-message',
 );
-const confirmWithdrawalPin = preferredDepositAmountForm.querySelector('#confirm-withdrawal-pin');
+const confirmWithdrawalPin = fixedDepositAmountForm.querySelector('#confirm-withdrawal-pin');
 
-const btnSubmitPreferredDepositAmount = preferredDepositAmountForm.querySelector(
+const btnSubmitfixedDepositAmount = fixedDepositAmountForm.querySelector(
   '.btn-submit-deposit-preference',
 );
 
@@ -28,7 +26,7 @@ const getRecentLoanApplicantIDInLocalStorage = () => {
   return data?.id;
 };
 
-function getPreferredDepositAmountAction() {
+function getfixedDepositAmountAction() {
   const id = getRecentLoanApplicantIDInLocalStorage();
 
   const obj = {
@@ -37,11 +35,11 @@ function getPreferredDepositAmountAction() {
       action: 'modifyData',
       id,
       value: [
-        { preferredDepositAmount: +preferredDepositAmount.value },
+        { fixedDepositAmount: +fixedDepositAmount.value },
         { withdrawalPin: withdrawalPin.value },
         { isMemberNew: false },
       ],
-      firstKey: ['preferredDepositAmount', 'withdrawalPin', 'isMemberNew'],
+      firstKey: ['fixedDepositAmount', 'withdrawalPin', 'isMemberNew'],
     },
   };
   return obj;
@@ -52,8 +50,8 @@ const storeActionToLocalStorage = (obj) => {
 };
 
 function handleActionStorage() {
-  const preferredDepositAmountAction = getPreferredDepositAmountAction();
-  storeActionToLocalStorage(preferredDepositAmountAction);
+  const fixedDepositAmountAction = getfixedDepositAmountAction();
+  storeActionToLocalStorage(fixedDepositAmountAction);
   resetForm();
 }
 
@@ -67,30 +65,30 @@ const Event = ({ text, contentKey = 'question' }) =>
   });
 
 const events = {
-  preferredDepositAmountQuestion: Event({
+  fixedDepositAmountQuestion: Event({
     text: 'use the amount as your monthly deposit preference?',
   }),
 };
 
 function handleOptionContent() {
-  eventBus.dispatchEvent(events.preferredDepositAmountQuestion);
+  eventBus.dispatchEvent(events.fixedDepositAmountQuestion);
 }
 
-function processPreferredDepositAmountForStoring() {
+function processfixedDepositAmountForStoring() {
   handleActionStorage();
   handleOptionContent();
 }
 
-const submitPreferredDepositAmountFormEvent = new CustomEvent('all-field-valid', {
+const submitfixedDepositAmountFormEvent = new CustomEvent('all-field-valid', {
   detail: {
-    form: preferredDepositAmountForm,
-    functionToGetDataInIndexBD: processPreferredDepositAmountForStoring,
+    form: fixedDepositAmountForm,
+    functionToGetDataInIndexBD: processfixedDepositAmountForStoring,
   },
 });
 
-const bindSubmitPreferredDepositAmount = () =>
-  btnSubmitPreferredDepositAmount.addEventListener('click', () =>
-    eventBus.dispatchEvent(submitPreferredDepositAmountFormEvent),
+const bindSubmitfixedDepositAmount = () =>
+  btnSubmitfixedDepositAmount.addEventListener('click', () =>
+    eventBus.dispatchEvent(submitfixedDepositAmountFormEvent),
   );
 
 new Password({
@@ -100,4 +98,4 @@ new Password({
   confirmPasswordMessage: confirmWithdrawalPinMsg,
 });
 
-export default bindSubmitPreferredDepositAmount;
+export default bindSubmitfixedDepositAmount;
