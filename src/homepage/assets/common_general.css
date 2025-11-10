@@ -112,7 +112,7 @@ input {
 }
 
 dialog {
-  transition: 100ms allow-discrete;
+  transition: 50ms allow-discrete;
   border: none;
   left: 50%;
   top: 50%;
@@ -129,7 +129,7 @@ dialog {
 }
 dialog:open {
   scale: 1;
-  transition: 300ms;
+  transition: 100ms;
 }
 dialog::backdrop {
   backdrop-filter: blur(8px);

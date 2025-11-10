@@ -59,7 +59,7 @@ main {
   & > * {
     display: flex;
     gap: 10px;
-    transition: 300ms;
+    transition: 100ms;
   }
   & > *:hover {
     background-color: var(--secondary-accent-faint);
