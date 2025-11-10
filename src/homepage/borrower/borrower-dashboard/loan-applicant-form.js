@@ -231,21 +231,6 @@ const loanApplicantForm = (function () {
               </select>
               <output class="show-message"></output>
             </div>
-            
-            <div class="form-row">
-              <div class="form-group">
-              <label>Fixed Deposit Amount<span class="required">*</span></label>
-              <input
-                type="text"
-                id="fixed-deposit-amount"
-                required
-                pattern="^.{1,}$"
-                data-set-field-validation-value="setEmptyFieldValidationValue"
-                placeholder="e.g., 40000"
-              />
-              <output class="show-message"></output>
-              </div>
-            </div>
 
           </div>
         </div>
@@ -305,6 +290,40 @@ const loanApplicantForm = (function () {
           <label for="applicationLetter" class="file-upload-label">
           <div class="upload-icon">📝</div>
           <div class="upload-text">Click to upload your application letter</div>
+          <div class="upload-hint">Accepted formats: JPEG, JPG, PNG</div>
+          </label>
+          <output class="show-message"></output>
+        </div>
+       </div>
+      </div>
+        
+      <!-- Form Payment Proof -->
+        <div class="section">
+          <div class="section-title">
+            <span class="section-icon">📝</span>
+            Form Payment Proof
+          </div>
+          <p class="section-description">
+            Upload your proof of form payment &#x20A6;9000 (Maximum file size: 5MB, Format: JPEG, JPG, PNG)
+          </p>
+          <div class="info-box">
+          <p>
+          <strong>Note:</strong>&#x20A6;4,000 will be used to open your account and &#x20A6;5,000 is non-refundable
+            </p>
+          </div>
+          <div class="form-group">
+          <div class="file-upload-wrapper">
+          <input
+          type="file"
+          id="formPaymentProof"
+          accept="image/*"
+          data-set-field-validation-value="setEmptyFieldValidationValue"
+          required
+          />
+          
+          <label for="formPaymentProof" class="file-upload-label">
+          <div class="upload-icon">📝</div>
+          <div class="upload-text">Click to upload your proof of payment</div>
           <div class="upload-hint">Accepted formats: JPEG, JPG, PNG</div>
           </label>
           <output class="show-message"></output>

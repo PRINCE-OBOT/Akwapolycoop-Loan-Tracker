@@ -15,6 +15,7 @@ const gender = form.querySelector('#gender');
 const maritalStatus = form.querySelector('#maritalStatus');
 const dateOfBirth = form.querySelector('#date-of-birth');
 const residentAddress = form.querySelector('#resident-address');
+const formPaymentProof = form.querySelector('#formPaymentProof');
 const phoneNumber = form.querySelector('#phone-number');
 const nin = form.querySelector('#nin');
 const state = form.querySelector('#state');
@@ -117,11 +118,14 @@ function isUserAlreadyAccountExist() {
 function gatherData() {
   const passportDataURL = convertPassportToDataURL();
 
-  passportDataURL.then((data) => {
-    const applicationLetterURL = convertApplicationLetterToDataURL(data);
+  passportDataURL.then((passportAdded) => {
+    const applicationLetterURL = convertApplicationLetterToDataURL(passportAdded);
 
-    applicationLetterURL.then((moreData) => {
-      insertMoreFormFieldValues(moreData);
+    applicationLetterURL.then((applicationLetterAdded) => {
+      const formPaymentProofDataURL = convertFormPaymentProofToDataURL(applicationLetterAdded);
+      formPaymentProofDataURL.then((formPaymentProofAdded) => {
+        insertMoreFormFieldValues(formPaymentProofAdded);
+      });
     });
   });
 }
@@ -135,6 +139,20 @@ function convertApplicationLetterToDataURL(data) {
   return new Promise((resolve) => {
     reader.onload = (e) => {
       data.membershipApplicationForm.applicationLetter = e.target.result;
+      resolve(data);
+    };
+  });
+}
+
+function convertFormPaymentProofToDataURL(data) {
+  const applicantFormPaymentProof = formPaymentProof.files[0];
+
+  const reader = new FileReader();
+  reader.readAsDataURL(applicantFormPaymentProof);
+
+  return new Promise((resolve) => {
+    reader.onload = (e) => {
+      data.membershipApplicationForm.formPaymentProof = e.target.result;
       resolve(data);
     };
   });
