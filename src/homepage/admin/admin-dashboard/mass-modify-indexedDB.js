@@ -16,8 +16,6 @@ function displayStoreMsg() {
 
 let i = 0;
 function insertDepositData(data) {
-  console.log('insertDepositData');
-
   if (i >= data.length) {
     displayStoreMsg();
     return;
@@ -25,7 +23,7 @@ function insertDepositData(data) {
 
   const obj = data[i];
 
-  const fixedDepositAmount = obj.membershipApplicationForm.fixedDepositAmount;
+  const fixedDepositAmount = +obj.membershipApplicationForm['fixed-deposit-amount'];
   if (!fixedDepositAmount) {
     getAllMember();
     return;
@@ -35,6 +33,7 @@ function insertDepositData(data) {
     addDeposit({
       obj,
       depositAmount: fixedDepositAmount,
+      depositAmountDynamic: fixedDepositAmount,
     });
   } else {
     let monthlyWithdrawalAmountSum = 0;

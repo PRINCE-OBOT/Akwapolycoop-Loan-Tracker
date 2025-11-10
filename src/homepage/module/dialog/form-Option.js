@@ -73,7 +73,7 @@ const events = {
   }),
 };
 
-function isActionfixedDepositAmount() {
+function isActionFixedDepositAmount() {
   const action = getActionFromLocalStorage();
 
   if (action) {
@@ -89,7 +89,7 @@ const addEventToBtnCancel = (button) => {
   button.addEventListener('click', () => {
     eventBus.dispatchEvent(events.manualCloseDialog);
 
-    isActionfixedDepositAmount();
+    isActionFixedDepositAmount();
     // eventBus.dispatchEvent(events.previousContentEvent);
   });
   return button;

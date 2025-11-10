@@ -2,7 +2,6 @@ import { format } from 'date-fns';
 import eventBus from '../../module/event-bus/event';
 import indexDB from '../../module/indexDB/indexDB';
 import eyeViewImg from '../../assets/images/eye-view.svg';
-import declineImg from '../../assets/images/delined-loan.svg';
 import approveImg from '../../assets/images/approve-loan.svg';
 
 import registerLocalStorageCustomMethod from '../../module/localStorage/localStorage';
@@ -152,13 +151,13 @@ function errorWhileGettingData() {
   console.log('Error while getting data');
 }
 
-const getRecentLoanApplicantIDInLocalStorage = () => {
+const getRecentLoanApplicantID = () => {
   const data = localStorage.getData({ key: 'recent-loan-applicant' });
   return data?.id;
 };
 
 const getRecentLoanApplicant = () => {
-  const id = getRecentLoanApplicantIDInLocalStorage();
+  const id = getRecentLoanApplicantID();
 
   indexDB.interact(
     {
@@ -197,7 +196,7 @@ function insertDataToProofOfPayment(result) {
     return;
   }
 
-  proofOfPaymentPreview.src = result.status === 'Approve' ? approveImg : declineImg;
+  proofOfPaymentPreview.src = result.massDeposit ? approveImg : result.proofOfPayment;
 
   const date = getDate(result.actionDate);
   const time = getTime(result.actionDate);
@@ -209,20 +208,20 @@ function insertDataToProofOfPayment(result) {
 }
 
 function getRecentLoanApplicantForProofOfPayment(depositID) {
-  const findLoanIDProofOfPayment = (data) => {
+  const findClickDeposit = (data) => {
     const result = data.deposit.find((obj) => obj.depositID === depositID);
 
     insertDataToProofOfPayment(result);
   };
 
-  const id = getRecentLoanApplicantIDInLocalStorage();
+  const id = getRecentLoanApplicantID();
 
   indexDB.interact(
     {
       storeName: 'loan-applicant-list',
       keyPathValue: id,
       getMethod: 'get',
-      returnData: findLoanIDProofOfPayment,
+      returnData: findClickDeposit,
       undefineState: errorWhileGettingData,
     },
     'getData',
@@ -287,6 +286,7 @@ function filterLoanApplicantByStatus(e) {
 searchStatus.addEventListener('change', filterLoanApplicantByStatus);
 searchBar.addEventListener('input', filterLoanApplicantByDepositID);
 tbody.addEventListener('click', handleViewDisplay);
+
 const depositRenderContentDBBus = new EventTarget();
 depositRenderContentDBBus.addEventListener('render-content', getRecentLoanApplicant);
 
