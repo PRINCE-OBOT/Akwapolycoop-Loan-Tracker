@@ -48,16 +48,18 @@ const indexDB = {
     };
   },
 
-  checkIfUserAlreadyHaveAccount(
+  isUserAlreadyAccountExist(
     { storeName, getMethod, firstName, lastName, email, trueState, falseState },
     db,
   ) {
     function returnData(data) {
       for (let i = 0; i < data.length; i++) {
         if (
-          (data[i].signUpData.firstName.toLowerCase() === firstName.value.toLowerCase() &&
-            data[i].signUpData.lastName.toLowerCase() === lastName.value.toLowerCase()) ||
-          data[i].signUpData.email.toLowerCase() === email.value.toLowerCase()
+          (data[i].membershipApplicationForm.firstName.toLowerCase() ===
+            firstName.value.toLowerCase() &&
+            data[i].membershipApplicationForm.lastName.toLowerCase() ===
+              lastName.value.toLowerCase()) ||
+          data[i].membershipApplicationForm.email.toLowerCase() === email.value.toLowerCase()
         ) {
           trueState();
           return;

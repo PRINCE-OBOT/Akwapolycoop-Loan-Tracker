@@ -56,9 +56,34 @@ const btnSubmitApplication = form.querySelector('.btn-submit-application');
 const submitLoanApplicationFormEvent = new CustomEvent('all-field-valid', {
   detail: {
     form,
-    functionToGetDataInIndexBD: gatherData,
+    functionToGetDataInIndexBD: isUserAlreadyAccountExist,
   },
 });
+
+const Event = ({
+  eventName = 'dialog-manager',
+  text = null,
+  closedByValue = 'any',
+  contentKey = 'status',
+}) =>
+  new CustomEvent(eventName, {
+    detail: {
+      contentKey,
+      closedByValue,
+      text,
+    },
+  });
+
+const events = {
+  success: Event({
+    text: 'You form has been submitted. Under Review',
+  }),
+  showTakeLoan: Event({
+    eventName: 'custom-change-content',
+    contentKey: 'take-loan',
+  }),
+  userAlreadyExist: Event({ text: 'User Already Exist' }),
+};
 
 const bindSubmitApplicationButton = () =>
   btnSubmitApplication.addEventListener('click', () =>
@@ -68,6 +93,25 @@ const bindSubmitApplicationButton = () =>
 function resetForm() {
   form.reset();
   FieldValidationUtility.resetFieldValidity(form);
+}
+
+function userAccountExist() {
+  alert('exist');
+}
+
+function isUserAlreadyAccountExist() {
+  indexDB.interact(
+    {
+      storeName: 'loan-applicant-list',
+      getMethod: 'getAll',
+      firstName,
+      lastName,
+      email,
+      returnData: userAccountExist,
+      falseState: gatherData,
+    },
+    'isUserAlreadyAccountExist',
+  );
 }
 
 function gatherData() {
@@ -180,27 +224,6 @@ function storeDataLoanApplicantList(data) {
     'storeData',
   );
 }
-
-const Event = ({ eventName, text = null, closedByValue = 'any', contentKey = null }) =>
-  new CustomEvent(eventName, {
-    detail: {
-      contentKey,
-      closedByValue,
-      text,
-    },
-  });
-
-const events = {
-  success: Event({
-    eventName: 'dialog-manager',
-    contentKey: 'status',
-    text: 'You form has been submitted. Under Review',
-  }),
-  showTakeLoan: Event({
-    eventName: 'custom-change-content',
-    contentKey: 'take-loan',
-  }),
-};
 
 function displayFormSubmissionStatus() {
   eventBus.dispatchEvent(events.success);
