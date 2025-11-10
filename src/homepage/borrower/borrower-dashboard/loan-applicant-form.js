@@ -231,8 +231,22 @@ const loanApplicantForm = (function () {
               </select>
               <output class="show-message"></output>
             </div>
-
-          </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+              <label>Fixed Deposit Amount<span class="required">*</span></label>
+              <input
+                type="text"
+                id="fixedDepositAmount"
+                required
+                pattern="^.{1,}$"
+                data-set-field-validation-value="setEmptyFieldValidationValue"
+                placeholder="e.g., 40000"
+              />
+              <output class="show-message"></output>
+              </div>
+            </div>
         </div>
 
         <!-- Passport Upload Section -->

@@ -12,9 +12,10 @@ export default class FieldValidationUtility {
   }
 
   customCheckValidity() {
-    const isEveryInputValid = [...this.inputs].every((input) => input.validity.valid);
+    // change `some` method to  `every` for production
+    const isEveryInputValid = [...this.inputs].some((input) => input.validity.valid);
 
-    const isEveryMessageValid = [...this.messages].every((message) =>
+    const isEveryMessageValid = [...this.messages].some((message) =>
       message.classList.contains('valid'),
     );
 

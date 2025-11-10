@@ -22,7 +22,7 @@ const state = form.querySelector('#state');
 const lga = form.querySelector('#lga');
 const staffId = form.querySelector('#staffId');
 const department = form.querySelector('#department');
-const fixedDepositAmount = form.querySelector('#fixed-deposit-amount');
+const fixedDepositAmount = form.querySelector('#fixedDepositAmount');
 const position = form.querySelector('#position');
 const passport = form.querySelector('#passport');
 const employmentDate = form.querySelector('#employmentDate');
@@ -123,6 +123,7 @@ function gatherData() {
 
     applicationLetterURL.then((applicationLetterAdded) => {
       const formPaymentProofDataURL = convertFormPaymentProofToDataURL(applicationLetterAdded);
+
       formPaymentProofDataURL.then((formPaymentProofAdded) => {
         insertMoreFormFieldValues(formPaymentProofAdded);
       });
