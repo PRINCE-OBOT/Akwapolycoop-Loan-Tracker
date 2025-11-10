@@ -196,7 +196,7 @@ function insertDataToProofOfPayment(result) {
     return;
   }
 
-  proofOfPaymentPreview.src = result.massDeposit ? approveImg : result.proofOfPayment;
+  proofOfPaymentPreview.src = result.adminDeposit ? approveImg : result.proofOfPayment;
 
   const date = getDate(result.actionDate);
   const time = getTime(result.actionDate);

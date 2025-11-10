@@ -74,7 +74,7 @@ const insertDepositProofOfPayment = (data) => {
   const date = getDate(result.dateAndTime);
   const time = getTime(result.dateAndTime);
 
-  proofOfPaymentPreview.src = result.massDeposit ? approveImg : result.proofOfPayment;
+  proofOfPaymentPreview.src = result.adminDeposit ? approveImg : result.proofOfPayment;
   dateOfPayment.textContent = date;
   timeOfPayment.textContent = time;
 

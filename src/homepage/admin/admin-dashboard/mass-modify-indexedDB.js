@@ -95,7 +95,7 @@ function addDeposit({ obj, depositAmount, depositAmountDynamic }) {
     depositAmount,
     depositAmountDynamic,
     depositID: `DEP${obj?.id}-00${depositLength}`,
-    massDeposit: true,
+    adminDeposit: true,
   };
 
   obj.deposit.push(deposit);

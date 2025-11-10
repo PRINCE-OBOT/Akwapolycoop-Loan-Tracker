@@ -298,6 +298,7 @@ function addOptionElementToDiv(div) {
   return div;
 }
 
+const ACCOUNT_OPENING_AMOUNT = 4000;
 const buildLoanApplicantProfile = pipe(createDiv, addClassToDiv, addTextContentToDiv);
 const processOptionKeySection = pipe(createDiv, addOptionElementToDiv);
 
@@ -332,19 +333,38 @@ function isStatusApprove(obj, status, membershipID) {
   }
 }
 
+function getDeposit() {
+  const depositList = [];
+  const id = getActionIDFromLocalStorage();
+
+  const deposit = {
+    dateAndTime: new Date(),
+    status: 'Approve',
+    depositAmount: ACCOUNT_OPENING_AMOUNT,
+    depositAmountDynamic: ACCOUNT_OPENING_AMOUNT,
+    depositID: `DEP${id}-000`,
+    adminDeposit: true,
+  };
+
+  depositList.push(deposit);
+
+  return depositList;
+}
+
 const getModifyActionData = (e) => {
   const id = getActionIDFromLocalStorage();
   const { status } = getAttributeFromTarget(e);
   const membershipID = generateMembershipID(id);
+  const deposit = getDeposit();
 
   const obj = {
     key: 'action',
     data: {
       action: 'modifyData',
       id,
-      value: [{ status }],
-      firstKey: ['membershipApplicationForm'],
-      secondKey: ['status'],
+      value: [{ status }, { deposit }],
+      firstKey: ['membershipApplicationForm', 'deposit'],
+      secondKey: ['status', 'deposit'],
     },
   };
 
