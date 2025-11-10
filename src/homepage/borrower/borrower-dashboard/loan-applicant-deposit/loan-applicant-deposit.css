@@ -184,7 +184,6 @@ input[type='file'] {
 
 .info-box {
   background: var(--transparent-black);
-  border-left: 4px solid var(--warning);
   padding: 15px;
   border-radius: 8px;
   margin-bottom: 20px;
