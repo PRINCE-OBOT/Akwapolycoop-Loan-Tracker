@@ -98,7 +98,7 @@ const validation = {
   },
 
   setValidatePurposeOfLoan({ field }) {
-    this.isFieldValid = /^[a-z ]{8,}$/i.test(field.value);
+    this.isFieldValid = /^[a-zA-Z ]{8,}$/i.test(field.value);
     this.fieldErrorMessage = 'Purpose of Loan not descriptive';
   },
 

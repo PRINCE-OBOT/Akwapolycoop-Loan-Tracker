@@ -34,7 +34,7 @@ const takeLoan = (function () {
         <span class="required-asterisk">*</span>
       </label>
       <input
-        type="number"
+        type="password"
         id="withdraw-pin"
         placeholder="e.g 9182"
         pattern="^.{1,}$"

@@ -20,7 +20,7 @@ const loanPurposeSection = (function createLoanPurpose() {
       type="text"
       id="loan-purpose"
       placeholder="e.g Business"
-      pattern="[a-z ]{8,}$"
+      pattern="[a-zA-Z ]{8,}$"
       data-set-field-validation-value="setValidatePurposeOfLoan"
       required
     />
