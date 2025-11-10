@@ -108,7 +108,7 @@ function isUserAlreadyAccountExist() {
       firstName,
       lastName,
       email,
-      returnData: userAccountExist,
+      trueState: userAccountExist,
       falseState: gatherData,
     },
     'isUserAlreadyAccountExist',

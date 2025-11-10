@@ -54,12 +54,11 @@ const indexDB = {
   ) {
     function returnData(data) {
       for (let i = 0; i < data.length; i++) {
+        const membershipApplicationForm = data[i].membershipApplicationForm;
         if (
-          (data[i].membershipApplicationForm.firstName.toLowerCase() ===
-            firstName.value.toLowerCase() &&
-            data[i].membershipApplicationForm.lastName.toLowerCase() ===
-              lastName.value.toLowerCase()) ||
-          data[i].membershipApplicationForm.email.toLowerCase() === email.value.toLowerCase()
+          (membershipApplicationForm.firstName?.toLowerCase() === firstName.value?.toLowerCase() &&
+            membershipApplicationForm.lastName?.toLowerCase() === lastName.value?.toLowerCase()) ||
+          membershipApplicationForm.email?.toLowerCase() === email.value?.toLowerCase()
         ) {
           trueState();
           return;
