@@ -24,7 +24,7 @@ const addTextContentToDiv = (div) => {
                 <p>MEMBERSHIP ID: <span class="membershipID"></span></p> 
                 <p>FIXED MONTHLY DEPOSIT AMOUNT: <span class="fixed-deposit-amount"></span></p> 
             </div>
-            
+
             <div class="date-box">
                 <p class="date-box-label">Application Date/Time</p>
                 <p class="date-box-value" id="application-date"></p>
@@ -157,10 +157,18 @@ const addTextContentToDiv = (div) => {
                     <div class="field-value RNumber"></div>
                 </div>
             </div>
+
             <div>
               <details>
                <summary>Application Letter</summary>
                <img class="application-letter" src="" alt="Application Letter" />
+              </details>
+            </div>
+           
+            <div>
+              <details>
+               <summary>Form Payment Proof</summary>
+               <img class="form-payment-proof" src="" alt="Form Payment Proof" />
               </details>
             </div>
         </div>
@@ -432,6 +440,7 @@ const accountNumber = loanApplicantProfile.querySelector('.account-number');
 const accountName = loanApplicantProfile.querySelector('.account-name');
 const RNumber = loanApplicantProfile.querySelector('.RNumber');
 const applicationLetter = loanApplicantProfile.querySelector('.application-letter');
+const formPaymentProof = loanApplicantProfile.querySelector('.form-payment-proof');
 const department = loanApplicantProfile.querySelector('.department');
 const employmentDate = loanApplicantProfile.querySelector('.employmentDate');
 const employmentType = loanApplicantProfile.querySelector('.employmentType');
@@ -507,6 +516,7 @@ function insertLoanApplicantDataToProfile(data) {
   bankName.textContent = membershipApplicationForm['bank-name'];
   RNumber.textContent = membershipApplicationForm.RNumber;
   applicationLetter.src = membershipApplicationForm.applicationLetter;
+  formPaymentProof.src = membershipApplicationForm.formPaymentProof;
   department.textContent = membershipApplicationForm.department;
   employmentDate.textContent = membershipApplicationForm.employmentDate;
   employmentType.textContent = membershipApplicationForm.employmentType;
