@@ -50,6 +50,8 @@ const myLoan = (function createTableHeading() {
                     <th>S/N</th>
                     <th>Loan ID</th>
                     <th>Amount(N)</th>
+                    <th>Disburse(N)</th>
+                    <th>Dividend(N)</th>
                     <th>Loan Status</th>
                     <th>Monthly WA</th>
                     <th>Paid Status</th>
@@ -57,7 +59,7 @@ const myLoan = (function createTableHeading() {
                     <th>Purpose</th>
                     <th>Date</th>
                     <th>Time</th>
-                    <th data-view="proofOfPayment">Actions</th>
+                    <th data-view="proofOfPayment">Action Date</th>
                   </tr>
                 </thead>
 
@@ -137,11 +139,12 @@ function insertLoanApplicantDataToTr(loanApplicantData) {
     const paidStatus =
       data.status === 'Approve' && data.loanAmountDynamic === 0 ? 'Complete' : 'Incomplete';
 
-    console.log(data);
     tr.innerHTML = `
        <td>${serialNumber}</td>
        <td class='loanID'>${data.loanID}</td>
        <td>${data.loanAmount}</td>
+       <td>${data.amountDisburse}</td>
+       <td>${data.dividendAmount}</td>
        <td class="status">${data.status}</td>
        <td>${data.monthlyWithdrawalAmount}</td>
        <td>${paidStatus}</td>
@@ -151,7 +154,6 @@ function insertLoanApplicantDataToTr(loanApplicantData) {
        <td>${time}</td>
        <td data-view="proofOfPayment">
        <img src="${eyeViewImg}" alt="view proof of payment" class="eye-view"/>
-       View Proof
        </td>
       `;
 

@@ -10,7 +10,7 @@ const withdrawalManagement = (function createDepositManagementContent() {
 
   div.innerHTML = `
             <h5 class="brief-text">Oversee and manage all loan applications within the system.</h5>
-
+            <button type="button" class="btn-create-mass-deposit create-mass-dividend">Send Mass Dividend</button>  
             <div class="filter-section">
               <h3>Filter Withdrawal</h3>
               <p>Find specific withdrawal by it status</p>
@@ -41,11 +41,14 @@ const withdrawalManagement = (function createDepositManagementContent() {
                     <th>S/N</th>
                     <th>Withdrawal ID</th>
                     <th>Amount</th>
-                    <th>Pay</th>
+                    <th>Disburse(N)</th>
+                    <th>Dividend(N)</th>
                     <th>Status</th>
                     <th>Date</th>
                     <th>Time</th>
-                    <th colspan="3">Actions</th>
+                    <th>Profile</th>
+                    <th>Action Date</th>
+                    <th colspan="2">Actions</th>
                   </tr>
                 </thead>
                 <tbody></tbody>
@@ -62,25 +65,25 @@ const numberOfDeposit = withdrawalManagement.querySelector('.number-of-withdrawa
 const searchBar = withdrawalManagement.querySelector('input[type=search]');
 const searchStatus = withdrawalManagement.querySelector('.search-status');
 const tbody = withdrawalManagement.querySelector('tbody');
-
-const PERCENTAGE = 5 / 100;
+const createMassDividend = withdrawalManagement.querySelector('.create-mass-dividend');
 
 function setNumberOfDepositValue(value) {
   numberOfDeposit.textContent = value;
 }
 
-const question = (text) =>
+const Event = ({ text, contentKey = 'question' }) =>
   new CustomEvent('dialog-manager', {
     detail: {
-      contentKey: 'question',
+      contentKey,
       closedByValue: 'any',
       text,
     },
   });
 
 const events = {
-  approve: question('approve the withdrawal?'),
-  decline: question('decline the withdrawal?'),
+  approve: Event({ text: 'approve the withdrawal?' }),
+  decline: Event({ text: 'decline the withdrawal?' }),
+  adminVerification: Event({ contentKey: 'adminVerification' }),
 };
 
 const showDepositApproveOption = () => {
@@ -258,11 +261,15 @@ function insertDepositDataToTable(depositList) {
        <td>${serialNumber}</td>
        <td class="withdrawalID">${data.withdrawalID}</td>
        <td>${data.withdrawalAmount}</td>
-       <td>${data.withdrawalAmount - PERCENTAGE * data.withdrawalAmount}</td>
+       <td>${data.amountDisburse}</td>
+       <td>${data.dividendAmount}</td>
        <td class="status">${data.status}</td>
        <td>${date}</td>
        <td>${time}</td>
-       <td data-db-first-key="loanApplicantForm"><img src="${eyeViewImg}" class="eye-view" alt="eye view"/>View Profile</td>
+       <td data-db-first-key="loanApplicantForm"><img src="${eyeViewImg}" class="eye-view" alt="eye view"/></td>
+       <td data-view="proofOfPayment">
+          <img src="${eyeViewImg}" alt="view proof of payment" class="eye-view"/>
+        </td>
        <td><button data-option-key="depositApproveOption" data-db-first-key="withdrawal" data-status="Approve" class="btn-approve-loan">Approve</button></td>
        <td><button data-option-key="depositDeclineOption" data-db-first-key="withdrawal" data-status="Decline" class="btn-decline-loan">Decline</button></td>
       `;
@@ -352,10 +359,36 @@ function filterLoanApplicantByStatus(e) {
   });
 }
 
+function showAdminVerificationForm() {
+  eventBus.dispatchEvent(events.adminVerification);
+}
+
+function getMassDividendAction() {
+  const obj = {
+    key: 'action',
+    data: {
+      action: 'massDividend',
+      firstKey: ['withdrawal'],
+    },
+  };
+  return obj;
+}
+
+function handleMassDividendActionStorage() {
+  const massDividendAction = getMassDividendAction();
+  storeActionToLocalStorage(massDividendAction);
+}
+
+function handleSendMassDividend() {
+  showAdminVerificationForm();
+  handleMassDividendActionStorage();
+}
+
 searchStatus.addEventListener('change', filterLoanApplicantByStatus);
 searchBar.addEventListener('input', filterLoanApplicantByDepositID);
 tbody.addEventListener('click', handleOptionContent);
 tbody.addEventListener('click', handleActionStorage);
+createMassDividend.addEventListener('click', handleSendMassDividend);
 
 const withdrawalManagementGetDataInDBBus = new EventTarget();
 withdrawalManagementGetDataInDBBus.addEventListener(

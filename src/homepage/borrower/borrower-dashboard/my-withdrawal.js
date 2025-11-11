@@ -50,10 +50,12 @@ const myWithdrawal = (function createTableHeading() {
                     <th>S/N</th>
                     <th>Withdrawal ID</th>
                     <th>Amount</th>
+                    <th>Disburse(N)</th>
+                    <th>Dividend(N)</th>
                     <th>Status</th>
                     <th>Date</th>
                     <th>Time</th>
-                    <th>Actions</th>
+                    <th>Action Date</th>
                   </tr>
                 </thead>
                 <tbody></tbody>
@@ -134,12 +136,13 @@ function insertLoanApplicantDataToTr(loanApplicantData) {
        <td>${serialNumber}</td>
        <td class="withdrawalID">${data.withdrawalID}</td>
        <td>${data.withdrawalAmount}</td>
+       <td>${data.amountDisburse}</td>
+       <td>${data.dividendAmount}</td>
        <td class="status">${data.status}</td>
        <td>${date}</td>
        <td>${time}</td>
        <td data-view="proofOfPayment">
        <img src="${eyeViewImg}" alt="view proof of payment" class="eye-view"/>
-       View Proof
        </td>
       `;
 

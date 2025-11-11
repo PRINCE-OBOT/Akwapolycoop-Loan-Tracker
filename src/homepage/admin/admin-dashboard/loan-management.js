@@ -42,6 +42,8 @@ const loanerManagement = (function createLoanerManagementContent() {
                     <th>S/N</th>
                     <th>Loan ID</th>
                     <th>Amount(N)</th>
+                    <th>Disburse(N)</th>
+                    <th>Dividend(N)</th>
                     <th>Pay</th>
                     <th>Monthly WA</th>
                     <th>Status</th>
@@ -67,8 +69,6 @@ const numberOfLoans = loanerManagement.querySelector('.number-of-loan');
 const searchBar = loanerManagement.querySelector('input[type=search]');
 const searchStatus = loanerManagement.querySelector('.search-status');
 const tbody = loanerManagement.querySelector('tbody');
-
-const PERCENTAGE = 5 / 100;
 
 function setNumberOfLoanValue(value) {
   numberOfLoans.textContent = value;
@@ -260,7 +260,8 @@ function insertTakeLoanDataToTable(loanList) {
        <td>${serialNumber}</td>
        <td class="loanID">${data.loanID}</td>
        <td>${data.loanAmount}</td>
-       <td>${data.loanAmount - PERCENTAGE * data.loanAmount}</td>
+       <td>${data.amountDisburse}</td>
+       <td>${data.dividendAmount}</td>
        <td>${data.monthlyWithdrawalAmount}</td>
        <td class="status">${data.status}</td>
        <td>${data.loanAmountDynamic}</td>

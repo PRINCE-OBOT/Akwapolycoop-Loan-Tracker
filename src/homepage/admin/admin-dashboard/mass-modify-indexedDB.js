@@ -43,11 +43,15 @@ function insertDepositData(data) {
 
   const obj = data[i];
 
-  const fixedDepositAmount = +obj.membershipApplicationForm.fixedDepositAmount;
-  if (!fixedDepositAmount) {
+  const isMemberApprove = obj.membershipApplicationForm.status === 'Approve';
+
+  if (!isMemberApprove) {
+    i += 1;
     getAllMember();
     return;
   }
+
+  const fixedDepositAmount = +obj.membershipApplicationForm.fixedDepositAmount;
 
   if (!obj.loan) {
     addDeposit({

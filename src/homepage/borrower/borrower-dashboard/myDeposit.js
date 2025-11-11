@@ -52,7 +52,7 @@ const myDeposit = (function createTableHeading() {
                     <th>Status</th>
                     <th>Date</th>
                     <th>Time</th>
-                    <th>Actions</th>
+                    <th>Action Date</th>
                   </tr>
                 </thead>
                 <tbody></tbody>
@@ -138,7 +138,6 @@ function insertLoanApplicantDataToTr(loanApplicantData) {
        <td>${time}</td>
        <td data-view="proofOfPayment">
        <img src="${eyeViewImg}" alt="view proof of payment" class="eye-view"/>
-       View Detail
        </td>
       `;
 

@@ -15,6 +15,7 @@ import { bindDepositDocumentUploadEvent } from '../../borrower/borrower-dashboar
 import bindAllFieldValidEvent from '../../borrower/borrower-dashboard/is-all-field-valid';
 import pipe from '../../module/composition/pipe';
 import bindMassModifyIndexedDB from './mass-modify-indexedDB';
+import bindMassDividend from './mass-dividend';
 
 const headerBottomSection = document.querySelector('.header_bottom-section');
 const contentHolder = document.querySelector('.content-holder');
@@ -27,12 +28,13 @@ registerLocalStorageCustomMethod();
 bindDepositDocumentUploadEvent();
 bindAllFieldValidEvent();
 bindMassModifyIndexedDB();
+bindMassDividend();
 
 appendDialogToBody.prototype.body = document.body;
 appendDialogToBody();
 
 appendContent.prototype.holder = contentHolder;
-appendContent({ detail: { contentKey: 'deposit-management' } });
+appendContent({ detail: { contentKey: 'withdrawal-management' } });
 
 const errorGettingData = () => {
   console.log('Error while getting data');

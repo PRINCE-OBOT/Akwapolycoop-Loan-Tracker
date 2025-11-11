@@ -109,7 +109,7 @@ function toggleFieldToTakeLoan() {
 
 function hasExceedMaxWithdrawalAmount(value) {
   withdrawalMsg.textContent = `
-    Your withdrawal amount has exceed your balance and preferred monthly deposit. 
+    Your withdrawal amount has exceed your balance and maximum loan amount. 
     An addition of ${value}`;
 }
 
@@ -148,16 +148,21 @@ function addTakeLoanFieldValue(data) {
   const loanLength = data.loan.length;
   const withdrawalTimes = +monthWithdrawalTimes.value;
   const monthlyWithdrawalAmount = loan / withdrawalTimes;
+  const dividendAmount = PERCENTAGE * loan;
+  const amountDisburse = loan - dividendAmount;
 
   const loanFieldValue = {
     dateAndTime: new Date(),
     status: 'Pending',
     loanAmount: loan,
     loanAmountDynamic: 0,
+    amountDisburse,
     loanID: `LOAN${data?.id}-00${loanLength}`,
     loanPurpose: loanPurpose.value,
     monthlyWithdrawalTimes: withdrawalTimes,
     monthlyWithdrawalAmount,
+    dividendAmount,
+    dividendAmountDynamic: dividendAmount,
   };
 
   data.loan.push(loanFieldValue);
@@ -165,8 +170,7 @@ function addTakeLoanFieldValue(data) {
   storeDataLoanApplicantList(data);
 }
 
-let mainBalance = 0;
-
+let withdrawalAmountValue = 0;
 function isWithdrawalAndLoan(data) {
   const result = addFieldValueToData(data);
 
@@ -174,7 +178,7 @@ function isWithdrawalAndLoan(data) {
 
   const withdrawal = data.withdrawal[withdrawalLength];
 
-  withdrawal.withdrawalAmount = mainBalance;
+  withdrawal.withdrawalAmount = withdrawalAmountValue;
 
   addTakeLoanFieldValue(result);
 }
@@ -183,12 +187,17 @@ function addFieldValueToData(data) {
   if (!data.withdrawal) data.withdrawal = [];
 
   const withdrawalLength = data.withdrawal.length;
+  const dividendAmount = PERCENTAGE * withdrawalAmountValue;
+  const amountDisburse = withdrawalAmountValue - dividendAmount;
 
   const withdrawalFieldValue = {
     dateAndTime: new Date(),
     status: 'Pending',
-    withdrawalAmount: +withdrawalAmount.value,
+    withdrawalAmount: withdrawalAmountValue,
+    amountDisburse,
     withdrawalID: `WTD${data?.id}-00${withdrawalLength}`,
+    dividendAmount,
+    dividendAmountDynamic: dividendAmount,
   };
 
   data.withdrawal.push(withdrawalFieldValue);
@@ -197,19 +206,20 @@ function addFieldValueToData(data) {
 }
 
 function isWithdrawalAmountGreaterThanBalance(balance, data) {
-  mainBalance = balance;
   const amount = +withdrawalAmount.value;
-  let maxWithdrawalAmount = balance + data.fixedDepositAmount;
+  let maxWithdrawalAmount = balance * 2;
 
   clearMessage();
 
   if (amount > maxWithdrawalAmount) {
     hasExceedMaxWithdrawalAmount(amount - maxWithdrawalAmount);
-  } else if (balance > 0 && amount > balance && amount <= balance + data.fixedDepositAmount) {
+  } else if (balance > 0 && amount > balance && amount <= balance * 2) {
     loan = amount - balance;
+    withdrawalAmountValue = balance;
     hasExceedBalance();
     isLoanFieldInForm();
   } else if (balance > 0 && amount <= balance) {
+    withdrawalAmountValue = +withdrawalAmount.value;
     getRecentMemberData(isOnlyWithdrawal);
   } else if (balance <= 0) {
     maxWithdrawalAmount = data.fixedDepositAmount - Math.abs(balance);

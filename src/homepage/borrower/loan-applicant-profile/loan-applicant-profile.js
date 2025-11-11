@@ -23,6 +23,7 @@ const addTextContentToDiv = (div) => {
                 <h1>Member Profile</h1>
                 <p>MEMBERSHIP ID: <span class="membershipID"></span></p> 
                 <p>FIXED MONTHLY DEPOSIT AMOUNT: <span class="fixed-deposit-amount"></span></p> 
+                <p>DIVIDEND: <span class="dividend-amount"></span></p> 
             </div>
 
             <div class="date-box">
@@ -469,6 +470,7 @@ const status = loanApplicantProfile.querySelector('.status');
 const state = loanApplicantProfile.querySelector('.state');
 const lga = loanApplicantProfile.querySelector('.lga');
 const membershipID = loanApplicantProfile.querySelector('.membershipID');
+const dividendAmount = loanApplicantProfile.querySelector('.dividend-amount');
 
 const guarantor1StaffId = loanApplicantProfile.querySelector('.guarantor1StaffId');
 const guarantor1Name = loanApplicantProfile.querySelector('.guarantor1Name');
@@ -503,7 +505,7 @@ const getTime = (dateAndTime) => {
 const applicationStatus = {
   Pending: () => footer.append(optionKeySection),
   Approve: (membershipApplicationForm) => {
-    fixedDepositAmount.textContent = membershipApplicationForm['fixed-deposit-amount'];
+    fixedDepositAmount.textContent = membershipApplicationForm.fixedDepositAmount;
     membershipID.textContent = membershipApplicationForm.membershipID;
   },
   Decline: () => {
@@ -511,6 +513,70 @@ const applicationStatus = {
     fixedDepositAmount.textContent = 'Decline';
   },
 };
+
+function getActionFromLocalStorage() {
+  const data = localStorage.getData({ key: 'action' });
+  return data;
+}
+
+function accumulateLoanDividendAmount(data) {
+  if (data.loan) {
+    return data.loan.reduce(
+      (acc, currentObj) =>
+        currentObj.status === 'Approve' ? acc + currentObj.dividendAmount : acc,
+      0,
+    );
+  }
+}
+
+function accumulateWithdrawalDividendAmount(data) {
+  if (data.withdrawal) {
+    return data.withdrawal.reduce(
+      (acc, currentObj) =>
+        currentObj.status === 'Approve' ? acc + currentObj.dividendAmount : acc,
+      0,
+    );
+  }
+}
+
+function accumulateLoanDividendAmountDynamic(data) {
+  if (data.loan) {
+    return data.loan.reduce(
+      (acc, currentObj) =>
+        currentObj.status === 'Approve' ? acc + (currentObj.dividendAmountDynamic || 0) : acc,
+      0,
+    );
+  }
+}
+
+function accumulateWithdrawalDividendAmountDynamic(data) {
+  if (data.withdrawal) {
+    return data.withdrawal.reduce(
+      (acc, currentObj) =>
+        currentObj.status === 'Approve' ? acc + (currentObj.dividendAmountDynamic || 0) : acc,
+      0,
+    );
+  }
+}
+
+function isWithdrawalManagementAction(data) {
+  const dataAction = getActionFromLocalStorage();
+  let dividendBalance;
+
+  if (data.membershipApplicationForm.status === 'Pending') return;
+  // When the action is a truthy value that means the action comes from the admin
+  if (dataAction.action) {
+    const dividendWithdrawalAmount = accumulateWithdrawalDividendAmount(data) || 0;
+    const dividendLoanAmount = accumulateLoanDividendAmount(data) || 0;
+    dividendBalance = dividendWithdrawalAmount + dividendLoanAmount;
+  } else {
+    const dividendDynamicWithdrawalAmount = accumulateWithdrawalDividendAmountDynamic(data) || 0;
+    const dividendDynamicLoanAmount = accumulateLoanDividendAmountDynamic(data) || 0;
+    dividendBalance = dividendDynamicWithdrawalAmount + dividendDynamicLoanAmount;
+  }
+
+  dividendAmount.textContent = dividendBalance;
+}
 
 function insertLoanApplicantDataToProfile(data) {
   const membershipApplicationForm = data.membershipApplicationForm;
@@ -564,7 +630,7 @@ function insertLoanApplicantDataToProfile(data) {
   profileReset();
 
   applicationStatus[membershipApplicationForm.status](membershipApplicationForm);
-
+  isWithdrawalManagementAction(data);
   dispatchProfileEvent();
 }
 
@@ -572,6 +638,7 @@ function profileReset() {
   optionKeySection.remove();
   membershipID.textContent = 'Pending';
   fixedDepositAmount.textContent = 'Pending';
+  dividendAmount.textContent = 'Pending';
 }
 
 function getLoanApplicantData() {

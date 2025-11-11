@@ -59,6 +59,7 @@ const addEventToBtnYes = (button) => {
 
 const events = {
   modifyIndexdb: new CustomEvent('modify-indexdb'),
+  massDividend: new CustomEvent('mass-dividend'),
   massModifyIndexdb: new CustomEvent('mass-modify-indexdb'),
   logout: new CustomEvent('logout'),
   previousContentEvent: new CustomEvent('dialog-manager', {
@@ -107,10 +108,15 @@ const dispatchLogoutEvent = () => {
   eventBus.dispatchEvent(events.logout);
 };
 
+const dispatchMassDividendEvent = () => {
+  eventBus.dispatchEvent(events.massDividend);
+};
+
 const Actions = {
   logout: dispatchLogoutEvent,
   modifyData: dispatchModifyDataEvent,
   massModifyData: dispatchMassModifyDataEvent,
+  massDividend: dispatchMassDividendEvent,
 };
 
 // get action like `modifyData` in localStorage
