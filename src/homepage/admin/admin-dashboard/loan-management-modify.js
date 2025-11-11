@@ -10,7 +10,7 @@ const contentHandler = {
   withdrawal: 'withdrawal-management',
 };
 
-const updated = () => {
+const renderContent = () => {
   const { firstKey, id, withdrawalAmount, depositAmount, depositID, value } =
     getActionDataFromLocalStorage();
 
@@ -24,7 +24,7 @@ const updated = () => {
 
   eventBus.dispatchEvent(customContentEvent);
 
-  // run when withdrawal status is approve
+  // Create a single withdrawal and deposit action
   const status = value.find((item) => item.status)?.status;
 
   if (key === 'withdrawal' && status === 'Approve')
@@ -49,7 +49,7 @@ const modifyLoanApplicantData = () => {
   const uniqueID = loanID || depositID || withdrawalID;
   const uniqueIDKey = loanID ? 'loanID' : depositID ? 'depositID' : 'withdrawalID';
 
-  // updated()
+  // renderContent()
   indexDB.interact(
     {
       storeName: 'loan-applicant-list',
@@ -60,7 +60,7 @@ const modifyLoanApplicantData = () => {
       uniqueID,
       firstKey,
       secondKey,
-      trueState: updated,
+      trueState: renderContent,
       undefinedState: fail,
     },
     'modifyData',

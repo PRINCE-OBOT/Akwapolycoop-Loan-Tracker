@@ -277,6 +277,7 @@ function getMassDepositAction() {
     key: 'action',
     data: {
       action: 'massModifyData',
+      firstKey: ['deposit'],
     },
   };
   return obj;

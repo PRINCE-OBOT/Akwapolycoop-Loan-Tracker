@@ -5,8 +5,27 @@ function error() {
   alert('error !!!');
 }
 
-function displayStoreMsg() {
-  alert('store');
+const contentHandler = {
+  deposit: 'deposit-management',
+};
+
+const getActionDataFromLocalStorage = () => {
+  const data = localStorage.getData({ key: 'action' });
+  return data;
+};
+
+function renderContent() {
+  const { firstKey } = getActionDataFromLocalStorage();
+
+  const key = firstKey[0];
+
+  const customContentEvent = new CustomEvent('custom-change-content', {
+    detail: {
+      contentKey: contentHandler[key],
+    },
+  });
+
+  eventBus.dispatchEvent(customContentEvent);
 }
 
 // Iterate through every member that has set a preferred deposit amount
@@ -17,7 +36,8 @@ function displayStoreMsg() {
 let i = 0;
 function insertDepositData(data) {
   if (i >= data.length) {
-    displayStoreMsg();
+    i = 0;
+    renderContent();
     return;
   }
 
