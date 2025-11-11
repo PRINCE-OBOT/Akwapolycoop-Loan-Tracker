@@ -23,7 +23,7 @@ function insertDepositData(data) {
 
   const obj = data[i];
 
-  const fixedDepositAmount = +obj.membershipApplicationForm['fixed-deposit-amount'];
+  const fixedDepositAmount = +obj.membershipApplicationForm.fixedDepositAmount;
   if (!fixedDepositAmount) {
     getAllMember();
     return;
@@ -95,6 +95,7 @@ function addDeposit({ obj, depositAmount, depositAmountDynamic }) {
     depositAmount,
     depositAmountDynamic,
     depositID: `DEP${obj?.id}-00${depositLength}`,
+    actionDate: new Date(),
     adminDeposit: true,
   };
 

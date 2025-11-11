@@ -115,7 +115,7 @@ function isMemberNew(data) {
   displayPassportInProfile(data);
 }
 
-(function checkIfThereIsRecentLoanApplicant() {
+(function IsRecentLoanApplicantExist() {
   const id = getRecentLoanApplicantID();
 
   if (!id) {
@@ -123,7 +123,7 @@ function isMemberNew(data) {
     return;
   }
   makeBorrowerDashboardDisplayBlock();
-  // isMemberNew(id)
+
   // `insertLoanApplicantDataToDashboardPage` is the callback function to run when
   // the recentLoanApplicantData is retrieve from indexedDB
   getRecentLoanApplicantData({ id, returnData: isMemberNew });

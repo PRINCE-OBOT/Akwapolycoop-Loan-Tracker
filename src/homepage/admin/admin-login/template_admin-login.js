@@ -122,7 +122,7 @@ const storeAdminSignUpData = () => {
   );
 };
 
-const checkIfAdminSignUpDataExist = (data) => {
+const isAdminSignUpDataExist = (data) => {
   if (!data) storeAdminSignUpData();
 };
 
@@ -132,7 +132,7 @@ const checkIfAdminSignUpDataExist = (data) => {
       storeName: 'admin',
       keyPathValue: 1,
       getMethod: 'get',
-      returnData: checkIfAdminSignUpDataExist,
+      returnData: isAdminSignUpDataExist,
       undefinedState: error,
     },
     'getData',

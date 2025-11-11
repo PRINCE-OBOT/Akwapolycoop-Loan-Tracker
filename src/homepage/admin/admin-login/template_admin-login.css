@@ -45,9 +45,6 @@ input {
     border-color: red;
   }
 }
-.show-message {
-  display: none;
-}
 
 .btn-login {
   max-width: 120px;

@@ -9,7 +9,7 @@ const adminVerificationForm = (function createAdminVerificationForm() {
 
   div.innerHTML = `
         <div class="form-header">
-            <h1>Verify you Admin</h1>
+            <h1>Verify you are Admin</h1>
             <p>Please enter your login pin</p>
         </div>
 
