@@ -28,24 +28,25 @@ class MathUtility {
   // So the `depositAmountDynamic` becomes Math.abs(negativeNumber)
 
   static withdrawalApprove({ id, withdrawalAmount }) {
-    const filterApproveAndUnpaidDeposit = (data) => {
+    const filterApproveAndDepositWithMoney = (data) => {
       if (!data.deposit) return;
 
-      for (let i = 0; i < data.deposit.length; i++) {
-        if (data.deposit[i].status === 'Approve' && data.deposit[i].depositAmountDynamic !== 0) {
-          const balance = withdrawalAmount - data.deposit[i].depositAmountDynamic;
+      (function deductWithdrawalAmountFromBalance() {
+        for (let i = 0; i < data.deposit.length; i++) {
+          if (data.deposit[i].status === 'Approve' && data.deposit[i].depositAmountDynamic !== 0) {
+            const balance = withdrawalAmount - data.deposit[i].depositAmountDynamic;
 
-          if (balance >= 0) {
-            data.deposit[i].depositAmountDynamic = 0;
-          } else {
-            const newDepositAmount = Math.abs(balance);
-            data.deposit[i].depositAmountDynamic = newDepositAmount;
-            return;
+            if (balance >= 0) {
+              data.deposit[i].depositAmountDynamic = 0;
+            } else {
+              data.deposit[i].depositAmountDynamic = Math.abs(balance);
+              break;
+            }
+
+            withdrawalAmount = balance;
           }
-
-          withdrawalAmount = balance;
         }
-      }
+      })();
 
       const store = () => {
         console.log('Successfully Updated deposit');
@@ -68,7 +69,7 @@ class MathUtility {
           storeName: 'loan-applicant-list',
           keyPathValue: id,
           getMethod: 'get',
-          returnData: filterApproveAndUnpaidDeposit,
+          returnData: filterApproveAndDepositWithMoney,
           undefinedState: errorGettingData,
         },
         'getData',
