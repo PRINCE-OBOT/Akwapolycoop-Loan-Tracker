@@ -447,3 +447,12 @@ form .status {
   animation: slideIn 1s ease-in-out forwards;
   /* animation: bounce 1s infinite; */
 }
+/* Logic */
+.dividend-marker {
+  scale: 1.5;
+  margin-left: 10px;
+  accent-color: var(--clr-valid);
+}
+.dividend-marker.hide {
+  display: none;
+}

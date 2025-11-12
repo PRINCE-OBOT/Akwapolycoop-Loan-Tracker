@@ -34,7 +34,7 @@ appendDialogToBody.prototype.body = document.body;
 appendDialogToBody();
 
 appendContent.prototype.holder = contentHolder;
-appendContent({ detail: { contentKey: 'withdrawal-management' } });
+appendContent({ detail: { contentKey: 'loan-applicant-management' } });
 
 const errorGettingData = () => {
   console.log('Error while getting data');

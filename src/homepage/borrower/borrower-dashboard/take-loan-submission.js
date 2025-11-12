@@ -68,7 +68,7 @@ btnTakeLoan.type = 'button';
 btnTakeLoan.textContent = 'Toggle Take loan';
 
 const MINIMUM_MONTH_DEPOSIT = 1;
-const PERCENTAGE = 5 / 100;
+const PERCENTAGE = 2 / 100;
 
 const Event = ({ text, closedByValue = 'any' }) =>
   new CustomEvent('dialog-manager', {

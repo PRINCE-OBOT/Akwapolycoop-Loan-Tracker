@@ -23,7 +23,7 @@ const addTextContentToDiv = (div) => {
                 <h1>Member Profile</h1>
                 <p>MEMBERSHIP ID: <span class="membershipID"></span></p> 
                 <p>FIXED MONTHLY DEPOSIT AMOUNT: <span class="fixed-deposit-amount"></span></p> 
-                <p>DIVIDEND: <span class="dividend-amount"></span> <span class="dividend-msg"></span></p> 
+                <p>DIVIDEND: <span class="dividend-amount"></span> <span class="dividend-msg"></span> <input type="checkbox" class="dividend-marker hide" data-db-first-key="isDividendPaid" /></p> 
             </div>
 
             <div class="date-box">
@@ -428,8 +428,8 @@ const getActionDataFromLocalStorage = () => {
   return data;
 };
 
-const Event = () =>
-  new CustomEvent('dialog-manager', {
+const Event = ({ eventName = 'dialog-manager' }) =>
+  new CustomEvent(eventName, {
     detail: {
       contentKey: 'profile',
       closedByValue: 'any',
@@ -438,7 +438,8 @@ const Event = () =>
   });
 
 const events = {
-  profile: Event(),
+  profile: Event({}),
+  modifyIndexdb: Event({ eventName: 'modify-indexdb' }),
 };
 
 const dispatchProfileEvent = () => {
@@ -472,6 +473,7 @@ const lga = loanApplicantProfile.querySelector('.lga');
 const membershipID = loanApplicantProfile.querySelector('.membershipID');
 const dividendAmount = loanApplicantProfile.querySelector('.dividend-amount');
 const dividendMsg = loanApplicantProfile.querySelector('.dividend-msg');
+const dividendMarker = loanApplicantProfile.querySelector('.dividend-marker');
 
 const guarantor1StaffId = loanApplicantProfile.querySelector('.guarantor1StaffId');
 const guarantor1Name = loanApplicantProfile.querySelector('.guarantor1Name');
@@ -581,18 +583,21 @@ function isWithdrawalManagementAction(data) {
     const dividendWithdrawalAmount = accumulateWithdrawalDividendAmount(data) || 0;
     const dividendLoanAmount = accumulateLoanDividendAmount(data) || 0;
     dividendBalance = dividendWithdrawalAmount + dividendLoanAmount;
+
+    const isMassDividend = isMassDividendPerform(data);
+    if (isMassDividend) {
+      dividendMarker.checked = data.isDividendPaid;
+      dividendMarker.classList.remove('hide');
+    }
   } else {
     const dividendDynamicWithdrawalAmount = accumulateWithdrawalDividendAmountDynamic(data) || 0;
     const dividendDynamicLoanAmount = accumulateLoanDividendAmountDynamic(data) || 0;
+    dividendBalance = dividendDynamicWithdrawalAmount + dividendDynamicLoanAmount;
 
     const isMassDividend = isMassDividendPerform(data);
     if (isMassDividend) {
       dividendMsg.textContent = '(You will receive your dividend in 3 working days)';
-    } else {
-      dividendMsg.textContent = '';
     }
-
-    dividendBalance = dividendDynamicWithdrawalAmount + dividendDynamicLoanAmount;
   }
 
   dividendAmount.textContent = dividendBalance;
@@ -659,6 +664,37 @@ function profileReset() {
   membershipID.textContent = 'Pending';
   fixedDepositAmount.textContent = 'Pending';
   dividendAmount.textContent = 'Pending';
+  dividendMsg.textContent = '';
+  dividendMarker.checked = false;
+  dividendMarker.classList.add('hide');
+}
+
+const getDividendActionData = (e) => {
+  const id = getActionIDFromLocalStorage(e);
+
+  const obj = {
+    key: 'action',
+    data: {
+      action: 'modifyData',
+      id,
+      value: [{ isDividendPaid: dividendMarker.checked }],
+      firstKey: ['isDividendPaid'],
+    },
+  };
+
+  return obj;
+};
+
+function handleDividendMarkerAction(e) {
+  const key = e.target.dataset.dbFirstKey;
+
+  if (!key) return;
+
+  const processActionStoring = pipe(getDividendActionData, storeActionToLocalStorage);
+
+  processActionStoring(e);
+
+  eventBus.dispatchEvent(events.modifyIndexdb);
 }
 
 function getLoanApplicantData() {
@@ -682,4 +718,5 @@ optionKeySection.addEventListener('click', handleActionStorage);
 
 optionKeySection.addEventListener('click', handleOptionContent);
 
+dividendMarker.addEventListener('click', handleDividendMarkerAction);
 export default loanApplicantProfile;

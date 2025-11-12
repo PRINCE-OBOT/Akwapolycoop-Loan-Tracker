@@ -45,7 +45,7 @@ const loanApplicantManagement = (function createLoanApplicantManagementContent()
                     <th>Status</th>
                     <th>Date</th>
                     <th>Time</th>
-                    <th>Action</th>
+                    <th>Profile</th>
                   </tr>
                 </thead>
 
@@ -174,7 +174,7 @@ function insertTakeLoanDataToTable(loanApplicantList) {
        <td class="status"}">${data.status}</td>
        <td>${date}</td>
        <td>${time}</td>
-       <td data-db-first-key="loanApplicantForm"><img src="${eyeViewImg}" class="eye-view" alt="eye view"/>View Profile</td>
+       <td data-db-first-key="loanApplicantForm"><img src="${eyeViewImg}" class="eye-view" alt="eye view"/></td>
        
       `;
     setAttributeToTr({ tr, id: data.id });
