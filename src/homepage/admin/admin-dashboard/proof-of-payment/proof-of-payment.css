@@ -8,7 +8,7 @@
   gap: 10px;
   border-radius: 10px 10px 0 0;
   padding: 10px 20px;
-  background: linear-gradient(135deg, var(--primary-accent) 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--ink) 0%, var(--primary-accent) 100%);
   color: var(--secondary-accent);
 }
 .close-btn {

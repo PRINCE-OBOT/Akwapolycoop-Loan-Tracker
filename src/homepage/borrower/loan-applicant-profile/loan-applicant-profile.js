@@ -24,7 +24,7 @@ const addTextContentToDiv = (div) => {
                 <p>MEMBERSHIP ID: <span class="membershipID"></span></p> 
                 <p>FIXED MONTHLY DEPOSIT AMOUNT: <span class="fixed-deposit-amount"></span></p> 
                 <p>TOTAL DEPOSIT: <span class="total-deposit"></span></p> 
-                <p>TOTAL PAID: <span class="total-disburse"></span></p> 
+                <p>TOTAL DISBURSE: <span class="total-disburse"></span></p> 
                 <p>DIVIDEND: <span class="dividend-amount"></span> <span class="dividend-msg"></span> <input type="checkbox" class="dividend-marker hide" data-db-first-key="isDividendPaid" /></p> 
             </div>
 
