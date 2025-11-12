@@ -687,8 +687,8 @@ function profileReset() {
   dividendMsg.textContent = '';
   dividendMarker.checked = false;
   dividendMarker.classList.add('hide');
-  totalDeposit.textContent = '';
-  totalDisburse.textContent = '';
+  totalDeposit.textContent = 'Pending';
+  totalDisburse.textContent = 'Pending';
 }
 
 const getDividendActionData = (e) => {
