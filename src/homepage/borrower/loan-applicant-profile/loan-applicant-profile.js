@@ -23,7 +23,7 @@ const addTextContentToDiv = (div) => {
                 <h1>Member Profile</h1>
                 <p>MEMBERSHIP ID: <span class="membershipID"></span></p> 
                 <p>FIXED MONTHLY DEPOSIT AMOUNT: <span class="fixed-deposit-amount"></span></p> 
-                <p>DIVIDEND: <span class="dividend-amount"></span></p> 
+                <p>DIVIDEND: <span class="dividend-amount"></span> <span class="dividend-msg"></span></p> 
             </div>
 
             <div class="date-box">
@@ -471,6 +471,7 @@ const state = loanApplicantProfile.querySelector('.state');
 const lga = loanApplicantProfile.querySelector('.lga');
 const membershipID = loanApplicantProfile.querySelector('.membershipID');
 const dividendAmount = loanApplicantProfile.querySelector('.dividend-amount');
+const dividendMsg = loanApplicantProfile.querySelector('.dividend-msg');
 
 const guarantor1StaffId = loanApplicantProfile.querySelector('.guarantor1StaffId');
 const guarantor1Name = loanApplicantProfile.querySelector('.guarantor1Name');
@@ -559,6 +560,17 @@ function accumulateWithdrawalDividendAmountDynamic(data) {
   }
 }
 
+function isMassDividendPerform(data) {
+  if (data.withdrawal) {
+    const approveWithdrawal = data.withdrawal.filter((obj) => obj.status === 'Approve');
+    const isMassDividend = approveWithdrawal.every(
+      (obj) => obj.dividendAmount !== obj.dividendAmountDynamic,
+    );
+
+    return isMassDividend;
+  }
+}
+
 function isWithdrawalManagementAction(data) {
   const dataAction = getActionFromLocalStorage();
   let dividendBalance;
@@ -572,6 +584,14 @@ function isWithdrawalManagementAction(data) {
   } else {
     const dividendDynamicWithdrawalAmount = accumulateWithdrawalDividendAmountDynamic(data) || 0;
     const dividendDynamicLoanAmount = accumulateLoanDividendAmountDynamic(data) || 0;
+
+    const isMassDividend = isMassDividendPerform(data);
+    if (isMassDividend) {
+      dividendMsg.textContent = '(You will receive your dividend in 3 working days)';
+    } else {
+      dividendMsg.textContent = '';
+    }
+
     dividendBalance = dividendDynamicWithdrawalAmount + dividendDynamicLoanAmount;
   }
 
