@@ -23,6 +23,8 @@ const addTextContentToDiv = (div) => {
                 <h1>Member Profile</h1>
                 <p>MEMBERSHIP ID: <span class="membershipID"></span></p> 
                 <p>FIXED MONTHLY DEPOSIT AMOUNT: <span class="fixed-deposit-amount"></span></p> 
+                <p>TOTAL DEPOSIT: <span class="total-deposit"></span></p> 
+                <p>TOTAL PAID: <span class="total-disburse"></span></p> 
                 <p>DIVIDEND: <span class="dividend-amount"></span> <span class="dividend-msg"></span> <input type="checkbox" class="dividend-marker hide" data-db-first-key="isDividendPaid" /></p> 
             </div>
 
@@ -474,6 +476,8 @@ const membershipID = loanApplicantProfile.querySelector('.membershipID');
 const dividendAmount = loanApplicantProfile.querySelector('.dividend-amount');
 const dividendMsg = loanApplicantProfile.querySelector('.dividend-msg');
 const dividendMarker = loanApplicantProfile.querySelector('.dividend-marker');
+const totalDisburse = loanApplicantProfile.querySelector('.total-disburse');
+const totalDeposit = loanApplicantProfile.querySelector('.total-deposit');
 
 const guarantor1StaffId = loanApplicantProfile.querySelector('.guarantor1StaffId');
 const guarantor1Name = loanApplicantProfile.querySelector('.guarantor1Name');
@@ -573,6 +577,20 @@ function isMassDividendPerform(data) {
   }
 }
 
+function getTotalDeposit(data) {
+  if (data.deposit) {
+    const approveDeposit = data.deposit.filter((obj) => obj.status === 'Approve');
+    return approveDeposit.reduce((acc, currentObj) => acc + currentObj.depositAmount, 0);
+  }
+}
+
+function getTotalDisburse(data) {
+  if (data.withdrawal) {
+    const approveWithdrawal = data.withdrawal.filter((obj) => obj.status === 'Approve');
+    return approveWithdrawal.reduce((acc, currentObj) => acc + currentObj.amountDisburse, 0);
+  }
+}
+
 function isWithdrawalManagementAction(data) {
   const dataAction = getActionFromLocalStorage();
   let dividendBalance;
@@ -601,6 +619,8 @@ function isWithdrawalManagementAction(data) {
   }
 
   dividendAmount.textContent = dividendBalance;
+  totalDeposit.textContent = getTotalDeposit(data) || 0;
+  totalDisburse.textContent = getTotalDisburse(data) || 0;
 }
 
 function insertLoanApplicantDataToProfile(data) {
@@ -667,6 +687,8 @@ function profileReset() {
   dividendMsg.textContent = '';
   dividendMarker.checked = false;
   dividendMarker.classList.add('hide');
+  totalDeposit.textContent = '';
+  totalDisburse.textContent = '';
 }
 
 const getDividendActionData = (e) => {
