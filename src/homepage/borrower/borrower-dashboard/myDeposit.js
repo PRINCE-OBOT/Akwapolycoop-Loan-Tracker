@@ -1,7 +1,6 @@
 import { format } from 'date-fns';
 import eventBus from '../../module/event-bus/event';
 import indexDB from '../../module/indexDB/indexDB';
-import eyeViewImg from '../../assets/images/eye-view.svg';
 import approveImg from '../../assets/images/approve-loan.svg';
 
 import registerLocalStorageCustomMethod from '../../module/localStorage/localStorage';
@@ -52,7 +51,6 @@ const myDeposit = (function createTableHeading() {
                     <th>Status</th>
                     <th>Date</th>
                     <th>Time</th>
-                    <th>Action Date</th>
                   </tr>
                 </thead>
                 <tbody></tbody>
@@ -136,9 +134,6 @@ function insertLoanApplicantDataToTr(loanApplicantData) {
        <td class="status">${data.status}</td>
        <td>${date}</td>
        <td>${time}</td>
-       <td data-view="proofOfPayment">
-       <img src="${eyeViewImg}" alt="view proof of payment" class="eye-view"/>
-       </td>
       `;
 
     setAttributeToTr({ tr, id: loanApplicantData.id, depositID: data.depositID });
