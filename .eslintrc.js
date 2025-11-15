@@ -8,6 +8,9 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2020
   },
+  globals:{
+    "emailjs": 'readonly'
+  },
   rules: {
     'no-new': 'off',
     'no-console': 'off',

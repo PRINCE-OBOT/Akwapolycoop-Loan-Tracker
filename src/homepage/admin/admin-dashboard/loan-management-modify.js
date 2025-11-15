@@ -1,14 +1,50 @@
 import MathUtility from '../../module/business-logic/mathUtility';
 import eventBus from '../../module/event-bus/event';
 import indexDB from '../../module/indexDB/indexDB';
-
 // Dispatching the change custom-change-content refreshes `loan-management` and `deposit-management`
+
+const fail = () => {
+  alert('fail');
+};
+
 const contentHandler = {
   loan: 'loan-management',
   deposit: 'deposit-management',
   membershipApplicationForm: 'loan-applicant-management',
   withdrawal: 'withdrawal-management',
 };
+
+function sendEmail(data) {
+  const memberData = data.membershipApplicationForm;
+
+  const message = memberData.status === 'Approve' ? memberData.membershipID : 'decline';
+
+  emailjs
+    .send('service_0na6jor', 'template_k8l5l6s', {
+      email: memberData.email,
+      subject: `Membership Application Status`,
+      message: `Your membership application ID is ${message}`,
+    })
+    .then(() => {
+      alert('Email Sent Successfully');
+    })
+    .catch(() => {
+      alert('Failed to send email');
+    });
+}
+
+function getMember(id) {
+  indexDB.interact(
+    {
+      storeName: 'loan-applicant-list',
+      getMethod: 'get',
+      keyPathValue: id,
+      returnData: sendEmail,
+      undefineState: fail,
+    },
+    'getData',
+  );
+}
 
 const renderContent = () => {
   const { firstKey, id, withdrawalAmount, depositAmount, depositID, value } =
@@ -21,7 +57,6 @@ const renderContent = () => {
       contentKey: contentHandler[key],
     },
   });
-
   eventBus.dispatchEvent(customContentEvent);
 
   // Create a single withdrawal and deposit action
@@ -31,10 +66,9 @@ const renderContent = () => {
     MathUtility.withdrawalApprove({ id, withdrawalAmount });
   if (key === 'deposit' && status === 'Approve')
     MathUtility.depositApprove({ id, depositAmount, depositID });
-};
-
-const fail = () => {
-  alert('fail');
+  if (key === 'membershipApplicationForm') {
+    getMember(id);
+  }
 };
 
 const getActionDataFromLocalStorage = () => {
