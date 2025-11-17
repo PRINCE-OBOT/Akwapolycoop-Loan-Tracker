@@ -444,7 +444,7 @@ td[data-db-first-key] {
 
 form .status {
   /* animation: fadeIn 1s ease-in-out forwards; */
-  animation: slideIn 1s ease-in-out forwards;
+  animation: slideIn 300ms ease-in-out forwards;
   /* animation: bounce 1s infinite; */
 }
 /* Logic */
