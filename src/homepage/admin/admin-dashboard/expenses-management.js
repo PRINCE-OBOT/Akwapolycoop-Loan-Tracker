@@ -19,7 +19,7 @@ const expensesManagement = (function createExpensesManagementContent() {
         
         <div class="expense-section">
             <h3>Office Expenses</h3>
-            <button class="btn btn-add btn-add-new-office-expenses-row">+ Add New Expense</button>
+            <button class="btn btn-add btn-add-new-office-expenses-row" data-expenses-row="office">+ Add New Expense</button>
             
             <table id="officeExpensesTable">
                 <thead>
@@ -39,7 +39,7 @@ const expensesManagement = (function createExpensesManagementContent() {
 
         <div class="expense-section">
             <h3>Shop Expenses</h3>
-            <button class="btn btn-add">+ Add New Expense</button>
+            <button class="btn btn-add btn-add-shop-expenses-row" data-expenses-row="shop">+ Add New Expense</button>
             
             <table id="shopExpensesTable">
                 <thead>
@@ -62,9 +62,9 @@ const expensesManagement = (function createExpensesManagementContent() {
 })();
 
 const tbodyOfficeExpenses = expensesManagement.querySelector('#officeExpensesBody');
-const btnAddNewOfficeExpenseRow = expensesManagement.querySelector(
-  '.btn-add-new-office-expenses-row',
-);
+const tbodyShopExpenses = expensesManagement.querySelector('#shopExpensesBody');
+const btnAddOfficeExpenseRow = expensesManagement.querySelector('.btn-add-new-office-expenses-row');
+const btnAddShopExpensesRow = expensesManagement.querySelector('.btn-add-shop-expenses-row');
 const btnSaveOfficeExpense = expensesManagement.querySelector('.btn-save-office-expense');
 
 // const Event = ({ eventName, contentKey = '' }) =>
@@ -107,21 +107,21 @@ function saveOfficeExpenses() {
   storeExpenses(expenses, 'office-expenses');
 }
 // ============= y
-function addOfficeExpenseRow(data = {}, serialNum = null) {
-  const rowCount = tbodyOfficeExpenses.rows.length + 1;
-  const sn = serialNum || rowCount;
-  const row = tbodyOfficeExpenses.insertRow();
+function addExpenses(tbodyExpenses) {
+  const sn = tbodyExpenses.rows.length + 1;
+  const row = tbodyExpenses.insertRow();
   row.innerHTML = `
                 <td class="serial-number">${sn}</td>
-                <td><input type="text" name="description" value="${data.description || ''}" placeholder="e.g., Stationery, Office supplies"></td>
-                <td><input type="number" name="amount" value="${data.amount || ''}" placeholder="0.00" step="0.01" min="0"></td>
-                <td><input type="date" name="date" value="${data.date || ''}"></td>
+                <td><input type="text" name="description" placeholder="e.g., Stationery, Office supplies"></td>
+                <td><input type="number" name="amount" placeholder="0.00" step="0.01" min="0"></td>
+                <td><input type="date" name="date"></td>
                 <td><div class="action-cell">
-                    <button class="btn btn-edit">Edit</button>
+                    <button class="btn btn-edit" data-action="edit">✏️</button>
                     <button class="btn btn-delete" data-action="delete">Delete</button>
                 </div></td>
             `;
 }
+
 // ==== e
 let isTrReadonly = true;
 
@@ -172,43 +172,48 @@ function handleAction(e) {
   actionHandler[action](e.target);
 }
 
-tbodyOfficeExpenses.addEventListener('click', handleAction);
-// function editRow(button) {
-//   const row = button.closest('tr');
-//   const inputs = row.querySelectorAll('input');
-//   inputs.forEach((input) => input.removeAttribute('readonly'));
-//   showMessage('Row enabled for editing. Make changes and click Save.', 'success');
-// }
+function renderExpenses(tbodyExpenses, key) {
+  const expenses = localStorage.getData({ key }) || [];
 
-btnSaveOfficeExpense.addEventListener('click', saveOfficeExpenses);
-btnAddNewOfficeExpenseRow.addEventListener('click', addOfficeExpenseRow);
-
-function renderOfficeExpenses() {
-  const officeExpenses = localStorage.getData({ key: 'office-expenses' });
-
-  tbodyOfficeExpenses.innerHTML = '';
-  officeExpenses.forEach((obj, serialNumber) => {
-    const row = tbodyOfficeExpenses.insertRow();
+  tbodyExpenses.innerHTML = '';
+  expenses.forEach((obj, serialNumber) => {
+    const row = tbodyExpenses.insertRow();
     row.innerHTML = `
-                <td class="serial-number">${serialNumber + 1}</td>
-                <td><input type="text" name="description" value="${obj.description}" readonly></td>
-                <td><input type="number" name="amount" value="${obj.amount}" step="0.01" min="0" readonly></td>
-                <td><input type="date" name="date" value="${obj.date}" readonly></td>
-                <td><div class="action-cell">
-                    <button class="btn btn-edit" data-action="edit">✏️</button>
-                    <button class="btn btn-delete" data-action="delete">Delete</button>
-                </div></td>
-            `;
+        <td class="serial-number">${serialNumber + 1}</td>
+        <td><input type="text" name="description" value="${obj.description}" readonly></td>
+        <td><input type="number" name="amount" value="${obj.amount}" step="0.01" min="0" readonly></td>
+        <td><input type="date" name="date" value="${obj.date}" readonly></td>
+        <td><div class="action-cell">
+            <button class="btn btn-edit" data-action="edit">✏️</button>
+            <button class="btn btn-delete" data-action="delete">Delete</button>
+        </div></td>
+    `;
   });
 }
-function renderHouseExpenses() {}
 
+const expensesRowHandler = {
+  office: () => addExpenses(tbodyOfficeExpenses),
+  shop: () => addExpenses(tbodyShopExpenses),
+};
+
+function handleAddExpenses(e) {
+  const expensesRow = e.target.dataset.expensesRow;
+  if (!expensesRow) return;
+
+  expensesRowHandler[expensesRow]();
+}
 const render = () => {
-  renderOfficeExpenses();
-  renderHouseExpenses();
+  renderExpenses(tbodyOfficeExpenses, 'office-expenses');
+  renderExpenses(tbodyShopExpenses, 'shop-expenses');
 };
 
 const renderExpensesBus = new EventTarget();
+
+btnSaveOfficeExpense.addEventListener('click', saveOfficeExpenses);
+btnAddOfficeExpenseRow.addEventListener('click', handleAddExpenses);
+btnAddShopExpensesRow.addEventListener('click', handleAddExpenses);
+tbodyOfficeExpenses.addEventListener('click', handleAction);
+tbodyShopExpenses.addEventListener('click', handleAction);
 
 renderExpensesBus.addEventListener('render-content', render);
 
