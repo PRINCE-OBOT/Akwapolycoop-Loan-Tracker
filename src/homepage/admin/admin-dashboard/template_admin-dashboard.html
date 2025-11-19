@@ -54,6 +54,11 @@
             <span>💰</span>
             <h5>Loan Management</h5>
           </span>
+
+          <span class="loaner-management_tab-nav" data-content-key="expenses-management">
+            <span>🫰</span>
+            <h5>Expenses Management</h5>
+          </span>
         </div>
       </header>
 
@@ -63,3 +68,634 @@
     </div>
   </body>
 </html>
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Management System</title>
+    
+</head>
+<body>
+
+    <script>
+        let db;
+
+        function initDB() {
+            return new Promise((resolve, reject) => {
+                const request = window.indexedDB.open('CooperativeDB', 1);
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => {
+                    db = request.result;
+                    resolve(db);
+                };
+                request.onupgradeneeded = (event) => {
+                    db = event.target.result;
+                    if (!db.objectStoreNames.contains('officeExpenses')) {
+                        db.createObjectStore('officeExpenses', { keyPath: 'id', autoIncrement: true });
+                    }
+                    if (!db.objectStoreNames.contains('shopExpenses')) {
+                        db.createObjectStore('shopExpenses', { keyPath: 'id', autoIncrement: true });
+                    }
+                    if (!db.objectStoreNames.contains('shopRent')) {
+                        db.createObjectStore('shopRent', { keyPath: 'id' });
+                    }
+                };
+            });
+        }
+
+        async function loadShopRent() {
+            const transaction = db.transaction(['shopRent'], 'readonly');
+            const store = transaction.objectStore('shopRent');
+            const request = store.get(1);
+            request.onsuccess = () => {
+                if (request.result) {
+                    document.getElementById('shopRentAmount').value = request.result.amount;
+                }
+            };
+        }
+
+        async function saveShopRent() {
+            const amount = parseFloat(document.getElementById('shopRentAmount').value);
+            if (!amount || amount <= 0) {
+                showMessage('Please enter a valid rent amount!', 'error');
+                return;
+            }
+            const transaction = db.transaction(['shopRent'], 'readwrite');
+            const store = transaction.objectStore('shopRent');
+            store.put({ id: 1, amount: amount });
+            transaction.oncomplete = () => {
+                showMessage('Shop rent saved successfully! ₦' + amount.toLocaleString(), 'success');
+            };
+        }
+
+        async function loadOfficeExpenses() {
+            const transaction = db.transaction(['officeExpenses'], 'readonly');
+            const store = transaction.objectStore('officeExpenses');
+            const request = store.getAll();
+            request.onsuccess = () => {
+                const expenses = request.result;
+                const tbody = document.getElementById('officeExpensesBody');
+                tbody.innerHTML = '';
+                if (expenses.length === 0) {
+                    addOfficeExpenseRow();
+                } else {
+                    expenses.forEach((expense, index) => {
+                        addOfficeExpenseRow(expense, index + 1);
+                    });
+                }
+            };
+        }
+
+        async function loadShopExpenses() {
+            const transaction = db.transaction(['shopExpenses'], 'readonly');
+            const store = transaction.objectStore('shopExpenses');
+            const request = store.getAll();
+            request.onsuccess = () => {
+                const expenses = request.result;
+                const tbody = document.getElementById('shopExpensesBody');
+                tbody.innerHTML = '';
+                if (expenses.length === 0) {
+                    addShopExpenseRow();
+                } else {
+                    expenses.forEach((expense, index) => {
+                        addShopExpenseRow(expense, index + 1);
+                    });
+                }
+            };
+        }
+
+        
+
+        function addShopExpenseRow(data = {}, serialNum = null) {
+            const tbody = document.getElementById('shopExpensesBody');
+            const rowCount = tbody.rows.length + 1;
+            const sn = serialNum || rowCount;
+            const row = tbody.insertRow();
+            row.innerHTML = `
+                <td class="serial-number">${sn}</td>
+                <td><input type="text" name="description" value="${data.description || ''}" placeholder="e.g., Repairs, Maintenance, Painting"></td>
+                <td><input type="number" name="amount" value="${data.amount || ''}" placeholder="0.00" step="0.01" min="0"></td>
+                <td><input type="date" name="date" value="${data.date || ''}"></td>
+                <td><div class="action-cell">
+                    <button class="btn btn-edit" onclick="editRow(this)">Edit</button>
+                    <button class="btn btn-delete" onclick="deleteShopExpenseRow(this, ${data.id})">Delete</button>
+                </div></td>
+            `;
+        }
+
+        function editRow(button) {
+            const row = button.closest('tr');
+            const inputs = row.querySelectorAll('input');
+            inputs.forEach(input => input.removeAttribute('readonly'));
+            showMessage('Row enabled for editing. Make changes and click Save.', 'success');
+        }
+
+        function deleteOfficeExpenseRow(button, id) {
+            if (!confirm('Delete this office expense?')) return;
+            const row = button.closest('tr');
+            if (id) {
+                const transaction = db.transaction(['officeExpenses'], 'readwrite');
+                transaction.objectStore('officeExpenses').delete(id);
+                transaction.oncomplete = () => {
+                    row.remove();
+                    updateSerialNumbers('officeExpensesBody');
+                    showMessage('Expense deleted successfully!', 'success');
+                };
+            } else {
+                row.remove();
+                updateSerialNumbers('officeExpensesBody');
+            }
+        }
+
+        function deleteShopExpenseRow(button, id) {
+            if (!confirm('Delete this shop expense?')) return;
+            const row = button.closest('tr');
+            if (id) {
+                const transaction = db.transaction(['shopExpenses'], 'readwrite');
+                transaction.objectStore('shopExpenses').delete(id);
+                transaction.oncomplete = () => {
+                    row.remove();
+                    updateSerialNumbers('shopExpensesBody');
+                    showMessage('Expense deleted successfully!', 'success');
+                };
+            } else {
+                row.remove();
+                updateSerialNumbers('shopExpensesBody');
+            }
+        }
+
+        function updateSerialNumbers(tbodyId) {
+            const tbody = document.getElementById(tbodyId);
+            for (let i = 0; i < tbody.rows.length; i++) {
+                tbody.rows[i].cells[0].textContent = i + 1;
+            }
+        }
+
+        function saveOfficeExpenses() {
+            const tbody = document.getElementById('officeExpensesBody');
+            const expenses = [];
+            for (let row of tbody.rows) {
+                const desc = row.querySelector('input[name="description"]').value.trim();
+                const amt = parseFloat(row.querySelector('input[name="amount"]').value) || 0;
+                const date = row.querySelector('input[name="date"]').value;
+                if (desc && amt > 0 && date) expenses.push({ description: desc, amount: amt, date });
+            }
+            if (expenses.length === 0) {
+                showMessage('Add at least one valid expense!', 'error');
+                return;
+            }
+            const transaction = db.transaction(['officeExpenses'], 'readwrite');
+            const store = transaction.objectStore('officeExpenses');
+            store.clear().onsuccess = () => expenses.forEach(e => store.add(e));
+            transaction.oncomplete = () => {
+                showMessage(`${expenses.length} office expense(s) saved!`, 'success');
+                loadOfficeExpenses();
+            };
+        }
+
+        function saveShopExpenses() {
+            const tbody = document.getElementById('shopExpensesBody');
+            const expenses = [];
+            for (let row of tbody.rows) {
+                const desc = row.querySelector('input[name="description"]').value.trim();
+                const amt = parseFloat(row.querySelector('input[name="amount"]').value) || 0;
+                const date = row.querySelector('input[name="date"]').value;
+                if (desc && amt > 0 && date) expenses.push({ description: desc, amount: amt, date });
+            }
+            if (expenses.length === 0) {
+                showMessage('Add at least one valid expense!', 'error');
+                return;
+            }
+            const transaction = db.transaction(['shopExpenses'], 'readwrite');
+            const store = transaction.objectStore('shopExpenses');
+            store.clear().onsuccess = () => expenses.forEach(e => store.add(e));
+            transaction.oncomplete = () => {
+                showMessage(`${expenses.length} shop expense(s) saved!`, 'success');
+                loadShopExpenses();
+            };
+        }
+
+        function showMessage(text, type) {
+            const msg = document.getElementById('message');
+            msg.textContent = text;
+            msg.className = `message ${type}`;
+            msg.style.display = 'block';
+            setTimeout(() => msg.style.display = 'none', 4000);
+        }
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            await initDB();
+            loadShopRent();
+            loadOfficeExpenses();
+            loadShopExpenses();
+        });
+    </script>
+</body>
+</html> 
+-->
+
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Consultancy Display</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .consultancy-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .consultancy-header {
+            background: linear-gradient(135deg, #2c5f2d 0%, #27ae60 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(44, 95, 45, 0.3);
+        }
+
+        .consultancy-header h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .calc-section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            color: #2c5f2d;
+            font-size: 22px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #27ae60;
+        }
+
+        .calc-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #2c5f2d;
+            transition: transform 0.2s;
+        }
+
+        .calc-card:hover {
+            transform: translateX(5px);
+        }
+
+        .calc-label {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .calc-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c5f2d;
+            margin: 5px 0;
+        }
+
+        .calc-formula {
+            font-size: 13px;
+            color: #777;
+            font-style: italic;
+            margin-bottom: 8px;
+        }
+
+        .calc-note {
+            font-size: 13px;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .total-card {
+            background: #e8f5e9;
+            border-left-color: #27ae60;
+        }
+
+        .highlight-card {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-left-color: #27ae60;
+            border-left-width: 6px;
+        }
+
+        .pool-card {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border-left-color: #ff9800;
+        }
+
+        .dividend-card {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-left-color: #2196f3;
+        }
+
+        .final-card {
+            background: linear-gradient(135deg, #2c5f2d 0%, #27ae60 100%);
+            color: white;
+            border: none;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .final-card .calc-label {
+            color: white;
+            font-size: 18px;
+        }
+
+        .final-value {
+            color: #fff;
+            font-size: 36px !important;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .highlight {
+            color: #27ae60;
+        }
+
+        .highlight-big {
+            font-size: 28px;
+            color: #27ae60;
+        }
+
+        .red {
+            color: #e74c3c;
+        }
+
+        .green {
+            color: #27ae60;
+        }
+
+        .member-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-item {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #2c5f2d;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 22px;
+            font-weight: bold;
+            color: #2c5f2d;
+        }
+
+        .income-section {
+            border-top: 4px solid #27ae60;
+        }
+
+        .expense-section {
+            border-top: 4px solid #e74c3c;
+        }
+
+        .profit-section {
+            border-top: 4px solid #3498db;
+        }
+
+        .reserve-section {
+            border-top: 4px solid #9b59b6;
+        }
+
+        .distribute-section {
+            border-top: 4px solid #f39c12;
+        }
+
+        .pool-section {
+            border-top: 4px solid #ff9800;
+        }
+
+        .personal-section {
+            border-top: 4px solid #2c5f2d;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f8f0 100%);
+        }
+
+        @media (max-width: 768px) {
+            .consultancy-header h2 {
+                font-size: 22px;
+            }
+
+            .calc-value {
+                font-size: 20px;
+            }
+
+            .final-value {
+                font-size: 28px !important;
+            }
+
+            .member-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="consultancy-container">
+        <div class="consultancy-header">
+            <h2>📊 Financial Consultancy - Dividend Calculation Breakdown</h2>
+            <p class="subtitle">Understanding Your Cooperative Finances</p>
+        </div>
+
+        
+        <div class="calc-section income-section">
+            <h3 class="section-title">💰 Income Sources</h3>
+            
+            <div class="calc-card">
+                <div class="calc-label">Loan Interest Income</div>
+                <div class="calc-value" id="totalLoanInterest">₦0.00</div>
+                <div class="calc-note">10% interest on all loans disbursed</div>
+            </div>
+
+            <div class="calc-card">
+                <div class="calc-label">Shop Rent Income</div>
+                <div class="calc-value" id="grossRent">₦0.00</div>
+                <div class="calc-note">Monthly rental from cooperative property</div>
+            </div>
+
+            <div class="calc-card total-card">
+                <div class="calc-label">Total Income</div>
+                <div class="calc-value highlight" id="totalIncome">₦0.00</div>
+            </div>
+        </div>
+
+        
+        <div class="calc-section expense-section">
+            <h3 class="section-title">💸 Expenses</h3>
+            
+            <div class="calc-card">
+                <div class="calc-label">Office Expenses</div>
+                <div class="calc-value red" id="officeExpenses">₦0.00</div>
+                <div class="calc-note">Stationery, supplies, loan processing costs</div>
+            </div>
+
+            <div class="calc-card">
+                <div class="calc-label">Shop Expenses</div>
+                <div class="calc-value red" id="shopExpenses">₦0.00</div>
+                <div class="calc-note">Maintenance, repairs, utilities</div>
+            </div>
+
+            <div class="calc-card total-card">
+                <div class="calc-label">Total Expenses</div>
+                <div class="calc-value red" id="totalExpenses">₦0.00</div>
+            </div>
+        </div>
+
+        
+        <div class="calc-section profit-section">
+            <h3 class="section-title">📈 Profit Breakdown</h3>
+            
+            <div class="calc-card">
+                <div class="calc-label">Loan Operations Profit</div>
+                <div class="calc-formula">Loan Interest - Office Expenses</div>
+                <div class="calc-value" id="loanProfit">₦0.00</div>
+            </div>
+
+            <div class="calc-card">
+                <div class="calc-label">Rent Operations Profit</div>
+                <div class="calc-formula">Gross Rent - Shop Expenses</div>
+                <div class="calc-value" id="rentProfit">₦0.00</div>
+            </div>
+
+            <div class="calc-card highlight-card">
+                <div class="calc-label">Net Surplus (Total Profit)</div>
+                <div class="calc-value highlight-big" id="netSurplus">₦0.00</div>
+            </div>
+        </div>
+
+        
+        <div class="calc-section reserve-section">
+            <h3 class="section-title">🏦 Reserve Funds (Savings for Future)</h3>
+            
+            <div class="calc-card">
+                <div class="calc-label">Loan Operations Reserve</div>
+                <div class="calc-formula">10% of Loan Profit</div>
+                <div class="calc-value" id="loanReserve">₦0.00</div>
+            </div>
+
+            <div class="calc-card">
+                <div class="calc-label">Rent Operations Reserve</div>
+                <div class="calc-formula">10% of Rent Profit</div>
+                <div class="calc-value" id="rentReserve">₦0.00</div>
+            </div>
+
+            <div class="calc-card total-card">
+                <div class="calc-label">Total Reserve Fund</div>
+                <div class="calc-value" id="totalReserve">₦0.00</div>
+            </div>
+        </div>
+
+        
+        <div class="calc-section distribute-section">
+            <h3 class="section-title">🎁 Funds Available for Dividend</h3>
+            
+            <div class="calc-card">
+                <div class="calc-label">Loan Operations Distribution</div>
+                <div class="calc-formula">Loan Profit - Loan Reserve</div>
+                <div class="calc-value" id="loanDistributable">₦0.00</div>
+            </div>
+
+            <div class="calc-card">
+                <div class="calc-label">Rent Operations Distribution</div>
+                <div class="calc-formula">Rent Profit - Rent Reserve</div>
+                <div class="calc-value" id="rentDistributable">₦0.00</div>
+            </div>
+
+            <div class="calc-card highlight-card">
+                <div class="calc-label">Total Distributable Fund</div>
+                <div class="calc-value highlight-big" id="totalDistributable">₦0.00</div>
+            </div>
+        </div>
+
+        
+        <div class="calc-section pool-section">
+            <h3 class="section-title">🎯 Dividend Pool Allocation</h3>
+            
+            <div class="calc-card pool-card">
+                <div class="calc-label">Share Dividend Pool (80%)</div>
+                <div class="calc-note">For members who save (based on shares owned)</div>
+                <div class="calc-value highlight" id="sharePool">₦0.00</div>
+            </div>
+
+            <div class="calc-card pool-card">
+                <div class="calc-label">Loan Incentive Pool (20%)</div>
+                <div class="calc-note">For members who borrow (based on loan amount)</div>
+                <div class="calc-value highlight" id="loanPool">₦0.00</div>
+            </div>
+        </div>
+
+        
+        <div class="calc-section personal-section">
+            <h3 class="section-title">🌟 Your Personal Dividend</h3>
+            
+            <div class="member-stats">
+                <div class="stat-item">
+                    <div class="stat-label">Your Total Shares</div>
+                    <div class="stat-value" id="memberShares">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Your Loan Amount</div>
+                    <div class="stat-value" id="memberLoan">₦0.00</div>
+                </div>
+            </div>
+
+            <div class="calc-card dividend-card">
+                <div class="calc-label">Your Share Dividend</div>
+                <div class="calc-formula">(Your Shares ÷ Total Shares) × Share Pool</div>
+                <div class="calc-value green" id="memberShareDividend">₦0.00</div>
+            </div>
+
+            <div class="calc-card dividend-card">
+                <div class="calc-label">Your Loan Incentive</div>
+                <div class="calc-formula">(Your Loan ÷ Total Loans) × Loan Pool</div>
+                <div class="calc-value green" id="memberLoanDividend">₦0.00</div>
+            </div>
+
+            <div class="calc-card final-card">
+                <div class="calc-label">YOUR TOTAL DIVIDEND</div>
+                <div class="calc-value final-value" id="memberTotalDividend">₦0.00</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> -->

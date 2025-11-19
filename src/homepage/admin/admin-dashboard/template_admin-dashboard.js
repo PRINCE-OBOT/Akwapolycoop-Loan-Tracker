@@ -34,7 +34,7 @@ appendDialogToBody.prototype.body = document.body;
 appendDialogToBody();
 
 appendContent.prototype.holder = contentHolder;
-appendContent({ detail: { contentKey: 'loan-applicant-management' } });
+appendContent({ detail: { contentKey: 'expenses-management' } });
 
 const errorGettingData = () => {
   console.log('Error while getting data');
@@ -132,7 +132,7 @@ function handleContentDisplay(e) {
 }
 
 (function () {
-  emailjs.init('c6951-3fJVm8vAXLP');
+  // emailjs.init('c6951-3fJVm8vAXLP');
 })();
 
 eventBus.addEventListener('logout', logoutAdmin);

@@ -28,6 +28,7 @@ import {
   withdrawalManagementGetDataInDBBus,
 } from '../../admin/admin-dashboard/withdrawal-management';
 import memberDashboardContentBus from '../../borrower/borrower-dashboard/member-dashboard-content-set';
+import { expensesManagement } from '../../admin/admin-dashboard/expenses-management';
 
 const getDataInIndexedDB = new CustomEvent('render-content');
 
@@ -53,6 +54,7 @@ const contents = {
   'loan-management': loanerManagement,
   'deposit-management': depositManagement,
   'loan-applicant-management': loanApplicantManagement,
+  'expenses-management': expensesManagement,
   'my-withdrawal': myWithdrawal,
   'withdrawal-management': withdrawalManagement,
   'member-dashboard': dashboardContent,
