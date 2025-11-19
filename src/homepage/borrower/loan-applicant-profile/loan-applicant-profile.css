@@ -65,6 +65,7 @@ dialog[data-size='small'] {
   background: rgba(0 0 0 / 0.4);
   padding: 30px;
   border-radius: 30px;
+  margin-bottom: 20px;
 }
 .content {
   padding: 2rem;

@@ -1,4 +1,3 @@
-// import eventBus from '../../module/event-bus/event';
 import eventBus from '../../module/event-bus/event';
 import './expenses-management.css';
 
@@ -86,8 +85,8 @@ const Event = ({
   });
 
 const events = {
-  'office-expenses': Event({ text: 'Office Expense Saved' }),
-  'shop-expenses': Event({ text: 'Shop Expense Saved' }),
+  'office-expenses': Event({ text: 'Office Expenses Updated' }),
+  'shop-expenses': Event({ text: 'Shop Expenses Updated' }),
   calculateDividend: Event({
     contentKey: 'question',
     text: 'perform yearly calculation to members?',
@@ -264,7 +263,9 @@ function handleAddExpenses(e) {
 }
 
 // ======= h
-function calculateDividend() {}
+function isCalculateDividend() {
+  localStorage.isCetData({ key: 'isCalculateDividend', data: true });
+}
 // ======= h
 const renderExpensesBus = new EventTarget();
 
@@ -275,8 +276,7 @@ btnAddOfficeExpenseRow.addEventListener('click', handleAddExpenses);
 btnAddShopExpensesRow.addEventListener('click', handleAddExpenses);
 tbodyOfficeExpenses.addEventListener('click', handleAction);
 tbodyShopExpenses.addEventListener('click', handleAction);
-
 renderExpensesBus.addEventListener('render-content', render);
-eventBus.addEventListener('calculateDividend', calculateDividend);
+eventBus.addEventListener('calculateDividend', isCalculateDividend);
 
 export { expensesManagement, renderExpensesBus };

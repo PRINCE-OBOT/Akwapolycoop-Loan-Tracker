@@ -21,15 +21,22 @@ const addTextContentToDiv = (div) => {
         <div class="header-content">
             <div>
                 <h1>Member Profile</h1>
+                <h5>FINANCIAL CONSULTANCY</h5>
                 <details class="consultancy-section">
-                  <summary>FINANCIAL CONSULTANCY</summary>
+                  <summary>BASIC INFO</summary>
                   <p>MEMBER ID: <span class="membershipID"></span></p> 
                   <p>FIXED MONTHLY DEPOSIT AMOUNT: ₦<span class="fixed-deposit-amount"></span></p> 
                   <p>TOTAL DEPOSIT: ₦<span class="total-deposit"></span></p> 
                   <p>TOTAL DISBURSE: ₦<span class="total-disburse"></span></p> 
                   <p>TOTAL DIVIDEND: ₦<span class="dividend-amount"></span> <span class="dividend-msg"></span> <input type="checkbox" class="dividend-marker hide" data-db-first-key="isDividendPaid" /></p> 
-
                 </details>
+
+                <details class="consultancy-section">
+                  <summary>DETAIL INFO</summary>
+                  <div class="detail-info">
+                  </div>
+                </details>
+
             </div>
 
             <div class="date-box">
@@ -306,6 +313,7 @@ function addOptionElementToDiv(div) {
 }
 
 const ACCOUNT_OPENING_AMOUNT = 4000;
+const dividendNotCalculatedText = document.createElement('p');
 const buildLoanApplicantProfile = pipe(createDiv, addClassToDiv, addTextContentToDiv);
 const processOptionKeySection = pipe(createDiv, addOptionElementToDiv);
 
@@ -452,6 +460,7 @@ const dispatchProfileEvent = () => {
   eventBus.dispatchEvent(events.profile);
 };
 
+const detailInfo = loanApplicantProfile.querySelector('.detail-info');
 const applicationDate = loanApplicantProfile.querySelector('#application-date');
 const applicationTime = loanApplicantProfile.querySelector('#application-time');
 const passport = loanApplicantProfile.querySelector('.passport');
@@ -680,11 +689,25 @@ function insertLoanApplicantDataToProfile(data) {
 
   applicationStatus[membershipApplicationForm.status](membershipApplicationForm);
   isWithdrawalManagementAction(data);
+  isDividendCalculated();
   dispatchProfileEvent();
+}
+
+function dividendNotCalculated() {
+  dividendNotCalculatedText.textContent = 'Your dividend has not been calculated. Until December';
+  detailInfo.append(dividendNotCalculatedText);
+}
+
+function isDividendCalculated() {
+  const isCalculateDividend = localStorage.getData({ key: 'isCalculateDividend' });
+  if (!isCalculateDividend) {
+    dividendNotCalculated();
+  }
 }
 
 function profileReset() {
   optionKeySection.remove();
+  detailInfo.innerHTML = '';
   membershipID.textContent = 'Pending';
   fixedDepositAmount.textContent = 'Pending';
   dividendAmount.textContent = 'Pending';
