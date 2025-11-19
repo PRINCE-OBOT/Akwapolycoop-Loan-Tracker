@@ -132,9 +132,11 @@ function editRow(target) {
   if (isTrReadonly) {
     inputs.forEach((input) => input.removeAttribute('readonly'));
     isTrReadonly = false;
+    target.textContent = '✅';
   } else {
     inputs.forEach((input) => {
       input.readOnly = true;
+      target.textContent = '✏️';
     });
     isTrReadonly = true;
   }
@@ -184,9 +186,8 @@ btnAddNewOfficeExpenseRow.addEventListener('click', addOfficeExpenseRow);
 function renderOfficeExpenses() {
   const officeExpenses = localStorage.getData({ key: 'office-expenses' });
 
+  tbodyOfficeExpenses.innerHTML = '';
   officeExpenses.forEach((obj, serialNumber) => {
-    tbodyOfficeExpenses.innerHTML = '';
-
     const row = tbodyOfficeExpenses.insertRow();
     row.innerHTML = `
                 <td class="serial-number">${serialNumber + 1}</td>

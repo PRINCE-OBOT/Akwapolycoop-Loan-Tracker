@@ -12,6 +12,9 @@ table {
   background: white;
 }
 
+table input {
+  box-shadow: none;
+}
 th {
   padding: 12px;
   text-align: left;
@@ -32,7 +35,6 @@ input[type='number'],
 input[type='date'] {
   width: 100%;
   padding: 8px;
-  border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 14px;
 }
@@ -131,7 +133,6 @@ input[type='date']:focus {
   border-radius: 8px;
   margin-bottom: 30px;
   border: 2px solid #2c5f2d;
-  box-shadow: 0 2px 8px rgba(44, 95, 45, 0.1);
 }
 
 .rent-input-section h3 {
