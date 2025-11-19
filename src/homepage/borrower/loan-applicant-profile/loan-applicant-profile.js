@@ -21,11 +21,15 @@ const addTextContentToDiv = (div) => {
         <div class="header-content">
             <div>
                 <h1>Member Profile</h1>
-                <p>MEMBERSHIP ID: <span class="membershipID"></span></p> 
-                <p>FIXED MONTHLY DEPOSIT AMOUNT: <span class="fixed-deposit-amount"></span></p> 
-                <p>TOTAL DEPOSIT: <span class="total-deposit"></span></p> 
-                <p>TOTAL DISBURSE: <span class="total-disburse"></span></p> 
-                <p>DIVIDEND: <span class="dividend-amount"></span> <span class="dividend-msg"></span> <input type="checkbox" class="dividend-marker hide" data-db-first-key="isDividendPaid" /></p> 
+                <details class="consultancy-section">
+                  <summary>FINANCIAL CONSULTANCY</summary>
+                  <p>MEMBER ID: <span class="membershipID"></span></p> 
+                  <p>FIXED MONTHLY DEPOSIT AMOUNT: ₦<span class="fixed-deposit-amount"></span></p> 
+                  <p>TOTAL DEPOSIT: ₦<span class="total-deposit"></span></p> 
+                  <p>TOTAL DISBURSE: ₦<span class="total-disburse"></span></p> 
+                  <p>TOTAL DIVIDEND: ₦<span class="dividend-amount"></span> <span class="dividend-msg"></span> <input type="checkbox" class="dividend-marker hide" data-db-first-key="isDividendPaid" /></p> 
+
+                </details>
             </div>
 
             <div class="date-box">
