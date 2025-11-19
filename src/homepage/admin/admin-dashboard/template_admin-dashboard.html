@@ -185,29 +185,8 @@
             `;
         }
 
-        function editRow(button) {
-            const row = button.closest('tr');
-            const inputs = row.querySelectorAll('input');
-            inputs.forEach(input => input.removeAttribute('readonly'));
-            showMessage('Row enabled for editing. Make changes and click Save.', 'success');
-        }
 
-        function deleteOfficeExpenseRow(button, id) {
-            if (!confirm('Delete this office expense?')) return;
-            const row = button.closest('tr');
-            if (id) {
-                const transaction = db.transaction(['officeExpenses'], 'readwrite');
-                transaction.objectStore('officeExpenses').delete(id);
-                transaction.oncomplete = () => {
-                    row.remove();
-                    updateSerialNumbers('officeExpensesBody');
-                    showMessage('Expense deleted successfully!', 'success');
-                };
-            } else {
-                row.remove();
-                updateSerialNumbers('officeExpensesBody');
-            }
-        }
+        
 
         function deleteShopExpenseRow(button, id) {
             if (!confirm('Delete this shop expense?')) return;
@@ -231,50 +210,6 @@
             for (let i = 0; i < tbody.rows.length; i++) {
                 tbody.rows[i].cells[0].textContent = i + 1;
             }
-        }
-
-        function saveOfficeExpenses() {
-            const tbody = document.getElementById('officeExpensesBody');
-            const expenses = [];
-            for (let row of tbody.rows) {
-                const desc = row.querySelector('input[name="description"]').value.trim();
-                const amt = parseFloat(row.querySelector('input[name="amount"]').value) || 0;
-                const date = row.querySelector('input[name="date"]').value;
-                if (desc && amt > 0 && date) expenses.push({ description: desc, amount: amt, date });
-            }
-            if (expenses.length === 0) {
-                showMessage('Add at least one valid expense!', 'error');
-                return;
-            }
-            const transaction = db.transaction(['officeExpenses'], 'readwrite');
-            const store = transaction.objectStore('officeExpenses');
-            store.clear().onsuccess = () => expenses.forEach(e => store.add(e));
-            transaction.oncomplete = () => {
-                showMessage(`${expenses.length} office expense(s) saved!`, 'success');
-                loadOfficeExpenses();
-            };
-        }
-
-        function saveShopExpenses() {
-            const tbody = document.getElementById('shopExpensesBody');
-            const expenses = [];
-            for (let row of tbody.rows) {
-                const desc = row.querySelector('input[name="description"]').value.trim();
-                const amt = parseFloat(row.querySelector('input[name="amount"]').value) || 0;
-                const date = row.querySelector('input[name="date"]').value;
-                if (desc && amt > 0 && date) expenses.push({ description: desc, amount: amt, date });
-            }
-            if (expenses.length === 0) {
-                showMessage('Add at least one valid expense!', 'error');
-                return;
-            }
-            const transaction = db.transaction(['shopExpenses'], 'readwrite');
-            const store = transaction.objectStore('shopExpenses');
-            store.clear().onsuccess = () => expenses.forEach(e => store.add(e));
-            transaction.oncomplete = () => {
-                showMessage(`${expenses.length} shop expense(s) saved!`, 'success');
-                loadShopExpenses();
-            };
         }
 
         function showMessage(text, type) {

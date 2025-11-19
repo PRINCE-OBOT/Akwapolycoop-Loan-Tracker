@@ -28,19 +28,23 @@ import {
   withdrawalManagementGetDataInDBBus,
 } from '../../admin/admin-dashboard/withdrawal-management';
 import memberDashboardContentBus from '../../borrower/borrower-dashboard/member-dashboard-content-set';
-import { expensesManagement } from '../../admin/admin-dashboard/expenses-management';
+import {
+  expensesManagement,
+  renderExpensesBus,
+} from '../../admin/admin-dashboard/expenses-management';
 
-const getDataInIndexedDB = new CustomEvent('render-content');
+const renderContent = new CustomEvent('render-content');
 
 const bus = {
   'deposit-management': depositManagementGetDataInDBBus,
   'loan-management': loanerManagementGetDataInDBBus,
   'my-loan': myLoanGetDataInDBBus,
   'loan-applicant-management': loanApplicantManagementGetDataInDBBus,
+  'withdrawal-management': withdrawalManagementGetDataInDBBus,
+  'expenses-management': renderExpensesBus,
   'my-deposit': depositRenderContentDBBus,
   'admin-dashboard': adminDashboardContentBus,
   'my-withdrawal': myWithdrawalGetDataInDBBus,
-  'withdrawal-management': withdrawalManagementGetDataInDBBus,
   'member-dashboard': memberDashboardContentBus,
 };
 
@@ -71,7 +75,7 @@ function appendContent(e) {
 
   appendContent.prototype.holder.append(content);
 
-  bus[detail.contentKey]?.dispatchEvent(getDataInIndexedDB);
+  bus[detail.contentKey]?.dispatchEvent(renderContent);
 }
 
 (function bindCustomChangeContentEvent() {
