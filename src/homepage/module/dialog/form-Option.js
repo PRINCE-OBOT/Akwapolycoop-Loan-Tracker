@@ -59,6 +59,7 @@ const addEventToBtnYes = (button) => {
 
 const events = {
   modifyIndexdb: new CustomEvent('modify-indexdb'),
+  calculateDividend: new CustomEvent('calculateDividend'),
   massDividend: new CustomEvent('mass-dividend'),
   massModifyIndexdb: new CustomEvent('mass-modify-indexdb'),
   logout: new CustomEvent('logout'),
@@ -112,11 +113,16 @@ const dispatchMassDividendEvent = () => {
   eventBus.dispatchEvent(events.massDividend);
 };
 
+function dispatchCalculateDividend() {
+  eventBus.dispatchEvent(events.calculateDividend);
+}
+
 const Actions = {
   logout: dispatchLogoutEvent,
   modifyData: dispatchModifyDataEvent,
   massModifyData: dispatchMassModifyDataEvent,
   massDividend: dispatchMassDividendEvent,
+  calculateDividend: dispatchCalculateDividend,
 };
 
 // get action like `modifyData` in localStorage
@@ -132,7 +138,11 @@ function getActionFromLocalStorage() {
 function handleActionDirection() {
   const data = getActionFromLocalStorage();
 
-  Actions[data?.action]();
+  const action = data.action;
+
+  if (!action) return;
+
+  Actions[action]();
 }
 
 const processBtnCancel = pipe(

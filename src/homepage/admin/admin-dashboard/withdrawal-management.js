@@ -188,12 +188,18 @@ const storeActionToLocalStorage = (obj) => {
 const DBKeyHandler = {
   withdrawal: getClickTrLoanApplicantData,
   loanApplicantForm: getViewProfileActionData,
+  proofOfPayment: getClickTrLoanApplicantData,
 };
 
 const viewProfileEvent = new CustomEvent('profile');
+const viewProofOfPaymentEvent = new CustomEvent('proof');
 
 const dispatchGetLoanApplicantData = () => {
   eventBus.dispatchEvent(viewProfileEvent);
+};
+
+const dispatchProofOfPayment = () => {
+  eventBus.dispatchEvent(viewProofOfPaymentEvent);
 };
 
 // views for displaying `loan applicant profile` and `proof of payment`
@@ -202,16 +208,17 @@ const dispatchGetLoanApplicantData = () => {
 
 const Views = {
   loanApplicantForm: dispatchGetLoanApplicantData,
+  proofOfPayment: dispatchProofOfPayment,
 };
 
 function handleActionStorage(e) {
   const key = e.target.dataset.dbFirstKey;
+  const view = e.target.dataset.view;
+  if (view) Views[view]();
 
   if (!key) return;
 
   DBKeyHandler[key](e);
-
-  if (Views[key]) Views[key]();
 }
 
 const errorWhileGettingData = () => {
@@ -266,8 +273,8 @@ function insertDepositDataToTable(depositList) {
        <td class="status">${data.status}</td>
        <td>${date}</td>
        <td>${time}</td>
-       <td data-db-first-key="loanApplicantForm"><img src="${eyeViewImg}" class="eye-view" alt="eye view"/></td>
-       <td data-view="proofOfPayment">
+       <td data-view="loanApplicantForm" data-db-first-key="loanApplicantForm"><img src="${eyeViewImg}" class="eye-view" alt="eye view"/></td>
+       <td data-view="proofOfPayment" data-db-first-key="proofOfPayment">
           <img src="${eyeViewImg}" alt="view proof of payment" class="eye-view"/>
         </td>
        <td><button data-option-key="depositApproveOption" data-db-first-key="withdrawal" data-status="Approve" class="btn-approve-loan">Approve</button></td>

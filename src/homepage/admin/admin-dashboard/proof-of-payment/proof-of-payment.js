@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import eventBus from '../../../module/event-bus/event';
 import indexDB from '../../../module/indexDB/indexDB';
 import approveImg from '../../../assets/images/approve-loan.svg';
+import declineImg from '../../../assets/images/delined-loan.svg';
 
 const proofOfPayment = (function createProofOfPayment() {
   const form = document.createElement('form');
@@ -41,6 +42,22 @@ const proofOfPayment = (function createProofOfPayment() {
 
 const demo = () => {};
 
+const Event = ({ text = null, closedByValue = 'any', contentKey = 'status' }) =>
+  new CustomEvent('dialog-manager', {
+    detail: {
+      contentKey,
+      closedByValue,
+      text,
+    },
+  });
+
+const events = {
+  underReviewProofOfPayment: Event({
+    text: 'Your Withdrawal is under review',
+    contentKey: 'status',
+  }),
+};
+
 const proofOfPaymentPreview = proofOfPayment.querySelector('.proof-of-payment-preview');
 const dateOfPayment = proofOfPayment.querySelector('.date-of-payment');
 const timeOfPayment = proofOfPayment.querySelector('.time-of-payment');
@@ -65,16 +82,21 @@ const getTime = (dateAndTime) => {
 };
 
 const insertDepositProofOfPayment = (data) => {
-  const { depositID } = getActionDataFromLocalStorage();
+  const { withdrawalID } = getActionDataFromLocalStorage();
 
-  const deposit = data.deposit;
+  const withdrawal = data.withdrawal;
 
-  const result = deposit.find((obj) => obj.depositID === depositID);
+  const result = withdrawal.find((obj) => obj.withdrawalID === withdrawalID);
 
-  const date = getDate(result.dateAndTime);
-  const time = getTime(result.dateAndTime);
+  if (!result.actionDate) {
+    eventBus.dispatchEvent(events.underReviewProofOfPayment);
+    return;
+  }
 
-  proofOfPaymentPreview.src = result.adminDeposit ? approveImg : result.proofOfPayment;
+  const date = getDate(result.actionDate);
+  const time = getTime(result.actionDate);
+
+  proofOfPaymentPreview.src = result.status === 'Approve' ? approveImg : declineImg;
   dateOfPayment.textContent = date;
   timeOfPayment.textContent = time;
 

@@ -19,6 +19,8 @@ function sendEmail(data) {
 
   const message = memberData.status === 'Approve' ? memberData.membershipID : 'decline';
 
+  // Remove this condition when you are ready to publish email usage
+  if (message) return;
   emailjs
     .send('service_0na6jor', 'template_k8l5l6s', {
       email: memberData.email,
