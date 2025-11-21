@@ -52,6 +52,7 @@ const monthlyWithdrawalTimesSection = (function createmonthlyWithdrawalTimes() {
   return div;
 })();
 
+const PERCENTAGE = 2 / 100;
 const fieldset = form.querySelector('fieldset');
 const withdrawalAmount = form.querySelector('#withdrawal-amount');
 const withdrawalPin = form.querySelector('#withdraw-pin');
@@ -68,7 +69,6 @@ btnTakeLoan.type = 'button';
 btnTakeLoan.textContent = 'Toggle Take loan';
 
 const MINIMUM_MONTH_DEPOSIT = 1;
-const PERCENTAGE = 2 / 100;
 
 const Event = ({ text, closedByValue = 'any' }) =>
   new CustomEvent('dialog-manager', {
@@ -92,7 +92,8 @@ const events = {
 };
 
 function displayPercentageMsg() {
-  percentageMsg.textContent = `You will receive ${withdrawalAmount.value - PERCENTAGE * +withdrawalAmount.value}`;
+  // percentageMsg.textContent = `You will receive ${withdrawalAmount.value - PERCENTAGE * +withdrawalAmount.value}`;
+  percentageMsg.textContent = ``;
 }
 
 let isExtraField = false;
@@ -148,21 +149,18 @@ function addTakeLoanFieldValue(data) {
   const loanLength = data.loan.length;
   const withdrawalTimes = +monthWithdrawalTimes.value;
   const monthlyWithdrawalAmount = loan / withdrawalTimes;
-  const dividendAmount = PERCENTAGE * loan;
-  const amountDisburse = loan - dividendAmount;
+  const loanInterest = PERCENTAGE * loan;
 
   const loanFieldValue = {
     dateAndTime: new Date(),
     status: 'Pending',
     loanAmount: loan,
+    loanInterest,
     loanAmountDynamic: 0,
-    amountDisburse,
     loanID: `LOAN${data?.id}-00${loanLength}`,
     loanPurpose: loanPurpose.value,
     monthlyWithdrawalTimes: withdrawalTimes,
     monthlyWithdrawalAmount,
-    dividendAmount,
-    dividendAmountDynamic: dividendAmount,
   };
 
   data.loan.push(loanFieldValue);
@@ -187,17 +185,12 @@ function addFieldValueToData(data) {
   if (!data.withdrawal) data.withdrawal = [];
 
   const withdrawalLength = data.withdrawal.length;
-  const dividendAmount = PERCENTAGE * withdrawalAmountValue;
-  const amountDisburse = withdrawalAmountValue - dividendAmount;
 
   const withdrawalFieldValue = {
     dateAndTime: new Date(),
     status: 'Pending',
     withdrawalAmount: withdrawalAmountValue,
-    amountDisburse,
     withdrawalID: `WTD${data?.id}-00${withdrawalLength}`,
-    dividendAmount,
-    dividendAmountDynamic: dividendAmount,
   };
 
   data.withdrawal.push(withdrawalFieldValue);

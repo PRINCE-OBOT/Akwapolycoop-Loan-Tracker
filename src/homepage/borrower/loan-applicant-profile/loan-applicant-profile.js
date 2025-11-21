@@ -21,14 +21,14 @@ const addTextContentToDiv = (div) => {
         <div class="header-content">
             <div>
                 <h1>Member Profile</h1>
-                <h5>FINANCIAL CONSULTANCY</h5>
-                <details class="consultancy-section">
+                <h5>📊 FINANCIAL CONSULTANCY</h5>
+                <details class="consultancy-section basic-info">
                   <summary>BASIC INFO</summary>
                   <p>MEMBER ID: <span class="membershipID"></span></p> 
                   <p>FIXED MONTHLY DEPOSIT AMOUNT: ₦<span class="fixed-deposit-amount"></span></p> 
                   <p>TOTAL DEPOSIT: ₦<span class="total-deposit"></span></p> 
-                  <p>TOTAL DISBURSE: ₦<span class="total-disburse"></span></p> 
-                  <p>TOTAL DIVIDEND: ₦<span class="dividend-amount"></span> <span class="dividend-msg"></span> <input type="checkbox" class="dividend-marker hide" data-db-first-key="isDividendPaid" /></p> 
+                  <p style="display: none;">TOTAL DISBURSE: ₦<span class="total-disburse"></span></p> 
+                  <p style="display: none;">TOTAL DIVIDEND: ₦<span class="dividend-amount"></span> <span class="dividend-msg"></span> <input type="checkbox" class="dividend-marker hide" data-db-first-key="isDividendPaid" /></p> 
                 </details>
 
                 <details class="consultancy-section">
@@ -38,13 +38,13 @@ const addTextContentToDiv = (div) => {
                 </details>
 
             </div>
-
-            <div class="date-box">
-                <p class="date-box-label">Application Date/Time</p>
-                <p class="date-box-value" id="application-date"></p>
-                <p class="date-box-value" id="application-time"></p>
             </div>
-        </div>
+            
+                        <div class="date-box">
+                            <p class="date-box-label">Application Date/Time</p>
+                            <p class="date-box-value" id="application-date"></p>
+                            <p class="date-box-value" id="application-time"></p>
+                        </div>
     </div>
 
     <div class="profile-picture-box">
@@ -302,6 +302,172 @@ const addTextContentToDiv = (div) => {
   return div;
 };
 
+const detailInfoContent = (function createDetailInfoContent() {
+  const div = document.createElement('div');
+  div.classList.add('consultancy-container');
+
+  div.innerHTML = `
+        <div class="calc-section income-section">
+            <h3 class="section-title">💰 Income Sources</h3>
+            
+            <div class="calc-card">
+                <div class="calc-label">Loan Interest Income</div>
+                <div class="calc-value">₦ <span class="totalLoanInterest"></span></div>
+                <div class="calc-note">10% interest on all loans disbursed</div>
+            </div>
+
+            <div class="calc-card">
+                <div class="calc-label">Shop Gross Rent Income</div>
+                <div class="calc-value" id="grossRent">₦0.00</div>
+                <div class="calc-note">Monthly rental from cooperative property</div>
+            </div>
+
+            <div class="calc-card total-card">
+                <div class="calc-label">Total Income</div>
+                <div class="calc-value highlight" id="totalIncome">₦0.00</div>
+            </div>
+        </div>
+
+        
+        <div class="calc-section expense-section">
+            <h3 class="section-title">💸 Expenses</h3>
+            
+            <div class="calc-card">
+                <div class="calc-label">Office Expenses</div>
+                <div class="calc-value red" id="officeExpenses">₦0.00</div>
+                <div class="calc-note">Stationery, supplies, loan processing costs</div>
+            </div>
+
+            <div class="calc-card">
+                <div class="calc-label">Shop Expenses</div>
+                <div class="calc-value red" id="shopExpenses">₦0.00</div>
+                <div class="calc-note">Maintenance, repairs, utilities</div>
+            </div>
+
+            <div class="calc-card total-card">
+                <div class="calc-label">Total Expenses</div>
+                <div class="calc-value red" id="totalExpenses">₦0.00</div>
+            </div>
+        </div>
+
+        
+        <div class="calc-section profit-section">
+            <h3 class="section-title">📈 Profit Breakdown</h3>
+            
+            <div class="calc-card">
+                <div class="calc-label">Loan Operations Profit</div>
+                <div class="calc-formula">Loan Interest - Office Expenses</div>
+                <div class="calc-value" id="loanProfit">₦0.00</div>
+            </div>
+
+            <div class="calc-card">
+                <div class="calc-label">Rent Operations Profit</div>
+                <div class="calc-formula">Gross Rent - Shop Expenses</div>
+                <div class="calc-value" id="rentProfit">₦0.00</div>
+            </div>
+
+            <div class="calc-card highlight-card">
+                <div class="calc-label">Net Surplus (Total Profit)</div>
+                <div class="calc-value highlight-big" id="netSurplus">₦0.00</div>
+            </div>
+        </div>
+
+        
+        <div class="calc-section reserve-section">
+            <h3 class="section-title">🏦 Reserve Funds (Savings for Future)</h3>
+            
+            <div class="calc-card">
+                <div class="calc-label">Loan Operations Reserve</div>
+                <div class="calc-formula">10% of Loan Profit</div>
+                <div class="calc-value" id="loanReserve">₦0.00</div>
+            </div>
+
+            <div class="calc-card">
+                <div class="calc-label">Rent Operations Reserve</div>
+                <div class="calc-formula">10% of Rent Profit</div>
+                <div class="calc-value" id="rentReserve">₦0.00</div>
+            </div>
+
+            <div class="calc-card total-card">
+                <div class="calc-label">Total Reserve Fund</div>
+                <div class="calc-value" id="totalReserve">₦0.00</div>
+            </div>
+        </div>
+
+        
+        <div class="calc-section distribute-section">
+            <h3 class="section-title">🎁 Funds Available for Dividend</h3>
+            
+            <div class="calc-card">
+                <div class="calc-label">Loan Operations Distribution</div>
+                <div class="calc-formula">Loan Profit - Loan Reserve</div>
+                <div class="calc-value" id="loanDistributable">₦0.00</div>
+            </div>
+
+            <div class="calc-card">
+                <div class="calc-label">Rent Operations Distribution</div>
+                <div class="calc-formula">Rent Profit - Rent Reserve</div>
+                <div class="calc-value" id="rentDistributable">₦0.00</div>
+            </div>
+
+            <div class="calc-card highlight-card">
+                <div class="calc-label">Total Distributable Fund</div>
+                <div class="calc-value highlight-big" id="totalDistributable">₦0.00</div>
+            </div>
+        </div>
+
+        
+        <div class="calc-section pool-section">
+            <h3 class="section-title">🎯 Dividend Pool Allocation</h3>
+            
+            <div class="calc-card pool-card">
+                <div class="calc-label">Share Dividend Pool (80%)</div>
+                <div class="calc-note">For members who save (based on shares owned)</div>
+                <div class="calc-value highlight" id="sharePool">₦0.00</div>
+            </div>
+
+            <div class="calc-card pool-card">
+                <div class="calc-label">Loan Incentive Pool (20%)</div>
+                <div class="calc-note">For members who borrow (based on loan amount)</div>
+                <div class="calc-value highlight" id="loanPool">₦0.00</div>
+            </div>
+        </div>
+        
+        <div class="calc-section personal-section">
+            <h3 class="section-title">🌟 Your Personal Dividend</h3>
+            
+            <div class="member-stats">
+                <div class="stat-item">
+                    <div class="stat-label">Your Total Shares</div>
+                    <div class="stat-value" id="memberShares">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Your Loan Amount</div>
+                    <div class="stat-value" id="memberLoan">₦0.00</div>
+                </div>
+            </div>
+
+            <div class="calc-card dividend-card">
+                <div class="calc-label">Your Share Dividend</div>
+                <div class="calc-formula">(Your Shares ÷ Total Shares) × Share Pool</div>
+                <div class="calc-value green" id="memberShareDividend">₦0.00</div>
+            </div>
+
+            <div class="calc-card dividend-card">
+                <div class="calc-label">Your Loan Incentive</div>
+                <div class="calc-formula">(Your Loan ÷ Total Loans) × Loan Pool</div>
+                <div class="calc-value green" id="memberLoanDividend">₦0.00</div>
+            </div>
+
+            <div class="calc-card final-card">
+                <div class="calc-label">YOUR TOTAL DIVIDEND</div>
+                <div class="calc-value final-value" id="memberTotalDividend">₦0.00</div>
+            </div>
+        </div>
+    `;
+  return div;
+})();
+
 function addOptionElementToDiv(div) {
   div.innerHTML = `
     <div class="option-key-section">
@@ -316,6 +482,10 @@ const ACCOUNT_OPENING_AMOUNT = 4000;
 const dividendNotCalculatedText = document.createElement('p');
 const buildLoanApplicantProfile = pipe(createDiv, addClassToDiv, addTextContentToDiv);
 const processOptionKeySection = pipe(createDiv, addOptionElementToDiv);
+let memberData;
+//  dividendContent
+
+const totalLoanInterest = detailInfoContent.querySelector('.totalLoanInterest');
 
 const loanApplicantProfile = buildLoanApplicantProfile(document);
 const optionKeySection = processOptionKeySection(document);
@@ -637,6 +807,7 @@ function isWithdrawalManagementAction(data) {
 }
 
 function insertLoanApplicantDataToProfile(data) {
+  memberData = data;
   const membershipApplicationForm = data.membershipApplicationForm;
 
   const date = getDate(membershipApplicationForm.dateAndTime);
@@ -689,7 +860,7 @@ function insertLoanApplicantDataToProfile(data) {
 
   applicationStatus[membershipApplicationForm.status](membershipApplicationForm);
   isWithdrawalManagementAction(data);
-  isDividendCalculated();
+  isDividendCalculated(data);
   dispatchProfileEvent();
 }
 
@@ -698,10 +869,50 @@ function dividendNotCalculated() {
   detailInfo.append(dividendNotCalculatedText);
 }
 
+function calculateLoanInterest(data) {
+  let loanInterest = 0;
+
+  for (let i = 0; i < data.length; i++) {
+    const member = data[i];
+
+    for (let j = 0; j < member.loan.length; j++) {
+      const loan = member.loan[j];
+
+      if (!loan.loanInterest) continue;
+
+      loanInterest += loan.loanInterest;
+    }
+  }
+
+  totalLoanInterest.textContent = loanInterest;
+
+  detailInfo.append(detailInfoContent);
+  // Used memberData to avoid unused variable from eslint
+  memberData.data;
+}
+
+function error() {
+  console.log('Error!!!');
+}
+
+function dividendCalculated() {
+  indexDB.interact(
+    {
+      storeName: 'loan-applicant-list',
+      getMethod: 'getAll',
+      returnData: calculateLoanInterest,
+      undefineState: error,
+    },
+    'getData',
+  );
+}
+
 function isDividendCalculated() {
   const isCalculateDividend = localStorage.getData({ key: 'isCalculateDividend' });
   if (!isCalculateDividend) {
     dividendNotCalculated();
+  } else {
+    dividendCalculated();
   }
 }
 
@@ -768,4 +979,5 @@ optionKeySection.addEventListener('click', handleActionStorage);
 optionKeySection.addEventListener('click', handleOptionContent);
 
 dividendMarker.addEventListener('click', handleDividendMarkerAction);
+
 export default loanApplicantProfile;

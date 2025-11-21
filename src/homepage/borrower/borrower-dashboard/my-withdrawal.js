@@ -49,9 +49,7 @@ const myWithdrawal = (function createTableHeading() {
                   <tr>
                     <th>S/N</th>
                     <th>Withdrawal ID</th>
-                    <th>Amount</th>
-                    <th>Disburse(N)</th>
-                    <th>Dividend(N)</th>
+                    <th>Amount/Disburse</th>
                     <th>Status</th>
                     <th>Date</th>
                     <th>Time</th>
@@ -136,8 +134,6 @@ function insertLoanApplicantDataToTr(loanApplicantData) {
        <td>${serialNumber}</td>
        <td class="withdrawalID">${data.withdrawalID}</td>
        <td>${data.withdrawalAmount}</td>
-       <td>${data.amountDisburse}</td>
-       <td>${data.dividendAmount}</td>
        <td class="status">${data.status}</td>
        <td>${date}</td>
        <td>${time}</td>

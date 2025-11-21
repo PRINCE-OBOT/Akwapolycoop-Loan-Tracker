@@ -50,12 +50,11 @@ const myLoan = (function createTableHeading() {
                     <th>S/N</th>
                     <th>Loan ID</th>
                     <th>Amount(N)</th>
-                    <th>Disburse(N)</th>
-                    <th>Dividend(N)</th>
-                    <th>Loan Status</th>
+                    <th>Interest(N)</th>
                     <th>Monthly WA</th>
-                    <th>Paid Status</th>
                     <th>O/S</th>
+                    <th>Status</th>
+                    <th>Paid Status</th>
                     <th>Purpose</th>
                     <th>Date</th>
                     <th>Time</th>
@@ -143,12 +142,11 @@ function insertLoanApplicantDataToTr(loanApplicantData) {
        <td>${serialNumber}</td>
        <td class='loanID'>${data.loanID}</td>
        <td>${data.loanAmount}</td>
-       <td>${data.amountDisburse}</td>
-       <td>${data.dividendAmount}</td>
-       <td class="status">${data.status}</td>
+       <td>${data.loanInterest}</td>
        <td>${data.monthlyWithdrawalAmount}</td>
-       <td>${paidStatus}</td>
        <td>${data.loanAmountDynamic}</td>
+       <td class="status">${data.status}</td>
+       <td>${paidStatus}</td>
        <td>${data.loanPurpose}</td>
        <td>${date}</td>
        <td>${time}</td>
@@ -304,6 +302,7 @@ function filterLoanApplicantByLoanID(e) {
 
 searchStatus.addEventListener('change', filterLoanApplicantByStatus);
 searchBar.addEventListener('input', filterLoanApplicantByLoanID);
+
 const myLoanGetDataInDBBus = new EventTarget();
 myLoanGetDataInDBBus.addEventListener('render-content', getRecentLoanApplicant);
 

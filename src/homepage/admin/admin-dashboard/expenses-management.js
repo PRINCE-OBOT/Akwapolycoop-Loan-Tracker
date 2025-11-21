@@ -112,7 +112,7 @@ function saveExpenses(tbody, key) {
 
   rows.forEach((row) => {
     const description = row.querySelector('input[name="description"]');
-    const amount = row.querySelector('input[name="amount"]');
+    const amount = row.qWITHuerySelector('input[name="amount"]');
     const date = row.querySelector('input[name="date"]');
 
     const descriptionValue = description.value;
@@ -264,7 +264,7 @@ function handleAddExpenses(e) {
 
 // ======= h
 function isCalculateDividend() {
-  localStorage.isCetData({ key: 'isCalculateDividend', data: true });
+  localStorage.setData({ key: 'isCalculateDividend', data: true });
 }
 // ======= h
 const renderExpensesBus = new EventTarget();

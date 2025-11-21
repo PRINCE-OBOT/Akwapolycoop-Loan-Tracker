@@ -72,7 +72,7 @@ const getRecentAdminID = () => {
 
 (function checkIfAdminRecentlyLogin() {
   // The purpose of getting the admin ID is to be sure that
-  // admin has already sign up before and not*-2 to get the `id` value
+  // admin has already sign up before and not to get the `id` value
   const id = getRecentAdminID();
 
   if (!id) {
@@ -131,9 +131,9 @@ function handleContentDisplay(e) {
   eventBus.dispatchEvent(customContentEvent);
 }
 
-(function () {
-  // emailjs.init('c6951-3fJVm8vAXLP');
-})();
+// (function () {
+//   emailjs.init('c6951-3fJVm8vAXLP');
+// })();
 
 eventBus.addEventListener('logout', logoutAdmin);
 

@@ -5,7 +5,7 @@ const takeLoan = (function () {
   form.classList.add('withdrawal-request-form');
 
   form.innerHTML = `
-  <p>2% of your withdrawal amount will be set aside for your dividend</p>
+  <p>10% is charge for every loan</p>
 
   <fieldset class="field-section">
     <legend>Withdrawal Request</legend>

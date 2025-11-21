@@ -21,9 +21,12 @@ dialog[data-size='small'] {
 }
 
 .header {
-  background: linear-gradient(135deg, var(--ink) 0%, var(--primary-accent) 100%);
   color: white;
   padding: 2rem;
+}
+
+.header > * {
+  margin: 0 auto;
 }
 
 .header-content {
@@ -32,6 +35,9 @@ dialog[data-size='small'] {
   align-items: center;
   flex-wrap: wrap;
   gap: 1rem;
+}
+.header-content > * {
+  margin: 0 auto;
 }
 
 .header h1 {
@@ -49,11 +55,14 @@ dialog[data-size='small'] {
   backdrop-filter: blur(10px);
   padding: 1rem 1.5rem;
   border-radius: 8px;
+  max-width: 300px;
+  color: var(--transparent-black);
+  font-weight: 900;
 }
 
 .date-box-label {
   font-size: 0.8rem;
-  color: #bfdbfe;
+  color: var(--transparent-black);
   margin-bottom: 0.25rem;
 }
 
@@ -62,10 +71,14 @@ dialog[data-size='small'] {
   font-weight: 600;
 }
 .consultancy-section {
-  background: rgba(0 0 0 / 0.4);
+  background: var(--transparent-white);
   padding: 30px;
   border-radius: 30px;
   margin-bottom: 20px;
+}
+.basic-info > * {
+  margin: 0 auto;
+  font-weight: 600;
 }
 .content {
   padding: 2rem;
@@ -203,4 +216,216 @@ details > img {
 .footer-date {
   font-size: 0.85rem;
   color: #6b7280;
+}
+/* detail dividend calculation */
+
+.consultancy-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.consultancy-header {
+  background: linear-gradient(135deg, #2c5f2d 0%, #27ae60 100%);
+  color: white;
+  padding: 30px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(44, 95, 45, 0.3);
+}
+
+.consultancy-header h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+.calc-section {
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  gap: 20px;
+}
+
+.section-title {
+  color: #2c5f2d;
+  font-size: 22px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #27ae60;
+}
+
+.calc-card {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  border-left: 4px solid #2c5f2d;
+  transition: transform 0.2s;
+}
+
+.calc-card:hover {
+  transform: translateX(5px);
+}
+
+.calc-label {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.calc-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #2c5f2d;
+  margin: 5px 0;
+}
+
+.calc-formula {
+  font-size: 13px;
+  color: #777;
+  font-style: italic;
+  margin-bottom: 8px;
+}
+
+.calc-note {
+  font-size: 13px;
+  color: #888;
+  margin-top: 5px;
+}
+
+.total-card {
+  background: #e8f5e9;
+  border-left-color: #27ae60;
+}
+
+.highlight-card {
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  border-left-color: #27ae60;
+  border-left-width: 6px;
+}
+
+.pool-card {
+  background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+  border-left-color: #ff9800;
+}
+
+.dividend-card {
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  border-left-color: #2196f3;
+}
+
+.final-card {
+  background: linear-gradient(135deg, #2c5f2d 0%, #27ae60 100%);
+  color: white;
+  border: none;
+  padding: 25px;
+  text-align: center;
+}
+
+.final-card .calc-label {
+  color: white;
+  font-size: 18px;
+}
+
+.final-value {
+  color: #fff;
+  font-size: 36px !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.highlight {
+  color: #27ae60;
+}
+
+.highlight-big {
+  font-size: 28px;
+  color: #27ae60;
+}
+
+.red {
+  color: #e74c3c;
+}
+
+.green {
+  color: #27ae60;
+}
+
+.member-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.stat-item {
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  border: 2px solid #2c5f2d;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  font-size: 22px;
+  font-weight: bold;
+  color: #2c5f2d;
+}
+
+.income-section {
+  border-top: 4px solid #27ae60;
+}
+
+.profit-section {
+  border-top: 4px solid #3498db;
+}
+
+.reserve-section {
+  border-top: 4px solid #9b59b6;
+}
+
+.distribute-section {
+  border-top: 4px solid #f39c12;
+}
+
+.pool-section {
+  border-top: 4px solid #ff9800;
+}
+
+.personal-section {
+  border-top: 4px solid #2c5f2d;
+  background: linear-gradient(135deg, #ffffff 0%, #f0f8f0 100%);
+}
+
+@media (max-width: 768px) {
+  .consultancy-header h2 {
+    font-size: 22px;
+  }
+
+  .calc-value {
+    font-size: 20px;
+  }
+
+  .final-value {
+    font-size: 28px !important;
+  }
+
+  .member-stats {
+    grid-template-columns: 1fr;
+  }
 }

@@ -42,12 +42,11 @@ const loanerManagement = (function createLoanerManagementContent() {
                     <th>S/N</th>
                     <th>Loan ID</th>
                     <th>Amount(N)</th>
-                    <th>Disburse(N)</th>
-                    <th>Dividend(N)</th>
-                    <th>Pay</th>
+                    <th>Interest(N)</th>
                     <th>Monthly WA</th>
-                    <th>Status</th>
                     <th>O/S</th>
+                    <th>Status</th>
+                    <th>Paid Status</th>
                     <th>Purpose</th>
                     <th>Date</th>
                     <th>Time</th>
@@ -65,6 +64,7 @@ const loanerManagement = (function createLoanerManagementContent() {
   return div;
 })();
 
+const PERCENTAGE = 2 / 100;
 const numberOfLoans = loanerManagement.querySelector('.number-of-loan');
 const searchBar = loanerManagement.querySelector('input[type=search]');
 const searchStatus = loanerManagement.querySelector('.search-status');
@@ -151,6 +151,8 @@ const getViewProfileActionData = (e) => {
 const provideModifyActionData = ({ id, e }) => {
   const { status } = getAttributeFromTarget(e);
   const { loanAmount, loanID } = getAttributeFromTr(e);
+  const loanInterest = PERCENTAGE * +loanAmount;
+  const loanAmountDynamic = loanInterest + +loanAmount;
 
   const obj = {
     key: 'action',
@@ -158,7 +160,7 @@ const provideModifyActionData = ({ id, e }) => {
       action: 'modifyData',
       id: +id,
       loanID,
-      value: [{ status }, { loanAmountDynamic: +loanAmount }, { actionDate: new Date() }],
+      value: [{ status }, { loanAmountDynamic }, { actionDate: new Date() }],
       firstKey: new Array(3).fill('loan'),
       secondKey: ['status', 'loanAmountDynamic', 'actionDate'],
       loanAmount: +loanAmount,
@@ -255,16 +257,18 @@ function insertTakeLoanDataToTable(loanList) {
     const serialNumber = getSerialNumber(index);
     const date = getDate(data.dateAndTime);
     const time = getTime(data.dateAndTime);
+    const paidStatus =
+      data.status === 'Approve' && data.loanAmountDynamic === 0 ? 'Complete' : 'Incomplete';
 
     tr.innerHTML = `
        <td>${serialNumber}</td>
        <td class="loanID">${data.loanID}</td>
        <td>${data.loanAmount}</td>
-       <td>${data.amountDisburse}</td>
-       <td>${data.dividendAmount}</td>
+       <td>${data.loanInterest}</td>
        <td>${data.monthlyWithdrawalAmount}</td>
-       <td class="status">${data.status}</td>
        <td>${data.loanAmountDynamic}</td>
+       <td class="status">${data.status}</td>
+       <td>${paidStatus}</td>
        <td>${data.loanPurpose}</td>
        <td>${date}</td>
        <td>${time}</td>
