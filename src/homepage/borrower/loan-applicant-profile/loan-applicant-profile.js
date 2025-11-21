@@ -312,19 +312,19 @@ const detailInfoContent = (function createDetailInfoContent() {
             
             <div class="calc-card">
                 <div class="calc-label">Loan Interest Income</div>
-                <div class="calc-value">₦ <span class="totalLoanInterest"></span></div>
+                <div class="calc-value">₦<span class="totalLoanInterest"></span></div>
                 <div class="calc-note">10% interest on all loans disbursed</div>
             </div>
 
             <div class="calc-card">
                 <div class="calc-label">Shop Gross Rent Income</div>
-                <div class="calc-value" id="grossRent">₦0.00</div>
+                <div class="calc-value">₦<span class="shopGrossRent"></span></div>
                 <div class="calc-note">Monthly rental from cooperative property</div>
             </div>
 
             <div class="calc-card total-card">
                 <div class="calc-label">Total Income</div>
-                <div class="calc-value highlight" id="totalIncome">₦0.00</div>
+                <div class="calc-value highlight">₦ <span class="totalIncome"></span></div>
             </div>
         </div>
 
@@ -334,19 +334,19 @@ const detailInfoContent = (function createDetailInfoContent() {
             
             <div class="calc-card">
                 <div class="calc-label">Office Expenses</div>
-                <div class="calc-value red" id="officeExpenses">₦0.00</div>
+                <div class="calc-value red">₦<span class="officeExpenses"></span></div>
                 <div class="calc-note">Stationery, supplies, loan processing costs</div>
             </div>
 
             <div class="calc-card">
                 <div class="calc-label">Shop Expenses</div>
-                <div class="calc-value red" id="shopExpenses">₦0.00</div>
+                <div class="calc-value red">₦<span class="shopExpenses"></span></div>
                 <div class="calc-note">Maintenance, repairs, utilities</div>
             </div>
 
             <div class="calc-card total-card">
                 <div class="calc-label">Total Expenses</div>
-                <div class="calc-value red" id="totalExpenses">₦0.00</div>
+                <div class="calc-value red">₦<span class="totalExpenses"></span></div>
             </div>
         </div>
 
@@ -355,20 +355,20 @@ const detailInfoContent = (function createDetailInfoContent() {
             <h3 class="section-title">📈 Profit Breakdown</h3>
             
             <div class="calc-card">
-                <div class="calc-label">Loan Operations Profit</div>
+                <div class="calc-label">Loan Profit</div>
                 <div class="calc-formula">Loan Interest - Office Expenses</div>
-                <div class="calc-value" id="loanProfit">₦0.00</div>
+                <div class="calc-value">₦<span class="loanProfit"></span></div>
             </div>
 
             <div class="calc-card">
-                <div class="calc-label">Rent Operations Profit</div>
+                <div class="calc-label">Rent Profit</div>
                 <div class="calc-formula">Gross Rent - Shop Expenses</div>
-                <div class="calc-value" id="rentProfit">₦0.00</div>
+                <div class="calc-value">₦<span class="shopProfit"></span></div>
             </div>
 
             <div class="calc-card highlight-card">
                 <div class="calc-label">Net Surplus (Total Profit)</div>
-                <div class="calc-value highlight-big" id="netSurplus">₦0.00</div>
+                <div class="calc-value highlight-big">₦<span class="totalProfit"></span></div>
             </div>
         </div>
 
@@ -377,20 +377,20 @@ const detailInfoContent = (function createDetailInfoContent() {
             <h3 class="section-title">🏦 Reserve Funds (Savings for Future)</h3>
             
             <div class="calc-card">
-                <div class="calc-label">Loan Operations Reserve</div>
+                <div class="calc-label">Loan Reserve</div>
                 <div class="calc-formula">10% of Loan Profit</div>
-                <div class="calc-value" id="loanReserve">₦0.00</div>
+                <div class="calc-value">₦<span class="loanReserve"></span></div>
             </div>
 
             <div class="calc-card">
-                <div class="calc-label">Rent Operations Reserve</div>
+                <div class="calc-label">Rent Reserve</div>
                 <div class="calc-formula">10% of Rent Profit</div>
-                <div class="calc-value" id="rentReserve">₦0.00</div>
+                <div class="calc-value">₦<span class="rentReserve"></span></div>
             </div>
 
             <div class="calc-card total-card">
                 <div class="calc-label">Total Reserve Fund</div>
-                <div class="calc-value" id="totalReserve">₦0.00</div>
+                <div class="calc-value">₦<span class="totalReserve"></span></div>
             </div>
         </div>
 
@@ -399,20 +399,20 @@ const detailInfoContent = (function createDetailInfoContent() {
             <h3 class="section-title">🎁 Funds Available for Dividend</h3>
             
             <div class="calc-card">
-                <div class="calc-label">Loan Operations Distribution</div>
+                <div class="calc-label">Loan Distribution</div>
                 <div class="calc-formula">Loan Profit - Loan Reserve</div>
-                <div class="calc-value" id="loanDistributable">₦0.00</div>
+                <div class="calc-value">₦<span class="loanDistributed"></span></div>
             </div>
 
             <div class="calc-card">
-                <div class="calc-label">Rent Operations Distribution</div>
+                <div class="calc-label">Rent Distribution</div>
                 <div class="calc-formula">Rent Profit - Rent Reserve</div>
-                <div class="calc-value" id="rentDistributable">₦0.00</div>
+                <div class="calc-value">₦<span class="rentDistributed"></span></div>
             </div>
 
             <div class="calc-card highlight-card">
                 <div class="calc-label">Total Distributable Fund</div>
-                <div class="calc-value highlight-big" id="totalDistributable">₦0.00</div>
+                <div class="calc-value highlight-big">₦<span class="totalDistributed"></span></div>
             </div>
         </div>
 
@@ -421,15 +421,15 @@ const detailInfoContent = (function createDetailInfoContent() {
             <h3 class="section-title">🎯 Dividend Pool Allocation</h3>
             
             <div class="calc-card pool-card">
-                <div class="calc-label">Share Dividend Pool (80%)</div>
+                <div class="calc-label">Share Dividend Pool (60%)</div>
                 <div class="calc-note">For members who save (based on shares owned)</div>
-                <div class="calc-value highlight" id="sharePool">₦0.00</div>
+                <div class="calc-value highlight">₦<span class="sharedDividendPool"></span></div>
             </div>
 
             <div class="calc-card pool-card">
-                <div class="calc-label">Loan Incentive Pool (20%)</div>
+                <div class="calc-label">Loan Incentive Pool (40%)</div>
                 <div class="calc-note">For members who borrow (based on loan amount)</div>
-                <div class="calc-value highlight" id="loanPool">₦0.00</div>
+                <div class="calc-value highlight">₦<span class="loanIncentivePool"></span></div>
             </div>
         </div>
         
@@ -438,19 +438,30 @@ const detailInfoContent = (function createDetailInfoContent() {
             
             <div class="member-stats">
                 <div class="stat-item">
-                    <div class="stat-label">Your Total Shares</div>
-                    <div class="stat-value" id="memberShares">0</div>
+                    <div class="stat-label">Your Shares</div>
+                    <div class="stat-value memberShares"></div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-label">Your Loan Amount</div>
-                    <div class="stat-value" id="memberLoan">₦0.00</div>
+                    <div class="stat-value">₦<span class="loanAmount"></span></div>
+                </div>
+            </div>
+            
+            <div class="member-stats">
+                <div class="stat-item">
+                    <div class="stat-label">Total Shares</div>
+                    <div class="stat-value totalShares"></div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Total Loan Amount</div>
+                    <div class="stat-value">₦<span class="totalLoanAmount"></span></div>
                 </div>
             </div>
 
             <div class="calc-card dividend-card">
                 <div class="calc-label">Your Share Dividend</div>
                 <div class="calc-formula">(Your Shares ÷ Total Shares) × Share Pool</div>
-                <div class="calc-value green" id="memberShareDividend">₦0.00</div>
+                <div class="calc-value green">₦<span class="memberShareDividend"></span></div>
             </div>
 
             <div class="calc-card dividend-card">
@@ -486,6 +497,27 @@ let memberData;
 //  dividendContent
 
 const totalLoanInterest = detailInfoContent.querySelector('.totalLoanInterest');
+const shopGrossRent = detailInfoContent.querySelector('.shopGrossRent');
+const totalIncome = detailInfoContent.querySelector('.totalIncome');
+const officeExpenses = detailInfoContent.querySelector('.officeExpenses');
+const shopExpenses = detailInfoContent.querySelector('.shopExpenses');
+const totalExpenses = detailInfoContent.querySelector('.totalExpenses');
+const loanProfit = detailInfoContent.querySelector('.loanProfit');
+const shopProfit = detailInfoContent.querySelector('.shopProfit');
+const totalProfit = detailInfoContent.querySelector('.totalProfit');
+const loanReserve = detailInfoContent.querySelector('.loanReserve');
+const rentReserve = detailInfoContent.querySelector('.rentReserve');
+const totalReserve = detailInfoContent.querySelector('.totalReserve');
+const loanDistributed = detailInfoContent.querySelector('.loanDistributed');
+const rentDistributed = detailInfoContent.querySelector('.rentDistributed');
+const totalDistributed = detailInfoContent.querySelector('.totalDistributed');
+const sharedDividendPool = detailInfoContent.querySelector('.sharedDividendPool');
+const loanIncentivePool = detailInfoContent.querySelector('.loanIncentivePool');
+const memberShares = detailInfoContent.querySelector('.memberShares');
+const loanAmount = detailInfoContent.querySelector('.loanAmount');
+const totalShares = detailInfoContent.querySelector('.totalShares');
+const totalLoanAmount = detailInfoContent.querySelector('.totalLoanAmount');
+const memberShareDividend = detailInfoContent.querySelector('.memberShareDividend');
 
 const loanApplicantProfile = buildLoanApplicantProfile(document);
 const optionKeySection = processOptionKeySection(document);
@@ -762,8 +794,10 @@ function isMassDividendPerform(data) {
 
 function getTotalDeposit(data) {
   if (data.deposit) {
-    const approveDeposit = data.deposit.filter((obj) => obj.status === 'Approve');
-    return approveDeposit.reduce((acc, currentObj) => acc + currentObj.depositAmount, 0);
+    return data.deposit.reduce(
+      (acc, currentObj) => (currentObj.status === 'Approve' ? acc + currentObj.depositAmount : acc),
+      0,
+    );
   }
 }
 
@@ -869,26 +903,194 @@ function dividendNotCalculated() {
   detailInfo.append(dividendNotCalculatedText);
 }
 
-function calculateLoanInterest(data) {
+function getDataFromLocalStorage(key) {
+  return localStorage.getData({ key });
+}
+
+function CalculateDividend(data) {
+  const PERCENTAGE_LOAN_RESERVE = 10 / 100;
+  const PERCENTAGE_SHARED_DIVIDEND_POOL = 60 / 100;
+  const PERCENTAGE_LOAN_INCENTIVE_POOL = 40 / 100;
+  const SHARE_UNIT = 100;
   let loanInterest = 0;
+  let totalMemberDeposit = 0;
+  let totalLoanAmountValue = 0;
+  let memberDeposit = 0;
+  let memberSharesValue;
+  let totalIncomeValue;
+  let totalOfficeExpenses;
+  let totalShopExpenses;
+  let totalLoanProfit;
+  let shopGrossRentValue;
+  let totalShopProfit;
+  let totalProfitValue;
+  let loanReserveValue;
+  let rentReserveValue;
+  let totalReserveValue;
+  let loanDistributedValue;
+  let rentDistributedValue;
+  let totalDistributedValue;
+  let totalSharesValue;
+  let sharedDividendPoolValue;
+  let loanIncentivePoolValue;
+  let memberLoanValue;
+  let memberShareDividendValue;
 
-  for (let i = 0; i < data.length; i++) {
-    const member = data[i];
+  (function calculateLoanInterest() {
+    for (let i = 0; i < data.length; i++) {
+      const member = data[i];
 
-    for (let j = 0; j < member.loan.length; j++) {
-      const loan = member.loan[j];
+      const deposit = member.deposit;
+      const loan = member.loan;
+      if (deposit) {
+        for (let k = 0; k < deposit.length; k++) {
+          const currentDeposit = deposit[k];
+          if (currentDeposit.status === 'Approve') {
+            totalMemberDeposit += currentDeposit.depositAmount;
+          }
+        }
+      }
 
-      if (!loan.loanInterest) continue;
+      if (loan) {
+        for (let j = 0; j < loan.length; j++) {
+          const currentLoan = loan[j];
+          if (currentLoan.status === 'Approve') {
+            totalLoanAmountValue += currentLoan.loanAmount;
 
-      loanInterest += loan.loanInterest;
+            if (!currentLoan.loanInterest) continue;
+
+            loanInterest += currentLoan.loanInterest;
+          }
+        }
+      }
     }
-  }
 
-  totalLoanInterest.textContent = loanInterest;
+    totalLoanInterest.textContent = loanInterest;
+  })();
 
-  detailInfo.append(detailInfoContent);
-  // Used memberData to avoid unused variable from eslint
-  memberData.data;
+  (function insertShopGrossRentValue() {
+    shopGrossRentValue = getDataFromLocalStorage('storeGrossRentAmount');
+
+    shopGrossRent.textContent = shopGrossRentValue;
+
+    totalIncomeValue = loanInterest + +shopGrossRentValue;
+
+    totalIncome.textContent = totalIncomeValue;
+
+    detailInfo.append(detailInfoContent);
+  })();
+
+  (function insertOfficeExpenses() {
+    const officeExpensesData = getDataFromLocalStorage('office-expenses');
+
+    totalOfficeExpenses = officeExpensesData.reduce((acc, current) => acc + +current.amount, 0);
+
+    officeExpenses.textContent = totalOfficeExpenses;
+  })();
+
+  (function insertOfficeExpenses() {
+    const shopExpensesData = getDataFromLocalStorage('shop-expenses');
+
+    totalShopExpenses = shopExpensesData.reduce((acc, current) => acc + +current.amount, 0);
+
+    shopExpenses.textContent = totalShopExpenses;
+  })();
+
+  (function calculateTotalExpense() {
+    totalExpenses.textContent = totalOfficeExpenses + totalShopExpenses;
+  })();
+
+  (function calculateLoanProfit() {
+    totalLoanProfit = Math.round((loanInterest - totalOfficeExpenses) * 100) / 100;
+    loanProfit.textContent = totalLoanProfit;
+  })();
+
+  (function calculateShopProfit() {
+    totalShopProfit = Math.round((shopGrossRentValue - totalShopExpenses) * 100) / 100;
+    shopProfit.textContent = totalShopProfit;
+  })();
+
+  (function calculateTotalProfit() {
+    totalProfitValue = totalLoanProfit + totalShopProfit;
+    totalProfit.textContent = totalProfitValue;
+  })();
+
+  (function calculateLoanReserve() {
+    const result = totalLoanProfit * PERCENTAGE_LOAN_RESERVE;
+    loanReserveValue = result <= 0 ? 0 : result;
+    loanReserve.textContent = loanReserveValue;
+  })();
+
+  (function calculateRentReserve() {
+    const result = totalShopProfit * PERCENTAGE_LOAN_RESERVE;
+    rentReserveValue = result <= 0 ? 0 : result;
+    rentReserve.textContent = rentReserveValue;
+  })();
+
+  (function calculateTotalReserve() {
+    totalReserveValue = loanReserveValue + rentReserveValue;
+    totalReserve.textContent = totalReserveValue <= 0 ? 0 : totalReserveValue;
+  })();
+
+  (function calculateLoanDistributed() {
+    const result = totalLoanProfit - loanReserveValue;
+    loanDistributedValue = result <= 0 ? 0 : result;
+    loanDistributed.textContent = loanDistributedValue;
+  })();
+
+  (function calculateRentDistributed() {
+    const result = totalShopProfit - rentReserveValue;
+    rentDistributedValue = result <= 0 ? 0 : result;
+    rentDistributed.textContent = rentDistributedValue;
+  })();
+
+  (function calculateTotalDistributed() {
+    totalDistributedValue = loanDistributedValue + rentDistributedValue;
+    totalDistributed.textContent = totalDistributedValue;
+  })();
+
+  (function calculateSharedDividendPool() {
+    sharedDividendPoolValue = PERCENTAGE_SHARED_DIVIDEND_POOL * totalDistributedValue;
+    sharedDividendPool.textContent = sharedDividendPoolValue;
+  })();
+
+  (function calculateLoanIncentivePool() {
+    loanIncentivePoolValue = PERCENTAGE_LOAN_INCENTIVE_POOL * totalDistributedValue;
+    loanIncentivePool.textContent = loanIncentivePoolValue;
+  })();
+
+  (function calculateMemberShares() {
+    memberDeposit = getTotalDeposit(memberData);
+    memberSharesValue = memberDeposit / SHARE_UNIT;
+    memberShares.textContent = memberSharesValue;
+  })();
+
+  (function calculateLoanAmount() {
+    const loan = memberData.loan;
+
+    if (loan) {
+      memberLoanValue = loan.reduce(
+        (acc, current) => (current.status === 'Approve' ? acc + current.loanAmount : acc),
+        0,
+      );
+    }
+
+    loanAmount.textContent = memberLoanValue;
+  })();
+
+  (function calculateTotalMemberShares() {
+    totalSharesValue = totalMemberDeposit / SHARE_UNIT;
+    totalShares.textContent = totalSharesValue;
+  })();
+
+  (function setTotalLoanAmount() {
+    totalLoanAmount.textContent = totalLoanAmountValue;
+  })();
+
+  (function calculateMemberShareDividend() {
+    memberShareDividendValue = (memberSharesValue / totalSharesValue) * sharedDividendPoolValue;
+    memberShareDividend.textContent = memberShareDividendValue;
+  })();
 }
 
 function error() {
@@ -900,7 +1102,7 @@ function dividendCalculated() {
     {
       storeName: 'loan-applicant-list',
       getMethod: 'getAll',
-      returnData: calculateLoanInterest,
+      returnData: CalculateDividend,
       undefineState: error,
     },
     'getData',

@@ -15,7 +15,8 @@ const proofOfPayment = (function createProofOfPayment() {
      <div class="proof-payment-header">
          <h1>Date of Payment</h1>
          <button class="close-btn">✕</button>
-     </div>
+   
+         </div>
    
      <div class="proof-payment-body">
        <!--<div class="amount-deposit-body">
