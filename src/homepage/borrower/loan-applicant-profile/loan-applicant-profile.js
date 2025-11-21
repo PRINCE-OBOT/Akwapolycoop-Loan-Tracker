@@ -467,12 +467,12 @@ const detailInfoContent = (function createDetailInfoContent() {
             <div class="calc-card dividend-card">
                 <div class="calc-label">Your Loan Incentive</div>
                 <div class="calc-formula">(Your Loan ÷ Total Loans) × Loan Pool</div>
-                <div class="calc-value green" id="memberLoanDividend">₦0.00</div>
+                <div class="calc-value green">₦<span class="memberLoanIncentive"></span></div>
             </div>
 
             <div class="calc-card final-card">
                 <div class="calc-label">YOUR TOTAL DIVIDEND</div>
-                <div class="calc-value final-value" id="memberTotalDividend">₦0.00</div>
+                <div class="calc-value final-value">₦<span class="totalLoanDividend"></span></div>
             </div>
         </div>
     `;
@@ -518,6 +518,8 @@ const loanAmount = detailInfoContent.querySelector('.loanAmount');
 const totalShares = detailInfoContent.querySelector('.totalShares');
 const totalLoanAmount = detailInfoContent.querySelector('.totalLoanAmount');
 const memberShareDividend = detailInfoContent.querySelector('.memberShareDividend');
+const memberLoanIncentive = detailInfoContent.querySelector('.memberLoanIncentive');
+const totalLoanDividend = detailInfoContent.querySelector('.totalLoanDividend');
 
 const loanApplicantProfile = buildLoanApplicantProfile(document);
 const optionKeySection = processOptionKeySection(document);
@@ -914,7 +916,6 @@ function CalculateDividend(data) {
   const SHARE_UNIT = 100;
   let loanInterest = 0;
   let totalMemberDeposit = 0;
-  let totalLoanAmountValue = 0;
   let memberDeposit = 0;
   let memberSharesValue;
   let totalIncomeValue;
@@ -934,7 +935,10 @@ function CalculateDividend(data) {
   let sharedDividendPoolValue;
   let loanIncentivePoolValue;
   let memberLoanValue;
+  let totalLoanAmountValue = 0;
   let memberShareDividendValue;
+  let memberLoanIncentiveValue;
+  let totalLoanDividendValue;
 
   (function calculateLoanInterest() {
     for (let i = 0; i < data.length; i++) {
@@ -1090,6 +1094,16 @@ function CalculateDividend(data) {
   (function calculateMemberShareDividend() {
     memberShareDividendValue = (memberSharesValue / totalSharesValue) * sharedDividendPoolValue;
     memberShareDividend.textContent = memberShareDividendValue;
+  })();
+
+  (function calculateMemberLoanIncentive() {
+    memberLoanIncentiveValue = (memberLoanValue / totalLoanAmountValue) * loanIncentivePoolValue;
+    memberLoanIncentive.textContent = memberLoanIncentiveValue;
+  })();
+
+  (function calculateTotalDividend() {
+    totalLoanDividendValue = memberShareDividendValue + memberLoanIncentiveValue;
+    totalLoanDividend.textContent = totalLoanDividendValue;
   })();
 }
 
