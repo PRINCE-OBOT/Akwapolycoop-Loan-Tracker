@@ -10,7 +10,6 @@ const withdrawalManagement = (function createDepositManagementContent() {
 
   div.innerHTML = `
             <h5 class="brief-text">Oversee and manage all loan applications within the system.</h5>
-            <button type="button" class="btn-create-mass-deposit create-mass-dividend">Send Mass Dividend</button>  
             <div class="filter-section">
               <h3>Filter Withdrawal</h3>
               <p>Find specific withdrawal by it status</p>
@@ -63,7 +62,6 @@ const numberOfDeposit = withdrawalManagement.querySelector('.number-of-withdrawa
 const searchBar = withdrawalManagement.querySelector('input[type=search]');
 const searchStatus = withdrawalManagement.querySelector('.search-status');
 const tbody = withdrawalManagement.querySelector('tbody');
-const createMassDividend = withdrawalManagement.querySelector('.create-mass-dividend');
 
 function setNumberOfDepositValue(value) {
   numberOfDeposit.textContent = value;
@@ -212,11 +210,11 @@ const Views = {
 function handleActionStorage(e) {
   const key = e.target.dataset.dbFirstKey;
   const view = e.target.dataset.view;
+
+  if (key) {
+    DBKeyHandler[key](e);
+  }
   if (view) Views[view]();
-
-  if (!key) return;
-
-  DBKeyHandler[key](e);
 }
 
 const errorWhileGettingData = () => {
@@ -362,36 +360,10 @@ function filterLoanApplicantByStatus(e) {
   });
 }
 
-function showAdminVerificationForm() {
-  eventBus.dispatchEvent(events.adminVerification);
-}
-
-function getMassDividendAction() {
-  const obj = {
-    key: 'action',
-    data: {
-      action: 'massDividend',
-      firstKey: ['withdrawal'],
-    },
-  };
-  return obj;
-}
-
-function handleMassDividendActionStorage() {
-  const massDividendAction = getMassDividendAction();
-  storeActionToLocalStorage(massDividendAction);
-}
-
-function handleSendMassDividend() {
-  showAdminVerificationForm();
-  handleMassDividendActionStorage();
-}
-
 searchStatus.addEventListener('change', filterLoanApplicantByStatus);
 searchBar.addEventListener('input', filterLoanApplicantByDepositID);
 tbody.addEventListener('click', handleOptionContent);
 tbody.addEventListener('click', handleActionStorage);
-createMassDividend.addEventListener('click', handleSendMassDividend);
 
 const withdrawalManagementGetDataInDBBus = new EventTarget();
 withdrawalManagementGetDataInDBBus.addEventListener(
