@@ -25,8 +25,8 @@ const addTextContentToDiv = (div) => {
                 <details class="consultancy-section basic-info">
                   <summary>BASIC INFO</summary>
                   <p>MEMBER ID: <span class="membershipID"></span></p> 
-                  <p>FIXED MONTHLY DEPOSIT AMOUNT: ₦<span class="fixed-deposit-amount"></span></p> 
-                  <p>TOTAL DEPOSIT: ₦<span class="total-deposit"></span></p> 
+                  <p>FIXED MONTHLY DEPOSIT AMOUNT: <span class="fixed-deposit-amount"></span></p> 
+                  <p>TOTAL DEPOSIT: <span class="total-deposit"></span></p> 
                 </details>
 
                 <details class="consultancy-section">
@@ -737,7 +737,7 @@ const getTime = (dateAndTime) => {
 const applicationStatus = {
   Pending: () => footer.append(optionKeySection),
   Approve: (membershipApplicationForm) => {
-    fixedDepositAmount.textContent = membershipApplicationForm.fixedDepositAmount;
+    fixedDepositAmount.textContent = `₦${membershipApplicationForm.fixedDepositAmount}`;
     membershipID.textContent = membershipApplicationForm.membershipID;
   },
   Decline: () => {
@@ -773,7 +773,7 @@ function isAdminViewingProfile(data) {
     totalDividendSection.after(memberDividendStatusMsg);
   }
 
-  totalDeposit.textContent = getTotalDeposit(data) || 0;
+  totalDeposit.textContent = `₦${getTotalDeposit(data)}` || '₦0';
 }
 
 function insertLoanApplicantDataToProfile(data) {
@@ -988,12 +988,14 @@ function CalculateDividend(data) {
   })();
 
   (function calculateSharedDividendPool() {
-    sharedDividendPoolValue = PERCENTAGE_SHARED_DIVIDEND_POOL * totalDistributedValue;
+    sharedDividendPoolValue =
+      Math.round(PERCENTAGE_SHARED_DIVIDEND_POOL * totalDistributedValue * 100) / 100;
     sharedDividendPool.textContent = sharedDividendPoolValue;
   })();
 
   (function calculateLoanIncentivePool() {
-    loanIncentivePoolValue = PERCENTAGE_LOAN_INCENTIVE_POOL * totalDistributedValue;
+    loanIncentivePoolValue =
+      Math.round(PERCENTAGE_LOAN_INCENTIVE_POOL * totalDistributedValue * 100) / 100;
     loanIncentivePool.textContent = loanIncentivePoolValue;
   })();
 
@@ -1026,17 +1028,20 @@ function CalculateDividend(data) {
   })();
 
   (function calculateMemberShareDividend() {
-    memberShareDividendValue = (memberSharesValue / totalSharesValue) * sharedDividendPoolValue;
+    memberShareDividendValue =
+      Math.round((memberSharesValue / totalSharesValue) * sharedDividendPoolValue * 10) / 10;
     memberShareDividend.textContent = memberShareDividendValue;
   })();
 
   (function calculateMemberLoanIncentive() {
-    memberLoanIncentiveValue = (memberLoanValue / totalLoanAmountValue) * loanIncentivePoolValue;
+    memberLoanIncentiveValue =
+      Math.round((memberLoanValue / totalLoanAmountValue) * loanIncentivePoolValue * 10) / 10;
     memberLoanIncentive.textContent = memberLoanIncentiveValue;
   })();
 
   (function calculateTotalDividend() {
-    totalLoanDividendValue = memberShareDividendValue + memberLoanIncentiveValue;
+    totalLoanDividendValue =
+      Math.round(memberShareDividendValue + memberLoanIncentiveValue * 10) / 10;
     totalLoanDividend.textContent = totalLoanDividendValue || 0;
   })();
 }

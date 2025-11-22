@@ -102,6 +102,7 @@ function storeExpenses(expenses, key) {
 
   localStorage.setData(obj);
 
+  // display updated
   eventBus.dispatchEvent(events[key]);
 }
 
@@ -112,7 +113,7 @@ function saveExpenses(tbody, key) {
 
   rows.forEach((row) => {
     const description = row.querySelector('input[name="description"]');
-    const amount = row.qWITHuerySelector('input[name="amount"]');
+    const amount = row.querySelector('input[name="amount"]');
     const date = row.querySelector('input[name="date"]');
 
     const descriptionValue = description.value;
@@ -185,8 +186,8 @@ function editRow(target) {
 // ============ e
 
 // ============ x
-function updateSerialNumber() {
-  const trs = tbodyOfficeExpenses.querySelectorAll('tr');
+function updateSerialNumber(tbody) {
+  const trs = tbody.querySelectorAll('tr');
 
   trs.forEach((tr, index) => {
     const serialNumberTd = tr.querySelector('.serial-number');
@@ -196,8 +197,9 @@ function updateSerialNumber() {
 
 function deleteRow(target) {
   const row = target.closest('tr');
+  const tbody = target.closest('tbody');
   row.remove();
-  updateSerialNumber();
+  updateSerialNumber(tbody);
 }
 
 // ========== x
@@ -263,7 +265,7 @@ function handleAddExpenses(e) {
 }
 
 // ======= h
-function isCalculateDividend() {
+function canCalculateDividend() {
   localStorage.setData({ key: 'isCalculateDividend', data: true });
 }
 // ======= h
@@ -277,6 +279,6 @@ btnAddShopExpensesRow.addEventListener('click', handleAddExpenses);
 tbodyOfficeExpenses.addEventListener('click', handleAction);
 tbodyShopExpenses.addEventListener('click', handleAction);
 renderExpensesBus.addEventListener('render-content', render);
-eventBus.addEventListener('calculateDividend', isCalculateDividend);
+eventBus.addEventListener('calculateDividend', canCalculateDividend);
 
 export { expensesManagement, renderExpensesBus };

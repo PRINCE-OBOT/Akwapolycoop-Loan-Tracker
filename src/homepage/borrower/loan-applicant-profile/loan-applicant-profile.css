@@ -78,7 +78,9 @@ dialog[data-size='small'] {
   border-radius: 30px;
   margin-top: 20px;
 }
-
+.consultancy-section > p {
+  color: var(--transparent-black);
+}
 summary {
   color: var(--transparent-black);
   font-weight: 900;
