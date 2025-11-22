@@ -58,6 +58,7 @@ dialog[data-size='small'] {
   max-width: 300px;
   color: var(--transparent-black);
   font-weight: 900;
+  margin-top: 20px;
 }
 
 .date-box-label {
@@ -70,11 +71,17 @@ dialog[data-size='small'] {
   font-size: 1.25rem;
   font-weight: 600;
 }
+
 .consultancy-section {
   background: var(--transparent-white);
-  padding: 30px;
+  padding: 10px;
   border-radius: 30px;
-  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+summary {
+  color: var(--transparent-black);
+  font-weight: 900;
 }
 .basic-info > * {
   margin: 0 auto;
@@ -325,20 +332,19 @@ details > img {
 }
 
 .final-card {
-  background: linear-gradient(135deg, #2c5f2d 0%, #27ae60 100%);
-  color: white;
+  background: var(--transparent-white);
+  box-shadow: var(--box-shadow);
+  color: var(--transparent-black);
   border: none;
   padding: 25px;
   text-align: center;
 }
 
 .final-card .calc-label {
-  color: white;
   font-size: 18px;
 }
 
 .final-value {
-  color: #fff;
   font-size: 36px !important;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }

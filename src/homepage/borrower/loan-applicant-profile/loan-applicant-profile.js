@@ -27,8 +27,6 @@ const addTextContentToDiv = (div) => {
                   <p>MEMBER ID: <span class="membershipID"></span></p> 
                   <p>FIXED MONTHLY DEPOSIT AMOUNT: ₦<span class="fixed-deposit-amount"></span></p> 
                   <p>TOTAL DEPOSIT: ₦<span class="total-deposit"></span></p> 
-                  <p style="display: none;">TOTAL DISBURSE: ₦<span class="total-disburse"></span></p> 
-                  <p style="display: none;">TOTAL DIVIDEND: ₦<span class="dividend-amount"></span> <span class="dividend-msg"></span> <input type="checkbox" class="dividend-marker hide" data-db-first-key="isDividendPaid" /></p> 
                 </details>
 
                 <details class="consultancy-section">
@@ -40,11 +38,11 @@ const addTextContentToDiv = (div) => {
             </div>
             </div>
             
-                        <div class="date-box">
-                            <p class="date-box-label">Application Date/Time</p>
-                            <p class="date-box-value" id="application-date"></p>
-                            <p class="date-box-value" id="application-time"></p>
-                        </div>
+            <div class="date-box">
+              <p class="date-box-label">Application Date/Time</p>
+              <p class="date-box-value" id="application-date"></p>
+              <p class="date-box-value" id="application-time"></p>
+            </div>
     </div>
 
     <div class="profile-picture-box">
@@ -327,7 +325,6 @@ const detailInfoContent = (function createDetailInfoContent() {
                 <div class="calc-value highlight">₦ <span class="totalIncome"></span></div>
             </div>
         </div>
-
         
         <div class="calc-section expense-section">
             <h3 class="section-title">💸 Expenses</h3>
@@ -472,10 +469,21 @@ const detailInfoContent = (function createDetailInfoContent() {
 
             <div class="calc-card final-card">
                 <div class="calc-label">YOUR TOTAL DIVIDEND</div>
-                <div class="calc-value final-value">₦<span class="totalLoanDividend"></span></div>
+                <div class="calc-value totalDividendSection">₦<span class="totalLoanDividend"></span></div>
             </div>
         </div>
     `;
+  return div;
+})();
+
+const tickWhenSentContent = (function createTickWhenSentContent() {
+  const div = document.createElement('div');
+
+  div.innerHTML = `
+  <label>Tick when sent</label>
+  <input type="checkbox" class="dividend-marker" data-db-first-key="isDividendPaid" />
+  `;
+
   return div;
 })();
 
@@ -491,6 +499,9 @@ function addOptionElementToDiv(div) {
 
 const ACCOUNT_OPENING_AMOUNT = 4000;
 const dividendNotCalculatedText = document.createElement('p');
+const dividendMarker = tickWhenSentContent.querySelector('.dividend-marker');
+const memberDividendStatusMsg = document.createElement('div');
+
 const buildLoanApplicantProfile = pipe(createDiv, addClassToDiv, addTextContentToDiv);
 const processOptionKeySection = pipe(createDiv, addOptionElementToDiv);
 let memberData;
@@ -520,6 +531,7 @@ const totalLoanAmount = detailInfoContent.querySelector('.totalLoanAmount');
 const memberShareDividend = detailInfoContent.querySelector('.memberShareDividend');
 const memberLoanIncentive = detailInfoContent.querySelector('.memberLoanIncentive');
 const totalLoanDividend = detailInfoContent.querySelector('.totalLoanDividend');
+const totalDividendSection = detailInfoContent.querySelector('.totalDividendSection');
 
 const loanApplicantProfile = buildLoanApplicantProfile(document);
 const optionKeySection = processOptionKeySection(document);
@@ -690,10 +702,6 @@ const status = loanApplicantProfile.querySelector('.status');
 const state = loanApplicantProfile.querySelector('.state');
 const lga = loanApplicantProfile.querySelector('.lga');
 const membershipID = loanApplicantProfile.querySelector('.membershipID');
-const dividendAmount = loanApplicantProfile.querySelector('.dividend-amount');
-const dividendMsg = loanApplicantProfile.querySelector('.dividend-msg');
-const dividendMarker = loanApplicantProfile.querySelector('.dividend-marker');
-const totalDisburse = loanApplicantProfile.querySelector('.total-disburse');
 const totalDeposit = loanApplicantProfile.querySelector('.total-deposit');
 
 const guarantor1StaffId = loanApplicantProfile.querySelector('.guarantor1StaffId');
@@ -743,57 +751,6 @@ function getActionFromLocalStorage() {
   return data;
 }
 
-function accumulateLoanDividendAmount(data) {
-  if (data.loan) {
-    return data.loan.reduce(
-      (acc, currentObj) =>
-        currentObj.status === 'Approve' ? acc + currentObj.dividendAmount : acc,
-      0,
-    );
-  }
-}
-
-function accumulateWithdrawalDividendAmount(data) {
-  if (data.withdrawal) {
-    return data.withdrawal.reduce(
-      (acc, currentObj) =>
-        currentObj.status === 'Approve' ? acc + currentObj.dividendAmount : acc,
-      0,
-    );
-  }
-}
-
-function accumulateLoanDividendAmountDynamic(data) {
-  if (data.loan) {
-    return data.loan.reduce(
-      (acc, currentObj) =>
-        currentObj.status === 'Approve' ? acc + (currentObj.dividendAmountDynamic || 0) : acc,
-      0,
-    );
-  }
-}
-
-function accumulateWithdrawalDividendAmountDynamic(data) {
-  if (data.withdrawal) {
-    return data.withdrawal.reduce(
-      (acc, currentObj) =>
-        currentObj.status === 'Approve' ? acc + (currentObj.dividendAmountDynamic || 0) : acc,
-      0,
-    );
-  }
-}
-
-function isMassDividendPerform(data) {
-  if (data.withdrawal) {
-    const approveWithdrawal = data.withdrawal.filter((obj) => obj.status === 'Approve');
-    const isMassDividend = approveWithdrawal.every(
-      (obj) => obj.dividendAmount !== obj.dividendAmountDynamic,
-    );
-
-    return isMassDividend;
-  }
-}
-
 function getTotalDeposit(data) {
   if (data.deposit) {
     return data.deposit.reduce(
@@ -803,43 +760,20 @@ function getTotalDeposit(data) {
   }
 }
 
-function getTotalDisburse(data) {
-  if (data.withdrawal) {
-    const approveWithdrawal = data.withdrawal.filter((obj) => obj.status === 'Approve');
-    return approveWithdrawal.reduce((acc, currentObj) => acc + currentObj.amountDisburse, 0);
-  }
-}
-
-function isWithdrawalManagementAction(data) {
+function isAdminViewingProfile(data) {
   const dataAction = getActionFromLocalStorage();
-  let dividendBalance;
 
   if (data.membershipApplicationForm.status === 'Pending') return;
   // When the action is a truthy value that means the action comes from the admin
   if (dataAction.action) {
-    const dividendWithdrawalAmount = accumulateWithdrawalDividendAmount(data) || 0;
-    const dividendLoanAmount = accumulateLoanDividendAmount(data) || 0;
-    dividendBalance = dividendWithdrawalAmount + dividendLoanAmount;
-
-    const isMassDividend = isMassDividendPerform(data);
-    if (isMassDividend) {
-      dividendMarker.checked = data.isDividendPaid;
-      dividendMarker.classList.remove('hide');
-    }
+    totalDividendSection.after(tickWhenSentContent);
+    dividendMarker.checked = data.isDividendPaid;
   } else {
-    const dividendDynamicWithdrawalAmount = accumulateWithdrawalDividendAmountDynamic(data) || 0;
-    const dividendDynamicLoanAmount = accumulateLoanDividendAmountDynamic(data) || 0;
-    dividendBalance = dividendDynamicWithdrawalAmount + dividendDynamicLoanAmount;
-
-    const isMassDividend = isMassDividendPerform(data);
-    if (isMassDividend) {
-      dividendMsg.textContent = '(You will receive your dividend in 3 working days)';
-    }
+    memberDividendStatusMsg.textContent = data.isDividendPaid ? 'Sent✅' : 'Not sent🤦‍♂️';
+    totalDividendSection.after(memberDividendStatusMsg);
   }
 
-  dividendAmount.textContent = dividendBalance;
   totalDeposit.textContent = getTotalDeposit(data) || 0;
-  totalDisburse.textContent = getTotalDisburse(data) || 0;
 }
 
 function insertLoanApplicantDataToProfile(data) {
@@ -895,7 +829,7 @@ function insertLoanApplicantDataToProfile(data) {
   profileReset();
 
   applicationStatus[membershipApplicationForm.status](membershipApplicationForm);
-  isWithdrawalManagementAction(data);
+  isAdminViewingProfile(data);
   isDividendCalculated(data);
   dispatchProfileEvent();
 }
@@ -1103,7 +1037,7 @@ function CalculateDividend(data) {
 
   (function calculateTotalDividend() {
     totalLoanDividendValue = memberShareDividendValue + memberLoanIncentiveValue;
-    totalLoanDividend.textContent = totalLoanDividendValue;
+    totalLoanDividend.textContent = totalLoanDividendValue || 0;
   })();
 }
 
@@ -1137,12 +1071,10 @@ function profileReset() {
   detailInfo.innerHTML = '';
   membershipID.textContent = 'Pending';
   fixedDepositAmount.textContent = 'Pending';
-  dividendAmount.textContent = 'Pending';
-  dividendMsg.textContent = '';
   dividendMarker.checked = false;
-  dividendMarker.classList.add('hide');
   totalDeposit.textContent = 'Pending';
-  totalDisburse.textContent = 'Pending';
+  tickWhenSentContent.remove();
+  memberDividendStatusMsg.remove();
 }
 
 const getDividendActionData = (e) => {
@@ -1194,6 +1126,6 @@ optionKeySection.addEventListener('click', handleActionStorage);
 
 optionKeySection.addEventListener('click', handleOptionContent);
 
-dividendMarker.addEventListener('click', handleDividendMarkerAction);
+dividendMarker.addEventListener('change', handleDividendMarkerAction);
 
 export default loanApplicantProfile;
