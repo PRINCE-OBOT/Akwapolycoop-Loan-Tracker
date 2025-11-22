@@ -129,9 +129,9 @@ function handleContentDisplay(e) {
   eventBus.dispatchEvent(customContentEvent);
 }
 
-// (function () {
-//   emailjs.init('c6951-3fJVm8vAXLP');
-// })();
+(function () {
+  emailjs.init('c6951-3fJVm8vAXLP');
+})();
 
 eventBus.addEventListener('logout', logoutAdmin);
 

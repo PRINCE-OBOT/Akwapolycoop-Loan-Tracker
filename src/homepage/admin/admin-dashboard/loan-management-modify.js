@@ -1,6 +1,7 @@
 import MathUtility from '../../module/business-logic/mathUtility';
 import eventBus from '../../module/event-bus/event';
 import indexDB from '../../module/indexDB/indexDB';
+
 // Dispatching the change custom-change-content refreshes `loan-management` and `deposit-management`
 
 const fail = () => {
@@ -19,8 +20,6 @@ function sendEmail(data) {
 
   const message = memberData.status === 'Approve' ? memberData.membershipID : 'decline';
 
-  // Remove this condition when you are ready to publish email usage
-  if (message) return;
   emailjs
     .send('service_0na6jor', 'template_k8l5l6s', {
       email: memberData.email,
