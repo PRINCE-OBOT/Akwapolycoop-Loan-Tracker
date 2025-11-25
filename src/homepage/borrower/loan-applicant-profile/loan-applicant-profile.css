@@ -419,7 +419,9 @@ details > img {
   border-top: 4px solid #2c5f2d;
   background: linear-gradient(135deg, #ffffff 0%, #f0f8f0 100%);
 }
-
+.detail-info > p {
+  color: var(--transparent-black);
+}
 @media (max-width: 768px) {
   .consultancy-header h2 {
     font-size: 22px;

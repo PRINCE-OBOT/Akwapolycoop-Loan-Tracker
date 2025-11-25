@@ -30,7 +30,7 @@ function sendEmail(data) {
       alert('Email Sent Successfully');
     })
     .catch(() => {
-      alert('Failed to send email');
+      alert('Poor internet connection, fail sending email');
     });
 }
 

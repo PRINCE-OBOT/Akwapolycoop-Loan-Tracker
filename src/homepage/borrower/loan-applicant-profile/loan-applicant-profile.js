@@ -835,7 +835,7 @@ function insertLoanApplicantDataToProfile(data) {
 }
 
 function dividendNotCalculated() {
-  dividendNotCalculatedText.textContent = 'Your dividend has not been calculated. Until December';
+  dividendNotCalculatedText.textContent = 'Your dividend has not been calculated';
   detailInfo.append(dividendNotCalculatedText);
 }
 
@@ -1008,12 +1008,12 @@ function CalculateDividend(data) {
   (function calculateLoanAmount() {
     const loan = memberData.loan;
 
-    if (loan) {
-      memberLoanValue = loan.reduce(
-        (acc, current) => (current.status === 'Approve' ? acc + current.loanAmount : acc),
-        0,
-      );
-    }
+    memberLoanValue = loan
+      ? loan.reduce(
+          (acc, current) => (current.status === 'Approve' ? acc + current.loanAmount : acc),
+          0,
+        )
+      : 0;
 
     loanAmount.textContent = memberLoanValue;
   })();

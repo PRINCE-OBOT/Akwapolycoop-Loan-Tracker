@@ -16,7 +16,7 @@ const myDeposit = (function createTableHeading() {
   const div = document.createElement('div');
 
   div.innerHTML = `
-            <h5 class="brief-text">Oversee and manage all loan applications within the system.</h5>
+            <h5 class="brief-text">Every time money is deposited, you are buy shares in the cooperative, 1 share = ₦100</h5>
 
             <div class="filter-section">
               <h3>Filter Deposit</h3>
