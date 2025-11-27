@@ -89,6 +89,13 @@ main {
   grid-column: 1 / -1;
 }
 
+.account-details {
+  margin-bottom: 40px;
+  background-color: var(--secondary-accent-faint);
+  padding: 20px;
+  border-radius: 10px;
+}
+
 label {
   display: block;
   margin-bottom: 0.5rem;

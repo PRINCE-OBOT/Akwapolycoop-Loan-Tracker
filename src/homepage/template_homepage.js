@@ -48,3 +48,5 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     }
   });
 });
+
+console.log('I am running');
