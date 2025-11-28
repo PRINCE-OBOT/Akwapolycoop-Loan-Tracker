@@ -1,10 +1,11 @@
+import { html, render } from 'lit-html';
 import handleFieldValidationLogic from '../../module/form-validation/field-validator';
 
 const loanApplicantForm = (function () {
   const div = document.createElement('div');
   div.classList.add('form-content>');
 
-  div.innerHTML = `
+  const templateForm = html`
     <form id="applicationForm" novalidate>
       <details class="account-details">
         <summary>
@@ -754,6 +755,7 @@ const loanApplicantForm = (function () {
     </form>
   `;
 
+  render(templateForm, div);
   return div;
 })();
 
