@@ -130,7 +130,7 @@ function handleContentDisplay(e) {
 }
 
 (function () {
-  emailjs.init('c6951-3fJVm8vAXLP');
+  // emailjs.init('c6951-3fJVm8vAXLP');a
 })();
 
 eventBus.addEventListener('logout', logoutAdmin);
